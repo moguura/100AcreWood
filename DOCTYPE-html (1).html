@@ -167,13 +167,13 @@
   <script>
     const answers = {
       Q1: ["暑い", "暑いです"],
-      Q2: ["寒くない", "寒いです"],
+      Q2: ["寒くない", "寒くないです"],
       Q3: ["冷たい", "冷たいです"],
       Q4: ["熱くない", "熱くないです"],
       Q5: ["近い", "近いです"],
       Q6: ["近くない", "近くないです"],
       Q7: ["高くない", "高くないです"],
-      Q8: ["安い", "安くないです"],
+      Q8: ["安い", "安いです"],
       Q9: ["いい", "いいです"],
       Q10: ["よくない", "よくないです"],
       Q11: ["涼しい", "涼しいです"],
@@ -186,7 +186,6 @@
 
       recognition.onresult = function(event) {
         const transcript = event.results[0][0].transcript.trim();
-        document.getElementById('result' + question).innerText = `your answer: ${transcript}`;
 
         if (answers[question].includes(transcript)) {
           document.getElementById('correctImage' + question).style.display = 'block';
@@ -199,7 +198,7 @@
       };
 
       recognition.onerror = function(event) {
-        document.getElementById('result' + question).innerText = 'エラーが発生しました。';
+        console.error('エラーが発生しました。', event.error);
       };
 
       recognition.start();
