@@ -7,9 +7,12 @@
 <body>
   <h1>Activity１</h1>
 
-  <div id="Q1">
-  　<img src="https://i.gyazo.com/2117a05575da904d9b271ada0eb71db2.jpg" alt="イメージ">
-   
+  <!-- 問題１の前に画像を表示 -->
+  <div id="imageContainerQ1">
+    <img src="https://i.gyazo.com/2117a05575da904d9b271ada0eb71db2.jpg" alt="イメージ">
+  </div>
+
+  <div id="Q1">   
     <button onclick="checkAnswer('Q1')">Q1のマイク</button>
     <div id="resultQ1"></div>
     <div id="imageContainerQ1" style="display: none;">
@@ -18,14 +21,13 @@
     </div>
   </div>
 
+　<!-- 問題２の前に画像を表示 -->
+  <div id="imageContainerQ2" style="display: none;">
+    <img src="https://i.gyazo.com/5545e9e131128e58a123ca0c4172e7c4.jpg" alt="イメージ">
+  </div>
 
-
-
-  
   <div id="Q2">
-  　<img src="https://i.gyazo.com/5545e9e131128e58a123ca0c4172e7c4.jpg" alt="イメージ">
-   
-    <button onclick="checkAnswer('Q2')">Q2のマイク</button>
+  　<button onclick="checkAnswer('Q2')">Q2のマイク</button>
     <div id="resultQ2"></div>
     <div id="imageContainerQ2" style="display: none;">
       <img id="correctImageQ2" src="https://i.gyazo.com/1e22bb6e3277bc880874af560819d084.png" alt="正しい答え">
@@ -33,13 +35,12 @@
     </div>
   </div>
 
-
-
-
-  
-  <div id="Q3">
+  <!-- 問題３の前に画像を表示 -->
+  <div id="imageContainerQ3" style="display: none;">
     <img src="https://i.gyazo.com/05680f01234c77a02e3cb3b2c802bc82.jpg" alt="イメージ">
-    
+  </div>
+
+  <div id="Q3">
     <button onclick="checkAnswer('Q3')">Q3のマイク</button>
     <div id="resultQ3"></div>
     <div id="imageContainerQ3" style="display: none;">
@@ -183,25 +184,26 @@
     </div>
   </div>
 
+
   <script>
-    function showImage(imageId, questionId) {
-      var image = document.getElementById(imageId);
-      var questionDiv = document.getElementById(questionId);
+     // 画像を表示して10秒後に非表示にする関数
+    function displayAndHideImage(imageContainerId) {
+      var imageContainer = document.getElementById(imageContainerId);
 
       // 画像を表示
-      image.style.display = 'block';
+      imageContainer.style.display = 'block';
 
+      // 10秒後に画像を非表示にする
       setTimeout(function() {
-        // 10秒後に画像を非表示にする
-        image.style.display = 'none';
-
-        // 問題を表示
-        questionDiv.style.display = 'block';
+        imageContainer.style.display = 'none';
       }, 10000); // 10000ミリ秒 = 10秒
     }
-  </script>
 
-  <script>
+    // 各問題の前に画像を表示して非表示にする
+    displayAndHideImage('imageContainerQ1');
+    displayAndHideImage('imageContainerQ2');
+    displayAndHideImage('imageContainerQ3');
+    
     const answers = {
       Q1: ["暑い", "暑いです"],
       Q2: ["寒くない", "寒くないです"],
