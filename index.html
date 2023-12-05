@@ -8,8 +8,7 @@
   <h1>Activity１</h1>
 
   <div id="Q1">
-  <img src="https://i.gyazo.com/6d2d86c295077aaa30721822631f5083.jpg" alt="イメージ">
-    <p>Q1</p>
+  　<img src="https://i.gyazo.com/2117a05575da904d9b271ada0eb71db2.jpg" alt="イメージ">
     <button onclick="checkAnswer('Q1')">Q1のマイク</button>
     <div id="resultQ1"></div>
     <div id="imageContainerQ1" style="display: none;">
@@ -19,7 +18,7 @@
   </div>
 
   <div id="Q2">
-    <p>Q2</p>
+  　<img src="https://i.gyazo.com/5545e9e131128e58a123ca0c4172e7c4.jpg" alt="イメージ">
     <button onclick="checkAnswer('Q2')">Q2のマイク</button>
     <div id="resultQ2"></div>
     <div id="imageContainerQ2" style="display: none;">
@@ -29,7 +28,7 @@
   </div>
 
   <div id="Q3">
-    <p>Q3</p>
+    <img src="https://i.gyazo.com/05680f01234c77a02e3cb3b2c802bc82.jpg" alt="イメージ">
     <button onclick="checkAnswer('Q3')">Q3のマイク</button>
     <div id="resultQ3"></div>
     <div id="imageContainerQ3" style="display: none;">
@@ -39,7 +38,7 @@
   </div>
 
  <div id="Q4">
-    <p>Q4</p>
+    <img src="https://i.gyazo.com/abf128db52de85c742c11630efb579bd.jpg" alt="イメージ">　
     <button onclick="checkAnswer('Q4')">Q4のマイク</button>
     <div id="resultQ4"></div>
     <div id="imageContainerQ4" style="display: none;">
@@ -49,7 +48,7 @@
   </div>
 
  <div id="Q5">
-    <p>Q5</p>
+    <img src="https://i.gyazo.com/f909ab1b5fcf2fc97342951b02b8221f.jpg" alt="イメージ">
     <button onclick="checkAnswer('Q5')">Q5のマイク</button>
     <div id="resultQ5"></div>
     <div id="imageContainerQ5" style="display: none;">
@@ -59,7 +58,7 @@
   </div>
 
  <div id="Q6">
-    <p>Q6</p>
+    <img src="https://i.gyazo.com/408c4c8f92a782a13b29c34bd472abe8.jpg" alt="イメージ">
     <button onclick="checkAnswer('Q6')">Q6のマイク</button>
     <div id="resultQ6"></div>
     <div id="imageContainerQ6" style="display: none;">
@@ -69,7 +68,7 @@
   </div>
 
  <div id="Q7">
-    <p>Q7</p>
+    <img src="https://i.gyazo.com/f60e4005c70c891b1063ea17b68a0313.jpg" alt="イメージ">
     <button onclick="checkAnswer('Q7')">Q7のマイク</button>
     <div id="resultQ7"></div>
     <div id="imageContainerQ7" style="display: none;">
@@ -79,7 +78,7 @@
   </div>
 
  <div id="Q8">
-    <p>Q8</p>
+    <img src="https://i.gyazo.com/b4e6da88aab635ea8f246f7464818cc4.jpg" alt="イメージ">
     <button onclick="checkAnswer('Q8')">Q8のマイク</button>
     <div id="resultQ8"></div>
     <div id="imageContainerQ8" style="display: none;">
@@ -89,7 +88,7 @@
   </div>
 
  <div id="Q9">
-    <p>Q9</p>
+    <img src="https://i.gyazo.com/7f0dd0e4a9a041528f0e5f32a6b11dd1.jpg" alt="イメージ">
     <button onclick="checkAnswer('Q9')">Q9のマイク</button>
     <div id="resultQ9"></div>
     <div id="imageContainerQ9" style="display: none;">
@@ -99,7 +98,7 @@
   </div>
 
  <div id="Q10">
-    <p>Q10</p>
+    <img src="https://i.gyazo.com/279ea4256e0f7161df69bd0a12c583e6.jpg" alt="イメージ">
     <button onclick="checkAnswer('Q10')">Q10のマイク</button>
     <div id="resultQ10"></div>
     <div id="imageContainerQ10" style="display: none;">
@@ -109,7 +108,7 @@
   </div>
 
  <div id="Q11">
-    <p>Q11</p>
+    <img src="https://i.gyazo.com/f7b19fcd5d8d572d11cf291317e8fe05.jpg" alt="イメージ">
     <button onclick="checkAnswer('Q11')">Q11のマイク</button>
     <div id="resultQ11"></div>
     <div id="imageContainerQ11" style="display: none;">
@@ -119,7 +118,7 @@
   </div>
 
  <div id="Q12">
-    <p>Q12</p>
+    <img src="https://i.gyazo.com/f1432f20694826ed8de242c4c7e84183.jpg" alt="イメージ">
     <button onclick="checkAnswer('Q12')">Q12のマイク</button>
     <div id="resultQ12"></div>
     <div id="imageContainerQ12" style="display: none;">
@@ -128,6 +127,23 @@
     </div>
   </div>
 
+  <script>
+    function showImage(imageId, questionId) {
+      var image = document.getElementById(imageId);
+      var questionDiv = document.getElementById(questionId);
+
+      // 画像を表示
+      image.style.display = 'block';
+
+      setTimeout(function() {
+        // 10秒後に画像を非表示にする
+        image.style.display = 'none';
+
+        // 問題を表示
+        questionDiv.style.display = 'block';
+      }, 10000); // 10000ミリ秒 = 10秒
+    }
+  </script>
 
   <script>
     const answers = {
@@ -142,7 +158,7 @@
       Q9: ["いい", "いいです"],
       Q10: ["よくない", "よくないです"],
       Q11: ["涼しい", "涼しいです"],
-      Q12: ["面白い", "面白いです"]
+      Q12: ["面白くない", "面白くないです"]
     };
 
     function checkAnswer(question) {
