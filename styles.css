@@ -1,0 +1,35 @@
+/* styles.css */
+body {
+      font-family: Arial, sans-serif; /* フォントの指定 */
+      padding: 20px; /* コンテンツと端からの間隔 */
+    }
+    h1 {
+      text-align: center; /* タイトルを中央に配置 */
+    }
+    p {
+      text-align: center; /* テキストを中央に配置 */
+    }
+    #imageContainer {
+      text-align: center; /* 画像を中央に配置 */
+      margin-top: 20px; /* 画像と上部との間隔 */
+    }
+    img {
+      max-width: 100%; /* 画像を親要素に合わせて調整 */
+      height: auto; /* アスペクト比を維持 */
+      display: block; /* インライン要素の余白を除去 */
+      margin: 0 auto; /* 画像を中央に配置 */
+    }
+    button {
+      display: block; /* インライン要素の余白を除去 */
+      margin: 0 auto; /* ボタンを中央に配置 */
+      padding: 10px 20px; /* ボタンの余白 */
+      font-size: 16px; /* ボタンの文字サイズ */
+      background-color: #3498db; /* ボタンの背景色 */
+      color: #fff; /* ボタンのテキスト色 */
+      border: none; /* ボーダーをなくす */
+      border-radius: 5px; /* ボタンの角丸 */
+      cursor: pointer; /* カーソルをポインターに変更 */
+    }
+    button:focus {
+      outline: none; /* フォーカス時の枠を消去 */
+    }
