@@ -39,8 +39,7 @@ button:focus {
   display: flex;
   flex-direction: column; /* 縦に配置するための修正 */
   align-items: center;
-  /* justify-content: space-between; 削除することで縦に要素を配置 */
-  /* margin-bottom: 20px; 余白の削除 */
+  margin-bottom: 20px; /* 問題間の余白を追加 */
 }
 
 /* 最初の問題以外の余白を設定 */
@@ -50,6 +49,7 @@ button:focus {
 
 .question p {
   margin-right: 20px;
+  font-size: 18px; /* 問題の文字サイズを変更 */
 }
 
 /* モバイル向けスタイル */
