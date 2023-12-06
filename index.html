@@ -130,27 +130,36 @@
 
   <script> 
     const answers = {
-      Q1: ["あつい", "あついです"],
-      Q2: ["さむくない", "さむくないです"],
-      Q3: ["つめたい", "つめたいです"],
-      Q4: ["あつくない", "あつくないです"],
-      Q5: ["ちかい", "ちかいです"],
-      Q6: ["ちかくない", "ちかくないです"],
-      Q7: ["たかくない", "たかくないです"],
-      Q8: ["やすい", "やすいです"],
+      Q1: ["暑い", "暑いです"],
+      Q2: ["寒くない", "寒くないです"],
+      Q3: ["冷たい", "冷たいです"],
+      Q4: ["熱くない", "熱くないです"],
+      Q5: ["近い", "近いです"],
+      Q6: ["近くない", "近くないです"],
+      Q7: ["高くない", "高くないです"],
+      Q8: ["安い", "安いです"],
       Q9: ["いい", "いいです"],
       Q10: ["よくない", "よくないです"],
-      Q11: ["すずしい", "すずしいです"],
-      Q12: ["おもしろくない", "おもしろくないです", "たのしくない", "たのしくないです"]
+      Q11: ["涼しい", "涼しいです"],
+      Q12: ["暖かくない", "暖かくないです"]
     };
 
-　function checkAnswerAndShowResult(question) {
+　function checkAnswer(question) {
   const recognition = new webkitSpeechRecognition() || new SpeechRecognition();
-  recognition.lang = 'ja-JP-Kana';
+  recognition.lang = 'ja-JP';
 
   recognition.onresult = function(event) {
     const transcript = event.results[0][0].transcript.trim();
-    showResult(question, transcript);
+
+    // 認識結果を取得する代わりに、条件判定のみ行います
+    if (answers[question].includes(transcript)) {
+      document.getElementById('correctImage' + question).style.display = 'block';
+      document.getElementById('wrongImage' + question).style.display = 'none';
+    } else {
+      document.getElementById('correctImage' + question).style.display = 'none';
+      document.getElementById('wrongImage' + question).style.display = 'block';
+    }
+    document.getElementById('imageContainer' + question).style.display = 'block';
   };
 
   recognition.onerror = function(event) {
@@ -158,27 +167,6 @@
   };
 
   recognition.start();
-}
-
-function convertToHiragana(text) {
-  return text.replace(/[\u30a1-\u30f6]/g, function(match) {
-    const chr = match.charCodeAt(0) - 0x60;
-    return String.fromCharCode(chr);
-  });
-}
-
-function showResult(question, transcript) {
-  const hiraganaTranscript = convertToHiragana(transcript); // 認識結果をひらがなに変換
-  document.getElementById('result' + question).innerText = `your answer: ${hiraganaTranscript}`;
-
-  if (answers[question].includes(transcript)) {
-    document.getElementById('correctImage' + question).style.display = 'block';
-    document.getElementById('wrongImage' + question).style.display = 'none';
-  } else {
-    document.getElementById('correctImage' + question).style.display = 'none';
-    document.getElementById('wrongImage' + question).style.display = 'block';
-  }
-  document.getElementById('imageContainer' + question).style.display = 'block';
 }
  </script>
 </body>
