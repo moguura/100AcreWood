@@ -63,3 +63,8 @@ button:focus {
     cursor: pointer;
   }
 }
+
+/* 新しいスタイルを追加 */
+.question {
+  margin-bottom: 30px; /* 問題間の余白を追加 */
+}
