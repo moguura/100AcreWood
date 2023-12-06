@@ -144,7 +144,7 @@
       Q12: ["おもしろくない", "おもしろくないです", "たのしくない", "たのしくないです"]
     };
 
-　　function checkAnswerAndShowResult(question) {
+　function checkAnswerAndShowResult(question) {
   const recognition = new webkitSpeechRecognition() || new SpeechRecognition();
   recognition.lang = 'ja-JP-Kana';
 
@@ -160,8 +160,16 @@
   recognition.start();
 }
 
+function convertToHiragana(text) {
+  return text.replace(/[\u30a1-\u30f6]/g, function(match) {
+    const chr = match.charCodeAt(0) - 0x60;
+    return String.fromCharCode(chr);
+  });
+}
+
 function showResult(question, transcript) {
-  document.getElementById('result' + question).innerText = `your answer: ${transcript}`;
+  const hiraganaTranscript = convertToHiragana(transcript); // 認識結果をひらがなに変換
+  document.getElementById('result' + question).innerText = `your answer: ${hiraganaTranscript}`;
 
   if (answers[question].includes(transcript)) {
     document.getElementById('correctImage' + question).style.display = 'block';
