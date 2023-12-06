@@ -3,146 +3,41 @@
 <head>
   <title>Activity１</title>
   <link rel="stylesheet" type="text/css" href="styles.css">
+  <style>
+    .question {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 30px; /* 各質問とボタンの間のスペース */
+    }
+
+    .question p {
+      margin-right: 30px; /* 質問とボタン間の余白 */
+    }
+  </style>
 </head>
 <body>
   <div id="content" class="mobile-responsive">
-  <h1>Activity１</h1>
-    
-  <div class="question" id="Q1">
-    <p>Q1</p>
-    <button id="startButtonQ1">Q1のマイク</button>
-    <div id="imageContainerQ1" style="display: none;">
-      <img id="correctImageQ1" src="https://i.gyazo.com/1e22bb6e3277bc880874af560819d084.png" alt="正しい答え">
-      <img id="wrongImageQ1" src="https://i.gyazo.com/4c0f03855a174df42e94a2d23286e44b.png" alt="間違った答え">
+    <h1>Activity１</h1>
+
+    <!-- 質問セット -->
+    <div id="questions">
+      <!-- 各質問を繰り返し処理 -->
+      <div class="question" id="Q1">
+        <p>Q1</p>
+        <button class="startButton" data-question="Q1">Q1のマイク</button>
+        <div class="imageContainer" id="imageContainerQ1" style="display: none;">
+          <img class="correctImage" src="https://i.gyazo.com/1e22bb6e3277bc880874af560819d084.png" alt="正しい答え">
+          <img class="wrongImage" src="https://i.gyazo.com/4c0f03855a174df42e94a2d23286e44b.png" alt="間違った答え">
+        </div>
+        <audio class="correctAudio" id="correctAudioQ1" src="https://docs.google.com/uc?id=1ifIhEbGeuPAYLwcCHZJEk4PwGdNMmhAB"></audio>
+        <audio class="wrongAudio" id="wrongAudioQ1" src="https://docs.google.com/uc?id=1vQXcHR99MaW7unej3c7q5-foVpJspESu"></audio>
+      </div>
+      <!-- 他の質問を同様に繰り返し処理 -->
+
     </div>
-    <audio id="correctAudioQ1" src="https://docs.google.com/uc?id=1ifIhEbGeuPAYLwcCHZJEk4PwGdNMmhAB"></audio>
-    <audio id="wrongAudioQ1" src="https://docs.google.com/uc?id=1vQXcHR99MaW7unej3c7q5-foVpJspESu"></audio>
- 　 </div>
   </div>
-
-  <div class="question" id="Q2">
-    <p>Q2</p>
-    <button id="startButtonQ2">Q2のマイク</button>
-    <div id="imageContainerQ2" style="display: none;">
-      <img id="correctImageQ2" src="https://i.gyazo.com/1e22bb6e3277bc880874af560819d084.png" alt="正しい答え">
-      <img id="wrongImageQ2" src="https://i.gyazo.com/4c0f03855a174df42e94a2d23286e44b.png" alt="間違った答え">
-    </div>
-    <audio id="correctAudioQ2" src="https://docs.google.com/uc?id=1ifIhEbGeuPAYLwcCHZJEk4PwGdNMmhAB"></audio>
-    <audio id="wrongAudioQ2" src="https://docs.google.com/uc?id=1vQXcHR99MaW7unej3c7q5-foVpJspESu"></audio>
- 　 </div>
-  </div>
-
-  <div class="question" id="Q3">
-    <p>Q3</p>
-    <button id="startButtonQ3">Q3のマイク</button>
-    <div id="imageContainerQ3" style="display: none;">
-      <img id="correctImageQ3" src="https://i.gyazo.com/1e22bb6e3277bc880874af560819d084.png" alt="正しい答え">
-      <img id="wrongImageQ3" src="https://i.gyazo.com/4c0f03855a174df42e94a2d23286e44b.png" alt="間違った答え">
-    </div>
-    <audio id="correctAudioQ3" src="https://docs.google.com/uc?id=1ifIhEbGeuPAYLwcCHZJEk4PwGdNMmhAB"></audio>
-    <audio id="wrongAudioQ3" src="https://docs.google.com/uc?id=1vQXcHR99MaW7unej3c7q5-foVpJspESu"></audio>
- 　 </div>
-  </div>
-
- <div class="question" id="Q4">
-    <p>Q4</p>
-    <button id="startButtonQ4">Q4のマイク</button>
-    <div id="imageContainerQ4" style="display: none;">
-      <img id="correctImageQ4" src="https://i.gyazo.com/1e22bb6e3277bc880874af560819d084.png" alt="正しい答え">
-      <img id="wrongImageQ4" src="https://i.gyazo.com/4c0f03855a174df42e94a2d23286e44b.png" alt="間違った答え">
-    </div>
-    <audio id="correctAudioQ4" src="https://docs.google.com/uc?id=1ifIhEbGeuPAYLwcCHZJEk4PwGdNMmhAB"></audio>
-    <audio id="wrongAudioQ4" src="https://docs.google.com/uc?id=1vQXcHR99MaW7unej3c7q5-foVpJspESu"></audio>
-  </div>
-
- <div class="question" id="Q5">
-    <p>Q5</p>
-    <button id="startButtonQ5">Q5のマイク</button>
-    <div id="imageContainerQ5" style="display: none;">
-      <img id="correctImageQ5" src="https://i.gyazo.com/1e22bb6e3277bc880874af560819d084.png" alt="正しい答え">
-      <img id="wrongImageQ5" src="https://i.gyazo.com/4c0f03855a174df42e94a2d23286e44b.png" alt="間違った答え">
-    </div>
-    <audio id="correctAudioQ5" src="https://docs.google.com/uc?id=1ifIhEbGeuPAYLwcCHZJEk4PwGdNMmhAB"></audio>
-    <audio id="wrongAudioQ5" src="https://docs.google.com/uc?id=1vQXcHR99MaW7unej3c7q5-foVpJspESu"></audio>
-  </div>
-
- <div class="question" id="Q6">
-    <p>Q6</p>
-    <button id="startButtonQ6">Q6のマイク</button>
-    <div id="imageContainerQ6" style="display: none;">
-      <img id="correctImageQ6" src="https://i.gyazo.com/1e22bb6e3277bc880874af560819d084.png" alt="正しい答え">
-      <img id="wrongImageQ6" src="https://i.gyazo.com/4c0f03855a174df42e94a2d23286e44b.png" alt="間違った答え">
-    </div>
-    <audio id="correctAudioQ6" src="https://docs.google.com/uc?id=1ifIhEbGeuPAYLwcCHZJEk4PwGdNMmhAB"></audio>
-    <audio id="wrongAudioQ6" src="https://docs.google.com/uc?id=1vQXcHR99MaW7unej3c7q5-foVpJspESu"></audio>
-   </div>
-
- <div class="question" id="Q7">
-    <p>Q7</p>
-    <button id="startButtonQ7">Q7のマイク</button>
-    <div id="imageContainerQ7" style="display: none;">
-      <img id="correctImageQ7" src="https://i.gyazo.com/1e22bb6e3277bc880874af560819d084.png" alt="正しい答え">
-      <img id="wrongImageQ7" src="https://i.gyazo.com/4c0f03855a174df42e94a2d23286e44b.png" alt="間違った答え">
-    </div>
-    <audio id="correctAudioQ7" src="https://docs.google.com/uc?id=1ifIhEbGeuPAYLwcCHZJEk4PwGdNMmhAB"></audio>
-    <audio id="wrongAudioQ7" src="https://docs.google.com/uc?id=1vQXcHR99MaW7unej3c7q5-foVpJspESu"></audio>
-   </div>
-
- <div class="question" id="Q8">
-    <p>Q8</p>
-    <button id="startButtonQ8">Q8のマイク</button>
-    <div id="imageContainerQ8" style="display: none;">
-      <img id="correctImageQ8" src="https://i.gyazo.com/1e22bb6e3277bc880874af560819d084.png" alt="正しい答え">
-      <img id="wrongImageQ8" src="https://i.gyazo.com/4c0f03855a174df42e94a2d23286e44b.png" alt="間違った答え">
-    </div>
-    <audio id="correctAudioQ8" src="https://docs.google.com/uc?id=1ifIhEbGeuPAYLwcCHZJEk4PwGdNMmhAB"></audio>
-    <audio id="wrongAudioQ8" src="https://docs.google.com/uc?id=1vQXcHR99MaW7unej3c7q5-foVpJspESu"></audio>
-  </div>
-
- <div class="question" id="Q9">
-    <p>Q9</p>
-    <button id="startButtonQ9">Q9のマイク</button>
-    <div id="imageContainerQ9" style="display: none;">
-      <img id="correctImageQ9" src="https://i.gyazo.com/1e22bb6e3277bc880874af560819d084.png" alt="正しい答え">
-      <img id="wrongImageQ9" src="https://i.gyazo.com/4c0f03855a174df42e94a2d23286e44b.png" alt="間違った答え">
-    </div>
-    <audio id="correctAudioQ9" src="https://docs.google.com/uc?id=1ifIhEbGeuPAYLwcCHZJEk4PwGdNMmhAB"></audio>
-    <audio id="wrongAudioQ9" src="https://docs.google.com/uc?id=1vQXcHR99MaW7unej3c7q5-foVpJspESu"></audio>
-  </div>
-
- <div class="question" id="Q10">
-    <p>Q10</p>
-    <button id="startButtonQ10">Q10のマイク</button>
-    <div id="imageContainerQ10" style="display: none;">
-      <img id="correctImageQ10" src="https://i.gyazo.com/1e22bb6e3277bc880874af560819d084.png" alt="正しい答え">
-      <img id="wrongImageQ10" src="https://i.gyazo.com/4c0f03855a174df42e94a2d23286e44b.png" alt="間違った答え">
-    </div>
-    <audio id="correctAudioQ10" src="https://docs.google.com/uc?id=1ifIhEbGeuPAYLwcCHZJEk4PwGdNMmhAB"></audio>
-    <audio id="wrongAudioQ10" src="https://docs.google.com/uc?id=1vQXcHR99MaW7unej3c7q5-foVpJspESu"></audio>
-  </div>
-
- <div class="question" id="Q11">
-    <p>Q11</p>
-    <button id="startButtonQ11">Q11のマイク</button>
-    <div id="imageContainerQ11" style="display: none;">
-      <img id="correctImageQ11" src="https://i.gyazo.com/1e22bb6e3277bc880874af560819d084.png" alt="正しい答え">
-      <img id="wrongImageQ11" src="https://i.gyazo.com/4c0f03855a174df42e94a2d23286e44b.png" alt="間違った答え">
-    </div>
-    <audio id="correctAudioQ11" src="https://docs.google.com/uc?id=1ifIhEbGeuPAYLwcCHZJEk4PwGdNMmhAB"></audio>
-    <audio id="wrongAudioQ11" src="https://docs.google.com/uc?id=1vQXcHR99MaW7unej3c7q5-foVpJspESu"></audio>
-  </div>
-
- <div class="question" id="Q12">
-    <p>Q12</p>
-    <<button id="startButtonQ12">Q12のマイク</button>
-    <div id="imageContainerQ12" style="display: none;">
-      <img id="correctImageQ12" src="https://i.gyazo.com/1e22bb6e3277bc880874af560819d084.png" alt="正しい答え">
-      <img id="wrongImageQ12" src="https://i.gyazo.com/4c0f03855a174df42e94a2d23286e44b.png" alt="間違った答え">
-    </div>
-    <audio id="correctAudioQ12" src="https://docs.google.com/uc?id=1ifIhEbGeuPAYLwcCHZJEk4PwGdNMmhAB"></audio>
-    <audio id="wrongAudioQ12" src="https://docs.google.com/uc?id=1vQXcHR99MaW7unej3c7q5-foVpJspESu"></audio>
-  </div>
-
+  
   <script> 
     const answers = {
       Q1: ["暑い", "暑いです"],
@@ -159,354 +54,47 @@
       Q12: ["暖かくない", "暖かくないです"]
     };
 
-// 問題'Q1'の音声認識を開始する関数
-function startRecognitionQ1() {
-  const recognitionQ1 = new webkitSpeechRecognition() || new SpeechRecognition();
-  recognitionQ1.lang = 'ja-JP';
+    // 各質問の音声認識処理を繰り返し処理
+    const questions = document.querySelectorAll('.question');
+    questions.forEach(question => {
+      const questionId = question.id;
 
-  recognitionQ1.onresult = function(event) {
-    const transcript = event.results[0][0].transcript.trim();
+      question.querySelector('.startButton').addEventListener('click', function() {
+        startRecognition(questionId);
+      });
+    });
 
-    if (answers['Q1'].includes(transcript)) {
-      document.getElementById('correctImageQ1').style.display = 'block';
-      document.getElementById('wrongImageQ1').style.display = 'none';
-      document.getElementById('correctAudioQ1').play(); // 正解音声再生
-    } else {
-      document.getElementById('correctImageQ1').style.display = 'none';
-      document.getElementById('wrongImageQ1').style.display = 'block';
-      document.getElementById('wrongAudioQ1').play(); // 不正解音声再生
+    function startRecognition(questionId) {
+      const recognition = new webkitSpeechRecognition() || new SpeechRecognition();
+      recognition.lang = 'ja-JP';
+
+      recognition.onresult = function(event) {
+        const transcript = event.results[0][0].transcript.trim();
+        const correctImage = document.querySelector(`#imageContainer${questionId} .correctImage`);
+        const wrongImage = document.querySelector(`#imageContainer${questionId} .wrongImage`);
+        const correctAudio = document.querySelector(`#correctAudio${questionId}`);
+        const wrongAudio = document.querySelector(`#wrongAudio${questionId}`);
+
+        if (answers[questionId].includes(transcript)) {
+          correctImage.style.display = 'block';
+          wrongImage.style.display = 'none';
+          correctAudio.play(); // 正解音声再生
+        } else {
+          correctImage.style.display = 'none';
+          wrongImage.style.display = 'block';
+          wrongAudio.play(); // 不正解音声再生
+        }
+        document.querySelector(`#imageContainer${questionId}`).style.display = 'block';
+      };
+
+      recognition.onerror = function(event) {
+        console.error('エラーが発生しました。', event.error);
+      };
+
+      recognition.start();
     }
-    document.getElementById('imageContainerQ1').style.display = 'block';
-  };
-
-  recognitionQ1.onerror = function(event) {
-    console.error('エラーが発生しました。', event.error);
-  };
-
-  recognitionQ1.start();
-}
-
-document.getElementById('startButtonQ1').addEventListener('click', startRecognitionQ1);
-    
-// 問題'Q2'の音声認識を開始する関数
-function startRecognitionQ2() {
-  const recognitionQ2 = new webkitSpeechRecognition() || new SpeechRecognition();
-  recognitionQ2.lang = 'ja-JP';
-
-  recognitionQ2.onresult = function(event) {
-    const transcript = event.results[0][0].transcript.trim();
-
-    if (answers['Q2'].includes(transcript)) {
-      document.getElementById('correctImageQ2').style.display = 'block';
-      document.getElementById('wrongImageQ2').style.display = 'none';
-      document.getElementById('correctAudioQ2').play(); // 正解音声再生
-    } else {
-      document.getElementById('correctImageQ2').style.display = 'none';
-      document.getElementById('wrongImageQ2').style.display = 'block';
-      document.getElementById('wrongAudioQ2').play(); // 不正解音声再生
-    }
-    document.getElementById('imageContainerQ2').style.display = 'block';
-  };
-
-  recognitionQ2.onerror = function(event) {
-    console.error('エラーが発生しました。', event.error);
-  };
-
-  recognitionQ2.start();
-}
-
-document.getElementById('startButtonQ2').addEventListener('click', startRecognitionQ2);
-
-// 問題'Q3'の音声認識を開始する関数
-function startRecognitionQ3() {
-  const recognitionQ3 = new webkitSpeechRecognition() || new SpeechRecognition();
-  recognitionQ3.lang = 'ja-JP';
-
-  recognitionQ3.onresult = function(event) {
-    const transcript = event.results[0][0].transcript.trim();
-
-    if (answers['Q3'].includes(transcript)) {
-      document.getElementById('correctImageQ3').style.display = 'block';
-      document.getElementById('wrongImageQ3').style.display = 'none';
-      document.getElementById('correctAudioQ3').play(); // 正解音声再生
-    } else {
-      document.getElementById('correctImageQ3').style.display = 'none';
-      document.getElementById('wrongImageQ3').style.display = 'block';
-      document.getElementById('wrongAudioQ3').play(); // 不正解音声再生
-    }
-    document.getElementById('imageContainerQ3').style.display = 'block';
-  };
-
-  recognitionQ3.onerror = function(event) {
-    console.error('エラーが発生しました。', event.error);
-  };
-
-  recognitionQ3.start();
-}
-
-document.getElementById('startButtonQ3').addEventListener('click', startRecognitionQ3);
-
-// 問題'Q4'の音声認識を開始する関数
-function startRecognitionQ4() {
-  const recognitionQ4 = new webkitSpeechRecognition() || new SpeechRecognition();
-  recognitionQ4.lang = 'ja-JP';
-
-  recognitionQ4.onresult = function(event) {
-    const transcript = event.results[0][0].transcript.trim();
-
-    if (answers['Q4'].includes(transcript)) {
-      document.getElementById('correctImageQ4').style.display = 'block';
-      document.getElementById('wrongImageQ4').style.display = 'none';
-      document.getElementById('correctAudioQ4').play(); // 正解音声再生
-    } else {
-      document.getElementById('correctImageQ4').style.display = 'none';
-      document.getElementById('wrongImageQ4').style.display = 'block';
-      document.getElementById('wrongAudioQ4').play(); // 不正解音声再生
-    }
-    document.getElementById('imageContainerQ4').style.display = 'block';
-  };
-
-  recognitionQ4.onerror = function(event) {
-    console.error('エラーが発生しました。', event.error);
-  };
-
-  recognitionQ4.start();
-}
-
-document.getElementById('startButtonQ4').addEventListener('click', startRecognitionQ4);
-    
-// 問題'Q5'の音声認識を開始する関数
-function startRecognitionQ5() {
-  const recognitionQ5 = new webkitSpeechRecognition() || new SpeechRecognition();
-  recognitionQ5.lang = 'ja-JP';
-
-  recognitionQ5.onresult = function(event) {
-    const transcript = event.results[0][0].transcript.trim();
-
-    if (answers['Q5'].includes(transcript)) {
-      document.getElementById('correctImageQ5').style.display = 'block';
-      document.getElementById('wrongImageQ5').style.display = 'none';
-      document.getElementById('correctAudioQ5').play(); // 正解音声再生
-    } else {
-      document.getElementById('correctImageQ5').style.display = 'none';
-      document.getElementById('wrongImageQ5').style.display = 'block';
-      document.getElementById('wrongAudioQ5').play(); // 不正解音声再生
-    }
-    document.getElementById('imageContainerQ5').style.display = 'block';
-  };
-
-  recognitionQ5.onerror = function(event) {
-    console.error('エラーが発生しました。', event.error);
-  };
-
-  recognitionQ5.start();
-}
-
-document.getElementById('startButtonQ5').addEventListener('click', startRecognitionQ5);
-    
-// 問題'Q6'の音声認識を開始する関数
-function startRecognitionQ6() {
-  const recognitionQ6 = new webkitSpeechRecognition() || new SpeechRecognition();
-  recognitionQ6.lang = 'ja-JP';
-
-  recognitionQ6.onresult = function(event) {
-    const transcript = event.results[0][0].transcript.trim();
-
-    if (answers['Q6'].includes(transcript)) {
-      document.getElementById('correctImageQ6').style.display = 'block';
-      document.getElementById('wrongImageQ6').style.display = 'none';
-      document.getElementById('correctAudioQ6').play(); // 正解音声再生
-    } else {
-      document.getElementById('correctImageQ6').style.display = 'none';
-      document.getElementById('wrongImageQ6').style.display = 'block';
-      document.getElementById('wrongAudioQ6').play(); // 不正解音声再生
-    }
-    document.getElementById('imageContainerQ6').style.display = 'block';
-  };
-
-  recognitionQ6.onerror = function(event) {
-    console.error('エラーが発生しました。', event.error);
-  };
-
-  recognitionQ6.start();
-}
-
-document.getElementById('startButtonQ6').addEventListener('click', startRecognitionQ6);
-    
-// 問題'Q7'の音声認識を開始する関数
-function startRecognitionQ7() {
-  const recognitionQ7 = new webkitSpeechRecognition() || new SpeechRecognition();
-  recognitionQ7.lang = 'ja-JP';
-
-  recognitionQ7.onresult = function(event) {
-    const transcript = event.results[0][0].transcript.trim();
-
-    if (answers['Q7'].includes(transcript)) {
-      document.getElementById('correctImageQ7').style.display = 'block';
-      document.getElementById('wrongImageQ7').style.display = 'none';
-      document.getElementById('correctAudioQ7').play(); // 正解音声再生
-    } else {
-      document.getElementById('correctImageQ7').style.display = 'none';
-      document.getElementById('wrongImageQ7').style.display = 'block';
-      document.getElementById('wrongAudioQ7').play(); // 不正解音声再生
-    }
-    document.getElementById('imageContainerQ7').style.display = 'block';
-  };
-
-  recognitionQ7.onerror = function(event) {
-    console.error('エラーが発生しました。', event.error);
-  };
-
-  recognitionQ7.start();
-}
-
-document.getElementById('startButtonQ7').addEventListener('click', startRecognitionQ7);
-
-// 問題'Q8'の音声認識を開始する関数
-function startRecognitionQ8() {
-  const recognitionQ8 = new webkitSpeechRecognition() || new SpeechRecognition();
-  recognitionQ8.lang = 'ja-JP';
-
-  recognitionQ8.onresult = function(event) {
-    const transcript = event.results[0][0].transcript.trim();
-
-    if (answers['Q8'].includes(transcript)) {
-      document.getElementById('correctImageQ8').style.display = 'block';
-      document.getElementById('wrongImageQ8').style.display = 'none';
-      document.getElementById('correctAudioQ8').play(); // 正解音声再生
-    } else {
-      document.getElementById('correctImageQ8').style.display = 'none';
-      document.getElementById('wrongImageQ8').style.display = 'block';
-      document.getElementById('wrongAudioQ8').play(); // 不正解音声再生
-    }
-    document.getElementById('imageContainerQ8').style.display = 'block';
-  };
-
-  recognitionQ8.onerror = function(event) {
-    console.error('エラーが発生しました。', event.error);
-  };
-
-  recognitionQ8.start();
-}
-
-document.getElementById('startButtonQ8').addEventListener('click', startRecognitionQ8);
-    
-// 問題'Q9'の音声認識を開始する関数
-function startRecognitionQ9() {
-  const recognitionQ9 = new webkitSpeechRecognition() || new SpeechRecognition();
-  recognitionQ9.lang = 'ja-JP';
-
-  recognitionQ9.onresult = function(event) {
-    const transcript = event.results[0][0].transcript.trim();
-
-    if (answers['Q9'].includes(transcript)) {
-      document.getElementById('correctImageQ9').style.display = 'block';
-      document.getElementById('wrongImageQ9').style.display = 'none';
-      document.getElementById('correctAudioQ9').play(); // 正解音声再生
-    } else {
-      document.getElementById('correctImageQ9').style.display = 'none';
-      document.getElementById('wrongImageQ9').style.display = 'block';
-      document.getElementById('wrongAudioQ9').play(); // 不正解音声再生
-    }
-    document.getElementById('imageContainerQ9').style.display = 'block';
-  };
-
-  recognitionQ9.onerror = function(event) {
-    console.error('エラーが発生しました。', event.error);
-  };
-
-  recognitionQ9.start();
-}
-
-document.getElementById('startButtonQ9').addEventListener('click', startRecognitionQ9);
-    
-// 問題'Q10'の音声認識を開始する関数
-function startRecognitionQ10() {
-  const recognitionQ10 = new webkitSpeechRecognition() || new SpeechRecognition();
-  recognitionQ10.lang = 'ja-JP';
-
-  recognitionQ10.onresult = function(event) {
-    const transcript = event.results[0][0].transcript.trim();
-
-    if (answers['Q10'].includes(transcript)) {
-      document.getElementById('correctImageQ10').style.display = 'block';
-      document.getElementById('wrongImageQ10').style.display = 'none';
-      document.getElementById('correctAudioQ10').play(); // 正解音声再生
-    } else {
-      document.getElementById('correctImageQ10').style.display = 'none';
-      document.getElementById('wrongImageQ10').style.display = 'block';
-      document.getElementById('wrongAudioQ10').play(); // 不正解音声再生
-    }
-    document.getElementById('imageContainerQ10').style.display = 'block';
-  };
-
-  recognitionQ10.onerror = function(event) {
-    console.error('エラーが発生しました。', event.error);
-  };
-
-  recognitionQ10.start();
-}
-
-document.getElementById('startButtonQ10').addEventListener('click', startRecognitionQ10);
-
-// 問題'Q11'の音声認識を開始する関数
-function startRecognitionQ11() {
-  const recognitionQ11 = new webkitSpeechRecognition() || new SpeechRecognition();
-  recognitionQ11.lang = 'ja-JP';
-
-  recognitionQ11.onresult = function(event) {
-    const transcript = event.results[0][0].transcript.trim();
-
-    if (answers['Q11'].includes(transcript)) {
-      document.getElementById('correctImageQ11').style.display = 'block';
-      document.getElementById('wrongImageQ11').style.display = 'none';
-      document.getElementById('correctAudioQ11').play(); // 正解音声再生
-    } else {
-      document.getElementById('correctImageQ11').style.display = 'none';
-      document.getElementById('wrongImageQ11').style.display = 'block';
-      document.getElementById('wrongAudioQ11').play(); // 不正解音声再生
-    }
-    document.getElementById('imageContainerQ11').style.display = 'block';
-  };
-
-  recognitionQ11.onerror = function(event) {
-    console.error('エラーが発生しました。', event.error);
-  };
-
-  recognitionQ11.start();
-}
-
-document.getElementById('startButtonQ11').addEventListener('click', startRecognitionQ11);
-
-// 問題'Q12'の音声認識を開始する関数
-function startRecognitionQ12() {
-  const recognitionQ12 = new webkitSpeechRecognition() || new SpeechRecognition();
-  recognitionQ12.lang = 'ja-JP';
-
-  recognitionQ12.onresult = function(event) {
-    const transcript = event.results[0][0].transcript.trim();
-
-    if (answers['Q12'].includes(transcript)) {
-      document.getElementById('correctImageQ12').style.display = 'block';
-      document.getElementById('wrongImageQ12').style.display = 'none';
-      document.getElementById('correctAudioQ12').play(); // 正解音声再生
-    } else {
-      document.getElementById('correctImageQ12').style.display = 'none';
-      document.getElementById('wrongImageQ12').style.display = 'block';
-      document.getElementById('wrongAudioQ12').play(); // 不正解音声再生
-    }
-    document.getElementById('imageContainerQ12').style.display = 'block';
-  };
-
-  recognitionQ12.onerror = function(event) {
-    console.error('エラーが発生しました。', event.error);
-  };
-
-  recognitionQ12.start();
-}
-
-document.getElementById('startButtonQ12').addEventListener('click', startRecognitionQ12);
-
   </script>
+　<script src="script.js"></script>
 </body>
 </html>
+
