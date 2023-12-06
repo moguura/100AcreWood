@@ -163,21 +163,198 @@
       const recognition = new webkitSpeechRecognition() || new SpeechRecognition();
       recognition.lang = 'ja-JP';
 
-      recognition.onresult = function(event) {
-        const transcript = event.results[0][0].transcript.trim();
+  // 問題'Q1'の音声認識と処理
+　recognitionQ1.onresult = function(event) {
+    const transcript = event.results[0][0].transcript.trim();
+    
+    if (answers['Q1'].includes(transcript)) {
+        document.getElementById('correctImageQ1').style.display = 'block';
+        document.getElementById('wrongImageQ1').style.display = 'none';
+        document.getElementById('correctAudioQ1').play(); // 正解音声再生
+    } else {
+        document.getElementById('correctImageQ1').style.display = 'none';
+        document.getElementById('wrongImageQ1').style.display = 'block';
+        document.getElementById('wrongAudioQ1').play(); // 不正解音声再生
+    }
+    document.getElementById('imageContainerQ1').style.display = 'block';
+};
 
-        if (answers['Q1'].includes(transcript)) {
-          document.getElementById('correctImageQ1').style.display = 'block';
-          document.getElementById('wrongImageQ1').style.display = 'none';
-          document.getElementById('correctAudioQ1').play(); // 正解音声再生
-        } else {
-          document.getElementById('correctImageQ1').style.display = 'none';
-          document.getElementById('wrongImageQ1').style.display = 'block';
-          document.getElementById('wrongAudioQ1').play(); // 不正解音声再生
-        }
-        document.getElementById('imageContainerQ1').style.display = 'block';
-      };
+// 問題'Q2'の音声認識と処理
+recognitionQ2.onresult = function(event) {
+    const transcript = event.results[0][0].transcript.trim();
+    
+    if (answers['Q2'].includes(transcript)) {
+        document.getElementById('correctImageQ2').style.display = 'block';
+        document.getElementById('wrongImageQ2').style.display = 'none';
+        document.getElementById('correctAudioQ2').play(); // 正解音声再生
+    } else {
+        document.getElementById('correctImageQ2').style.display = 'none';
+        document.getElementById('wrongImageQ2').style.display = 'block';
+        document.getElementById('wrongAudioQ2').play(); // 不正解音声再生
+    }
+    document.getElementById('imageContainerQ2').style.display = 'block';
+};
 
+// 問題'Q3'の音声認識と処理
+recognitionQ3.onresult = function(event) {
+    const transcript = event.results[0][0].transcript.trim();
+    
+    if (answers['Q3'].includes(transcript)) {
+        document.getElementById('correctImageQ3').style.display = 'block';
+        document.getElementById('wrongImageQ3').style.display = 'none';
+        document.getElementById('correctAudioQ3').play(); // 正解音声再生
+    } else {
+        document.getElementById('correctImageQ3').style.display = 'none';
+        document.getElementById('wrongImageQ3').style.display = 'block';
+        document.getElementById('wrongAudioQ3').play(); // 不正解音声再生
+    }
+    document.getElementById('imageContainerQ3').style.display = 'block';
+};
+
+  // 問題'Q4'の音声認識と処理
+recognitionQ4.onresult = function(event) {
+    const transcript = event.results[0][0].transcript.trim();
+    
+    if (answers['Q4'].includes(transcript)) {
+        document.getElementById('correctImageQ4').style.display = 'block';
+        document.getElementById('wrongImageQ4').style.display = 'none';
+        document.getElementById('correctAudioQ4').play(); // 正解音声再生
+    } else {
+        document.getElementById('correctImageQ4').style.display = 'none';
+        document.getElementById('wrongImageQ4').style.display = 'block';
+        document.getElementById('wrongAudioQ4').play(); // 不正解音声再生
+    }
+    document.getElementById('imageContainerQ4').style.display = 'block';
+};
+
+// 問題'Q5'の音声認識と処理
+recognitionQ5.onresult = function(event) {
+    const transcript = event.results[0][0].transcript.trim();
+    
+    if (answers['Q5'].includes(transcript)) {
+        document.getElementById('correctImageQ5').style.display = 'block';
+        document.getElementById('wrongImageQ5').style.display = 'none';
+        document.getElementById('correctAudioQ5').play(); // 正解音声再生
+    } else {
+        document.getElementById('correctImageQ5').style.display = 'none';
+        document.getElementById('wrongImageQ5').style.display = 'block';
+        document.getElementById('wrongAudioQ5').play(); // 不正解音声再生
+    }
+    document.getElementById('imageContainerQ5').style.display = 'block';
+};
+
+    // 問題'Q6'の音声認識と処理
+recognitionQ6.onresult = function(event) {
+    const transcript = event.results[0][0].transcript.trim();
+    
+    if (answers['Q6'].includes(transcript)) {
+        document.getElementById('correctImageQ6').style.display = 'block';
+        document.getElementById('wrongImageQ6').style.display = 'none';
+        document.getElementById('correctAudioQ6').play(); // 正解音声再生
+    } else {
+        document.getElementById('correctImageQ6').style.display = 'none';
+        document.getElementById('wrongImageQ6').style.display = 'block';
+        document.getElementById('wrongAudioQ6').play(); // 不正解音声再生
+    }
+    document.getElementById('imageContainerQ6').style.display = 'block';
+};
+
+// 問題'Q7'の音声認識と処理
+recognitionQ7.onresult = function(event) {
+    const transcript = event.results[0][0].transcript.trim();
+    
+    if (answers['Q7'].includes(transcript)) {
+        document.getElementById('correctImageQ7').style.display = 'block';
+        document.getElementById('wrongImageQ7').style.display = 'none';
+        document.getElementById('correctAudioQ7').play(); // 正解音声再生
+    } else {
+        document.getElementById('correctImageQ7').style.display = 'none';
+        document.getElementById('wrongImageQ7').style.display = 'block';
+        document.getElementById('wrongAudioQ7').play(); // 不正解音声再生
+    }
+    document.getElementById('imageContainerQ7').style.display = 'block';
+};
+
+// 問題'Q8'の音声認識と処理
+recognitionQ8.onresult = function(event) {
+    const transcript = event.results[0][0].transcript.trim();
+    
+    if (answers['Q8'].includes(transcript)) {
+        document.getElementById('correctImageQ8').style.display = 'block';
+        document.getElementById('wrongImageQ8').style.display = 'none';
+        document.getElementById('correctAudioQ8').play(); // 正解音声再生
+    } else {
+        document.getElementById('correctImageQ8').style.display = 'none';
+        document.getElementById('wrongImageQ8').style.display = 'block';
+        document.getElementById('wrongAudioQ8').play(); // 不正解音声再生
+    }
+    document.getElementById('imageContainerQ8').style.display = 'block';
+};
+
+    // 問題'Q9'の音声認識と処理
+recognitionQ9.onresult = function(event) {
+    const transcript = event.results[0][0].transcript.trim();
+    
+    if (answers['Q9'].includes(transcript)) {
+        document.getElementById('correctImageQ9').style.display = 'block';
+        document.getElementById('wrongImageQ9').style.display = 'none';
+        document.getElementById('correctAudioQ9').play(); // 正解音声再生
+    } else {
+        document.getElementById('correctImageQ9').style.display = 'none';
+        document.getElementById('wrongImageQ9').style.display = 'block';
+        document.getElementById('wrongAudioQ9').play(); // 不正解音声再生
+    }
+    document.getElementById('imageContainerQ9').style.display = 'block';
+};
+
+// 問題'Q10'の音声認識と処理
+recognitionQ10.onresult = function(event) {
+    const transcript = event.results[0][0].transcript.trim();
+    
+    if (answers['Q10'].includes(transcript)) {
+        document.getElementById('correctImageQ10').style.display = 'block';
+        document.getElementById('wrongImageQ10').style.display = 'none';
+        document.getElementById('correctAudioQ10').play(); // 正解音声再生
+    } else {
+        document.getElementById('correctImageQ10').style.display = 'none';
+        document.getElementById('wrongImageQ10').style.display = 'block';
+        document.getElementById('wrongAudioQ10').play(); // 不正解音声再生
+    }
+    document.getElementById('imageContainerQ10').style.display = 'block';
+};
+
+  // 問題'Q11'の音声認識と処理
+recognitionQ11.onresult = function(event) {
+    const transcript = event.results[0][0].transcript.trim();
+    
+    if (answers['Q11'].includes(transcript)) {
+        document.getElementById('correctImageQ11').style.display = 'block';
+        document.getElementById('wrongImageQ11').style.display = 'none';
+        document.getElementById('correctAudioQ11').play(); // 正解音声再生
+    } else {
+        document.getElementById('correctImageQ11').style.display = 'none';
+        document.getElementById('wrongImageQ11').style.display = 'block';
+        document.getElementById('wrongAudioQ11').play(); // 不正解音声再生
+    }
+    document.getElementById('imageContainerQ11').style.display = 'block';
+};
+
+// 問題'Q12'の音声認識と処理
+recognitionQ12.onresult = function(event) {
+    const transcript = event.results[0][0].transcript.trim();
+    
+    if (answers['Q12'].includes(transcript)) {
+        document.getElementById('correctImageQ12').style.display = 'block';
+        document.getElementById('wrongImageQ12').style.display = 'none';
+        document.getElementById('correctAudioQ12').play(); // 正解音声再生
+    } else {
+        document.getElementById('correctImageQ12').style.display = 'none';
+        document.getElementById('wrongImageQ12').style.display = 'block';
+        document.getElementById('wrongAudioQ12').play(); // 不正解音声再生
+    }
+    document.getElementById('imageContainerQ12').style.display = 'block';
+};
+   
       recognition.onerror = function(event) {
         console.error('エラーが発生しました。', event.error);
       };
