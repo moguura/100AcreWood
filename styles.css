@@ -44,12 +44,11 @@ button:focus {
 
 /* 最初の問題以外の余白を設定 */
 .question + .question {
-  margin-top: 30px;
+  margin-top: 20px;
 }
 
 .question p {
-  margin-right: 20px;
-  font-size: 20px; /* 問題の文字サイズを変更 */
+  font-size: 24px; /* 例: テキストサイズを24pxに変更 */
 }
 
 /* モバイル向けスタイル */
