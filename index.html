@@ -10,7 +10,7 @@
     
   <div id="Q1">
     <p>Q1</p>
-    <button onclick="checkAnswerAndShowResult('Q1')">Q1のマイク</button>
+    <button onclick="checkAnswer('Q1')">Q1のマイク</button>
     <div id="resultQ1"></div>
     <div id="imageContainerQ1" style="display: none;">
       <img id="correctImageQ1" src="https://i.gyazo.com/1e22bb6e3277bc880874af560819d084.png" alt="正しい答え">
@@ -23,7 +23,7 @@
 
   <div id="Q2">
     <p>Q2</p>
-    <button onclick="checkAnswerAndShowResult('Q2')">Q2のマイク</button>
+    <button onclick="checkAnswer('Q2')">Q2のマイク</button>
     <div id="resultQ2"></div>
     <div id="imageContainerQ2" style="display: none;">
       <img id="correctImageQ2" src="https://i.gyazo.com/1e22bb6e3277bc880874af560819d084.png" alt="正しい答え">
@@ -36,7 +36,7 @@
 
   <div id="Q3">
     <p>Q3</p>
-    <button onclick="checkAnswerAndShowResult('Q3')">Q3のマイク</button>
+    <button onclick="checkAnswer('Q3')">Q3のマイク</button>
     <div id="resultQ3"></div>
     <div id="imageContainerQ3" style="display: none;">
       <img id="correctImageQ3" src="https://i.gyazo.com/1e22bb6e3277bc880874af560819d084.png" alt="正しい答え">
@@ -49,7 +49,7 @@
 
  <div id="Q4">
     <p>Q4</p>
-    <button onclick="checkAnswerAndShowResult('Q4')">Q4のマイク</button>
+    <button onclick="checkAnswer('Q4')">Q4のマイク</button>
     <div id="resultQ4"></div>
     <div id="imageContainerQ4" style="display: none;">
       <img id="correctImageQ4" src="https://i.gyazo.com/1e22bb6e3277bc880874af560819d084.png" alt="正しい答え">
@@ -61,7 +61,7 @@
 
  <div id="Q5">
     <p>Q5</p>
-    <button onclick="checkAnswerAndShowResult('Q5')">Q5のマイク</button>
+    <button onclick="checkAnswer('Q5')">Q5のマイク</button>
     <div id="resultQ5"></div>
     <div id="imageContainerQ5" style="display: none;">
       <img id="correctImageQ5" src="https://i.gyazo.com/1e22bb6e3277bc880874af560819d084.png" alt="正しい答え">
@@ -73,7 +73,7 @@
 
  <div id="Q6">
     <p>Q6</p>
-    <button onclick="checkAnswerAndShowResult('Q6')">Q6のマイク</button>
+    <button onclick="checkAnswer('Q6')">Q6のマイク</button>
     <div id="resultQ6"></div>
     <div id="imageContainerQ6" style="display: none;">
       <img id="correctImageQ6" src="https://i.gyazo.com/1e22bb6e3277bc880874af560819d084.png" alt="正しい答え">
@@ -85,7 +85,7 @@
 
  <div id="Q7">
     <p>Q7</p>
-    <button onclick="checkAnswerAndShowResult('Q7')">Q7のマイク</button>
+    <button onclick="checkAnswer('Q7')">Q7のマイク</button>
     <div id="resultQ7"></div>
     <div id="imageContainerQ7" style="display: none;">
       <img id="correctImageQ7" src="https://i.gyazo.com/1e22bb6e3277bc880874af560819d084.png" alt="正しい答え">
@@ -97,7 +97,7 @@
 
  <div id="Q8">
     <p>Q8</p>
-    <button onclick="checkAnswerAndShowResult('Q8')">Q8のマイク</button>
+    <button onclick="checkAnswer('Q8')">Q8のマイク</button>
     <div id="resultQ8"></div>
     <div id="imageContainerQ8" style="display: none;">
       <img id="correctImageQ8" src="https://i.gyazo.com/1e22bb6e3277bc880874af560819d084.png" alt="正しい答え">
@@ -109,7 +109,7 @@
 
  <div id="Q9">
     <p>Q9</p>
-    <button onclick="checkAnswerAndShowResult('Q9')">Q9のマイク</button>
+    <button onclick="checkAnswer('Q9')">Q9のマイク</button>
     <div id="resultQ9"></div>
     <div id="imageContainerQ9" style="display: none;">
       <img id="correctImageQ9" src="https://i.gyazo.com/1e22bb6e3277bc880874af560819d084.png" alt="正しい答え">
@@ -121,7 +121,7 @@
 
  <div id="Q10">
     <p>Q10</p>
-    <button onclick="checkAnswerAndShowResult('Q10')">Q10のマイク</button>
+    <button onclick="checkAnswer('Q10')">Q10のマイク</button>
     <div id="resultQ10"></div>
     <div id="imageContainerQ10" style="display: none;">
       <img id="correctImageQ10" src="https://i.gyazo.com/1e22bb6e3277bc880874af560819d084.png" alt="正しい答え">
@@ -133,7 +133,7 @@
 
  <div id="Q11">
     <p>Q11</p>
-    <button onclick="checkAnswerAndShowResult('Q11')">Q11のマイク</button>
+    <button onclick="checkAnswer('Q11')">Q11のマイク</button>
     <div id="resultQ11"></div>
     <div id="imageContainerQ11" style="display: none;">
       <img id="correctImageQ11" src="https://i.gyazo.com/1e22bb6e3277bc880874af560819d084.png" alt="正しい答え">
@@ -145,7 +145,7 @@
 
  <div id="Q12">
     <p>Q12</p>
-    <button onclick="checkAnswerAndShowResult('Q12')">Q12のマイク</button>
+    <button onclick="checkAnswer('Q12')">Q12のマイク</button>
     <div id="resultQ12"></div>
     <div id="imageContainerQ12" style="display: none;">
       <img id="correctImageQ12" src="https://i.gyazo.com/1e22bb6e3277bc880874af560819d084.png" alt="正しい答え">
@@ -177,7 +177,6 @@
 
       recognition.onresult = function(event) {
         const transcript = event.results[0][0].transcript.trim();
-        document.getElementById('result' + question).innerText = `認識結果: ${transcript}`;
 
         if (answers[question].includes(transcript)) {
           document.getElementById('correctImage' + question).style.display = 'block';
@@ -192,7 +191,7 @@
       };
 
       recognition.onerror = function(event) {
-        document.getElementById('result' + question).innerText = 'エラーが発生しました。';
+        console.error('エラーが発生しました。', event.error);
       };
 
       recognition.start();
