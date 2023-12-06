@@ -42,21 +42,24 @@ button:focus {
 
 /* スマートフォン向けのスタイル */
 @media screen and (max-width: 768px) {
-  body {
-    padding: 10px; /* スマートフォン向けのコンテンツと端からの間隔 */
+  .mobile-image-container {
+    /* スマートフォン向けの画像コンテナのスタイル */
+    /* 例：画像を中央に配置 */
+    text-align: center;
+    margin-top: 20px;
   }
 
-  h1 {
-    font-size: 24px; /* スマートフォン向けのタイトルの文字サイズ */
-  }
-
-  p {
-    font-size: 14px; /* スマートフォン向けのテキストの文字サイズ */
-  }
-  
-  button {
-    font-size: 14px; /* スマートフォン向けのボタンの文字サイズ */
-    padding: 8px 16px; /* スマートフォン向けのボタンの余白 */
+  .mobile-button {
+    /* スマートフォン向けのボタンのスタイル */
+    /* 例：ボタンの余白やフォントサイズを調整 */
+    display: block;
+    margin: 0 auto;
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #3498db;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
   }
 }
-
