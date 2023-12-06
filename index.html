@@ -170,46 +170,48 @@
       Q12: ["暖かくない", "暖かくないです"]
     };
 
-// 共通の音声認識関数
 function startRecognition(questionNumber) {
-  const recognition = new SpeechRecognition();
-  recognition.lang = 'ja-JP';
+      const recognition = new webkitSpeechRecognition(); // ブラウザによってはプレフィックスが必要
+      recognition.lang = 'ja-JP';
 
-  recognition.onresult = function(event) {
-    const transcript = event.results[0][0].transcript.trim();
-    const correctImage = document.getElementById(`correctImageQ${questionNumber}`);
-    const wrongImage = document.getElementById(`wrongImageQ${questionNumber}`);
-    const correctAudio = document.getElementById(`correctAudioQ${questionNumber}`);
-    const wrongAudio = document.getElementById(`wrongAudioQ${questionNumber}`);
-    const imageContainer = document.getElementById(`imageContainerQ${questionNumber}`);
+      recognition.onresult = function(event) {
+        const transcript = event.results[0][0].transcript.trim();
+        const correctImage = document.getElementById(`correctImageQ${questionNumber}`);
+        const wrongImage = document.getElementById(`wrongImageQ${questionNumber}`);
+        const correctAudio = document.getElementById(`correctAudioQ${questionNumber}`);
+        const wrongAudio = document.getElementById(`wrongAudioQ${questionNumber}`);
+        const imageContainer = document.getElementById(`imageContainerQ${questionNumber}`);
 
-    if (answers[`Q${questionNumber}`].includes(transcript)) {
-      correctImage.style.display = 'block';
-      wrongImage.style.display = 'none';
-      correctAudio.play(); // 正解音声再生
-    } else {
-      correctImage.style.display = 'none';
-      wrongImage.style.display = 'block';
-      wrongAudio.play(); // 不正解音声再生
+        if (answers[`Q${questionNumber}`].includes(transcript)) {
+          correctImage.style.display = 'block';
+          wrongImage.style.display = 'none';
+          correctAudio.play(); // 正解音声再生
+        } else {
+          correctImage.style.display = 'none';
+          wrongImage.style.display = 'block';
+          wrongAudio.play(); // 不正解音声再生
+        }
+        imageContainer.style.display = 'block';
+      };
+
+      recognition.onerror = function(event) {
+        console.error('エラーが発生しました。', event.error);
+      };
+
+      recognition.start();
     }
-    imageContainer.style.display = 'block';
-  };
 
-  recognition.onerror = function(event) {
-    console.error('エラーが発生しました。', event.error);
-  };
-
-  recognition.start();
-}
-
-// 問題ごとにボタンのイベントを追加
-for (let i = 1; i <= 12; i++) {
-  const startButton = document.getElementById(`startButtonQ${i}`);
-  startButton.addEventListener('click', () => startRecognition(i));
-}
-
+    // 問題ごとにボタンのイベントを追加
+    for (let i = 1; i <= 12; i++) {
+      const startButton = document.getElementById(`startButtonQ${i}`);
+      startButton.addEventListener('click', (event) => {
+        const questionNumber = parseInt(event.target.id.replace('startButtonQ', ''));
+        startRecognition(questionNumber);
+      });
+    }
   </script>
 </body>
+</html>
 </html>
 
 
