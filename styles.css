@@ -1,57 +1,64 @@
 /* styles.css */
+
+/* 共通スタイル */
 body {
-  font-family: Arial, sans-serif; /* フォントの指定 */
-  padding: 20px; /* コンテンツと端からの間隔 */
+  font-family: Arial, sans-serif;
+  padding: 20px;
 }
 
-h1 {
-  text-align: center; /* タイトルを中央に配置 */
-}
-
+h1,
 p {
-  text-align: center; /* テキストを中央に配置 */
-}
-
-#imageContainer {
-  text-align: center; /* 画像を中央に配置 */
-  margin-top: 20px; /* 画像と上部との間隔 */
+  text-align: center;
 }
 
 img {
-  max-width: 100%; /* 画像を親要素に合わせて調整 */
-  height: auto; /* アスペクト比を維持 */
-  display: block; /* インライン要素の余白を除去 */
-  margin: 0 auto; /* 画像を中央に配置 */
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
 }
 
 button {
-  display: block; /* インライン要素の余白を除去 */
-  margin: 0 auto; /* ボタンを中央に配置 */
-  padding: 10px 20px; /* ボタンの余白 */
-  font-size: 16px; /* ボタンの文字サイズ */
-  background-color: #3498db; /* ボタンの背景色 */
-  color: #fff; /* ボタンのテキスト色 */
-  border: none; /* ボーダーをなくす */
-  border-radius: 5px; /* ボタンの角丸 */
-  cursor: pointer; /* カーソルをポインターに変更 */
+  display: block;
+  margin: 0 auto;
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #3498db;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
 button:focus {
-  outline: none; /* フォーカス時の枠を消去 */
+  outline: none;
 }
 
-/* スマートフォン向けのスタイル */
+/* 問題セットのスタイル */
+.question {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+/* 最初の問題以外の余白を設定 */
+.question + .question {
+  margin-top: 20px;
+}
+
+.question p {
+  margin-right: 20px;
+}
+
+/* モバイル向けスタイル */
 @media screen and (max-width: 768px) {
   .mobile-image-container {
-    /* スマートフォン向けの画像コンテナのスタイル */
-    /* 例：画像を中央に配置 */
     text-align: center;
     margin-top: 20px;
   }
 
   .mobile-button {
-    /* スマートフォン向けのボタンのスタイル */
-    /* 例：ボタンの余白やフォントサイズを調整 */
     display: block;
     margin: 0 auto;
     padding: 10px 20px;
@@ -62,14 +69,4 @@ button:focus {
     border-radius: 5px;
     cursor: pointer;
   }
-}
-
-/* 新しいスタイルを追加 */
-.question {
-  margin-bottom: 20px; /* 各問題の下方向の余白 */
-}
-
-/* 最初の問題以外の余白を設定 */
-.question + .question {
-  margin-top: 20px; /* 各問題の上方向の余白 */
 }
