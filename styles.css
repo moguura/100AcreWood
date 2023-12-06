@@ -66,10 +66,10 @@ button:focus {
 
 /* 新しいスタイルを追加 */
 .question {
-  margin-bottom: 20px; /* 問題間の下方向の余白を設定 */
+  margin-bottom: 20px; /* 各問題の下方向の余白 */
 }
 
 /* 最初の問題以外の余白を設定 */
 .question + .question {
-  margin-top: 20px; /* 問題間の上方向の余白を設定 */
+  margin-top: 20px; /* 各問題の上方向の余白 */
 }
