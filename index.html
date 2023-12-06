@@ -143,12 +143,13 @@
       Q12: ["面白くない", "面白くないです"]
     };
 
-    function checkAnswer(question) {
+　　function checkAnswer(question) {
       const recognition = new webkitSpeechRecognition() || new SpeechRecognition();
-      recognition.lang = 'ja-JP';
+      recognition.lang = 'ja-JP-Kana';
 
       recognition.onresult = function(event) {
         const transcript = event.results[0][0].transcript.trim();
+        document.getElementById('result' + question).innerText = `your answer: ${transcript}`;
 
         if (answers[question].includes(transcript)) {
           document.getElementById('correctImage' + question).style.display = 'block';
@@ -161,7 +162,7 @@
       };
 
       recognition.onerror = function(event) {
-        console.error('エラーが発生しました。', event.error);
+        document.getElementById('result' + question).innerText = 'エラーが発生しました。';
       };
 
       recognition.start();
