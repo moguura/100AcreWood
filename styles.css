@@ -66,5 +66,10 @@ button:focus {
 
 /* 新しいスタイルを追加 */
 .question {
-  margin-bottom: 30px; /* 問題間の余白を追加 */
+  margin-bottom: 20px; /* 問題間の余白を設定 */
+}
+
+/* 問題とマイクボタンのセット間の余白を設定 */
+.question + .question {
+  margin-top: 30px; /* 問題とマイクボタンのセット間の余白を設定 */
 }
