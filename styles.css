@@ -79,6 +79,7 @@ a.activity-link:focus {
     margin-top: 20px;
   }
 
+  /* モバイルデバイスでリンク・ボタンのスタイルを適用 */
   .mobile-button,
   a.activity-button.center-button,
   a.activity-link {
@@ -86,10 +87,11 @@ a.activity-link:focus {
     margin: 20px auto; /* Q12のマイクの下にマージンを追加 */
     padding: 10px 20px;
     font-size: 16px;
-    background-color: #3498db;
+    background-color: red; /* リンクボタンの背景色を赤に設定 */
     color: #fff;
     border: none;
     border-radius: 5px;
     cursor: pointer;
   }
 }
+
