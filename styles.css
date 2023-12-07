@@ -18,7 +18,7 @@ img {
   margin: 0 auto;
 }
 
-button {
+button, .activity-button.center-button { /* 新しいクラスを追加 */
   display: block;
   margin: 0 auto;
   padding: 10px 20px;
@@ -30,7 +30,7 @@ button {
   cursor: pointer;
 }
 
-button:focus {
+button:focus, .activity-button.center-button:focus { /* 新しいクラスを追加 */
   outline: none;
 }
 
@@ -46,7 +46,7 @@ button:focus {
 
 /* "Q12のマイク"の下にスペースを空けるためのスタイル */
 .spacer {
-  margin-bottom: 20px; /* 必要な間隔を調整 */
+  margin-bottom: 40px; /* 必要な間隔を調整 */
 }
 
 
@@ -86,4 +86,3 @@ button:focus {
     cursor: pointer;
   }
 }
-
