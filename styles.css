@@ -18,8 +18,8 @@ img {
   margin: 0 auto;
 }
 
-button, a.activity-button.center-button, /* 新しいクラスを追加 */
-a.activity-link { /* 新しいクラスを追加 */
+button, a.activity-button.center-button,
+a.activity-link {
   display: block;
   margin: 0 auto;
   padding: 10px 20px;
@@ -31,46 +31,42 @@ a.activity-link { /* 新しいクラスを追加 */
   cursor: pointer;
 }
 
-button:focus, a.activity-button.center-button:focus, /* 新しいクラスを追加 */
-a.activity-link:focus { /* 新しいクラスを追加 */
+button:focus, a.activity-button.center-button:focus,
+a.activity-link:focus {
   outline: none;
 }
 
-/* リンクをボタンにスタイリング */
 .activity-link {
   display: inline-block;
   padding: 10px 20px;
   text-decoration: none;
   color: white;
-  background-color: red;
+  background-color: red; /* リンクボタンの背景色を赤に設定 */
   border-radius: 5px;
 }
 
-/* "Q12のマイク"の下にスペースを空けるためのスタイル */
-.spacer, /* 新しいクラスを追加 */
-.large-spacer { /* 新しいクラスを追加 */
-  margin-bottom: 20px; /* 必要な間隔を調整 */
+.spacer,
+.large-spacer {
+  margin-bottom: 20px;
 }
 
-.large-spacer { /* 新しいクラスを追加 */
-  margin-bottom: 40px; /* 必要な間隔を調整 */
+.large-spacer {
+  margin-bottom: 40px;
 }
 
-/* 問題セットのスタイル */
 .question {
   display: flex;
-  flex-direction: column; /* 縦に配置するための修正 */
+  flex-direction: column;
   align-items: center;
-  margin-bottom: 20px; /* 問題間の余白を追加 */
+  margin-bottom: 20px;
 }
 
-/* 最初の問題以外の余白を設定 */
 .question + .question {
   margin-top: 20px;
 }
 
 .question p {
-  font-size: 24px; /* 例: テキストサイズを24pxに変更 */
+  font-size: 24px;
 }
 
 /* モバイル向けスタイル */
@@ -80,23 +76,12 @@ a.activity-link:focus { /* 新しいクラスを追加 */
     margin-top: 20px;
   }
 
-  .mobile-button {
-    display: block;
-    margin: 0 auto;
-    padding: 10px 20px;
-    font-size: 16px;
-    background-color: #3498db;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-
-.mobile-button, /* モバイルデバイスでリンク・ボタンのスタイルを適用 */
+  /* モバイルデバイスでリンク・ボタンのスタイルを適用 */
+  .mobile-button,
   a.activity-button.center-button,
   a.activity-link {
     display: block;
-    margin: 0 auto;
+    margin: 20px auto; /* Q12のマイクの下にマージンを追加 */
     padding: 10px 20px;
     font-size: 16px;
     background-color: #3498db;
