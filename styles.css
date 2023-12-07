@@ -1,5 +1,3 @@
-/* styles.css */
-
 /* 共通スタイル */
 body {
   font-family: Arial, sans-serif;
@@ -18,7 +16,27 @@ img {
   margin: 0 auto;
 }
 
-/* リンクボタンのスタイル */
+button,
+a.activity-button.center-button,
+a.activity-link {
+  display: block;
+  margin: 0 auto;
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #3498db;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  text-decoration: none; /* リンクボタンの下線を削除 */
+}
+
+button:focus,
+a.activity-button.center-button:focus,
+a.activity-link:focus {
+  outline: none;
+}
+
 .activity-link {
   display: inline-block;
   padding: 10px 20px;
@@ -28,7 +46,6 @@ img {
   border-radius: 5px;
 }
 
-/* その他のスペーサーなどのスタイル */
 .spacer,
 .large-spacer {
   margin-bottom: 20px;
@@ -38,7 +55,6 @@ img {
   margin-bottom: 40px;
 }
 
-/* 問題セットのスタイル */
 .question {
   display: flex;
   flex-direction: column;
