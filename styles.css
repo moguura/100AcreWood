@@ -91,4 +91,18 @@ a.activity-link:focus { /* 新しいクラスを追加 */
     border-radius: 5px;
     cursor: pointer;
   }
+
+.mobile-button, /* モバイルデバイスでリンク・ボタンのスタイルを適用 */
+  a.activity-button.center-button,
+  a.activity-link {
+    display: block;
+    margin: 0 auto;
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #3498db;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
 }
