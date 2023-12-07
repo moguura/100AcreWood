@@ -18,7 +18,8 @@ img {
   margin: 0 auto;
 }
 
-button, a.activity-button.center-button,
+button,
+a.activity-button.center-button,
 a.activity-link {
   display: block;
   margin: 0 auto;
@@ -29,9 +30,11 @@ a.activity-link {
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  text-decoration: none; /* リンクボタンの下線を削除 */
 }
 
-button:focus, a.activity-button.center-button:focus,
+button:focus,
+a.activity-button.center-button:focus,
 a.activity-link:focus {
   outline: none;
 }
@@ -76,7 +79,6 @@ a.activity-link:focus {
     margin-top: 20px;
   }
 
-  /* モバイルデバイスでリンク・ボタンのスタイルを適用 */
   .mobile-button,
   a.activity-button.center-button,
   a.activity-link {
