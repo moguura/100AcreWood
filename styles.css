@@ -34,19 +34,19 @@ button:focus {
   outline: none;
 }
 
-/* "Go to Activity2"のボタンを赤くスタイル */
-.activity-button {
-  background-color: red;
-  color: white;
+/* リンクをボタンにスタイリング */
+.activity-link {
+  display: inline-block;
   padding: 10px 20px;
-  border: none;
+  text-decoration: none;
+  color: white;
+  background-color: red;
   border-radius: 5px;
-  cursor: pointer;
 }
 
 /* "Q12のマイク"の下にスペースを空けるためのスタイル */
 .spacer {
-  margin-bottom: 40px; /* 必要な間隔を調整 */
+  margin-bottom: 20px; /* 必要な間隔を調整 */
 }
 
 
