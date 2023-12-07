@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Activity１</title>
+  <title>Activity2</title>
   <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 <body>
   <div id="content" class="mobile-responsive">
-    <h1>Activity１</h1>
+    <h1>Activity2</h1>
     
     <!-- 問題1から12まで -->
     <div class="question" id="Q1">
