@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Activity１</title>
+  <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+  <div id="content" class="mobile-responsive">
+    <h1>Activity１</h1>
+    
+    <!-- 問題1から12まで -->
+    <div class="question" id="Q1">
+      <p>Q1</p>
+      <button id="startButtonQ1">Q1のマイク</button>
+      <div id="imageContainerQ1" style="display: none;">
+        <img id="correctImageQ1" src="https://i.gyazo.com/1e22bb6e3277bc880874af560819d084.png" alt="正しい答え">
+        <img id="wrongImageQ1" src="https://i.gyazo.com/4c0f03855a174df42e94a2d23286e44b.png" alt="間違った答え">
+      </div>
+      <audio id="correctAudioQ1" src="https://docs.google.com/uc?id=1ifIhEbGeuPAYLwcCHZJEk4PwGdNMmhAB"></audio>
+      <audio id="wrongAudioQ1" src="https://docs.google.com/uc?id=1vQXcHR99MaW7unej3c7q5-foVpJspESu"></audio>
+    </div>
+
+    <!-- 問題2 -->
+    <div class="question" id="Q2">
+      <p>Q2</p>
+      <button id="startButtonQ2">Q2のマイク</button>
+      <div id="imageContainerQ2" style="display: none;">
+        <img id="correctImageQ2" src="https://i.gyazo.com/1e22bb6e3277bc880874af560819d084.png" alt="正しい答え">
+        <img id="wrongImageQ2" src="https://i.gyazo.com/4c0f03855a174df42e94a2d23286e44b.png" alt="間違った答え">
+      </div>
+      <audio id="correctAudioQ2" src="https://docs.google.com/uc?id=1ifIhEbGeuPAYLwcCHZJEk4PwGdNMmhAB"></audio>
+      <audio id="wrongAudioQ2" src="https://docs.google.com/uc?id=1vQXcHR99MaW7unej3c7q5-foVpJspESu"></audio>
+    </div>
+
+
+  <!-- 問題2 -->
+    <div class="question" id="Q3">
+      <p>Q3</p>
+      <button id="startButtonQ3">Q3のマイク</button>
+      <div id="imageContainerQ3" style="display: none;">
+        <img id="correctImageQ3" src="https://i.gyazo.com/1e22bb6e3277bc880874af560819d084.png" alt="正しい答え">
+        <img id="wrongImageQ3" src="https://i.gyazo.com/4c0f03855a174df42e94a2d23286e44b.png" alt="間違った答え">
+      </div>
+      <audio id="correctAudioQ3" src="https://docs.google.com/uc?id=1ifIhEbGeuPAYLwcCHZJEk4PwGdNMmhAB"></audio>
+      <audio id="wrongAudioQ3" src="https://docs.google.com/uc?id=1vQXcHR99MaW7unej3c7q5-foVpJspESu"></audio>
+    </div>
+
+  <!-- 問題4 -->
+    <div class="question" id="Q4">
+      <p>Q4</p>
+      <button id="startButtonQ4">Q4のマイク</button>
+      <div id="imageContainerQ4" style="display: none;">
+        <img id="correctImageQ4" src="https://i.gyazo.com/1e22bb6e3277bc880874af560819d084.png" alt="正しい答え">
+        <img id="wrongImageQ4" src="https://i.gyazo.com/4c0f03855a174df42e94a2d23286e44b.png" alt="間違った答え">
+      </div>
+      <audio id="correctAudioQ4" src="https://docs.google.com/uc?id=1ifIhEbGeuPAYLwcCHZJEk4PwGdNMmhAB"></audio>
+      <audio id="wrongAudioQ4" src="https://docs.google.com/uc?id=1vQXcHR99MaW7unej3c7q5-foVpJspESu"></audio>
+    </div>
+
+  <!-- 問題5 -->
+    <div class="question" id="Q5">
+      <p>Q5</p>
+      <button id="startButtonQ5">Q5のマイク</button>
+      <div id="imageContainerQ5" style="display: none;">
+        <img id="correctImageQ5" src="https://i.gyazo.com/1e22bb6e3277bc880874af560819d084.png" alt="正しい答え">
+        <img id="wrongImageQ5" src="https://i.gyazo.com/4c0f03855a174df42e94a2d23286e44b.png" alt="間違った答え">
+      </div>
+      <audio id="correctAudioQ5" src="https://docs.google.com/uc?id=1ifIhEbGeuPAYLwcCHZJEk4PwGdNMmhAB"></audio>
+      <audio id="wrongAudioQ5" src="https://docs.google.com/uc?id=1vQXcHR99MaW7unej3c7q5-foVpJspESu"></audio>
+    </div>
+
+ <!-- 問題6 -->
+    <div class="question" id="Q6">
+      <p>Q6</p>
+      <button id="startButtonQ6">Q6のマイク</button>
+      <div id="imageContainerQ6" style="display: none;">
+        <img id="correctImageQ6" src="https://i.gyazo.com/1e22bb6e3277bc880874af560819d084.png" alt="正しい答え">
+        <img id="wrongImageQ6" src="https://i.gyazo.com/4c0f03855a174df42e94a2d23286e44b.png" alt="間違った答え">
+      </div>
+      <audio id="correctAudioQ6" src="https://docs.google.com/uc?id=1ifIhEbGeuPAYLwcCHZJEk4PwGdNMmhAB"></audio>
+      <audio id="wrongAudioQ6" src="https://docs.google.com/uc?id=1vQXcHR99MaW7unej3c7q5-foVpJspESu"></audio>
+    </div>
+
+  <!-- 問題7 -->
+    <div class="question" id="Q7">
+      <p>Q7</p>
+      <button id="startButtonQ7">Q7のマイク</button>
+      <div id="imageContainerQ7" style="display: none;">
+        <img id="correctImageQ7" src="https://i.gyazo.com/1e22bb6e3277bc880874af560819d084.png" alt="正しい答え">
+        <img id="wrongImageQ7" src="https://i.gyazo.com/4c0f03855a174df42e94a2d23286e44b.png" alt="間違った答え">
+      </div>
+      <audio id="correctAudioQ7" src="https://docs.google.com/uc?id=1ifIhEbGeuPAYLwcCHZJEk4PwGdNMmhAB"></audio>
+      <audio id="wrongAudioQ7" src="https://docs.google.com/uc?id=1vQXcHR99MaW7unej3c7q5-foVpJspESu"></audio>
+    </div>
+
+  <!-- 問題8 -->
+    <div class="question" id="Q8">
+      <p>Q8</p>
+      <button id="startButtonQ8">Q8のマイク</button>
+      <div id="imageContainerQ8" style="display: none;">
+        <img id="correctImageQ8" src="https://i.gyazo.com/1e22bb6e3277bc880874af560819d084.png" alt="正しい答え">
+        <img id="wrongImageQ8" src="https://i.gyazo.com/4c0f03855a174df42e94a2d23286e44b.png" alt="間違った答え">
+      </div>
+      <audio id="correctAudioQ8" src="https://docs.google.com/uc?id=1ifIhEbGeuPAYLwcCHZJEk4PwGdNMmhAB"></audio>
+      <audio id="wrongAudioQ8" src="https://docs.google.com/uc?id=1vQXcHR99MaW7unej3c7q5-foVpJspESu"></audio>
+    </div>
+    
+  <!-- 問題9 -->
+    <div class="question" id="Q9">
+      <p>Q9</p>
+      <button id="startButtonQ9">Q9のマイク</button>
+      <div id="imageContainerQ9" style="display: none;">
+        <img id="correctImageQ9" src="https://i.gyazo.com/1e22bb6e3277bc880874af560819d084.png" alt="正しい答え">
+        <img id="wrongImageQ9" src="https://i.gyazo.com/4c0f03855a174df42e94a2d23286e44b.png" alt="間違った答え">
+      </div>
+      <audio id="correctAudioQ9" src="https://docs.google.com/uc?id=1ifIhEbGeuPAYLwcCHZJEk4PwGdNMmhAB"></audio>
+      <audio id="wrongAudioQ9" src="https://docs.google.com/uc?id=1vQXcHR99MaW7unej3c7q5-foVpJspESu"></audio>
+    </div>
+
+  <!-- 問題10 -->
+    <div class="question" id="Q10">
+      <p>Q10</p>
+      <button id="startButtonQ10">Q10のマイク</button>
+      <div id="imageContainerQ10" style="display: none;">
+        <img id="correctImageQ10" src="https://i.gyazo.com/1e22bb6e3277bc880874af560819d084.png" alt="正しい答え">
+        <img id="wrongImageQ10" src="https://i.gyazo.com/4c0f03855a174df42e94a2d23286e44b.png" alt="間違った答え">
+      </div>
+      <audio id="correctAudioQ10" src="https://docs.google.com/uc?id=1ifIhEbGeuPAYLwcCHZJEk4PwGdNMmhAB"></audio>
+      <audio id="wrongAudioQ10" src="https://docs.google.com/uc?id=1vQXcHR99MaW7unej3c7q5-foVpJspESu"></audio>
+    </div>
+
+ <!-- 問題11 -->
+    <div class="question" id="Q11">
+      <p>Q11</p>
+      <button id="startButtonQ11">Q11のマイク</button>
+      <div id="imageContainerQ11" style="display: none;">
+        <img id="correctImageQ11" src="https://i.gyazo.com/1e22bb6e3277bc880874af560819d084.png" alt="正しい答え">
+        <img id="wrongImageQ11" src="https://i.gyazo.com/4c0f03855a174df42e94a2d23286e44b.png" alt="間違った答え">
+      </div>
+      <audio id="correctAudioQ11" src="https://docs.google.com/uc?id=1ifIhEbGeuPAYLwcCHZJEk4PwGdNMmhAB"></audio>
+      <audio id="wrongAudioQ11" src="https://docs.google.com/uc?id=1vQXcHR99MaW7unej3c7q5-foVpJspESu"></audio>
+    </div>
+
+  <!-- 問題12 -->
+<div class="question" id="Q12">
+  <p>Q12</p>
+  <button id="startButtonQ12">Q12のマイク</button>
+  <div id="imageContainerQ12" style="display: none;">
+    <img id="correctImageQ12" src="https://i.gyazo.com/1e22bb6e3277bc880874af560819d084.png" alt="正しい答え">
+    <img id="wrongImageQ12" src="https://i.gyazo.com/4c0f03855a174df42e94a2d23286e44b.png" alt="間違った答え">
+  </div>
+  <audio id="correctAudioQ12" src="https://docs.google.com/uc?id=1ifIhEbGeuPAYLwcCHZJEk4PwGdNMmhAB"></audio>
+  <audio id="wrongAudioQ12" src="https://docs.google.com/uc?id=1vQXcHR99MaW7unej3c7q5-foVpJspESu"></audio>
+</div>
+
+    
+  <script> 
+    const answers = {
+      Q1: ["暑い", "暑いです"],
+      Q2: ["寒くない", "寒くないです"],
+      Q3: ["冷たい", "冷たいです"],
+      Q4: ["暑くない", "暑くないです"],
+      Q5: ["近い", "近いです"],
+      Q6: ["近くない", "近くないです"],
+      Q7: ["高くない", "高くないです"],
+      Q8: ["安い", "安いです"],
+      Q9: ["いい", "いいです"],
+      Q10: ["よくない", "よくないです"],
+      Q11: ["涼しい", "涼しいです"],
+      Q12: ["暖かくない", "暖かくないです"]
+    };
+
+function startRecognition(questionNumber) {
+      const recognition = new webkitSpeechRecognition(); // ブラウザによってはプレフィックスが必要
+      recognition.lang = 'ja-JP';
+
+      recognition.onresult = function(event) {
+        const transcript = event.results[0][0].transcript.trim();
+        const correctImage = document.getElementById(`correctImageQ${questionNumber}`);
+        const wrongImage = document.getElementById(`wrongImageQ${questionNumber}`);
+        const correctAudio = document.getElementById(`correctAudioQ${questionNumber}`);
+        const wrongAudio = document.getElementById(`wrongAudioQ${questionNumber}`);
+        const imageContainer = document.getElementById(`imageContainerQ${questionNumber}`);
+
+        if (answers[`Q${questionNumber}`].includes(transcript)) {
+          correctImage.style.display = 'block';
+          wrongImage.style.display = 'none';
+          correctAudio.play(); // 正解音声再生
+        } else {
+          correctImage.style.display = 'none';
+          wrongImage.style.display = 'block';
+          wrongAudio.play(); // 不正解音声再生
+        }
+        imageContainer.style.display = 'block';
+      };
+
+      recognition.onerror = function(event) {
+        console.error('エラーが発生しました。', event.error);
+      };
+
+      recognition.start();
+    }
+
+    // 問題ごとにボタンのイベントを追加
+    for (let i = 1; i <= 12; i++) {
+      const startButton = document.getElementById(`startButtonQ${i}`);
+      startButton.addEventListener('click', (event) => {
+        const questionNumber = parseInt(event.target.id.replace('startButtonQ', ''));
+        startRecognition(questionNumber);
+      });
+    }
+  </script>
+</body>
+</html>
+</html>
+
+
