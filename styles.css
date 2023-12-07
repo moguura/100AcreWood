@@ -34,24 +34,21 @@ button:focus {
   outline: none;
 }
 
-/* リンクボタンのスタイル */
-a.button {
-  display: block;
-  margin: 0 auto;
+/* "Go to Activity2"のボタンを赤くスタイル */
+.activity-button {
+  background-color: red;
+  color: white;
   padding: 10px 20px;
-  font-size: 16px;
-  background-color: #ff0000; /* 赤い色 */
-  color: #fff;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  text-align: center; /* テキストを中央揃え */
-  text-decoration: none; /* リンクの下線を削除 */
 }
 
-a.button:focus {
-  outline: none;
+/* "Q12のマイク"の下にスペースを空けるためのスタイル */
+.spacer {
+  margin-bottom: 40px; /* 必要な間隔を調整 */
 }
+
 
 /* 問題セットのスタイル */
 .question {
