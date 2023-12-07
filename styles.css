@@ -82,7 +82,7 @@ a.activity-link:focus {
   a.activity-button.center-button,
   a.activity-link {
     display: block;
-    margin: 20px auto; /* Q12のマイクの下にマージンを追加 */
+    margin: 0 auto; /* マージンを削除 */
     padding: 10px 20px;
     font-size: 16px;
     background-color: red; /* リンクボタンの背景色を赤に設定 */
@@ -90,5 +90,7 @@ a.activity-link:focus {
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    width: 100%; /* ボタンの幅を100%に設定 */
+    max-width: 200px; /* 最大幅を設定 */
   }
 }
