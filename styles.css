@@ -18,19 +18,77 @@ img {
   margin: 0 auto;
 }
 
-a.activity-link { /* リンクをボタンにスタイリング */
+button, a.activity-button.center-button, /* 新しいクラスを追加 */
+a.activity-link { /* 新しいクラスを追加 */
   display: block;
-  width: 150px; /* 例として幅を指定 */
-  padding: 10px;
-  text-align: center;
+  margin: 0 auto;
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #3498db;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:focus, a.activity-button.center-button:focus, /* 新しいクラスを追加 */
+a.activity-link:focus { /* 新しいクラスを追加 */
+  outline: none;
+}
+
+/* リンクをボタンにスタイリング */
+.activity-link {
+  display: inline-block;
+  padding: 10px 20px;
   text-decoration: none;
   color: white;
   background-color: red;
   border-radius: 5px;
-  margin: 20px auto; /* マージンを調整して中央配置 */
 }
 
-/* "Q12のマイク"の下に広い間隔を空けるためのスタイル */
-.large-spacer {
+/* "Q12のマイク"の下にスペースを空けるためのスタイル */
+.spacer, /* 新しいクラスを追加 */
+.large-spacer { /* 新しいクラスを追加 */
+  margin-bottom: 20px; /* 必要な間隔を調整 */
+}
+
+.large-spacer { /* 新しいクラスを追加 */
   margin-bottom: 40px; /* 必要な間隔を調整 */
+}
+
+/* 問題セットのスタイル */
+.question {
+  display: flex;
+  flex-direction: column; /* 縦に配置するための修正 */
+  align-items: center;
+  margin-bottom: 20px; /* 問題間の余白を追加 */
+}
+
+/* 最初の問題以外の余白を設定 */
+.question + .question {
+  margin-top: 20px;
+}
+
+.question p {
+  font-size: 24px; /* 例: テキストサイズを24pxに変更 */
+}
+
+/* モバイル向けスタイル */
+@media screen and (max-width: 768px) {
+  .mobile-image-container {
+    text-align: center;
+    margin-top: 20px;
+  }
+
+  .mobile-button {
+    display: block;
+    margin: 0 auto;
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #3498db;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
 }
