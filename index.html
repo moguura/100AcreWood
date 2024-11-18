@@ -151,28 +151,26 @@
 </div>
 
 
-　 <!-- "Q10のマイク"の下に間隔を広く空けるためのスペース -->
+        <!-- "Q10のマイク"の下に間隔を広く空けるためのスペース -->
         <div class="large-spacer"></div>
 
         <!-- "Activity2.html"へのリンクを赤いボタンに変更 -->
         <a href="Activity2.html" class="activity-link activity2">Go to Activity2</a>
     </div>
 
-
-    
-  <script> 
-    const answers = {
-      Q1: ["高いです", "エベレストは高いです"],
-      Q2: ["安くないです", "ダイヤモンドは安くないです"],
-      Q3: ["暑いです", "日本の８月は暑いです"],
-      Q4: ["寒いです", "日本の２月は寒いです"],
-      Q5: ["忙しいです", "会社員の朝は忙しいです"],
-      Q6: ["新しくないです", "この車は新しくないです"],
-      Q7: ["おいしくないです", "薬はおいしくないです"],
-      Q8: ["多くないです", "今、人は多くないです"],
-      Q9: ["大きいです", "このかばんは大きいです"],
-      Q10: ["近くないです", "日本とブラジルは近くないです"],
-    };
+    <script>
+        const answers = {
+            Q1: ["高いです", "エベレストは高いです"],
+            Q2: ["安くないです", "ダイヤモンドは安くないです"],
+            Q3: ["暑いです", "日本の８月は暑いです"],
+            Q4: ["寒いです", "日本の２月は寒いです"],
+            Q5: ["忙しいです", "会社員の朝は忙しいです"],
+            Q6: ["新しくないです", "この車は新しくないです"],
+            Q7: ["おいしくないです", "薬はおいしくないです"],
+            Q8: ["多くないです", "今、人は多くないです"],
+            Q9: ["大きいです", "このかばんは大きいです"],
+            Q10: ["近くないです", "日本とブラジルは近くないです"]
+        };
 
         function startRecognition(questionNumber) {
             const recognition = new webkitSpeechRecognition();
@@ -204,17 +202,15 @@
             recognition.start();
         }
 
-          // 問題ごとにボタンのイベントを追加
-    　for (let i = 1; i <= 10; i++) {
-        const startButton = document.getElementById(`startButtonQ${i}`);
-        startButton.addEventListener('click', (event) => {
-            const questionNumber = parseInt(event.target.id.replace('startButtonQ', ''));
-            startRecognition(questionNumber);
-        });
-    }
-</script>
-
+        // 問題ごとにボタンのイベントを追加
+        for (let i = 1; i <= 10; i++) {
+            const startButton = document.getElementById(`startButtonQ${i}`);
+            startButton.addEventListener('click', (event) => {
+                const questionNumber = parseInt(event.target.id.replace('startButtonQ', ''));
+                startRecognition(questionNumber);
+            });
+        }
+    </script>
 </body>
 </html>
-
 
