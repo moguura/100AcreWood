@@ -2,20 +2,33 @@
 <html>
 <head>
     <title>Activity１</title>
-    <link rel="stylesheet" type="text/css" href="styles.css">
-    
-    <!-- CSSを直接追加 -->
     <style>
         .question {
             margin-bottom: 30px; /* 問題間隔 */
         }
 
         .question img {
-            width: 300px; /* 画像の横幅を統一 */
-            height: 200px; /* 画像の高さを統一 */
+            width: 300px; /* 問題画像の横幅を統一 */
+            height: 200px; /* 問題画像の高さを統一 */
             object-fit: cover; /* 縦横比を維持しながらサイズを調整 */
             display: block;
             margin: 0 auto; /* 中央揃え */
+        }
+
+        #imageContainerQ1 img,
+        #imageContainerQ2 img,
+        #imageContainerQ3 img,
+        #imageContainerQ4 img,
+        #imageContainerQ5 img,
+        #imageContainerQ6 img,
+        #imageContainerQ7 img,
+        #imageContainerQ8 img,
+        #imageContainerQ9 img,
+        #imageContainerQ10 img {
+            width: 100px; /* 正解・不正解画像の幅 */
+            height: auto; /* 縦横比を維持 */
+            margin: 10px auto; /* 中央揃え */
+            display: block;
         }
     </style>
 </head>
