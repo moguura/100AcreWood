@@ -18,6 +18,8 @@
             margin: 0 auto; /* 中央揃え */
  }
 
+        #imageContainere.g.1 img,
+        #imageContainere.g.2 img,
         #imageContainerQ1 img,
         #imageContainerQ2 img,
         #imageContainerQ3 img,
@@ -52,11 +54,39 @@
 <body>
     <div id="content" class="mobile-responsive">
         <h1>Activity１</h1>
+
+        <!-- 例1 -->
+        <div class="question" id="e.g.1">
+            <p>e.g.1</p>
+            <img src="https://raw.githubusercontent.com/moguura/my-images/blob/main/%E4%BE%8B1.jpg" alt="e.g.1 Image" style="display: block; margin: 0 auto; max-width: 100%;">
+            <p style="text-align: center;"><span class="highlight">いい</span> →　てんきは（ 　　　）</p>
+            <button id="startButtone.g.1" class="mic-button"></button>
+            <div id="imageContainere.g.1" style="display: none;">
+                <img id="correctImagee.g.1" src="https://i.gyazo.com/1e22bb6e3277bc880874af560819d084.png" alt="正しい答え">
+                <img id="wrongImagee.g.1" src="https://i.gyazo.com/4c0f03855a174df42e94a2d23286e44b.png" alt="間違った答え">
+            </div>
+            <audio id="correctAudioe.g.1" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E6%AD%A3%E8%A7%A32.mp3"></audio>
+            <audio id="wrongAudioe.g.1" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E4%B8%8D%E6%AD%A3%E8%A7%A31.mp3"></audio>
+        </div>
+
+        <!-- 例2 -->
+        <div class="question" id="e.g.2">
+            <p>e.g.2</p>
+            <img src="https://raw.githubusercontent.com/moguura/my-images/main/%E4%BE%8B2.jpg" alt="e.g.2 Image" style="display: block; margin: 0 auto; max-width: 100%;">
+            <p style="text-align: center;"><span class="highlight">いい</span> → 　てんきは（ 　　　）</p>
+            <button id="startButtone.g.2" class="mic-button"></button>
+            <div id="imageContainere.g.2" style="display: none;">
+                <img id="correctImagee.g.2" src="https://i.gyazo.com/1e22bb6e3277bc880874af560819d084.png" alt="正しい答え">
+                <img id="wrongImagee.g.2" src="https://i.gyazo.com/4c0f03855a174df42e94a2d23286e44b.png" alt="間違った答え">
+            </div>
+            <audio id="correctAudioe.g.2" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E6%AD%A3%E8%A7%A32.mp3"></audio>
+            <audio id="wrongAudioe.g.2" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E4%B8%8D%E6%AD%A3%E8%A7%A31.mp3"></audio>
+        </div>
         
         <!-- 問題1 -->
         <div class="question" id="Q1">
             <p>Q1</p>
-            <img src="https://raw.githubusercontent.com/moguura/my-images/main/%E5%9B%B32.jpg" alt="Q1 Image" style="display: block; margin: 0 auto; max-width: 100%;">
+            <img src="https://raw.githubusercontent.com/moguura/my-images/main/%E5%9B%B31.png" alt="Q1 Image" style="display: block; margin: 0 auto; max-width: 100%;">
             <p style="text-align: center;"><span class="highlight">たかい</span> →　 <ruby>エベレスト<rt>えべれすと</rt></ruby>（Mt. Everest）は（ 　　　）</p>
             <button id="startButtonQ1" class="mic-button"></button>
             <div id="imageContainerQ1" style="display: none;">
@@ -70,7 +100,7 @@
         <!-- 問題2 -->
         <div class="question" id="Q2">
             <p>Q2</p>
-            <img src="https://raw.githubusercontent.com/moguura/my-images/main/%E5%9B%B33.jpg" alt="Q2 Image" style="display: block; margin: 0 auto; max-width: 100%;">
+            <img src="https://raw.githubusercontent.com/moguura/my-images/main/%E5%9B%B32.png" alt="Q2 Image" style="display: block; margin: 0 auto; max-width: 100%;">
             <p style="text-align: center;"><span class="highlight">やすい</span> → 　<ruby>ダイヤモンド<rt>だいやもんど</rt></ruby>（diamond）は（ 　　　）</p>
             <button id="startButtonQ2" class="mic-button"></button>
             <div id="imageContainerQ2" style="display: none;">
@@ -84,7 +114,7 @@
         <!-- 問題3 -->
         <div class="question" id="Q3">
             <p>Q3</p>
-            <img src="https://raw.githubusercontent.com/moguura/my-images/main/%E5%9B%B34.png" alt="Q3 Image" style="display: block; margin: 0 auto; max-width: 100%;">
+            <img src="https://raw.githubusercontent.com/moguura/my-images/main/%E5%9B%B33.png" alt="Q3 Image" style="display: block; margin: 0 auto; max-width: 100%;">
             <p style="text-align: center;"><span class="highlight">あつい</span> → 　にほんの ８がつは（ 　　　）</p>
             <button id="startButtonQ3" class="mic-button"></button>
             <div id="imageContainerQ3" style="display: none;">
@@ -98,7 +128,7 @@
 <!-- 問題4 -->
 <div class="question" id="Q4">
     <p>Q4</p>
-    <img src="https://raw.githubusercontent.com/moguura/my-images/main/%E5%9B%B35.png" alt="Q4 Image" style="display: block; margin: 0 auto; max-width: 100%;">
+    <img src="https://raw.githubusercontent.com/moguura/my-images/main/%E5%9B%B34.png" alt="Q4 Image" style="display: block; margin: 0 auto; max-width: 100%;">
     <p style="text-align: center;"><span class="highlight">さむい</span> → 　にほんの ２がつは（ 　　　）</p>
     <button id="startButtonQ4" class="mic-button"></button>
     <div id="imageContainerQ4" style="display: none;">
@@ -112,7 +142,7 @@
 <!-- 問題5 -->
 <div class="question" id="Q5">
     <p>Q5</p>
-    <img src="https://raw.githubusercontent.com/moguura/my-images/main/%E5%9B%B36.png" alt="Q5 Image" style="display: block; margin: 0 auto; max-width: 100%;">
+    <img src="https://raw.githubusercontent.com/moguura/my-images/main/%E5%9B%B35.png" alt="Q5 Image" style="display: block; margin: 0 auto; max-width: 100%;">
     <p style="text-align: center;"><span class="highlight">いそがしい</span> → 　かいしゃいんの あさは（ 　　　）</p>
     <button id="startButtonQ5" class="mic-button"></button>
     <div id="imageContainerQ5" style="display: none;">
@@ -126,7 +156,7 @@
 <!-- 問題6 -->
 <div class="question" id="Q6">
     <p>Q6</p>
-    <img src="https://raw.githubusercontent.com/moguura/my-images/main/%E5%9B%B37.png" alt="Q6 Image" style="display: block; margin: 0 auto; max-width: 100%;">
+    <img src="https://raw.githubusercontent.com/moguura/my-images/main/%E5%9B%B36.png" alt="Q6 Image" style="display: block; margin: 0 auto; max-width: 100%;">
     <p style="text-align: center;"><span class="highlight">あたらしい</span> → 　この くるまは（ 　　　）</p>
     <button id="startButtonQ6" class="mic-button"></button>
     <div id="imageContainerQ6" style="display: none;">
@@ -140,7 +170,7 @@
 <!-- 問題7 -->
 <div class="question" id="Q7">
     <p>Q7</p>
-    <img src="https://raw.githubusercontent.com/moguura/my-images/main/%E5%9B%B38.jpg" alt="Q7 Image" style="display: block; margin: 0 auto; max-width: 100%;">
+    <img src="https://raw.githubusercontent.com/moguura/my-images/main/%E5%9B%B37.png" alt="Q7 Image" style="display: block; margin: 0 auto; max-width: 100%;">
     <p style="text-align: center;"><span class="highlight">おいしい</span> → 　くすりは（ 　　　）</p>
     <button id="startButtonQ7" class="mic-button"></button>
     <div id="imageContainerQ7" style="display: none;">
@@ -154,7 +184,7 @@
 <!-- 問題8 -->
 <div class="question" id="Q8">
     <p>Q8</p>
-    <img src="https://raw.githubusercontent.com/moguura/my-images/main/%E5%9B%B39.jpg" alt="Q8 Image" style="display: block; margin: 0 auto; max-width: 100%;">
+    <img src="https://raw.githubusercontent.com/moguura/my-images/main/%E5%9B%B38.jpg" alt="Q8 Image" style="display: block; margin: 0 auto; max-width: 100%;">
     <p style="text-align: center;"><span class="highlight">おおい</span> → 　いま、ひとは（ 　　　）</p>
     <button id="startButtonQ8" class="mic-button"></button>
     <div id="imageContainerQ8" style="display: none;">
@@ -168,7 +198,7 @@
 <!-- 問題9 -->
 <div class="question" id="Q9">
     <p>Q9</p>
-    <img src="https://raw.githubusercontent.com/moguura/my-images/main/%E5%9B%B310.png" alt="Q9 Image" style="display: block; margin: 0 auto; max-width: 100%;">
+    <img src="https://raw.githubusercontent.com/moguura/my-images/main/%E5%9B%B39.png" alt="Q9 Image" style="display: block; margin: 0 auto; max-width: 100%;">
     <p style="text-align: center;"><span class="highlight">おおきい</span> → 　この かばんは（ 　　　）</p>
     <button id="startButtonQ9" class="mic-button"></button>
     <div id="imageContainerQ9" style="display: none;">
@@ -182,7 +212,7 @@
 <!-- 問題10 -->
 <div class="question" id="Q10">
     <p>Q10</p>
-    <img src="https://raw.githubusercontent.com/moguura/my-images/main/%E5%9B%B311.png" alt="Q10 Image" style="display: block; margin: 0 auto; max-width: 100%;">
+    <img src="https://raw.githubusercontent.com/moguura/my-images/main/%E5%9B%B310.png" alt="Q10 Image" style="display: block; margin: 0 auto; max-width: 100%;">
     <p style="text-align: center;"><span class="highlight">ちかい</span> → 　にほんと <ruby>ブラジル<rt>ぶらじる</rt></ruby>は（ 　　　）</p>
     <button id="startButtonQ10" class="mic-button"></button>
     <div id="imageContainerQ10" style="display: none;">
@@ -201,6 +231,8 @@
     <!-- JavaScriptコード -->
     <script>
         const answers = {
+            e.g.1: ["いいです", "天気はいいです"],
+            e.g.2: ["よくないです", "天気はよくないです"],
             Q1: ["高いです", "エベレストは高いです"],
             Q2: ["安くないです", "ダイヤモンドは安くないです"],
             Q3: ["暑いです", "日本の８月は暑いです"],
