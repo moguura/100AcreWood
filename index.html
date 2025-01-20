@@ -231,58 +231,58 @@
     <!-- JavaScriptコード -->
     <script>
         const answers = {
-            E1: ["いいです", "天気はいいです"],
-            E2: ["よくないです", "天気はよくないです"],
-            Q1: ["高いです", "エベレストは高いです"],
-            Q2: ["安くないです", "ダイヤモンドは安くないです"],
-            Q3: ["暑いです", "日本の８月は暑いです"],
-            Q4: ["寒いです", "日本の２月は寒いです"],
-            Q5: ["忙しいです", "会社員の朝は忙しいです"],
-            Q6: ["新しくないです", "この車は新しくないです"],
-            Q7: ["美味しくないです", "薬は美味しくないです"],
-            Q8: ["多くないです", "今、人は多くないです"],
-            Q9: ["大きいです", "このかばんは大きいです"],
-            Q10: ["近くないです", "日本とブラジルは近くないです"]
-        };
+    E1: ["いいです", "天気はいいです"],
+    E2: ["よくないです", "天気はよくないです"],
+    Q1: ["高いです", "エベレストは高いです"],
+    Q2: ["安くないです", "ダイヤモンドは安くないです"],
+    Q3: ["暑いです", "日本の８月は暑いです"],
+    Q4: ["寒いです", "日本の２月は寒いです"],
+    Q5: ["忙しいです", "会社員の朝は忙しいです"],
+    Q6: ["新しくないです", "この車は新しくないです"],
+    Q7: ["美味しくないです", "薬は美味しくないです"],
+    Q8: ["多くないです", "今、人は多くないです"],
+    Q9: ["大きいです", "このかばんは大きいです"],
+    Q10: ["近くないです", "日本とブラジルは近くないです"]
+};
 
-        function startRecognition(questionNumber) {
-          const recognition = new webkitSpeechRecognition();
-          recognition.lang = 'ja-JP';
-          recognition.onresult = function(event) {
-              const transcript = event.results[0][0].transcript.trim();
-              const correctImage = document.getElementById(`correctImageQ${questionNumber}`);
-              const wrongImage = document.getElementById(`wrongImageQ${questionNumber}`);
-              const correctAudio = document.getElementById(`correctAudioQ${questionNumber}`);
-              const wrongAudio = document.getElementById(`wrongAudioQ${questionNumber}`);
-              const imageContainer = document.getElementById(`imageContainerQ${questionNumber}`);
+function startRecognition(questionId) {
+    const recognition = new webkitSpeechRecognition();
+    recognition.lang = 'ja-JP';
 
-              if (answers[`Q${questionNumber}`].includes(transcript)) {
-                  correctImage.style.display = 'block';
-                  wrongImage.style.display = 'none';
-                  correctAudio.play();
-              } else {
-                  correctImage.style.display = 'none';
-                  wrongImage.style.display = 'block';
-                  wrongAudio.play();
-              }
-              imageContainer.style.display = 'block';
-          };
+    recognition.onresult = function(event) {
+        const transcript = event.results[0][0].transcript.trim();
+        const correctImage = document.getElementById(`correctImage${questionId}`);
+        const wrongImage = document.getElementById(`wrongImage${questionId}`);
+        const correctAudio = document.getElementById(`correctAudio${questionId}`);
+        const wrongAudio = document.getElementById(`wrongAudio${questionId}`);
+        const imageContainer = document.getElementById(`imageContainer${questionId}`);
 
-          recognition.onerror = function(event) {
-              console.error('エラーが発生しました。', event.error);
-          };
-
-          recognition.start();
+        if (!correctImage || !wrongImage || !correctAudio || !wrongAudio || !imageContainer) {
+            console.error(`Missing elements for question ID ${questionId}`);
+            return;
         }
 
-        for (let i = 1; i <= 10; i++) {
-          const startButton = document.getElementById(`startButtonQ${i}`);
-          startButton.addEventListener('click', (event) => {
-              const questionNumber = parseInt(event.target.id.replace('startButtonQ', ''));
-              startRecognition(questionNumber);
-          });
+        if (answers[questionId] && answers[questionId].includes(transcript)) {
+            correctImage.style.display = 'block';
+            wrongImage.style.display = 'none';
+            correctAudio.play();
+        } else {
+            correctImage.style.display = 'none';
+            wrongImage.style.display = 'block';
+            wrongAudio.play();
         }
-    </script>
+        imageContainer.style.display = 'block';
+    };
 
-</body>
-</html>
+    recognition.onerror = function(event) {
+        console.error("Speech recognition error:", event.error);
+    };
+
+    recognition.start();
+}
+
+// イベントリスナー追加
+document.querySelectorAll('.mic-button').forEach(button => {
+    const questionId = button.id.replace('startButton', '');
+    button.addEventListener('click', () => startRecognition(questionId));
+});
