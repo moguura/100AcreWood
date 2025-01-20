@@ -18,8 +18,8 @@
             margin: 0 auto; /* 中央揃え */
  }
 
-        #imageContainere.g.1 img,
-        #imageContainere.g.2 img,
+        #imageContainerE1 img,
+        #imageContainerE2 img,
         #imageContainerQ1 img,
         #imageContainerQ2 img,
         #imageContainerQ3 img,
@@ -56,31 +56,31 @@
         <h1>Activity１</h1>
 
         <!-- 例1 -->
-        <div class="question" id="e.g.1">
+        <div class="question" id="E1">
             <p>e.g.1</p>
-            <img src="https://raw.githubusercontent.com/moguura/my-images/blob/main/%E4%BE%8B1.jpg" alt="e.g.1 Image" style="display: block; margin: 0 auto; max-width: 100%;">
+            <img src="https://raw.githubusercontent.com/moguura/my-images/main/%E4%BE%8B1.jpg" alt="E1 Image" style="display: block; margin: 0 auto; max-width: 100%;">
             <p style="text-align: center;"><span class="highlight">いい</span> →　てんきは（ 　　　）</p>
-            <button id="startButtone.g.1" class="mic-button"></button>
-            <div id="imageContainere.g.1" style="display: none;">
-                <img id="correctImagee.g.1" src="https://i.gyazo.com/1e22bb6e3277bc880874af560819d084.png" alt="正しい答え">
-                <img id="wrongImagee.g.1" src="https://i.gyazo.com/4c0f03855a174df42e94a2d23286e44b.png" alt="間違った答え">
+            <button id="startButtonE1" class="mic-button"></button>
+            <div id="imageContainerE1" style="display: none;">
+                <img id="correctImageE1" src="https://i.gyazo.com/1e22bb6e3277bc880874af560819d084.png" alt="正しい答え">
+                <img id="wrongImageE1" src="https://i.gyazo.com/4c0f03855a174df42e94a2d23286e44b.png" alt="間違った答え">
             </div>
-            <audio id="correctAudioe.g.1" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E6%AD%A3%E8%A7%A32.mp3"></audio>
-            <audio id="wrongAudioe.g.1" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E4%B8%8D%E6%AD%A3%E8%A7%A31.mp3"></audio>
+            <audio id="correctAudioE1" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E6%AD%A3%E8%A7%A32.mp3"></audio>
+            <audio id="wrongAudioE1" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E4%B8%8D%E6%AD%A3%E8%A7%A31.mp3"></audio>
         </div>
 
         <!-- 例2 -->
-        <div class="question" id="e.g.2">
+        <div class="question" id="E2">
             <p>e.g.2</p>
-            <img src="https://raw.githubusercontent.com/moguura/my-images/main/%E4%BE%8B2.jpg" alt="e.g.2 Image" style="display: block; margin: 0 auto; max-width: 100%;">
+            <img src="https://raw.githubusercontent.com/moguura/my-images/main/%E4%BE%8B2.jpg" alt="E2 Image" style="display: block; margin: 0 auto; max-width: 100%;">
             <p style="text-align: center;"><span class="highlight">いい</span> → 　てんきは（ 　　　）</p>
-            <button id="startButtone.g.2" class="mic-button"></button>
-            <div id="imageContainere.g.2" style="display: none;">
-                <img id="correctImagee.g.2" src="https://i.gyazo.com/1e22bb6e3277bc880874af560819d084.png" alt="正しい答え">
-                <img id="wrongImagee.g.2" src="https://i.gyazo.com/4c0f03855a174df42e94a2d23286e44b.png" alt="間違った答え">
+            <button id="startButtonE2" class="mic-button"></button>
+            <div id="imageContainerE2" style="display: none;">
+                <img id="correctImageE2" src="https://i.gyazo.com/1e22bb6e3277bc880874af560819d084.png" alt="正しい答え">
+                <img id="wrongImageE2" src="https://i.gyazo.com/4c0f03855a174df42e94a2d23286e44b.png" alt="間違った答え">
             </div>
-            <audio id="correctAudioe.g.2" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E6%AD%A3%E8%A7%A32.mp3"></audio>
-            <audio id="wrongAudioe.g.2" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E4%B8%8D%E6%AD%A3%E8%A7%A31.mp3"></audio>
+            <audio id="correctAudioE2" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E6%AD%A3%E8%A7%A32.mp3"></audio>
+            <audio id="wrongAudioE2" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E4%B8%8D%E6%AD%A3%E8%A7%A31.mp3"></audio>
         </div>
         
         <!-- 問題1 -->
@@ -231,8 +231,8 @@
     <!-- JavaScriptコード -->
     <script>
         const answers = {
-            e.g.1: ["いいです", "天気はいいです"],
-            e.g.2: ["よくないです", "天気はよくないです"],
+            E1: ["いいです", "天気はいいです"],
+            E2: ["よくないです", "天気はよくないです"],
             Q1: ["高いです", "エベレストは高いです"],
             Q2: ["安くないです", "ダイヤモンドは安くないです"],
             Q3: ["暑いです", "日本の８月は暑いです"],
