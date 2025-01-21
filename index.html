@@ -316,23 +316,24 @@ function startRecognition(questionId) {
     }
 
     function showFeedback(questionId, isCorrect) {
-        const correctImage = document.getElementById(`correctImage${questionId}`);
-        const wrongImage = document.getElementById(`wrongImage${questionId}`);
-        const correctAudio = document.getElementById(`correctAudio${questionId}`);
-        const wrongAudio = document.getElementById(`wrongAudio${questionId}`);
-        const feedback = document.getElementById(`feedback${questionId}`);
+    const correctImage = document.getElementById(`correctImage${questionId}`);
+    const wrongImage = document.getElementById(`wrongImage${questionId}`);
+    const feedback = document.getElementById(`feedback${questionId}`);
+    const correctAudio = document.getElementById(`correctAudio${questionId}`);
+    const wrongAudio = document.getElementById(`wrongAudio${questionId}`);
 
-        if (isCorrect) {
-            correctImage.style.display = 'block';
-            wrongImage.style.display = 'none';
-            correctAudio.play();
-        } else {
-            correctImage.style.display = 'none';
-            wrongImage.style.display = 'block';
-            wrongAudio.play();
-        }
-        feedback.style.display = 'block';
+    if (isCorrect) {
+        correctImage.style.display = 'block';
+        wrongImage.style.display = 'none';
+        correctAudio.play();
+    } else {
+        correctImage.style.display = 'none';
+        wrongImage.style.display = 'block';
+        wrongAudio.play();
     }
+
+    feedback.style.display = 'block';
+}
 
     document.querySelectorAll('.mic-button').forEach(button => {
         const questionId = button.id.replace('startButton', '');
