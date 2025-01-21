@@ -4,70 +4,72 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Activity1</title>
-    <style>
-        /* 全体のスタイル */
-        body {
-            font-family: Arial, sans-serif;
-            line-height: 1.6;
-            margin: 0;
-            padding: 0;
-            background-color: #f9f9f9;
-            color: #333;
-            font-size: 24px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-        h1 {
-            text-align: center;
-            margin: 20px 0;
-            font-size: 32px; /* 見出しを大きくする */
-        }
+<style>
+/* 全体のスタイル */
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+    color: #333;
+    font-size: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
 
-        /* 質問エリアのスタイル */
-        .question {
-            margin-bottom: 100px; 
-            text-align: center;
-            font-size: 24px;
-        }
-        .question img {
-            width: 300px;
-            height: 200px;
-            object-fit: cover;
-            display: block;
-            margin: 0 auto 10px;
-        }
-        .question p:first-child {
-            font-weight: bold;
-            font-size: 28px; /* 問題番号の文字サイズを大きく */
-            color: #007bff; /* 青色 */
-        }
+h1 {
+    text-align: center;
+    margin: 20px 0;
+    font-size: 32px; /* 見出しを大きくする */
+}
 
-        /* キューのスタイル（緑色と太字） */
-        .highlight {
-            color: green;
-            font-weight: bold;
-        }
+/* 質問エリアのスタイル */
+.question {
+    margin-bottom: 100px; 
+    text-align: center;
+    font-size: 24px;
+}
+.question img {
+    width: 300px;
+    height: auto;
+    object-fit: cover;
+    display: block;
+    margin: 0 auto 10px;
+}
+.question p:first-child {
+    font-weight: bold;
+    font-size: 28px; /* 問題番号の文字サイズを大きく */
+    color: #007bff; /* 青色 */
+}
 
-        /* マイクボタンのスタイル */
-        .mic-button {
-            background-image: url("https://raw.githubusercontent.com/moguura/my-images/main/%E3%83%9E%E3%82%A4%E3%82%AF%E3%81%AE%E3%83%95%E3%83%AA%E3%83%BC%E3%82%A2%E3%82%A4%E3%82%B3%E3%83%B3%E3%81%9D%E3%81%AE21.png");
-            background-size: cover;
-            background-repeat: no-repeat;
-            background-color: #f9f9f9;
-            border: none;
-            width: 70px;
-            height: 70px;
-            border-radius: 50%;
-            cursor: pointer;
-            margin: 10px auto;
-            padding: 0;
-            text-indent: -9999px;
-            overflow: hidden;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
+/* キューのスタイル（緑色と太字） */
+.highlight {
+    color: green;
+    font-weight: bold;
+}
 
+/* マイクボタンのスタイル */
+.mic-button {
+    background-image: url("https://raw.githubusercontent.com/moguura/my-images/main/%E3%83%9E%E3%82%A4%E3%82%AF%E3%81%AE%E3%83%95%E3%83%AA%E3%83%BC%E3%82%A2%E3%82%A4%E3%82%B3%E3%83%B3%E3%81%9D%E3%81%AE21.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-color: #f9f9f9;
+    border: none;
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    cursor: pointer;
+    margin: 10px auto;
+    padding: 0;
+    text-indent: -9999px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* 説明文のスタイル */
 .instructions {
     background-color: #ffffff;
     border: 1px solid #d1d5db;
@@ -83,31 +85,33 @@
     margin: 0 auto; /* 中央揃え */
 }
 
-        .feedback {
-            display: none;
-        }
+/* フィードバックのスタイル */
+.feedback {
+    display: none;
+}
 
-        /* フィードバックの〇×イラストを小さく */
-        .feedback img {
-            width: 100px;
-            height: auto;
-            margin: 10px auto;
-            display: block;
-        }
+/* フィードバックの〇×イラストを小さく */
+.feedback img {
+    width: 100px;
+    height: auto;
+    margin: 10px auto;
+    display: block;
+}
 
-        /* リンクを中央に配置 */
-        a {
-            display: block;
-            text-align: center;
-            margin: 30px auto;
-            color: #007bff;
-            text-decoration: none;
-            font-size: 20px;
-        }
-        a:hover {
-            text-decoration: underline;
-        }
- /* Notice Board */
+/* リンクを中央に配置 */
+a {
+    display: block;
+    text-align: center;
+    margin: 30px auto;
+    color: #007bff;
+    text-decoration: none;
+    font-size: 20px;
+}
+a:hover {
+    text-decoration: underline;
+}
+
+/* Notice Board */
 .notice-board {
     text-align: center;
     margin: 30px auto; /* 上下の間隔を調整 */
@@ -124,7 +128,8 @@
 #Q1 {
     margin-top: 40px; /* Notice Boardとの間隔を調整 */
 }
-    </style>
+</style>
+
 </head>
 <body>
     <h1>Activity 1</h1>
