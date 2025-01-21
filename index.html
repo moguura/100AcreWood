@@ -34,16 +34,19 @@ h1 {
 }
 .mic-button {
     background-image: url("https://raw.githubusercontent.com/moguura/my-images/main/%E3%83%9E%E3%82%A4%E3%82%AF%E3%81%AE%E3%83%95%E3%83%AA%E3%83%BC%E3%82%A2%E3%82%A4%E3%82%B3%E3%83%B3%E3%81%9D%E3%81%AE21.png");
-    background-size: contain;
+    background-size: cover; /* イラストをボタン全体に広げる */
     background-repeat: no-repeat;
-    border: none;
-    width: 50px;
-    height: 50px;
+    background-color: #f9f9f9; /* 背景色をページ全体と同化させる */
+    border: none; /* ボタンの枠線を削除 */
+    width: 70px; /* ボタンを大きめに調整 */
+    height: 70px; /* ボタンを大きめに調整 */
+    border-radius: 50%; /* ボタンを円形にする */
     cursor: pointer;
     margin: 10px auto;
     padding: 0;
-    text-indent: -9999px;
+    text-indent: -9999px; /* テキストを隠す */
     overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 軽い影をつけて立体感を演出 */
 }
 .highlight {
     color: green;
@@ -101,7 +104,7 @@ a:hover {
             <p>e.g.1</p>
             <img src="https://raw.githubusercontent.com/moguura/my-images/main/%E4%BE%8B1.jpg" alt="E1 Image">
             <p><span class="highlight">いい</span> → てんきは（ 　　　）</p>
-            <button id="startButtonE1" class="mic-button" aria-label="音声認識を開始">Microphone</button>
+            <button id="startButtonE1" class="mic-button" aria-label="音声認識を開始"></button>
             <div class="feedback" id="feedbackE1">
                 <img id="correctImageE1" src="https://i.gyazo.com/1e22bb6e3277bc880874af560819d084.png" alt="正しい答え">
                 <img id="wrongImageE1" src="https://i.gyazo.com/4c0f03855a174df42e94a2d23286e44b.png" alt="間違った答え">
