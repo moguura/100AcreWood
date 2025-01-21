@@ -46,24 +46,19 @@
             color: green;
             font-weight: bold;
         }
-        .feedback {
-            display: none;
-            text-align: center;
-        }
-        .feedback img {
-            width: 100px;
-            margin: 10px auto;
-        }
-        a {
-            display: block;
-            text-align: center;
-            margin: 20px 0;
-            color: #007bff;
-            text-decoration: none;
-        }
-        a:hover {
-            text-decoration: underline;
-        }
+       .feedback {
+   　　　　 display: none;
+    　　　　text-align: center;
+    　　　　max-width: 100%; /* 親要素に合わせる */
+    　　　　overflow: hidden; /* 親要素を超える部分を隠す */
+   　　　　 margin: 10px auto;
+　　　　}
+　　　.feedback img {
+   　　　　 width: auto; /* 自然な幅を維持 */
+  　　　　  max-width: 100%; /* 親要素に収める */
+   　　　　 height: auto; /* 縦横比を保持 */
+   　　　　 margin: 10px auto;
+　　　　}
         .instructions {
             text-align: center;
             margin: 20px auto;
