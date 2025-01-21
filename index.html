@@ -347,7 +347,6 @@ a:hover {
 </html>
 <!-- HTML内のJavaScriptコード -->
 <script>
-    // 回答オブジェクト
     const answers = {
         E1: ["いいです", "天気はいいです"],
         E2: ["よくないです", "天気はよくないです"],
@@ -363,7 +362,6 @@ a:hover {
         Q10: ["近くないです", "日本とブラジルは近くないです"]
     };
 
-    // マイクボタンが押されたかどうかを記録するオブジェクト
     const buttonsPressed = {
         E1: false,
         E2: false,
@@ -379,7 +377,6 @@ a:hover {
         Q10: false
     };
 
-    // 音声認識開始
     function startRecognition(questionId) {
         if (!('webkitSpeechRecognition' in window)) {
             alert("Speech recognition is not available in this browser. Please use Google Chrome.");
@@ -411,7 +408,6 @@ a:hover {
         recognition.start();
     }
 
-    // フィードバック表示
     function showFeedback(questionId, isCorrect) {
         const correctImage = document.getElementById(`correctImage${questionId}`);
         const wrongImage = document.getElementById(`wrongImage${questionId}`);
@@ -420,23 +416,21 @@ a:hover {
         const wrongAudio = document.getElementById(`wrongAudio${questionId}`);
 
         if (isCorrect) {
-            correctImage.style.display = 'block';
-            wrongImage.style.display = 'none';
-            correctAudio.play();
+            if (correctImage) correctImage.style.display = 'block';
+            if (wrongImage) wrongImage.style.display = 'none';
+            if (correctAudio) correctAudio.play();
         } else {
-            correctImage.style.display = 'none';
-            wrongImage.style.display = 'block';
-            wrongAudio.play();
+            if (correctImage) correctImage.style.display = 'none';
+            if (wrongImage) wrongImage.style.display = 'block';
+            if (wrongAudio) wrongAudio.play();
         }
 
-        feedback.style.display = 'block';
+        if (feedback) feedback.style.display = 'block';
     }
 
-    // ボタンにイベントを追加
     document.querySelectorAll('.mic-button').forEach(button => {
         const questionId = button.id.replace('startButton', '');
         button.addEventListener('click', () => startRecognition(questionId));
     });
 </script>
-
 </html>
