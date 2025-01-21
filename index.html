@@ -13,10 +13,11 @@
             padding: 0;
             background-color: #f9f9f9;
             color: #333;
-            font-size: 24px; /* 文字サイズを全体的に大きくする */
+            font-size: 24px;
             display: flex;
-   　　　　  flex-direction: column;
+            flex-direction: column;
             align-items: center;
+            justify-content: center;
         }
         h1 {
             text-align: center;
@@ -39,7 +40,7 @@
         }
         .question p:first-child {
             font-weight: bold;
-            font-size: 24px;
+            font-size: 28px; /* 問題番号の文字サイズを大きく */
             color: #007bff; /* 青色 */
         }
 
@@ -67,22 +68,24 @@
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
-.instructions {
-    text-align: center;
-    margin: 20px auto;
-    padding: 15px;
-    font-size: 22px;
-    color: #333;
-    background-color: #f4f4f4;
-    border: 2px solid #ddd;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    max-width: 800px;
-    width: 90%; 
-}
+        /* 説明エリアのスタイル */
+        .instructions {
+            text-align: center;
+            margin: 20px auto;
+            padding: 15px;
+            font-size: 22px;
+            color: #333;
+            background-color: #f4f4f4;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            max-width: 900px; /* 説明エリアを広げる */
+            width: 90%; 
+        }
+
         .feedback {
-    display: none;
-}
+            display: none;
+        }
 
         /* フィードバックの〇×イラストを小さく */
         .feedback img {
@@ -106,14 +109,11 @@
         }
     </style>
 </head>
-
-</head>
 <body>
     <h1>Activity 1</h1>
     <div id="content">
-
         <!-- 初めの説明文 -->
-        <div class="instructions" style="text-align: center; margin: 20px;">
+        <div class="instructions">
             <p>
                 Please talk about the image using い-adjectives. Look at Example 1.<br>
                 Please press the microphone button and say <strong>いいです（iidesu）.</strong><br>
@@ -130,8 +130,6 @@
                 <img id="correctImageE1" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%BE%E3%82%8B.png" alt="正しい答え">
                 <img id="wrongImageE1" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%B0%E3%81%A4.png" alt="間違った答え">
             </div>
-            <audio id="correctAudioE1" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E6%AD%A3%E8%A7%A32.mp3"></audio>
-            <audio id="wrongAudioE1" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E4%B8%8D%E6%AD%A3%E8%A7%A31.mp3"></audio>
         </div>
         
         <!-- E1とE2の間の説明文 -->
