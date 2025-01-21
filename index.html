@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Activity1 - E-Learning教材</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Activity1</title>
     <style>
         /* 共通スタイル */
         body {
@@ -39,6 +38,9 @@
             height: 50px;
             cursor: pointer;
             margin: 10px auto;
+            padding: 0; /* 余白を消す */
+            text-indent: -9999px; /* ボタン内のテキストを非表示に */
+            overflow: hidden; /* テキストのはみ出しを隠す */
         }
         .highlight {
             color: green;
@@ -78,22 +80,12 @@
     <h1>Activity 1</h1>
     <div id="content">
 
-        <!-- 説明文 -->
-        <div class="instructions">
-            <p>
-                <strong>Activity 1</strong><br>
-                Read the beginning of each sentence and look at the corresponding image.<br>
-                Choose the correct ending to complete the sentence based on the image.<br>
-                Let's try the example.
-            </p>
-        </div>
-
         <!-- E1の例題 -->
         <div class="question" id="E1">
             <p>Example 1</p>
             <img src="https://raw.githubusercontent.com/moguura/my-images/main/%E4%BE%8B1.jpg" alt="E1 Image">
-            <p><span class="highlight">いい</span> → 天気は（ 　　　）</p>
-            <button id="startButtonE1" class="mic-button" aria-label="音声認識を開始"></button>
+            <p><span class="highlight">いい</span> → てんきは（ 　　　）</p>
+            <button id="startButtonE1" class="mic-button" aria-label="音声認識を開始">Microphone</button>
             <div class="feedback" id="feedbackE1">
                 <img id="correctImageE1" src="https://i.gyazo.com/1e22bb6e3277bc880874af560819d084.png" alt="正しい答え">
                 <img id="wrongImageE1" src="https://i.gyazo.com/4c0f03855a174df42e94a2d23286e44b.png" alt="間違った答え">
@@ -296,23 +288,36 @@
 };
 
 function startRecognition(questionId) {
-    const recognition = new webkitSpeechRecognition();
-    recognition.lang = 'ja-JP';
+        if (!('webkitSpeechRecognition' in window)) {
+            alert("このブラウザでは音声認識機能が利用できません。Google Chromeをご利用ください。");
+            return;
+        }
 
-    recognition.onresult = function(event) {
-        const transcript = event.results[0][0].transcript.trim();
+        const recognition = new webkitSpeechRecognition();
+        recognition.lang = 'ja-JP';
+
+        recognition.onresult = function(event) {
+            const transcript = event.results[0][0].transcript.trim();
+            const isCorrect = answers[questionId]?.includes(transcript);
+            showFeedback(questionId, isCorrect);
+        };
+
+        recognition.onerror = function(event) {
+            alert("音声認識に失敗しました。もう一度お試しください。");
+            console.error("Speech Recognition Error:", event.error);
+        };
+
+        recognition.start();
+    }
+
+    function showFeedback(questionId, isCorrect) {
         const correctImage = document.getElementById(`correctImage${questionId}`);
         const wrongImage = document.getElementById(`wrongImage${questionId}`);
         const correctAudio = document.getElementById(`correctAudio${questionId}`);
         const wrongAudio = document.getElementById(`wrongAudio${questionId}`);
-        const imageContainer = document.getElementById(`imageContainer${questionId}`);
+        const feedback = document.getElementById(`feedback${questionId}`);
 
-        if (!correctImage || !wrongImage || !correctAudio || !wrongAudio || !imageContainer) {
-            console.error(`Missing elements for question ID ${questionId}`);
-            return;
-        }
-
-        if (answers[questionId] && answers[questionId].includes(transcript)) {
+        if (isCorrect) {
             correctImage.style.display = 'block';
             wrongImage.style.display = 'none';
             correctAudio.play();
@@ -321,18 +326,12 @@ function startRecognition(questionId) {
             wrongImage.style.display = 'block';
             wrongAudio.play();
         }
-        imageContainer.style.display = 'block';
-    };
+        feedback.style.display = 'block';
+    }
 
-    recognition.onerror = function(event) {
-        console.error("Speech recognition error:", event.error);
-    };
-
-    recognition.start();
-}
-
-// イベントリスナー追加
-document.querySelectorAll('.mic-button').forEach(button => {
-    const questionId = button.id.replace('startButton', '');
-    button.addEventListener('click', () => startRecognition(questionId));
-});
+    document.querySelectorAll('.mic-button').forEach(button => {
+        const questionId = button.id.replace('startButton', '');
+        button.addEventListener('click', () => startRecognition(questionId));
+    });
+</script>
+</html>
