@@ -4,62 +4,102 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Activity1</title>
-<style>
-    /* 全体のスタイル */
-    body {
-        font-family: Arial, sans-serif;
-        line-height: 1.6;
-        margin: 0;
-        padding: 0;
-        background-color: #f9f9f9;
-        color: #333;
-        font-size: 24px; /* 文字サイズを全体的に大きくする */
-    }
-    h1 {
-        text-align: center;
-        margin: 20px 0;
-        font-size: 32px; /* 見出しを大きくする */
-    }
+    <style>
+        /* 全体のスタイル */
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+            color: #333;
+            font-size: 24px; /* 文字サイズを全体的に大きくする */
+        }
+        h1 {
+            text-align: center;
+            margin: 20px 0;
+            font-size: 32px; /* 見出しを大きくする */
+        }
 
-    /* 質問エリアのスタイル */
-    .question {
-        margin-bottom: 60px;
-        text-align: center;
-        font-size: 24px; /* 質問全体の文字を大きくする */
-    }
-    .question img {
-        width: 300px;
-        height: 200px;
-        object-fit: cover;
-        display: block;
-        margin: 0 auto 10px;
-    }
+        /* 質問エリアのスタイル */
+        .question {
+            margin-bottom: 60px;
+            text-align: center;
+            font-size: 24px;
+        }
+        .question img {
+            width: 300px;
+            height: 200px;
+            object-fit: cover;
+            display: block;
+            margin: 0 auto 10px;
+        }
+        .question p:first-child {
+            font-weight: bold;
+            font-size: 24px;
+            color: #007bff; /* 青色 */
+        }
 
-    /* ここに追記します */
-    .question p:first-child {
-        font-weight: bold; /* 太字にする */
-        font-size: 24px; /* 必要に応じてサイズを調整 */
-        margin-bottom: 10px; /* 余白の調整（必要なら変更） */
-    }
+        /* キューのスタイル（緑色と太字） */
+        .highlight {
+            color: green;
+            font-weight: bold;
+        }
 
-    /* マイクボタンのスタイル */
-    .mic-button {
-        background-image: url("https://raw.githubusercontent.com/moguura/my-images/main/%E3%83%9E%E3%82%A4%E3%82%AF%E3%81%AE%E3%83%95%E3%83%AA%E3%83%BC%E3%82%A2%E3%82%A4%E3%82%B3%E3%83%B3%E3%81%9D%E3%81%AE21.png");
-        background-size: cover; /* イラストをボタン全体に広げる */
-        background-repeat: no-repeat;
-        background-color: #f9f9f9; /* 背景色をページ全体と同化させる */
-        border: none; /* ボタンの枠線を削除 */
-        width: 70px; /* ボタンを大きめに調整 */
-        height: 70px; /* ボタンを大きめに調整 */
-        border-radius: 50%; /* ボタンを円形にする */
-        cursor: pointer;
-        margin: 10px auto;
-        padding: 0;
-        text-indent: -9999px; /* テキストを隠す */
-        overflow: hidden;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 軽い影をつけて立体感を演出 */
-    }
-</style>
+        /* マイクボタンのスタイル */
+        .mic-button {
+            background-image: url("https://raw.githubusercontent.com/moguura/my-images/main/%E3%83%9E%E3%82%A4%E3%82%AF%E3%81%AE%E3%83%95%E3%83%AA%E3%83%BC%E3%82%A2%E3%82%A4%E3%82%B3%E3%83%B3%E3%81%9D%E3%81%AE21.png");
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-color: #f9f9f9;
+            border: none;
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            cursor: pointer;
+            margin: 10px auto;
+            padding: 0;
+            text-indent: -9999px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        /* 説明文をボード風にする */
+        .instructions {
+            text-align: center;
+            margin: 20px auto;
+            padding: 15px;
+            font-size: 22px;
+            color: #333;
+            background-color: #f4f4f4;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+        }
+
+        /* フィードバックの〇×イラストを小さく */
+        .feedback img {
+            width: 100px;
+            height: auto;
+            margin: 10px auto;
+            display: block;
+        }
+
+        /* リンクを中央に配置 */
+        a {
+            display: block;
+            text-align: center;
+            margin: 30px auto;
+            color: #007bff;
+            text-decoration: none;
+            font-size: 20px;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
 
 </head>
 <body>
@@ -257,12 +297,13 @@
     </div>
     <audio id="correctAudioQ10" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E6%AD%A3%E8%A7%A32.mp3"></audio>
     <audio id="wrongAudioQ10" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E4%B8%8D%E6%AD%A3%E8%A7%A31.mp3"></audio>
-</div>
+ </div>
 
-        <!-- "Activity2.htmlへのリンク -->
-        <a href="./Activity2.html">Go to Activity2</a>
-       
+        <!-- リンク -->
+        <a href="./Activity2.html" id="nextLink" style="display: none;">Go to Activity2</a>
     </div>
+</body>
+</html>
 
     <!-- JavaScriptコード -->
     <script>
@@ -281,28 +322,53 @@
     Q10: ["近くないです", "日本とブラジルは近くないです"]
 };
 
+// マイクボタンが押されたかどうかを記録するオブジェクト
+const buttonsPressed = {
+    E1: false,
+    E2: false,
+    Q1: false,
+    Q2: false,
+    Q3: false,
+    Q4: false,
+    Q5: false,
+    Q6: false,
+    Q7: false,
+    Q8: false,
+    Q9: false,
+    Q10: false
+};
+
+// マイクボタンが押されたときの処理
 function startRecognition(questionId) {
-        if (!('webkitSpeechRecognition' in window)) {
-            alert("このブラウザでは音声認識機能が利用できません。Google Chromeをご利用ください。");
-            return;
-        }
-
-        const recognition = new webkitSpeechRecognition();
-        recognition.lang = 'ja-JP';
-
-        recognition.onresult = function(event) {
-            const transcript = event.results[0][0].transcript.trim();
-            const isCorrect = answers[questionId]?.includes(transcript);
-            showFeedback(questionId, isCorrect);
-        };
-
-        recognition.onerror = function(event) {
-            alert("音声認識に失敗しました。もう一度お試しください。");
-            console.error("Speech Recognition Error:", event.error);
-        };
-
-        recognition.start();
+    if (!('webkitSpeechRecognition' in window)) {
+        alert("このブラウザでは音声認識機能が利用できません。Google Chromeをご利用ください。");
+        return;
     }
+
+    const recognition = new webkitSpeechRecognition();
+    recognition.lang = 'ja-JP';
+
+    recognition.onresult = function(event) {
+        const transcript = event.results[0][0].transcript.trim();
+        const isCorrect = answers[questionId]?.includes(transcript);
+        showFeedback(questionId, isCorrect);
+
+        // ボタンが押されたことを記録
+        buttonsPressed[questionId] = true;
+
+        // すべてのボタンが押されたか確認
+        if (Object.values(buttonsPressed).every(Boolean)) {
+            document.getElementById("nextLink").style.display = "block"; // リンクを表示
+        }
+    };
+
+    recognition.onerror = function(event) {
+        alert("音声認識に失敗しました。もう一度お試しください。");
+        console.error("Speech Recognition Error:", event.error);
+    };
+
+    recognition.start();
+}
 
     function showFeedback(questionId, isCorrect) {
     const correctImage = document.getElementById(`correctImage${questionId}`);
