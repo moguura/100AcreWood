@@ -4,90 +4,63 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Activity1</title>
-    <style>
-        /* 共通スタイル */
-body {
-    font-family: Arial, sans-serif;
-    line-height: 1.6;
-    margin: 0;
-    padding: 0;
-    background-color: #f9f9f9;
-    color: #333;
-    font-size: 24px; /* 文字サイズを全体的に大きくする */
-}
-h1 {
-    text-align: center;
-    margin: 20px 0;
-    font-size: 32px; /* 見出しを大きくする */
-}
-.question {
-    margin-bottom: 60px;
-    text-align: center;
-    font-size: 18px; /* 質問全体の文字を大きくする */
-}
-.question img {
-    width: 300px;
-    height: 200px;
-    object-fit: cover;
-    display: block;
-    margin: 0 auto 10px;
-}
-.mic-button {
-    background-image: url("https://raw.githubusercontent.com/moguura/my-images/main/%E3%83%9E%E3%82%A4%E3%82%AF%E3%81%AE%E3%83%95%E3%83%AA%E3%83%BC%E3%82%A2%E3%82%A4%E3%82%B3%E3%83%B3%E3%81%9D%E3%81%AE21.png");
-    background-size: cover; /* イラストをボタン全体に広げる */
-    background-repeat: no-repeat;
-    background-color: #f9f9f9; /* 背景色をページ全体と同化させる */
-    border: none; /* ボタンの枠線を削除 */
-    width: 70px; /* ボタンを大きめに調整 */
-    height: 70px; /* ボタンを大きめに調整 */
-    border-radius: 50%; /* ボタンを円形にする */
-    cursor: pointer;
-    margin: 10px auto;
-    padding: 0;
-    text-indent: -9999px; /* テキストを隠す */
-    overflow: hidden;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 軽い影をつけて立体感を演出 */
-}
-.highlight {
-    color: green;
-    font-weight: bold;
-}
-.feedback {
-    display: none;
-    text-align: center;
-    margin: 10px auto;
-}
-.feedback img {
-    width: 100px; /* イラストを少し大きめに設定 */
-    height: auto; /* 縦横比を維持 */
-    margin: 10px auto;
-    background-color: transparent; /* 背景を透過させる */
-    display: block; /* イラストが中央揃えされるよう調整 */
-    box-shadow: none; /* 不要な影を除去（必要に応じて追加可能） */
-}
-a {
-    display: block;
-    text-align: center;
-    margin: 20px 0;
-    color: #007bff;
-    text-decoration: none;
-    font-size: 24px; /* リンクの文字サイズを調整 */
-}
-a:hover {
-    text-decoration: underline;
-}
-.instructions {
-    text-align: center;
-    margin: 20px auto;
-    padding: 10px;
-    font-size: 18px; /* 説明文の文字サイズを調整 */
-    color: #333;
-    background-color: #f4f4f4;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
+<style>
+    /* 全体のスタイル */
+    body {
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+        margin: 0;
+        padding: 0;
+        background-color: #f9f9f9;
+        color: #333;
+        font-size: 24px; /* 文字サイズを全体的に大きくする */
+    }
+    h1 {
+        text-align: center;
+        margin: 20px 0;
+        font-size: 32px; /* 見出しを大きくする */
+    }
 
-    </style>
+    /* 質問エリアのスタイル */
+    .question {
+        margin-bottom: 60px;
+        text-align: center;
+        font-size: 24px; /* 質問全体の文字を大きくする */
+    }
+    .question img {
+        width: 300px;
+        height: 200px;
+        object-fit: cover;
+        display: block;
+        margin: 0 auto 10px;
+    }
+
+    /* ここに追記します */
+    .question p:first-child {
+        font-weight: bold; /* 太字にする */
+        font-size: 24px; /* 必要に応じてサイズを調整 */
+        margin-bottom: 10px; /* 余白の調整（必要なら変更） */
+    }
+
+    /* マイクボタンのスタイル */
+    .mic-button {
+        background-image: url("https://raw.githubusercontent.com/moguura/my-images/main/%E3%83%9E%E3%82%A4%E3%82%AF%E3%81%AE%E3%83%95%E3%83%AA%E3%83%BC%E3%82%A2%E3%82%A4%E3%82%B3%E3%83%B3%E3%81%9D%E3%81%AE21.png");
+        background-size: cover; /* イラストをボタン全体に広げる */
+        background-repeat: no-repeat;
+        background-color: #f9f9f9; /* 背景色をページ全体と同化させる */
+        border: none; /* ボタンの枠線を削除 */
+        width: 70px; /* ボタンを大きめに調整 */
+        height: 70px; /* ボタンを大きめに調整 */
+        border-radius: 50%; /* ボタンを円形にする */
+        cursor: pointer;
+        margin: 10px auto;
+        padding: 0;
+        text-indent: -9999px; /* テキストを隠す */
+        overflow: hidden;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 軽い影をつけて立体感を演出 */
+    }
+</style>
+
 </head>
 <body>
     <h1>Activity 1</h1>
@@ -96,9 +69,8 @@ a:hover {
         <!-- 初めの説明文 -->
         <div class="instructions" style="text-align: center; margin: 20px;">
             <p>
-                Read the beginning of each sentence and look at the corresponding image.<br>
-                Choose the correct ending to complete the sentence based on the image.<br>
-                Let's try the example.
+                Please talk about the image using い-adjectives. Look at Example 1.<br>
+                Please press the microphone button and say <strong>いいです（iidesu）.</strong><br>
             </p>
         </div>
 
@@ -119,8 +91,8 @@ a:hover {
         <!-- E1とE2の間の説明文 -->
         <div class="instructions" style="text-align: center; margin: 20px;">
             <p>
-                In Example 1, the weather in the image is nice, so the correct answer is <strong>てんきは いいです。</strong> (The weather is good).<br>
-                Now, let's try Example 2. Press the microphone button and say "よくないです".
+                In Example 1, the weather in the image is nice, so the correct answer is てんきは <strong>いいです</strong> (The weather is good).<br>
+                Now, let's try Example 2. Press the microphone button and say <strong>よくないです（yokunaidesu）.</strong>
             </p>
         </div>
 
@@ -141,15 +113,15 @@ a:hover {
         <!-- E2の後の説明文 -->
         <div class="instructions" style="text-align: center; margin: 20px;">
             <p>
-                For Example 2, the weather in the image looks bad, so we'd choose <strong>てんきは よくないです。</strong> (The weather is not good).<br>
-                Now, let's apply this same method to the following questions.<br>
-                <strong>You can only answer once.</strong>
+                For Example 2, the weather in the image looks bad, so we'd choose てんきは <strong>よくないです</strong> (The weather is not good).<br>
+                Now, please speak in the same way for the following questions as well.<br>
+                If the microphone does not respond after speaking three times or more, please move on to the next question.
             </p>
         </div>
 
         <!-- Q1 -->
         <div class="question" id="Q1">
-            <p>Question 1</p>
+            <p>Q1</p>
             <img src="https://raw.githubusercontent.com/moguura/my-images/main/%E5%9B%B31.png" alt="Q1 Image">
             <p><span class="highlight">たかい</span> → <ruby>エベレスト<rt>えべれすと</rt></ruby>（Mt. Everest）は（ 　　　）</p>
             <button id="startButtonQ1" class="mic-button" aria-label="音声認識を開始"></button>
