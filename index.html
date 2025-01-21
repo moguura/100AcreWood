@@ -135,8 +135,10 @@
         <!-- E1とE2の間の説明文 -->
         <div class="instructions" style="text-align: center; margin: 20px;">
             <p>
-                In Example 1, the weather in the image is nice, so the correct answer is てんきは <strong>いいです</strong> (The weather is good).<br>
-                Now, let's try Example 2. Press the microphone button and say <strong>よくないです（yokunaidesu）.</strong>
+                In Example 1, the weather in the image is nice, so the correct answer is<br> 
+                てんきは <strong>いいです</strong> (The weather is good).<br>
+                Now, let's try Example 2.　<br> 
+                Press the microphone button and say <strong>よくないです（yokunaidesu）.</strong>
             </p>
         </div>
 
@@ -157,25 +159,32 @@
         <!-- E2の後の説明文 -->
         <div class="instructions" style="text-align: center; margin: 20px;">
             <p>
-                For Example 2, the weather in the image looks bad, so we'd choose てんきは <strong>よくないです</strong> (The weather is not good).<br>
-                Now, please speak in the same way for the following questions as well.<br>
-                If the microphone does not respond after speaking three times or more, please move on to the next question.
+                For Example 2, the weather in the image looks bad, so we'd choose <br>
+                てんきは <strong>よくないです</strong> (The weather is not good).<br>
+                Now, please speak in the same way for the following questions as well.
             </p>
         </div>
 
-        <!-- Q1 -->
-        <div class="question" id="Q1">
-            <p>Q1</p>
-            <img src="https://raw.githubusercontent.com/moguura/my-images/main/%E5%9B%B31.png" alt="Q1 Image">
-            <p><span class="highlight">たかい</span> → <ruby>エベレスト<rt>えべれすと</rt></ruby>（Mt. Everest）は（ 　　　）</p>
-            <button id="startButtonQ1" class="mic-button" aria-label="音声認識を開始"></button>
-            <div class="feedback" id="feedbackQ1">
-                <img id="correctImageQ1" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%BE%E3%82%8B.png" alt="正しい答え">
-                <img id="wrongImageQ1" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%B0%E3%81%A4.png" alt="間違った答え">
-            </div>
-            <audio id="correctAudioQ1" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E6%AD%A3%E8%A7%A32.mp3"></audio>
-            <audio id="wrongAudioQ1" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E4%B8%8D%E6%AD%A3%E8%A7%A31.mp3"></audio>
-        </div>
+　　　　<!-- Notice Board -->
+<div class="notice-board" style="text-align: center; margin: 20px; padding: 15px; background-color: #ffeeba; border: 2px solid #f0ad4e; border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); max-width: 900px; width: 100%;">
+    <p>If the microphone does not respond after speaking three times or more,<br>
+        please move on to the next question.
+    </p>
+</div>
+
+<!-- Q1 -->
+<div class="question" id="Q1">
+    <p>Q1</p>
+    <img src="https://raw.githubusercontent.com/moguura/my-images/main/%E5%9B%B31.png" alt="Q1 Image">
+    <p><span class="highlight">たかい</span> → <ruby>エベレスト<rt>えべれすと</rt></ruby>（Mt. Everest）は（ 　　　）</p>
+    <button id="startButtonQ1" class="mic-button" aria-label="音声認識を開始"></button>
+    <div class="feedback" id="feedbackQ1">
+        <img id="correctImageQ1" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%BE%E3%82%8B.png" alt="正しい答え">
+        <img id="wrongImageQ1" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%B0%E3%81%A4.png" alt="間違った答え">
+    </div>
+    <audio id="correctAudioQ1" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E6%AD%A3%E8%A7%A32.mp3"></audio>
+    <audio id="wrongAudioQ1" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E4%B8%8D%E6%AD%A3%E8%A7%A31.mp3"></audio>
+</div>
 
         <!-- 問題2 -->
         <div class="question" id="Q2">
@@ -345,7 +354,7 @@ const buttonsPressed = {
 // マイクボタンが押されたときの処理
 function startRecognition(questionId) {
     if (!('webkitSpeechRecognition' in window)) {
-        alert("このブラウザでは音声認識機能が利用できません。Google Chromeをご利用ください。");
+        alert("Speech recognition is not available in this browser. Please use Google Chrome.");
         return;
     }
 
@@ -367,7 +376,7 @@ function startRecognition(questionId) {
     };
 
     recognition.onerror = function(event) {
-        alert("音声認識に失敗しました。もう一度お試しください。");
+        alert("Speech recognition failed. Please try again.");
         console.error("Speech Recognition Error:", event.error);
     };
 
