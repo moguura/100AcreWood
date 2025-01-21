@@ -114,7 +114,7 @@ a:hover {
 /* Notice Board */
 .notice-board {
     text-align: center;
-    margin: 30px auto; /* 上下の間隔を調整 */
+    margin: 0 auto; /* 中央揃え */
     padding: 15px;
     background-color: #ffeeba;
     border: 2px solid #f0ad4e;
@@ -342,95 +342,98 @@ a:hover {
     </div>
 </body>
 </html>
+<!-- HTML内のJavaScriptコード -->
+<script>
+    // 回答オブジェクト
+    const answers = {
+        E1: ["いいです", "天気はいいです"],
+        E2: ["よくないです", "天気はよくないです"],
+        Q1: ["高いです", "エベレストは高いです"],
+        Q2: ["安くないです", "ダイヤモンドは安くないです"],
+        Q3: ["暑いです", "日本の８月は暑いです"],
+        Q4: ["寒いです", "日本の２月は寒いです"],
+        Q5: ["忙しいです", "会社員の朝は忙しいです"],
+        Q6: ["新しくないです", "この車は新しくないです"],
+        Q7: ["美味しくないです", "薬は美味しくないです"],
+        Q8: ["多くないです", "今、人は多くないです"],
+        Q9: ["大きいです", "このかばんは大きいです"],
+        Q10: ["近くないです", "日本とブラジルは近くないです"]
+    };
 
-    <!-- JavaScriptコード -->
-    <script>
-        const answers = {
-    E1: ["いいです", "天気はいいです"],
-    E2: ["よくないです", "天気はよくないです"],
-    Q1: ["高いです", "エベレストは高いです"],
-    Q2: ["安くないです", "ダイヤモンドは安くないです"],
-    Q3: ["暑いです", "日本の８月は暑いです"],
-    Q4: ["寒いです", "日本の２月は寒いです"],
-    Q5: ["忙しいです", "会社員の朝は忙しいです"],
-    Q6: ["新しくないです", "この車は新しくないです"],
-    Q7: ["美味しくないです", "薬は美味しくないです"],
-    Q8: ["多くないです", "今、人は多くないです"],
-    Q9: ["大きいです", "このかばんは大きいです"],
-    Q10: ["近くないです", "日本とブラジルは近くないです"]
-};
+    // マイクボタンが押されたかどうかを記録するオブジェクト
+    const buttonsPressed = {
+        E1: false,
+        E2: false,
+        Q1: false,
+        Q2: false,
+        Q3: false,
+        Q4: false,
+        Q5: false,
+        Q6: false,
+        Q7: false,
+        Q8: false,
+        Q9: false,
+        Q10: false
+    };
 
-// マイクボタンが押されたかどうかを記録するオブジェクト
-const buttonsPressed = {
-    E1: false,
-    E2: false,
-    Q1: false,
-    Q2: false,
-    Q3: false,
-    Q4: false,
-    Q5: false,
-    Q6: false,
-    Q7: false,
-    Q8: false,
-    Q9: false,
-    Q10: false
-};
-
-// マイクボタンが押されたときの処理
-function startRecognition(questionId) {
-    if (!('webkitSpeechRecognition' in window)) {
-        alert("Speech recognition is not available in this browser. Please use Google Chrome.");
-        return;
-    }
-
-    const recognition = new webkitSpeechRecognition();
-    recognition.lang = 'ja-JP';
-
-    recognition.onresult = function(event) {
-        const transcript = event.results[0][0].transcript.trim();
-        const isCorrect = answers[questionId]?.includes(transcript);
-        showFeedback(questionId, isCorrect);
-
-        // ボタンが押されたことを記録
-        buttonsPressed[questionId] = true;
-
-        // すべてのボタンが押されたか確認
-        if (Object.values(buttonsPressed).every(Boolean)) {
-            document.getElementById("nextLink").style.display = "block"; // リンクを表示
+    // 音声認識開始
+    function startRecognition(questionId) {
+        if (!('webkitSpeechRecognition' in window)) {
+            alert("Speech recognition is not available in this browser. Please use Google Chrome.");
+            return;
         }
-    };
 
-    recognition.onerror = function(event) {
-        alert("Speech recognition failed. Please try again.");
-        console.error("Speech Recognition Error:", event.error);
-    };
+        const recognition = new webkitSpeechRecognition();
+        recognition.lang = 'ja-JP';
 
-    recognition.start();
-}
+        recognition.onresult = function(event) {
+            const transcript = event.results[0][0].transcript.trim();
+            const isCorrect = answers[questionId]?.includes(transcript);
+            showFeedback(questionId, isCorrect);
 
-    function showFeedback(questionId, isCorrect) {
-    const correctImage = document.getElementById(`correctImage${questionId}`);
-    const wrongImage = document.getElementById(`wrongImage${questionId}`);
-    const feedback = document.getElementById(`feedback${questionId}`);
-    const correctAudio = document.getElementById(`correctAudio${questionId}`);
-    const wrongAudio = document.getElementById(`wrongAudio${questionId}`);
+            // ボタンが押されたことを記録
+            buttonsPressed[questionId] = true;
 
-    if (isCorrect) {
-        correctImage.style.display = 'block';
-        wrongImage.style.display = 'none';
-        correctAudio.play();
-    } else {
-        correctImage.style.display = 'none';
-        wrongImage.style.display = 'block';
-        wrongAudio.play();
+            // すべてのボタンが押されたか確認
+            if (Object.values(buttonsPressed).every(Boolean)) {
+                document.getElementById("nextLink").style.display = "block"; // リンクを表示
+            }
+        };
+
+        recognition.onerror = function(event) {
+            alert("Speech recognition failed. Please try again.");
+            console.error("Speech Recognition Error:", event.error);
+        };
+
+        recognition.start();
     }
 
-    feedback.style.display = 'block';
-}
+    // フィードバック表示
+    function showFeedback(questionId, isCorrect) {
+        const correctImage = document.getElementById(`correctImage${questionId}`);
+        const wrongImage = document.getElementById(`wrongImage${questionId}`);
+        const feedback = document.getElementById(`feedback${questionId}`);
+        const correctAudio = document.getElementById(`correctAudio${questionId}`);
+        const wrongAudio = document.getElementById(`wrongAudio${questionId}`);
 
+        if (isCorrect) {
+            correctImage.style.display = 'block';
+            wrongImage.style.display = 'none';
+            correctAudio.play();
+        } else {
+            correctImage.style.display = 'none';
+            wrongImage.style.display = 'block';
+            wrongAudio.play();
+        }
+
+        feedback.style.display = 'block';
+    }
+
+    // ボタンにイベントを追加
     document.querySelectorAll('.mic-button').forEach(button => {
         const questionId = button.id.replace('startButton', '');
         button.addEventListener('click', () => startRecognition(questionId));
     });
 </script>
+
 </html>
