@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Activity2</title>
+    <title>Activity1</title>
 <style>
 /* 全体のスタイル */
 body {
@@ -112,7 +112,7 @@ a {
 a:hover {
     text-decoration: underline;
 }
-  
+    
 /* Q1の上に十分な間隔を追加 */
 #Q1 {
     margin-top: 100px; /* Notice Boardとの間隔を調整 */
@@ -219,11 +219,11 @@ a:hover {
         <!-- 問題2 -->
         <div class="question" id="Q2">
             <p>Q2</p>
-            <img src="https://raw.githubusercontent.com/moguura/my-images/main/%E5%9B%B32.png" alt="Q2 Image">
+            <img src="https://raw.githubusercontent.com/moguura/my-images/main/%EF%BC%99%E6%99%82.png" alt="Q2 Image">
             <img src="https://raw.githubusercontent.com/moguura/my-images/main/2-2.png" alt="Q2 Image">
-            <p style="text-align: center;"><span class="highlight">やすい</span> → 　<ruby>ダイヤモンド<rt>だいやもんど</rt></ruby>（diamond）は（ 　　　）</p>
+            <p style="text-align: center;"><span class="highlight">つめたい</span> → 　<ruby>コーヒー<rt>こーひー</rt></ruby>は（ 　　　）</p>
             <button id="startButtonQ2" class="mic-button"></button>
-            <div id="imageContainerQ2" style="display: none;">
+            <div class="feedback" id="feedbackQ2">
                 <img id="correctImageQ2" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%BE%E3%82%8B.png" alt="正しい答え">
                 <img id="wrongImageQ2" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%B0%E3%81%A4.png" alt="間違った答え">
             </div>
@@ -234,10 +234,11 @@ a:hover {
         <!-- 問題3 -->
         <div class="question" id="Q3">
             <p>Q3</p>
-            <img src="https://raw.githubusercontent.com/moguura/my-images/main/%E5%9B%B33.png" alt="Q3 Image" style="display: block; margin: 0 auto; max-width: 100%;">
-            <p style="text-align: center;"><span class="highlight">あつい</span> → 　にほんの ８がつは（ 　　　）</p>
+            <img src="https://raw.githubusercontent.com/moguura/my-images/main/10%E6%99%82.png" alt="Q3 Image">
+            <img src="https://raw.githubusercontent.com/moguura/my-images/main/2-3.png" alt="Q3 Image">
+            <p style="text-align: center;"><span class="highlight">むずかしい</span> → 　<ruby>テスト<rt>てすと</rt></ruby>は（ 　　　）</p>
             <button id="startButtonQ3" class="mic-button"></button>
-            <div id="imageContainerQ3" style="display: none;">
+            <div class="feedback" id="feedbackQ3">
                 <img id="correctImageQ3" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%BE%E3%82%8B.png" alt="正しい答え">
                 <img id="wrongImageQ3" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%B0%E3%81%A4.png" alt="間違った答え">
             </div>
@@ -248,10 +249,11 @@ a:hover {
 <!-- 問題4 -->
 <div class="question" id="Q4">
     <p>Q4</p>
-    <img src="https://raw.githubusercontent.com/moguura/my-images/main/%E5%9B%B34.png" alt="Q4 Image" style="display: block; margin: 0 auto; max-width: 100%;">
-    <p style="text-align: center;"><span class="highlight">さむい</span> → 　にほんの ２がつは（ 　　　）</p>
+    <img src="https://raw.githubusercontent.com/moguura/my-images/main/11%E6%99%82.png" alt="Q4 Image">
+    <img src="https://github.com/moguura/my-images/blob/main/2-4.png" alt="Q4 Image">
+    <p style="text-align: center;"><span class="highlight">いい</span> → 　<ruby>テスト<rt>てすと</rt></ruby>は（ 　　　）</p>
     <button id="startButtonQ4" class="mic-button"></button>
-    <div id="imageContainerQ4" style="display: none;">
+    <div class="feedback" id="feedbackQ4">
         <img id="correctImageQ4" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%BE%E3%82%8B.png" alt="正しい答え">
         <img id="wrongImageQ4" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%B0%E3%81%A4.png" alt="間違った答え">
     </div>
@@ -262,11 +264,12 @@ a:hover {
 <!-- 問題5 -->
 <div class="question" id="Q5">
     <p>Q5</p>
-    <img src="https://raw.githubusercontent.com/moguura/my-images/main/%E5%9B%B35.png" alt="Q5 Image" style="display: block; margin: 0 auto; max-width: 100%;">
+    <img src="https://raw.githubusercontent.com/moguura/my-images/main/13%E6%99%82.png" alt="Q5 Image">
+    <img src="https://raw.githubusercontent.com/moguura/my-images/main/2-5.png" alt="Q5 Image">
     <p style="text-align: center;"><span class="highlight">いそがしい</span> → 　かいしゃいんの あさは（ 　　　）</p>
     <button id="startButtonQ5" class="mic-button"></button>
-    <div id="imageContainerQ5" style="display: none;">
-        <img id="correctImageQ5" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%BE%E3%82%8B.png" alt="正しい答え">
+    <div class="feedback" id="feedbackQ5">
+        <img id="correctImageQ5" src="https://raw.githubusercontent.com/moguura/my-images/main/13%E6%99%82.png" alt="正しい答え">
         <img id="wrongImageQ5" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%B0%E3%81%A4.png" alt="間違った答え">
     </div>
     <audio id="correctAudioQ5" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E6%AD%A3%E8%A7%A32.mp3"></audio>
@@ -276,10 +279,11 @@ a:hover {
 <!-- 問題6 -->
 <div class="question" id="Q6">
     <p>Q6</p>
-    <img src="https://raw.githubusercontent.com/moguura/my-images/main/%E5%9B%B36.png" alt="Q6 Image" style="display: block; margin: 0 auto; max-width: 100%;">
+    <img src="https://raw.githubusercontent.com/moguura/my-images/main/14%E6%99%82.png" alt="Q6 Image">
+    <img src="https://raw.githubusercontent.com/moguura/my-images/main/2-6.png" alt="Q6 Image">
     <p style="text-align: center;"><span class="highlight">あたらしい</span> → 　この くるまは（ 　　　）</p>
     <button id="startButtonQ6" class="mic-button"></button>
-    <div id="imageContainerQ6" style="display: none;">
+    <div class="feedback" id="feedbackQ6">
         <img id="correctImageQ6" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%BE%E3%82%8B.png" alt="正しい答え">
         <img id="wrongImageQ6" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%B0%E3%81%A4.png" alt="間違った答え">
     </div>
@@ -290,10 +294,11 @@ a:hover {
 <!-- 問題7 -->
 <div class="question" id="Q7">
     <p>Q7</p>
-    <img src="https://raw.githubusercontent.com/moguura/my-images/main/%E5%9B%B37.png" alt="Q7 Image" style="display: block; margin: 0 auto; max-width: 100%;">
+    <img src="https://raw.githubusercontent.com/moguura/my-images/main/15%E6%99%82.png" alt="Q7 Image">
+    <img src="https://raw.githubusercontent.com/moguura/my-images/main/2-7.png" alt="Q7 Image">
     <p style="text-align: center;"><span class="highlight">おいしい</span> → 　くすりは（ 　　　）</p>
     <button id="startButtonQ7" class="mic-button"></button>
-    <div id="imageContainerQ7" style="display: none;">
+    <div class="feedback" id="feedbackQ7">
         <img id="correctImageQ7" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%BE%E3%82%8B.png" alt="正しい答え">
         <img id="wrongImageQ7" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%B0%E3%81%A4.png" alt="間違った答え">
     </div>
@@ -304,10 +309,11 @@ a:hover {
 <!-- 問題8 -->
 <div class="question" id="Q8">
     <p>Q8</p>
-    <img src="https://raw.githubusercontent.com/moguura/my-images/main/%E5%9B%B38.jpg" alt="Q8 Image" style="display: block; margin: 0 auto; max-width: 100%;">
+    <img src="https://raw.githubusercontent.com/moguura/my-images/main/17%E6%99%82.png" alt="Q8 Image">
+    <img src="https://raw.githubusercontent.com/moguura/my-images/main/2-8.png" alt="Q8 Image">
     <p style="text-align: center;"><span class="highlight">おおい</span> → 　いま、ひとは（ 　　　）</p>
     <button id="startButtonQ8" class="mic-button"></button>
-    <div id="imageContainerQ8" style="display: none;">
+    <div class="feedback" id="feedbackQ8">
         <img id="correctImageQ8" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%BE%E3%82%8B.png" alt="正しい答え">
         <img id="wrongImageQ8" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%B0%E3%81%A4.png" alt="間違った答え">
     </div>
@@ -318,10 +324,11 @@ a:hover {
 <!-- 問題9 -->
 <div class="question" id="Q9">
     <p>Q9</p>
-    <img src="https://raw.githubusercontent.com/moguura/my-images/main/%E5%9B%B39.png" alt="Q9 Image" style="display: block; margin: 0 auto; max-width: 100%;">
+    <img src="https://raw.githubusercontent.com/moguura/my-images/main/20%E6%99%82.png" alt="Q9 Image">
+    <img src="https://raw.githubusercontent.com/moguura/my-images/main/2-9.png" alt="Q9 Image">
     <p style="text-align: center;"><span class="highlight">おおきい</span> → 　この かばんは（ 　　　）</p>
     <button id="startButtonQ9" class="mic-button"></button>
-    <div id="imageContainerQ9" style="display: none;">
+    <div class="feedback" id="feedbackQ9">
         <img id="correctImageQ9" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%BE%E3%82%8B.png" alt="正しい答え">
         <img id="wrongImageQ9" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%B0%E3%81%A4.png" alt="間違った答え">
     </div>
@@ -332,10 +339,11 @@ a:hover {
 <!-- 問題10 -->
 <div class="question" id="Q10">
     <p>Q10</p>
-    <img src="https://raw.githubusercontent.com/moguura/my-images/main/%E5%9B%B310.png" alt="Q10 Image" style="display: block; margin: 0 auto; max-width: 100%;">
+    <img src="https://raw.githubusercontent.com/moguura/my-images/main/21%E6%99%82.png" alt="Q10 Image">
+    <img src="https://raw.githubusercontent.com/moguura/my-images/main/2-10.png">
     <p style="text-align: center;"><span class="highlight">ちかい</span> → 　にほんと <ruby>ブラジル<rt>ぶらじる</rt></ruby>は（ 　　　）</p>
     <button id="startButtonQ10" class="mic-button"></button>
-    <div id="imageContainerQ10" style="display: none;">
+    <div class="feedback" id="feedbackQ10">
         <img id="correctImageQ10" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%BE%E3%82%8B.png" alt="正しい答え">
         <img id="wrongImageQ10" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%B0%E3%81%A4.png" alt="間違った答え">
     </div>
@@ -344,7 +352,7 @@ a:hover {
  </div>
 
         <!-- リンク -->
-        <a href="./Activity2.html" id="nextLink" style="display: none;">Go to Activity2</a>
+        <a href="./Activity3.html" id="nextLink" style="display: none;">Go to Activity3</a>
     </div>
 </body>
 </html>
@@ -380,35 +388,42 @@ a:hover {
         Q10: false
     };
 
-    function startRecognition(questionId) {
-        if (!('webkitSpeechRecognition' in window)) {
-            alert("Speech recognition is not available in this browser. Please use Google Chrome.");
-            return;
+ function startRecognition(questionId) {
+    if (!('webkitSpeechRecognition' in window)) {
+        alert("Speech recognition is not available in this browser. Please use Google Chrome.");
+        return;
+    }
+
+    const recognition = new webkitSpeechRecognition();
+    recognition.lang = 'ja-JP';
+
+    recognition.onresult = function(event) {
+        const transcript = event.results[0][0].transcript.trim();
+        const normalizedTranscript = transcript.replace(/\s+/g, '').toLowerCase();
+        const isCorrect = answers[questionId]?.some(answer =>
+            answer.replace(/\s+/g, '').toLowerCase() === normalizedTranscript
+        );
+
+        showFeedback(questionId, isCorrect);
+
+        // ログで結果を確認
+        console.log(`Question ID: ${questionId}, Transcript: ${transcript}, Is Correct: ${isCorrect}`);
+
+        // ボタンが押されたことを記録
+        buttonsPressed[questionId] = true;
+
+        // すべてのボタンが押されたか確認
+        if (Object.values(buttonsPressed).every(Boolean)) {
+            document.getElementById("nextLink").style.display = "block"; // リンクを表示
         }
+    };
 
-        const recognition = new webkitSpeechRecognition();
-        recognition.lang = 'ja-JP';
+    recognition.onerror = function(event) {
+        alert("Speech recognition failed. Please try again.");
+        console.error("Speech Recognition Error:", event.error);
+    };
 
-        recognition.onresult = function(event) {
-            const transcript = event.results[0][0].transcript.trim();
-            const isCorrect = answers[questionId]?.includes(transcript);
-            showFeedback(questionId, isCorrect);
-
-            // ボタンが押されたことを記録
-            buttonsPressed[questionId] = true;
-
-            // すべてのボタンが押されたか確認
-            if (Object.values(buttonsPressed).every(Boolean)) {
-                document.getElementById("nextLink").style.display = "block"; // リンクを表示
-            }
-        };
-
-        recognition.onerror = function(event) {
-            alert("Speech recognition failed. Please try again.");
-            console.error("Speech Recognition Error:", event.error);
-        };
-
-        recognition.start();
+    recognition.start();
     }
 
     function showFeedback(questionId, isCorrect) {
