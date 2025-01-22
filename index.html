@@ -111,20 +111,23 @@ a:hover {
     text-decoration: underline;
 }
 
-/* Notice Board */
-.notice-board {
-    background-color: #ffeeba; /* 背景色をそのままに */
-    color: #333; /* テキストの色 */
-    padding: 10px 0; /* 上下のパディング */
+/* 共通スタイル：説明文とNotice Board */
+.instructions, .notice-board {
+    max-width: 900px; /* 最大幅を統一 */
+    width: 100%; /* 横幅を親要素に合わせる */
+    margin: 0 auto; /* 中央揃え */
+    border: 1px solid #d1d5db; /* 同じ境界線 */
+    border-radius: 5px; /* 同じ角丸 */
+    padding: 15px; /* 同じパディング */
+    box-sizing: border-box; /* サイズ計算を統一 */
     text-align: center; /* テキストを中央揃え */
-    font-size: 24px; /* フォントサイズ */
-    line-height: 1.6; /* 行の高さ */
-    width: 100%; /* 横幅を画面全体に */
-    position: relative; /* 他の要素に影響を与えない */
-    margin: 20px 0; /* 上下のマージン */
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* 軽い影を追加 */
 }
 
+/* Notice Board専用のスタイル */
+.notice-board {
+    background-color: #ffeeba; /* 背景色 */
+    margin: 20px 0; /* 上下の余白 */
+}
     
 /* Q1の上に十分な間隔を追加 */
 #Q1 {
