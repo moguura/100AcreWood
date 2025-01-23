@@ -216,8 +216,6 @@ a:hover {
     <img src="https://raw.githubusercontent.com/moguura/my-images/main/%E5%9B%B31.png" alt="Q1 Image">
     <p><span class="highlight">たかい</span> → <ruby>エベレスト<rt>えべれすと</rt></ruby>（Mt. Everest）は（ 　　　）</p>
     <button id="startButtonQ1" class="mic-button" aria-label="音声認識を開始"></button>
-    <!-- フィードバックを表示するボタン -->
-  　<button onclick="showFeedback('Q1')"><ruby>エベレスト<rt>えべれすと</rt></ruby>は　たかいです。（Mount Everest is high.）</button>
     <div class="feedback" id="feedbackQ1">
         <img id="correctImageQ1" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%BE%E3%82%8B.png" alt="正しい答え">
         <img id="wrongImageQ1" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%B0%E3%81%A4.png" alt="間違った答え">
@@ -233,8 +231,6 @@ a:hover {
             <img src="https://raw.githubusercontent.com/moguura/my-images/main/%E5%9B%B32.png" alt="Q2 Image">
             <p style="text-align: center;"><span class="highlight">やすい</span> → 　<ruby>ダイヤモンド<rt>だいやもんど</rt></ruby>（diamond）は（ 　　　）</p>
             <button id="startButtonQ2" class="mic-button"></button>
-            <!-- フィードバックを表示するボタン -->
-  　　　　   <button onclick="showFeedback('Q2')"><ruby>ダイヤモンド<rt>だいやもんど</rt></ruby>は やすくないです。（Diamonds are not cheap.）</button>
             <div class="feedback" id="feedbackQ2">
                 <img id="correctImageQ2" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%BE%E3%82%8B.png" alt="正しい答え">
                 <img id="wrongImageQ2" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%B0%E3%81%A4.png" alt="間違った答え">
@@ -355,9 +351,7 @@ a:hover {
     <img src="https://raw.githubusercontent.com/moguura/my-images/main/%E5%9B%B310.png" alt="Q10 Image">
     <p style="text-align: center;"><span class="highlight">ちかい</span> → 　にほんと <ruby>ブラジル<rt>ぶらじる</rt></ruby>は（ 　　　）</p>
     <button id="startButtonQ10" class="mic-button"></button>
-    <!-- フィードバックを表示するボタン -->
-  　 <button onclick="showFeedback('Q10')">にほんとブラジル（ぶらじる）は　ちかくないです。（Japan and Brazil are not close.）</button>
-     <div class="feedback" id="feedbackQ10">
+    <div class="feedback" id="feedbackQ10">
         <img id="correctImageQ10" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%BE%E3%82%8B.png" alt="正しい答え">
         <img id="wrongImageQ10" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%B0%E3%81%A4.png" alt="間違った答え">
         <div id="feedbackTextQ10" class="feedback-text"></div>
@@ -486,16 +480,16 @@ function getFeedbackText(questionId) {
     const feedbackMessages = {
         E1:"てんきは いいです。（The weather is good.）",
         E2:"てんきは よくないです。（The weather is not good.）",
-        Q1:"<ruby>エベレスト<rt>えべれすと</rt></ruby>は　たかいです。（Mount Everest is high.）",
-        Q2:"<ruby>ダイヤモンド<rt>だいやもんど</rt></ruby>は やすくないです。（Diamonds are not cheap.）",
-        Q3:"にほんの８がつは　あついです。（August in Japan is hot.）",
-        Q4:"<ruby>にほんの２がつは<rt>さむいです</rt></ruby>。（February in Japan is cold.）",
-        Q5:"かいしゃいんのあさは　いそがしいです。（The mornings of office workers are busy.）",
-        Q6:"このくるまは　あたらしくないです。（This car is not new.）",
-        Q7:"くすりは　おいしくないです。（Medicines are not tasty.）",
-        Q8:"いま　ひとは　おおくないです。（There are not many people now.）",
-        Q9:"この かばんは　おおきいです。（This bag is big.）",
-        Q10:"にほんとブラジル（ぶらじる）は　ちかくないです。（Japan and Brazil are not close.）",
+        Q1:"エベレスト(えべれすと)は たかいです。（Mount Everest is high.）",
+        Q2:"ダイヤモンド(だいやもんど)は やすくないです。（Diamonds are not cheap.）",
+        Q3:"にほんの８がつは あついです。（August in Japan is hot.）",
+        Q4:"にほんの２がつは さむいです。（February in Japan is cold.）",
+        Q5:"かいしゃいんのあさは いそがしいです。（The mornings of office workers are busy.）",
+        Q6:"このくるまは あたらしくないです。（This car is not new.）",
+        Q7:"くすりは おいしくないです。（Medicines are not tasty.）",
+        Q8:"いま ひとは おおくないです。（There are not many people now.）",
+        Q9:"この かばんは おおきいです。（This bag is big.）",
+        Q10:"にほんとブラジル（ぶらじる）は ちかくないです。（Japan and Brazil are not close.）",
     };
     return feedbackMessages[questionId] || "フィードバックが設定されていません";  // デフォルトのメッセージ
 }
