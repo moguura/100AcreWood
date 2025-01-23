@@ -137,6 +137,14 @@ a:hover {
 #Q1 {
     margin-top: 100px; /* Notice Boardとの間隔を調整 */
 }
+.red-bold {
+            color: red;
+            font-weight: bold;
+        }
+.blue-bold {
+            color: blue;         /* 文字色を青に設定 */
+            font-weight: bold;   /* 文字を太字に設定 */
+        }
 </style>
 
 </head>
@@ -146,9 +154,9 @@ a:hover {
         <!-- 初めの説明文 -->
         <div class="instructions">
             <p>
-                Please talk about the image using い-adjectives. Look at Example 1.<br>
+                Please talk about the image using い-adjectives. Look at <p><span class="blue-bold">Example 1</span></p>.<br>
                 Please press the microphone button and say<br>
-                <strong>てんきは いいです。（tenkiwa iidesu.）</strong>
+                <strong>てんきは いいです。（tenkiwa iidesu.）</strong>or <strong>いいです。</strong>
             </p>
         </div>
 
@@ -170,17 +178,17 @@ a:hover {
         <!-- E1とE2の間の説明文 -->
         <div class="instructions" style="text-align: center; margin: 20px;">
             <p>
-                In Example 1, the weather in the image is nice, so the correct answer is<br> 
-                てんきは <strong>いいです</strong> (The weather is good).<br>
+                <p><span class="blue-bold">In Example 1</span></p>, the weather in the image is nice, so the correct answer is<br> 
+                てんきは <p><span class="red-bold">いいです</span></p>(The weather <p><span class="red-bold">is good</span></p>).
             </p>
         </div>
 
          <!-- E1とE2の間の説明文 -->
         <div class="instructions" style="text-align: center; margin: 20px;">
             <p>
-                Now, let's try Example 2.　<br> 
+                Now, let's try <p><span class="blue-bold">Example 2</span></p>.<br> 
                 Press the microphone button and say<br>
-                <strong>てんきは よくないです。（tenkiwa yokunaidesu.）</strong>
+                <strong>てんきは よくないです。（tenkiwa yokunaidesu.）</strong>or <strong>よくないです。</strong>
             </p>
         </div>
 
@@ -202,8 +210,8 @@ a:hover {
         <!-- E2の後の説明文 -->
         <div class="instructions" style="text-align: center; margin: 20px;">
             <p>
-                For Example 2, the weather in the image looks bad, so we'd choose <br>
-                てんきは <strong>よくないです</strong> (The weather is not good).<br>
+                <p><span class="blue-bold">For Example 2</span></p>, the weather in the image looks bad, so we'd choose <br>
+                てんきは <p><span class="red-bold">よくないです</span></p>(The weather <p><span class="red-bold">is not good</span></p>).<br>
                 Now, please speak in the same way for the following questions as well.
             </p>
         </div>
@@ -211,8 +219,9 @@ a:hover {
 　　　<!-- Notice Board -->
       <div class="notice-board">
           <p>
-              If the microphone does not respond after speaking three times or more,<br>
-              please move on to the next question.
+              Speech recognition may not always be 100% accurate.<br> 
+              If your answer is incorrect, don't worry - just continue to the next question.<br> 
+              The goal is to practice speaking, not to get everything perfect.
           </p>
       </div>
         
@@ -374,15 +383,15 @@ a:hover {
 <!-- HTML内のJavaScriptコード -->
 <script>
     const answers = {
-        E1: ["いいです", "天気はいいです", "良いです", "てんきはいいです", "tenkiwa iidesu", "iidesu"],
+        E1: ["いいです", "天気はいいです", "良いです", "てんきは いいです", "tenkiwa iidesu", "iidesu"],
         E2: ["良くないです", "天気は良くないです", "よくないです", "てんきは よくないです", "yokunaidesu", "tenkiwa yokunaidesu"], 
         Q1: ["高いです", "エベレストは高いです"],
         Q2: ["安くないです", "ダイヤモンドは安くないです"],
-        Q3: ["暑いです", "日本の８月は暑いです"],
-        Q4: ["寒いです", "日本の２月は寒いです"],
-        Q5: ["忙しいです", "会社員の朝は忙しいです"],
+        Q3: ["暑いです", "日本の八月は暑いです", "あついです", "にほんのはちがつは あついです", "atsuidesu", "nihon no hachigatsuwa atsuidesu"],
+        Q4: ["寒いです", "日本の二月は寒いです", "さむいです", "にほんのにがつは さむいです", "samuidesu","nihonno nigatsuwa samuidesu"],
+        Q5: ["忙しいです", "会社員の朝は忙しいです", "いそがしいです", "かいしゃいんのあさは いそがしいです", "isogashiidesu", "kaisyainnoasawa isogashiidesu"],
         Q6: ["新しくないです", "この車は新しくないです"],
-        Q7: ["おいしくないです", "くすりはおいしくないです", "美味しくないです",　"薬は美味しくないです","oishikunaidesu", "kusuriwa oishikunaidesu"],
+        Q7: ["おいしくないです", "くすりはおいしくないです", "美味しくないです", "薬は美味しくないです", "oishikunaidesu", "kusuriwa oishikunaidesu"],
         Q8: ["多くないです", "今、人は多くないです"],
         Q9: ["大きいです", "このかばんは大きいです"],
         Q10: ["近くないです", "日本とブラジルは近くないです"]
