@@ -114,10 +114,16 @@ a {
     margin: 30px auto;
     color: #007bff;
     text-decoration: none;
-    font-size: 22px;
+    font-size: 28px;  /* 文字サイズを22pxから28pxに増加 */
+    font-weight: bold;  /* 太字にする */
+    padding: 10px 20px;  /* クリック領域を広げる */
+    transition: all 0.3s ease;  /* ホバー効果をスムーズにする */
 }
+
 a:hover {
     text-decoration: underline;
+    color: #0056b3;  /* ホバー時の色を少し濃くする */
+    transform: scale(1.05);  /* ホバー時に少し大きくする */
 }
 
 .notice-board {
