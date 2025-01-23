@@ -214,6 +214,8 @@ a:hover {
     <img src="https://raw.githubusercontent.com/moguura/my-images/main/%E5%9B%B31.png" alt="Q1 Image">
     <p><span class="highlight">たかい</span> → <ruby>エベレスト<rt>えべれすと</rt></ruby>（Mt. Everest）は（ 　　　）</p>
     <button id="startButtonQ1" class="mic-button" aria-label="音声認識を開始"></button>
+    <!-- フィードバックを表示するボタン -->
+  　<button onclick="showFeedback('Q1')">問題1のフィードバックを表示</button>
     <div class="feedback" id="feedbackQ1">
         <img id="correctImageQ1" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%BE%E3%82%8B.png" alt="正しい答え">
         <img id="wrongImageQ1" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%B0%E3%81%A4.png" alt="間違った答え">
@@ -229,6 +231,8 @@ a:hover {
             <img src="https://raw.githubusercontent.com/moguura/my-images/main/%E5%9B%B32.png" alt="Q2 Image">
             <p style="text-align: center;"><span class="highlight">やすい</span> → 　<ruby>ダイヤモンド<rt>だいやもんど</rt></ruby>（diamond）は（ 　　　）</p>
             <button id="startButtonQ2" class="mic-button"></button>
+            <!-- フィードバックを表示するボタン -->
+  　　　　   <button onclick="showFeedback('Q2')">問題2のフィードバックを表示</button>
             <div class="feedback" id="feedbackQ2">
                 <img id="correctImageQ2" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%BE%E3%82%8B.png" alt="正しい答え">
                 <img id="wrongImageQ2" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%B0%E3%81%A4.png" alt="間違った答え">
@@ -349,6 +353,8 @@ a:hover {
     <img src="https://raw.githubusercontent.com/moguura/my-images/main/%E5%9B%B310.png" alt="Q10 Image">
     <p style="text-align: center;"><span class="highlight">ちかい</span> → 　にほんと <ruby>ブラジル<rt>ぶらじる</rt></ruby>は（ 　　　）</p>
     <button id="startButtonQ10" class="mic-button"></button>
+    <!-- フィードバックを表示するボタン -->
+  　 <button onclick="showFeedback('Q10')">問題10のフィードバックを表示</button>
      <div class="feedback" id="feedbackQ10">
         <img id="correctImageQ10" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%BE%E3%82%8B.png" alt="正しい答え">
         <img id="wrongImageQ10" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%B0%E3%81%A4.png" alt="間違った答え">
@@ -366,15 +372,15 @@ a:hover {
 <!-- HTML内のJavaScriptコード -->
 <script>
     const answers = {
-        E1: ["いいです", "天気はいいです"],
-        E2: ["良くないです", "天気は良くないです"],
+        E1: ["いいです", "天気はいいです", "良いです", "てんきはいいです", "tenkiwa iidesu", "iidesu"],
+        E2: ["良くないです", "天気は良くないです", "よくないです", "てんきは よくないです", "yokunaidesu", "tenkiwa yokunaidesu"], 
         Q1: ["高いです", "エベレストは高いです"],
         Q2: ["安くないです", "ダイヤモンドは安くないです"],
         Q3: ["暑いです", "日本の８月は暑いです"],
         Q4: ["寒いです", "日本の２月は寒いです"],
         Q5: ["忙しいです", "会社員の朝は忙しいです"],
         Q6: ["新しくないです", "この車は新しくないです"],
-        Q7: ["おいしくないです", "薬はおいしくないです"],
+        Q7: ["おいしくないです", "くすりはおいしくないです", "美味しくないです",　"薬は美味しくないです","oishikunaidesu", "kusuriwa oishikunaidesu"],
         Q8: ["多くないです", "今、人は多くないです"],
         Q9: ["大きいです", "このかばんは大きいです"],
         Q10: ["近くないです", "日本とブラジルは近くないです"]
