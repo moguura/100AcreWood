@@ -106,24 +106,29 @@ h1 {
     margin-top: 10px;
     display: none; /* 初期状態では非表示 */
 }
-
-/* リンクを中央に配置 */
-a {
-    display: block;
-    text-align: center;
-    margin: 30px auto;
-    color: #007bff;
-    text-decoration: none;
-    font-size: 28px;  /* 文字サイズを22pxから28pxに増加 */
-    font-weight: bold;  /* 太字にする */
-    padding: 10px 20px;  /* クリック領域を広げる */
-    transition: all 0.3s ease;  /* ホバー効果をスムーズにする */
-}
-
-a:hover {
-    text-decoration: underline;
-    color: #0056b3;  /* ホバー時の色を少し濃くする */
-    transform: scale(1.05);  /* ホバー時に少し大きくする */
+video, iframe {
+            display: block;
+            margin: 20px auto;
+            max-width: 560px;
+            height: 315px;
+        }
+        #nextLink {
+            display: none; /* 初期状態で非表示 */
+            text-align: center;
+            margin-top: 20px;
+        }
+        #nextLink a {
+            font-size: 28px;
+            color: white;
+            background-color: #007bff;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        #nextLink a:hover {
+            text-decoration: underline;
+    　　　　color: #0056b3;  /* ホバー時の色を少し濃くする */
+   　　　　 transform: scale(1.05);  /* ホバー時に少し大きくする */
 }
     
 /* Q1の上に十分な間隔を追加 */
@@ -268,11 +273,16 @@ iframe {
             </p>
         </div>
 
+ <!-- YouTube動画を埋め込み -->
+    <div id="player"></div>
 
-
-        <!-- リンク -->
-        <a href="./Activity2.html" id="nextLink" style="display: none;">Go to Activity2</a>
+    <!-- 次のページへのリンク -->
+    <div id="nextLink">
+        <a href="next-page.html">次のページへ進む</a>
     </div>
+
+    <script src="https://www.youtube.com/iframe_api"></script>
+    <script src="script.js"></script>
 </body>
 </html>
 <!-- HTML内のJavaScriptコード -->
@@ -285,14 +295,29 @@ const answers = {
     Q3: ["い"],
     Q4: ["い"],
     Q5: ["い"],
-
 };
 
-const buttonsPressed = {
-    E1: false, E2: false, Q1: false, Q2: false, Q3: false,
-    Q4: false, Q5: false, Q6: false, Q7: false, Q8: false,
-    Q9: false, Q10: false
-};
+let player;
+
+function onYouTubeIframeAPIReady() {
+    player = new YT.Player('player', {
+        videoId: '6Gg_9ivGclI',
+        events: {
+            'onStateChange': onPlayerStateChange
+        }
+    });
+}
+
+function onPlayerStateChange(event) {
+    if (event.data === YT.PlayerState.ENDED) {
+        showNextLink();
+    }
+}
+
+function showNextLink() {
+    const nextLink = document.getElementById('nextLink');
+    nextLink.style.display = 'block';
+}
 
 function startRecognition(questionId) {
     if (!('webkitSpeechRecognition' in window)) {
@@ -306,15 +331,7 @@ function startRecognition(questionId) {
     recognition.onresult = function(event) {
         const transcript = event.results[0][0].transcript.trim();
         const isCorrect = isCorrectAnswer(questionId, transcript);
-
         showFeedback(questionId, isCorrect, transcript);
-
-        buttonsPressed[questionId] = true;
-
-        // すべてのボタンが押されたら次へ進む
-        if (Object.values(buttonsPressed).every(Boolean)) {
-            document.getElementById("nextLink").style.display = "block";
-        }
     };
 
     recognition.onerror = function(event) {
@@ -325,24 +342,14 @@ function startRecognition(questionId) {
     recognition.start();
 }
 
-// 判定関数
 function isCorrectAnswer(questionId, userInput) {
     const normalizedInput = normalizeText(userInput);
-    const correctEnding = answers[questionId][0];
-
-    // 「くない」を優先して判定し、それ以外の場合に「い」を判定
-    if (correctEnding === "くない" && normalizedInput.endsWith("くない")) {
-        return true;
-    } else if (correctEnding === "い" && normalizedInput.endsWith("い") && !normalizedInput.endsWith("くない")) {
-        return true;
-    }
-    return false;
+    return normalizedInput.endsWith("い") && !normalizedInput.endsWith("くない");
 }
 
-// テキストを正規化する関数
 function normalizeText(text) {
     let normalized = text.toLowerCase().replace(/\s+/g, '');
-    normalized = normalized.replace(/です$/, ''); // 「です」を削除
+    normalized = normalized.replace(/です$/, '');
     return normalized;
 }
 
@@ -354,8 +361,7 @@ function showFeedback(questionId, isCorrect, transcript) {
     const wrongAudio = document.getElementById(`wrongAudio${questionId}`);
     const feedbackText = document.getElementById(`feedbackText${questionId}`);
 
-    // フィードバックメッセージは問題ごとに異なる
-    const feedbackMessage = getFeedbackText(questionId);
+    const feedbackMessage = getFeedbackText(questionId, isCorrect);
 
     if (isCorrect) {
         if (correctImage) correctImage.style.display = 'block';
@@ -367,7 +373,6 @@ function showFeedback(questionId, isCorrect, transcript) {
         if (wrongAudio) wrongAudio.play();
     }
 
-    // どちらのケースでもフィードバックメッセージを表示
     if (feedbackText) {
         feedbackText.textContent = feedbackMessage;
     }
@@ -376,7 +381,6 @@ function showFeedback(questionId, isCorrect, transcript) {
     if (feedbackText) feedbackText.style.display = 'block';
 }
 
-// 各問題ごとのフィードバックメッセージを返す関数
 function getFeedbackText(questionId, isCorrect) {
     const feedbackMessages = {
         E1: {
@@ -384,33 +388,27 @@ function getFeedbackText(questionId, isCorrect) {
             incorrect: "不正解です。答えは「てんきは いいです。」です。（The correct answer is 'The weather is good.'）"
         },
         E2: {
-            correct: "正解！てんきは よくないです。（The weather is not good.）",
-            incorrect: "不正解です。答えは「てんきは よくないです。」です。（The correct answer is 'The weather is not good.'）"
+            correct: "正解！てんきは いいです。（The weather is good.）",
+            incorrect: "不正解です。答えは「てんきは いいです。」です。（The correct answer is 'The weather is good.'）"
         },
         Q1: {
             correct: "正解！エベレストは たかいです。（Mount Everest is high.）",
             incorrect: "不正解です。答えは「エベレストは たかいです。」です。（The correct answer is 'Mount Everest is high.'）"
         },
         // 他の問題も同様に設定
-        Q10: {
-            correct: "正解！にほんとブラジルは ちかくないです。（Japan and Brazil are not close.）",
-            incorrect: "不正解です。答えは「にほんとブラジルは ちかくないです。」です。（The correct answer is 'Japan and Brazil are not close.'）"
-        }
     };
 
-    // 指定された質問IDのフィードバックを取得
     const feedback = feedbackMessages[questionId];
 
-    // フィードバックが存在すれば、正誤に応じてメッセージを返す
     if (feedback) {
         return isCorrect ? feedback.correct : feedback.incorrect;
     }
 
-    // フィードバックが設定されていない場合のデフォルトメッセージ
     return isCorrect 
         ? "正解！フィードバックが設定されていません。" 
         : "不正解です。フィードバックが設定されていません。";
 }
+
 document.querySelectorAll('.mic-button').forEach(button => {
     const questionId = button.id.replace('startButton', '');
     button.addEventListener('click', () => startRecognition(questionId));
