@@ -114,17 +114,32 @@ a {
     margin: 30px auto;
     color: #007bff;
     text-decoration: none;
-    font-size: 22px;
+    font-size: 28px;  /* 文字サイズを22pxから28pxに増加 */
+    font-weight: bold;  /* 太字にする */
+    padding: 10px 20px;  /* クリック領域を広げる */
+    transition: all 0.3s ease;  /* ホバー効果をスムーズにする */
 }
+
 a:hover {
     text-decoration: underline;
+    color: #0056b3;  /* ホバー時の色を少し濃くする */
+    transform: scale(1.05);  /* ホバー時に少し大きくする */
 }
-   
+    
 /* Q1の上に十分な間隔を追加 */
 #Q1 {
     margin-top: 100px; /* Notice Boardとの間隔を調整 */
 }
+.red-bold {
+            color: red;
+            font-weight: bold;
+        }
+.blue-bold {
+            color: #007bff;      /* 文字色を青に設定 */
+            font-weight: bold;   /* 文字を太字に設定 */
+        }
 </style>
+
 
 </head>
 <body>
@@ -341,16 +356,16 @@ a:hover {
 <div class="question" id="Q9">
     <p>Q9</p>
     <img src="https://raw.githubusercontent.com/moguura/my-images/main/20%E6%99%82.png" alt="Q9 Image">
-    <img src="https://raw.githubusercontent.com/moguura/my-images/main/2-9.png" alt="Q9 Image">
+    <img src="https://raw.githubusercontent.com/moguura/my-images/main/2-9.jpg" alt="Q9 Image">
     <p style="text-align: center;"><span class="highlight">からい</span> → 　この<ruby>ラーメン<rt>らーめん</rt></ruby>は（ 　　　）</p>
     <button id="startButtonQ9" class="mic-button"></button>
     <div class="feedback" id="feedbackQ9">
         <img id="correctImageQ9" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%BE%E3%82%8B.png" alt="正しい答え">
         <img id="wrongImageQ9" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%B0%E3%81%A4.png" alt="間違った答え">
+        <div id="feedbackTextQ9" class="feedback-text"></div>
     </div>
     <audio id="correctAudioQ9" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E6%AD%A3%E8%A7%A32.mp3"></audio>
     <audio id="wrongAudioQ9" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E4%B8%8D%E6%AD%A3%E8%A7%A31.mp3"></audio>
-    <div id="feedbackTextQ9" class="feedback-text"></div>
 </div>
 
 <!-- 問題10 -->
@@ -363,10 +378,10 @@ a:hover {
     <div class="feedback" id="feedbackQ10">
         <img id="correctImageQ10" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%BE%E3%82%8B.png" alt="正しい答え">
         <img id="wrongImageQ10" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%B0%E3%81%A4.png" alt="間違った答え">
+         <div id="feedbackTextQ10" class="feedback-text"></div>
     </div>
     <audio id="correctAudioQ10" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E6%AD%A3%E8%A7%A32.mp3"></audio>
     <audio id="wrongAudioQ10" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E4%B8%8D%E6%AD%A3%E8%A7%A31.mp3"></audio>
-    <div id="feedbackTextQ10" class="feedback-text"></div>
  </div>
 
         <!-- リンク -->
@@ -376,35 +391,26 @@ a:hover {
 </html>
 <!-- HTML内のJavaScriptコード -->
 <script>
-    const answers = {
-        E1: ["いいです", "天気はいいです", "良いです", "てんきはいいです", "tenkiwa iidesu", "iidesu"],
-        E2: ["良くないです", "天気は良くないです", "よくないです", "てんきは よくないです", "yokunaidesu", "tenkiwa yokunaidesu"], 
-        Q1: ["暖かいです", "今日は暖かいです"],
-        Q2: ["冷たいです", "コーヒーは冷たいです"],
-        Q3: ["難しいです", "テストは難しいです"],
-        Q4: ["良くないです", "テストは良くないです","よくないです","テストはよくないです", "yokunaidesu", "testwa yokunaidesu"],
-        Q5: ["重くないです", "荷物は重くないです"],
-        Q6: ["涼しいです", "部屋の中は涼しいです"],
-        Q7: ["面白くないです", "ゲームは面白くないです"],
-        Q8: ["少ないです", "お客さんは少ないです"],
-        Q9: ["からくないです", "このラーメンはからくないです", "辛くないです", "このラーメンは辛くないです", "karakunaidesu", "konoraamenwa karakunaidesu"],
-        Q10: ["楽しいです", "カラオケは楽しいです"]
-    };
+const answers = {
+    E1: ["い"],
+    E2: ["くない"],
+    Q1: ["い"],
+    Q2: ["い"],
+    Q3: ["い"],
+    Q4: ["くない"],
+    Q5: ["くない"],
+    Q6: ["い"],
+    Q7: ["くない"],
+    Q8: ["い"],
+    Q9: ["くない"],
+    Q10: ["い"]
+};
 
-    const buttonsPressed = {
-        E1: false,
-        E2: false,
-        Q1: false,
-        Q2: false,
-        Q3: false,
-        Q4: false,
-        Q5: false,
-        Q6: false,
-        Q7: false,
-        Q8: false,
-        Q9: false,
-        Q10: false
-    };
+const buttonsPressed = {
+    E1: false, E2: false, Q1: false, Q2: false, Q3: false,
+    Q4: false, Q5: false, Q6: false, Q7: false, Q8: false,
+    Q9: false, Q10: false
+};
 
 function startRecognition(questionId) {
     if (!('webkitSpeechRecognition' in window)) {
@@ -417,13 +423,7 @@ function startRecognition(questionId) {
 
     recognition.onresult = function(event) {
         const transcript = event.results[0][0].transcript.trim();
-        // 音声認識結果を正規化
-        const normalizedTranscript = normalizeText(transcript);
-
-        // 正解のいくつかのバリエーションをチェック
-        const isCorrect = answers[questionId]?.some(answer =>
-            normalizeText(answer) === normalizedTranscript
-        );
+        const isCorrect = isCorrectAnswer(questionId, transcript);
 
         showFeedback(questionId, isCorrect, transcript);
 
@@ -443,15 +443,25 @@ function startRecognition(questionId) {
     recognition.start();
 }
 
-// テキストを正規化して比較しやすくする関数
-function normalizeText(text) {
-    // 小文字化、余分なスペースを除去
-    let normalizedText = text.replace(/\s+/g, '').toLowerCase();
-    
-    // 日本語の表記ゆれを吸収する（例: 「です」や「ます」などを削除する）
-    normalizedText = normalizedText.replace(/です|ます/g, '');
+// 判定関数
+function isCorrectAnswer(questionId, userInput) {
+    const normalizedInput = normalizeText(userInput);
+    const correctEnding = answers[questionId][0];
 
-    return normalizedText;
+    // 「くない」を優先して判定し、それ以外の場合に「い」を判定
+    if (correctEnding === "くない" && normalizedInput.endsWith("くない")) {
+        return true;
+    } else if (correctEnding === "い" && normalizedInput.endsWith("い") && !normalizedInput.endsWith("くない")) {
+        return true;
+    }
+    return false;
+}
+
+// テキストを正規化する関数
+function normalizeText(text) {
+    let normalized = text.toLowerCase().replace(/\s+/g, '');
+    normalized = normalized.replace(/です$/, ''); // 「です」を削除
+    return normalized;
 }
 
 function showFeedback(questionId, isCorrect, transcript) {
