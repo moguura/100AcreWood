@@ -114,18 +114,31 @@ a {
     margin: 30px auto;
     color: #007bff;
     text-decoration: none;
-    font-size: 22px;
+    font-size: 28px;  /* 文字サイズを22pxから28pxに増加 */
+    font-weight: bold;  /* 太字にする */
+    padding: 10px 20px;  /* クリック領域を広げる */
+    transition: all 0.3s ease;  /* ホバー効果をスムーズにする */
 }
+
 a:hover {
     text-decoration: underline;
+    color: #0056b3;  /* ホバー時の色を少し濃くする */
+    transform: scale(1.05);  /* ホバー時に少し大きくする */
 }
-   
+    
 /* Q1の上に十分な間隔を追加 */
 #Q1 {
     margin-top: 100px; /* Notice Boardとの間隔を調整 */
 }
+.red-bold {
+            color: red;
+            font-weight: bold;
+        }
+.blue-bold {
+            color: #007bff;      /* 文字色を青に設定 */
+            font-weight: bold;   /* 文字を太字に設定 */
+        }
 </style>
-
 
 </head>
 <body>
@@ -134,23 +147,25 @@ a:hover {
         <!-- 初めの説明文 -->
         <div class="instructions">
             <p>
-                Please talk about the image using い-adjectives. Look at Example 1.<br>
-                Please press the microphone button and say <strong>いいです（iidesu）.</strong><br>
+                Suddenly, it seems that the AI robot from Tohoku University has taken an interest in you.<br>
+　　　　　　　　　This AI robot is studying how humans think.<br>
+　　　　　　　　　Please share your thoughts. Let's start with an example.
             </p>
+            <img src="https://raw.githubusercontent.com/moguura/my-images/main/3-OP1.png" alt="E1 Image">
         </div>
 
         <!-- E1の例題 -->
         <div class="question" id="E1">
             <p>e.g.1</p>
             <img src="https://raw.githubusercontent.com/moguura/my-images/main/%E4%BE%8B1.jpg" alt="E1 Image">
-            <p><span class="highlight">いい</span> → てんきは（ 　　　）</p>
+            <p><span class="highlight">いい</span> → たばこは（ 　　　）</p>
             <button id="startButtonE1" class="mic-button" aria-label="音声認識を開始"></button>
             <div class="feedback" id="feedbackE1">
-                <img id="correctImageE1" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%BE%E3%82%8B.png" alt="正しい答え">
-                <img id="wrongImageE1" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%B0%E3%81%A4.png" alt="間違った答え">
+                <img id="correctImageE1" src="https://raw.githubusercontent.com/moguura/my-images/main/3-OP2yes.png" alt="正しい答え">
+                <img id="wrongImageE1" src="https://raw.githubusercontent.com/moguura/my-images/main/3-OP2no.png" alt="間違った答え">
             </div>
-            <audio id="correctAudioE1" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E6%AD%A3%E8%A7%A32.mp3"></audio>
-            <audio id="wrongAudioE1" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E4%B8%8D%E6%AD%A3%E8%A7%A31.mp3"></audio>
+            <audio id="correctAudioE1" src="https://raw.githubusercontent.com/moguura/my-images/main/%E5%8F%AF%E6%84%9B%E3%81%84%E5%8B%95%E4%BD%9C.mp3"></audio>
+            <audio id="wrongAudioE1" src="https://raw.githubusercontent.com/moguura/my-images/main/%E9%A3%9F%E3%81%B9%E7%89%A9%E3%82%92%E3%83%91%E3%82%AF%E3%83%83.mp3"></audio>
         </div>
         
         <!-- E1とE2の間の説明文 -->
@@ -341,37 +356,24 @@ a:hover {
 </html>
 <!-- HTML内のJavaScriptコード -->
 <script>
-    const answers = {
-        E1: ["いいです", "天気はいいです"],
-        E2: ["よくないです", "天気はよくないです"],
-        Q1: ["高いです", "エベレストは高いです"],
-        Q2: ["安くないです", "ダイヤモンドは安くないです"],
-        Q3: ["暑いです", "日本の８月は暑いです"],
-        Q4: ["寒いです", "日本の２月は寒いです"],
-        Q5: ["忙しいです", "会社員の朝は忙しいです"],
-        Q6: ["新しくないです", "この車は新しくないです"],
-        Q7: ["美味しくないです", "薬は美味しくないです"],
-        Q8: ["多くないです", "今、人は多くないです"],
-        Q9: ["大きいです", "このかばんは大きいです"],
-        Q10: ["近くないです", "日本とブラジルは近くないです"]
-    };
+const answers = {
+    E1: ["い"],
+    E2: ["い"],
+    Q1: ["い"],
+    Q2: ["い"],
+    Q3: ["い"],
+    Q4: ["い"],
+    Q5: ["い"],
 
-    const buttonsPressed = {
-        E1: false,
-        E2: false,
-        Q1: false,
-        Q2: false,
-        Q3: false,
-        Q4: false,
-        Q5: false,
-        Q6: false,
-        Q7: false,
-        Q8: false,
-        Q9: false,
-        Q10: false
-    };
+};
 
- function startRecognition(questionId) {
+const buttonsPressed = {
+    E1: false, E2: false, Q1: false, Q2: false, Q3: false,
+    Q4: false, Q5: false, Q6: false, Q7: false, Q8: false,
+    Q9: false, Q10: false
+};
+
+function startRecognition(questionId) {
     if (!('webkitSpeechRecognition' in window)) {
         alert("Speech recognition is not available in this browser. Please use Google Chrome.");
         return;
@@ -382,22 +384,15 @@ a:hover {
 
     recognition.onresult = function(event) {
         const transcript = event.results[0][0].transcript.trim();
-        const normalizedTranscript = transcript.replace(/\s+/g, '').toLowerCase();
-        const isCorrect = answers[questionId]?.some(answer =>
-            answer.replace(/\s+/g, '').toLowerCase() === normalizedTranscript
-        );
+        const isCorrect = isCorrectAnswer(questionId, transcript);
 
-        showFeedback(questionId, isCorrect);
+        showFeedback(questionId, isCorrect, transcript);
 
-        // ログで結果を確認
-        console.log(`Question ID: ${questionId}, Transcript: ${transcript}, Is Correct: ${isCorrect}`);
-
-        // ボタンが押されたことを記録
         buttonsPressed[questionId] = true;
 
-        // すべてのボタンが押されたか確認
+        // すべてのボタンが押されたら次へ進む
         if (Object.values(buttonsPressed).every(Boolean)) {
-            document.getElementById("nextLink").style.display = "block"; // リンクを表示
+            document.getElementById("nextLink").style.display = "block";
         }
     };
 
@@ -407,31 +402,97 @@ a:hover {
     };
 
     recognition.start();
+}
+
+// 判定関数
+function isCorrectAnswer(questionId, userInput) {
+    const normalizedInput = normalizeText(userInput);
+    const correctEnding = answers[questionId][0];
+
+    // 「くない」を優先して判定し、それ以外の場合に「い」を判定
+    if (correctEnding === "くない" && normalizedInput.endsWith("くない")) {
+        return true;
+    } else if (correctEnding === "い" && normalizedInput.endsWith("い") && !normalizedInput.endsWith("くない")) {
+        return true;
+    }
+    return false;
+}
+
+// テキストを正規化する関数
+function normalizeText(text) {
+    let normalized = text.toLowerCase().replace(/\s+/g, '');
+    normalized = normalized.replace(/です$/, ''); // 「です」を削除
+    return normalized;
+}
+
+function showFeedback(questionId, isCorrect, transcript) {
+    const correctImage = document.getElementById(`correctImage${questionId}`);
+    const wrongImage = document.getElementById(`wrongImage${questionId}`);
+    const feedback = document.getElementById(`feedback${questionId}`);
+    const correctAudio = document.getElementById(`correctAudio${questionId}`);
+    const wrongAudio = document.getElementById(`wrongAudio${questionId}`);
+    const feedbackText = document.getElementById(`feedbackText${questionId}`);
+
+    // フィードバックメッセージは問題ごとに異なる
+    const feedbackMessage = getFeedbackText(questionId);
+
+    if (isCorrect) {
+        if (correctImage) correctImage.style.display = 'block';
+        if (wrongImage) wrongImage.style.display = 'none';
+        if (correctAudio) correctAudio.play();
+    } else {
+        if (correctImage) correctImage.style.display = 'none';
+        if (wrongImage) wrongImage.style.display = 'block';
+        if (wrongAudio) wrongAudio.play();
     }
 
-    function showFeedback(questionId, isCorrect) {
-        const correctImage = document.getElementById(`correctImage${questionId}`);
-        const wrongImage = document.getElementById(`wrongImage${questionId}`);
-        const feedback = document.getElementById(`feedback${questionId}`);
-        const correctAudio = document.getElementById(`correctAudio${questionId}`);
-        const wrongAudio = document.getElementById(`wrongAudio${questionId}`);
+    // どちらのケースでもフィードバックメッセージを表示
+    if (feedbackText) {
+        feedbackText.textContent = feedbackMessage;
+    }
 
-        if (isCorrect) {
-            if (correctImage) correctImage.style.display = 'block';
-            if (wrongImage) wrongImage.style.display = 'none';
-            if (correctAudio) correctAudio.play();
-        } else {
-            if (correctImage) correctImage.style.display = 'none';
-            if (wrongImage) wrongImage.style.display = 'block';
-            if (wrongAudio) wrongAudio.play();
+    if (feedback) feedback.style.display = 'block';
+    if (feedbackText) feedbackText.style.display = 'block';
+}
+
+// 各問題ごとのフィードバックメッセージを返す関数
+function getFeedbackText(questionId, isCorrect) {
+    const feedbackMessages = {
+        E1: {
+            correct: "正解！てんきは いいです。（The weather is good.）",
+            incorrect: "不正解です。答えは「てんきは いいです。」です。（The correct answer is 'The weather is good.'）"
+        },
+        E2: {
+            correct: "正解！てんきは よくないです。（The weather is not good.）",
+            incorrect: "不正解です。答えは「てんきは よくないです。」です。（The correct answer is 'The weather is not good.'）"
+        },
+        Q1: {
+            correct: "正解！エベレストは たかいです。（Mount Everest is high.）",
+            incorrect: "不正解です。答えは「エベレストは たかいです。」です。（The correct answer is 'Mount Everest is high.'）"
+        },
+        // 他の問題も同様に設定
+        Q10: {
+            correct: "正解！にほんとブラジルは ちかくないです。（Japan and Brazil are not close.）",
+            incorrect: "不正解です。答えは「にほんとブラジルは ちかくないです。」です。（The correct answer is 'Japan and Brazil are not close.'）"
         }
+    };
 
-        if (feedback) feedback.style.display = 'block';
+    // 指定された質問IDのフィードバックを取得
+    const feedback = feedbackMessages[questionId];
+
+    // フィードバックが存在すれば、正誤に応じてメッセージを返す
+    if (feedback) {
+        return isCorrect ? feedback.correct : feedback.incorrect;
     }
 
-    document.querySelectorAll('.mic-button').forEach(button => {
-        const questionId = button.id.replace('startButton', '');
-        button.addEventListener('click', () => startRecognition(questionId));
-    });
+    // フィードバックが設定されていない場合のデフォルトメッセージ
+    return isCorrect 
+        ? "正解！フィードバックが設定されていません。" 
+        : "不正解です。フィードバックが設定されていません。";
+}
+document.querySelectorAll('.mic-button').forEach(button => {
+    const questionId = button.id.replace('startButton', '');
+    button.addEventListener('click', () => startRecognition(questionId));
+});
 </script>
 </html>
