@@ -94,9 +94,9 @@ h1 {
 
 /* フィードバックの〇×イラストを小さく */
 .feedback img {
-    width: 300px;
+    width: 600px;
     height: auto;
-    margin: 20px auto;
+    margin: 30px auto;
     display: block;
 }
 .feedback-text {
@@ -138,6 +138,13 @@ a:hover {
             color: #007bff;      /* 文字色を青に設定 */
             font-weight: bold;   /* 文字を太字に設定 */
         }
+iframe {
+            display: block;
+            margin: 20px auto;
+            max-width: 100%;
+            height: auto;
+            border: none;
+        }
 </style>
 
 </head>
@@ -157,8 +164,9 @@ a:hover {
 
     　   <div class="instructions">
             <p> 
-                How do you feel about smoking cigarettes? If you think it's good, please say <strong>たばこは いいです。</strong><br>
-                If you think it's bad, please say <strong>たばこは よくないです</strong><br>。 
+                How do you feel about smoking cigarettes?<br> 
+                If you think it's good, please say <strong>たばこは いいです</strong>。<br>
+                If you think it's bad, please say <strong>たばこは よくないです</strong>。<br> 
                 There is no correct answer to this question. Please tell me your thoughts.
             </p>
         </div>
@@ -169,11 +177,11 @@ a:hover {
         　  <p><span class="highlight">いい</span> → たばこは（ 　　　）</p>
             <button id="startButtonE1" class="mic-button" aria-label="音声認識を開始"></button>
             <div class="feedback" id="feedbackE1">
-                <img id="correctImageE1" src="https://raw.githubusercontent.com/moguura/my-images/main/3-OP2yes.png" alt="正しい答え">
-                <img id="wrongImageE1" src="https://raw.githubusercontent.com/moguura/my-images/main/3-OP2no.png" alt="間違った答え">
+                <img id="correctImageE1" src="https://raw.githubusercontent.com/moguura/my-images/main/3-OP2no.png" alt="正しい答え">
+                <img id="wrongImageE1" src="https://raw.githubusercontent.com/moguura/my-images/main/3-OP2yes.png" alt="間違った答え">
             </div>
-            <audio id="correctAudioE1" src="https://raw.githubusercontent.com/moguura/my-images/main/%E5%8F%AF%E6%84%9B%E3%81%84%E5%8B%95%E4%BD%9C.mp3"></audio>
-            <audio id="wrongAudioE1" src="https://raw.githubusercontent.com/moguura/my-images/main/%E9%A3%9F%E3%81%B9%E7%89%A9%E3%82%92%E3%83%91%E3%82%AF%E3%83%83.mp3"></audio>
+            <audio id="correctAudioE1" src="https://raw.githubusercontent.com/moguura/my-images/main/%E9%A3%9F%E3%81%B9%E7%89%A9%E3%82%92%E3%83%91%E3%82%AF%E3%83%83.mp3"></audio>
+            <audio id="wrongAudioE1" src="https://raw.githubusercontent.com/moguura/my-images/main/%E5%8F%AF%E6%84%9B%E3%81%84%E5%8B%95%E4%BD%9C.mp3"></audio>
         </div>
         
         <!-- E1とE2の間の説明文 -->
