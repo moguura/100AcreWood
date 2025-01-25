@@ -271,151 +271,166 @@ h1 {
       </div>
 </body>
 </html>
-<!-- HTML内のJavaScriptコード -->
-const answers = {
-    E1: ["い"],
-    Q1: ["い"],
-    Q2: ["い"],
-    Q3: ["い"],
-    Q4: ["い"],
-    Q5: ["い"],
-};
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <!-- 既存のhead内容はそのまま -->
+</head>
+<body>
+    <!-- 既存のbody内容はそのまま -->
 
-// ボタン押下状態を管理
-const buttonsPressed = {
-    E1: false, Q1: false, Q2: false, Q3: false, Q4: false, Q5: false
-};
-
-// 初期状態を隠す
-document.addEventListener('DOMContentLoaded', () => {
-    const finalInstructions = document.querySelector('.instructions:last-of-type');
-    const noticeBoard = document.querySelector('.notice-board');
-
-    if (finalInstructions) {
-        finalInstructions.style.display = 'none';
-    }
-
-    if (noticeBoard) {
-        noticeBoard.style.display = 'none';
-    }
-});
-
-function startRecognition(questionId) {
-    if (!('webkitSpeechRecognition' in window)) {
-        alert("Speech recognition is not available in this browser. Please use Google Chrome.");
-        return;
-    }
-
-    const recognition = new webkitSpeechRecognition();
-    recognition.lang = 'ja-JP';
-
-    recognition.onresult = function(event) {
-        const transcript = event.results[0][0].transcript.trim();
-        const isCorrect = isCorrectAnswer(questionId, transcript);
-
-        showFeedback(questionId, isCorrect, transcript);
-
-        buttonsPressed[questionId] = true;
-        checkAllButtonsPressed();
+    <script>
+    const answers = {
+        E1: ["い"],
+        Q1: ["い"],
+        Q2: ["い"],
+        Q3: ["い"],
+        Q4: ["い"],
+        Q5: ["い"],
     };
 
-    recognition.onerror = function(event) {
-        alert("Speech recognition failed. Please try again.");
-        console.error("Speech Recognition Error:", event.error);
+    const buttonsPressed = {
+        E1: false, Q1: false, Q2: false, Q3: false, Q4: false, Q5: false
     };
 
-    recognition.start();
-}
+    document.addEventListener('DOMContentLoaded', () => {
+        const finalInstructions = document.querySelector('.instructions:last-of-type');
+        const noticeBoard = document.querySelector('.notice-board');
 
-function checkAllButtonsPressed() {
-    if (Object.values(buttonsPressed).every(Boolean)) {
-        showFinalInstructions();
-    }
-}
-
-function showFinalInstructions() {
-    const finalInstructions = document.querySelector('.instructions:last-of-type');
-    const noticeBoard = document.querySelector('.notice-board');
-
-    if (finalInstructions) {
-        finalInstructions.style.display = 'block';
-    }
-
-    if (noticeBoard) {
-        noticeBoard.style.display = 'block';
-    }
-}
-
-function isCorrectAnswer(questionId, userInput) {
-    const normalizedInput = normalizeText(userInput);
-    const correctEnding = answers[questionId][0];
-
-    if (correctEnding === "くない" && normalizedInput.endsWith("くない")) {
-        return true;
-    } else if (correctEnding === "い" && normalizedInput.endsWith("い") && !normalizedInput.endsWith("くない")) {
-        return true;
-    }
-    return false;
-}
-
-function normalizeText(text) {
-    let normalized = text.toLowerCase().replace(/\s+/g, '');
-    normalized = normalized.replace(/です$/, '');
-    return normalized;
-}
-
-function showFeedback(questionId, isCorrect, transcript) {
-    const correctImage = document.getElementById(`correctImage${questionId}`);
-    const wrongImage = document.getElementById(`wrongImage${questionId}`);
-    const feedback = document.getElementById(`feedback${questionId}`);
-    const feedbackText = document.getElementById(`feedbackText${questionId}`);
-
-    const feedbackMessages = getFeedbackText(questionId);
-
-    if (isCorrect) {
-        correctImage.style.display = 'block';
-        wrongImage.style.display = 'none';
-        feedbackText.textContent = feedbackMessages.correct;
-    } else {
-        correctImage.style.display = 'none';
-        wrongImage.style.display = 'block';
-        feedbackText.textContent = feedbackMessages.incorrect;
-    }
-
-    feedback.style.display = 'block';
-    feedbackText.style.display = 'block';
-}
-
-function getFeedbackText(questionId) {
-    const feedbackMessages = {
-        E1: {
-            correct: "Your answer： タバコ（たばこ）は よくないです。（Smoking is not good.）",
-            incorrect: "Your answer： タバコ（たばこ）は いいです。（Smoking is good.）"
-        },
-        Q1: {
-            correct: "Your answer： べんきょうは　おもしろいです。（Studying is interesting.）",
-            incorrect: "Your answer：べんきょうは　おもしろくないです。（Studying is not interesting.）"
-        },
-        Q2: {
-            correct: "Your answer： やさいは　おいしいです。（Vegetables are tasty.）",
-            incorrect: "Your answer： やさいは　おいしくないです。（Vegetables are not tasty.）"
-        },
-        Q3: {
-            correct: "Your answer：スポーツ(すぽーつ)は　たのしいです。（Sports are fun.）",
-            incorrect: "Your answer：スポーツ(すぽーつ)は　たのしくないです。（Sports are not fun.）"
-        },
-        Q4: {
-            correct: "Your answer： きょうは　さむいです。（Today is cold.）",
-            incorrect: "Your answer： きょうは　さむくないです。（Today is not cold.）"
-        },
-        Q5: {
-            correct: "Your answer： にほんのカレー(かれー)は　からいです。（Japanese curry is spicy.）",
-            incorrect: "Your answer： にほんのカレー(かれー)は　からくないです。（Japanese curry is not spicy.）"
+        if (finalInstructions) {
+            finalInstructions.style.display = 'none';
         }
-    };
-    return feedbackMessages[questionId];
-}
 
-</script>
+        if (noticeBoard) {
+            noticeBoard.style.display = 'none';
+        }
+
+        // ボタンにイベントリスナーを追加
+        document.getElementById('startButtonE1').addEventListener('click', () => startRecognition('E1'));
+        document.getElementById('startButtonQ1').addEventListener('click', () => startRecognition('Q1'));
+        document.getElementById('startButtonQ2').addEventListener('click', () => startRecognition('Q2'));
+        document.getElementById('startButtonQ3').addEventListener('click', () => startRecognition('Q3'));
+        document.getElementById('startButtonQ4').addEventListener('click', () => startRecognition('Q4'));
+        document.getElementById('startButtonQ5').addEventListener('click', () => startRecognition('Q5'));
+    });
+
+    function startRecognition(questionId) {
+        if (!('webkitSpeechRecognition' in window)) {
+            alert("Speech recognition is not available in this browser. Please use Google Chrome.");
+            return;
+        }
+
+        const recognition = new webkitSpeechRecognition();
+        recognition.lang = 'ja-JP';
+
+        recognition.onresult = function(event) {
+            const transcript = event.results[0][0].transcript.trim();
+            const isCorrect = isCorrectAnswer(questionId, transcript);
+
+            showFeedback(questionId, isCorrect, transcript);
+
+            buttonsPressed[questionId] = true;
+            checkAllButtonsPressed();
+        };
+
+        recognition.onerror = function(event) {
+            alert("Speech recognition failed. Please try again.");
+            console.error("Speech Recognition Error:", event.error);
+        };
+
+        recognition.start();
+    }
+
+    function checkAllButtonsPressed() {
+        if (Object.values(buttonsPressed).every(Boolean)) {
+            showFinalInstructions();
+        }
+    }
+
+    function showFinalInstructions() {
+        const finalInstructions = document.querySelector('.instructions:last-of-type');
+        const noticeBoard = document.querySelector('.notice-board');
+
+        if (finalInstructions) {
+            finalInstructions.style.display = 'block';
+        }
+
+        if (noticeBoard) {
+            noticeBoard.style.display = 'block';
+        }
+    }
+
+    function isCorrectAnswer(questionId, userInput) {
+        const normalizedInput = normalizeText(userInput);
+        const correctEnding = answers[questionId][0];
+
+        if (correctEnding === "くない" && normalizedInput.endsWith("くない")) {
+            return true;
+        } else if (correctEnding === "い" && normalizedInput.endsWith("い") && !normalizedInput.endsWith("くない")) {
+            return true;
+        }
+        return false;
+    }
+
+    function normalizeText(text) {
+        let normalized = text.toLowerCase().replace(/\s+/g, '');
+        normalized = normalized.replace(/です$/, '');
+        return normalized;
+    }
+
+    function showFeedback(questionId, isCorrect, transcript) {
+        const correctImage = document.getElementById(`correctImage${questionId}`);
+        const wrongImage = document.getElementById(`wrongImage${questionId}`);
+        const feedback = document.getElementById(`feedback${questionId}`);
+        const feedbackText = document.getElementById(`feedbackText${questionId}`);
+
+        const feedbackMessages = getFeedbackText(questionId);
+
+        if (isCorrect) {
+            correctImage.style.display = 'block';
+            wrongImage.style.display = 'none';
+            feedbackText.textContent = feedbackMessages.correct;
+        } else {
+            correctImage.style.display = 'none';
+            wrongImage.style.display = 'block';
+            feedbackText.textContent = feedbackMessages.incorrect;
+        }
+
+        feedback.style.display = 'block';
+        feedbackText.style.display = 'block';
+    }
+
+    function getFeedbackText(questionId) {
+        const feedbackMessages = {
+            E1: {
+                correct: "Your answer： タバコ（たばこ）は よくないです。（Smoking is not good.）",
+                incorrect: "Your answer： タバコ（たばこ）は いいです。（Smoking is good.）"
+            },
+            Q1: {
+                correct: "Your answer： べんきょうは　おもしろいです。（Studying is interesting.）",
+                incorrect: "Your answer：べんきょうは　おもしろくないです。（Studying is not interesting.）"
+            },
+            Q2: {
+                correct: "Your answer： やさいは　おいしいです。（Vegetables are tasty.）",
+                incorrect: "Your answer： やさいは　おいしくないです。（Vegetables are not tasty.）"
+            },
+            Q3: {
+                correct: "Your answer：スポーツ(すぽーつ)は　たのしいです。（Sports are fun.）",
+                incorrect: "Your answer：スポーツ(すぽーつ)は　たのしくないです。（Sports are not fun.）"
+            },
+            Q4: {
+                correct: "Your answer： きょうは　さむいです。（Today is cold.）",
+                incorrect: "Your answer： きょうは　さむくないです。（Today is not cold.）"
+            },
+            Q5: {
+                correct: "Your answer： にほんのカレー(かれー)は　からいです。（Japanese curry is spicy.）",
+                incorrect: "Your answer： にほんのカレー(かれー)は　からくないです。（Japanese curry is not spicy.）"
+            }
+        };
+        return feedbackMessages[questionId];
+    }
+    </script>
+</body>
+</html>
 
 
