@@ -327,9 +327,10 @@ function checkAllButtonsPressed() {
         // 最後の説明文とNotice Boardを表示
         document.querySelector('.instructions:last-of-type').style.display = 'block';
         document.querySelector('.notice-board').style.display = 'block';
+    } else {
+        console.log("まだ押されていないボタンがあります。");
     }
 }
-
 
 // 正解判定関数
 function isCorrectAnswer(questionId, userInput) {
@@ -420,4 +421,5 @@ document.querySelectorAll('.mic-button').forEach(button => {
     button.addEventListener('click', () => startRecognition(questionId));
 });
 </script>
+
 
