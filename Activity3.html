@@ -313,6 +313,8 @@ function startRecognition(questionId) {
 
 // 全てのボタンが押されたか確認
 function checkAllButtonsPressed() {
+    console.log('buttonsPressed 状態:', buttonsPressed); // デバッグ用
+
     if (Object.values(buttonsPressed).every(Boolean)) {
         // 最後の説明文とNotice Boardを表示
         document.querySelector('.instructions:last-of-type').style.display = 'block';
@@ -347,18 +349,24 @@ function showFeedback(questionId, isCorrect, transcript) {
     const feedback = document.getElementById(`feedback${questionId}`);
     const correctAudio = document.getElementById(`correctAudio${questionId}`);
     const wrongAudio = document.getElementById(`wrongAudio${questionId}`);
+    const feedbackText = document.getElementById(`feedbackText${questionId}`); // テキスト用要素を取得
+
+    const feedbackMessages = getFeedbackText(questionId);
 
     if (isCorrect) {
         if (correctImage) correctImage.style.display = 'block';
         if (wrongImage) wrongImage.style.display = 'none';
         if (correctAudio) correctAudio.play();
+        if (feedbackText) feedbackText.textContent = feedbackMessages.correct; // 正解メッセージ
     } else {
         if (correctImage) correctImage.style.display = 'none';
         if (wrongImage) wrongImage.style.display = 'block';
         if (wrongAudio) wrongAudio.play();
+        if (feedbackText) feedbackText.textContent = feedbackMessages.incorrect; // 不正解メッセージ
     }
 
     if (feedback) feedback.style.display = 'block';
+    if (feedbackText) feedbackText.style.display = 'block'; // テキストを表示
 }
 
 // 各問題ごとのフィードバックメッセージを返す関数
@@ -403,3 +411,4 @@ document.querySelectorAll('.mic-button').forEach(button => {
     button.addEventListener('click', () => startRecognition(questionId));
 });
 </script>
+
