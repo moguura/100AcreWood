@@ -136,6 +136,21 @@ h1 {
 .notice-board {
     display: none; /* 初期状態では非表示 */
 }
+.question > p:first-child {
+    font-weight: bold;
+    font-size: 28px;
+    color: #007bff;
+}
+
+/* フィードバックテキスト用のスタイル */
+.feedback-text {
+    font-size: 24px;
+    color: #333;
+    font-weight: normal; /* 太字を解除 */
+    text-align: center;
+    margin-top: 10px;
+    display: none; /* 初期状態では非表示 */
+}
 </style>
 </head>
 <body>
@@ -243,10 +258,10 @@ h1 {
 <!-- 問題5 -->
 <div class="question" id="Q5">
     <p>Q5</p>
-    <p style="text-align: center;"><span class="highlight">からい</span> → 　にほんの <ruby>カレー<rt>かれー</rt></ruby>は（ 　　　）</p>
+    <p style="text-align: center;"><span class="highlight">からい</span> → にほんの <ruby>カレー<rt>かれー</rt></ruby>は（ 　　　）</p>
     <button id="startButtonQ5" class="mic-button"></button>
-     <div class="feedback" id="feedbackQ5">
-        <p id="feedbackTextQ4" class="feedback-text"></p>
+    <div class="feedback" id="feedbackQ5">
+        <p id="feedbackTextQ5" class="feedback-text"></p>
         <img id="correctImageQ5" src="https://raw.githubusercontent.com/moguura/my-images/main/3-5no.png" alt="正しい答え">
         <img id="wrongImageQ5" src="https://raw.githubusercontent.com/moguura/my-images/main/3-5yes.png" alt="間違った答え">
     </div>
