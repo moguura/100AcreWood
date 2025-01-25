@@ -411,6 +411,14 @@ function showFeedback(questionId, isCorrect, transcript) {
 
     feedback.style.display = 'block';
     feedbackText.style.display = 'block';
+    const correctAudio = document.getElementById(`correctAudio${questionId}`);
+    const wrongAudio = document.getElementById(`wrongAudio${questionId}`);
+
+    if (isCorrect) {
+        correctAudio.play();
+    } else {
+        wrongAudio.play();
+    }
 }
 
 function getFeedbackText(questionId) {
