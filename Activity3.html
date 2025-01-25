@@ -272,7 +272,6 @@ h1 {
 </body>
 </html>
 <!-- HTML内のJavaScriptコード -->
-<script>
 const answers = {
     E1: ["い"],
     Q1: ["い"],
@@ -286,6 +285,20 @@ const answers = {
 const buttonsPressed = {
     E1: false, Q1: false, Q2: false, Q3: false, Q4: false, Q5: false,
 };
+
+// 初期状態を隠す
+document.addEventListener('DOMContentLoaded', () => {
+    const finalInstructions = document.querySelector('.instructions:last-of-type');
+    const noticeBoard = document.querySelector('.notice-board');
+
+    if (finalInstructions) {
+        finalInstructions.style.display = 'none';
+    }
+
+    if (noticeBoard) {
+        noticeBoard.style.display = 'none';
+    }
+});
 
 function startRecognition(questionId) {
     if (!('webkitSpeechRecognition' in window)) {
@@ -302,11 +315,9 @@ function startRecognition(questionId) {
 
         showFeedback(questionId, isCorrect, transcript);
 
-        // ボタン押下状態を更新
         buttonsPressed[questionId] = true;
-        console.log(`Button ${questionId} pressed:`, buttonsPressed); // 状態を確認
+        console.log(`Button ${questionId} pressed:`, buttonsPressed);
 
-        // 全てのボタンが押されたか確認
         checkAllButtonsPressed();
     };
 
@@ -318,21 +329,30 @@ function startRecognition(questionId) {
     recognition.start();
 }
 
-// 全てのボタンが押されたか確認
 function checkAllButtonsPressed() {
-    console.log('buttonsPressed 状態:', buttonsPressed); // デバッグ用
+    console.log('buttonsPressed 状態:', buttonsPressed);
 
     if (Object.values(buttonsPressed).every(Boolean)) {
         console.log("All buttons pressed. Showing Notice Board.");
-        // 最後の説明文とNotice Boardを表示
-        document.querySelector('.instructions:last-of-type').style.display = 'block';
-        document.querySelector('.notice-board').style.display = 'block';
+        showFinalInstructions();
     } else {
         console.log("まだ押されていないボタンがあります。");
     }
 }
 
-// 正解判定関数
+function showFinalInstructions() {
+    const finalInstructions = document.querySelector('.instructions:last-of-type');
+    const noticeBoard = document.querySelector('.notice-board');
+
+    if (finalInstructions) {
+        finalInstructions.style.display = 'block';
+    }
+
+    if (noticeBoard) {
+        noticeBoard.style.display = 'block';
+    }
+}
+
 function isCorrectAnswer(questionId, userInput) {
     const normalizedInput = normalizeText(userInput);
     const correctEnding = answers[questionId][0];
@@ -345,38 +365,32 @@ function isCorrectAnswer(questionId, userInput) {
     return false;
 }
 
-// テキストを正規化する関数
 function normalizeText(text) {
     let normalized = text.toLowerCase().replace(/\s+/g, '');
     normalized = normalized.replace(/です$/, ''); // 「です」を削除
     return normalized;
 }
 
-// フィードバック表示関数
 function showFeedback(questionId, isCorrect, transcript) {
     const correctImage = document.getElementById(`correctImage${questionId}`);
     const wrongImage = document.getElementById(`wrongImage${questionId}`);
     const feedback = document.getElementById(`feedback${questionId}`);
-    const correctAudio = document.getElementById(`correctAudio${questionId}`);
-    const wrongAudio = document.getElementById(`wrongAudio${questionId}`);
-    const feedbackText = document.getElementById(`feedbackText${questionId}`); // テキスト用要素を取得
+    const feedbackText = document.getElementById(`feedbackText${questionId}`);
 
     const feedbackMessages = getFeedbackText(questionId);
 
     if (isCorrect) {
         if (correctImage) correctImage.style.display = 'block';
         if (wrongImage) wrongImage.style.display = 'none';
-        if (correctAudio) correctAudio.play();
-        if (feedbackText) feedbackText.textContent = feedbackMessages.correct; // 正解メッセージ
+        if (feedbackText) feedbackText.textContent = feedbackMessages.correct;
     } else {
         if (correctImage) correctImage.style.display = 'none';
         if (wrongImage) wrongImage.style.display = 'block';
-        if (wrongAudio) wrongAudio.play();
-        if (feedbackText) feedbackText.textContent = feedbackMessages.incorrect; // 不正解メッセージ
+        if (feedbackText) feedbackText.textContent = feedbackMessages.incorrect;
     }
 
     if (feedback) feedback.style.display = 'block';
-    if (feedbackText) feedbackText.style.display = 'block'; // テキストを表示
+    if (feedbackText) feedbackText.style.display = 'block';
 }
 
 // 各問題ごとのフィードバックメッセージを返す関数
@@ -408,14 +422,9 @@ function getFeedbackText(questionId) {
         }
     };
 
-    if (feedbackMessages[questionId]) {
-        return feedbackMessages[questionId];
-    } else {
-        return "フィードバックが設定されていません";
-    }
+return feedbackMessages[questionId] || { correct: "Correct", incorrect: "Incorrect" };
 }
 
-// 各マイクボタンにクリックイベントを追加
 document.querySelectorAll('.mic-button').forEach(button => {
     const questionId = button.id.replace('startButton', '');
     button.addEventListener('click', () => startRecognition(questionId));
