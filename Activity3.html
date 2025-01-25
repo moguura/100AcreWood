@@ -106,31 +106,19 @@ h1 {
     margin-top: 10px;
     display: none; /* 初期状態では非表示 */
 }
-video, iframe {
-            display: block;
-            margin: 20px auto;
-            max-width: 560px;
-            height: 315px;
-        }
-        #nextLink {
-            display: none; /* 初期状態で非表示 */
-            text-align: center;
-            margin-top: 20px;
-        }
-        #nextLink a {
-            font-size: 28px;
-            color: white;
-            background-color: #007bff;
-            padding: 10px 20px;
-            text-decoration: none;
-            border-radius: 5px;
-        }
-        #nextLink a:hover {
-            text-decoration: underline;
-    　　　　color: #0056b3;  /* ホバー時の色を少し濃くする */
-   　　　　 transform: scale(1.05);  /* ホバー時に少し大きくする */
+.notice-board {
+    background-color: #ffeeba; /* 背景色 */
+    margin: 20px auto; /* 上下の余白を20pxに、左右をautoで中央寄せ */
+    margin-left: 40px; /* 左の余白を追加して右に寄せる */
+    max-width: 900px; /* 最大幅を設定 */
+    width: 100%; /* 横幅を親要素に合わせる */
+    border: 1px solid #d1d5db; /* 境界線 */
+    border-radius: 5px; /* 角丸 */
+    padding: 15px; /* 内側の余白 */
+    box-sizing: border-box; /* サイズ計算を統一 */
+    text-align: center; /* テキストを中央揃え */
 }
-    
+        
 /* Q1の上に十分な間隔を追加 */
 #Q1 {
     margin-top: 100px; /* Notice Boardとの間隔を調整 */
@@ -143,18 +131,15 @@ video, iframe {
             color: #007bff;      /* 文字色を青に設定 */
             font-weight: bold;   /* 文字を太字に設定 */
         }
-iframe {
-            display: block;
-            margin: 20px auto;
-            max-width: 100%;
-            height: auto;
-            border: none;
-        }
-</style>
 
+.instructions:last-of-type,
+.notice-board {
+    display: none; /* 初期状態では非表示 */
+}
+</style>
 </head>
 <body>
-    <h1>Activity 1</h1>
+    <h1>Activity 3</h1>
     <div id="content">
         <!-- 初めの説明文 -->
         <div class="instructions">
@@ -217,11 +202,11 @@ iframe {
             <p style="text-align: center;"><span class="highlight">おいしい</span> → 　やさいは（ 　　　）</p>
             <button id="startButtonQ2" class="mic-button"></button>
             <div class="feedback" id="feedbackQ2">
-                <img id="correctImageQ2" src="https://raw.githubusercontent.com/moguura/my-images/main/3-2yes.png" alt="正しい答え">
-                <img id="wrongImageQ2" src="https://raw.githubusercontent.com/moguura/my-images/main/3-2no.png" alt="間違った答え">
+                <img id="correctImageQ2" src="https://raw.githubusercontent.com/moguura/my-images/main/3-2no.png" alt="正しい答え">
+                <img id="wrongImageQ2" src="https://raw.githubusercontent.com/moguura/my-images/main/3-2yes.png" alt="間違った答え">
             </div>
-            <audio id="correctAudioQ2" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%97%E3%82%87%E3%81%92%E3%82%8B.mp3"></audio>
-            <audio id="wrongAudioQ2" src="https://raw.githubusercontent.com/moguura/my-images/main/%E5%8F%AF%E6%84%9B%E3%81%84%E5%8B%95%E4%BD%9C.mp3"></audio>
+            <audio id="correctAudioQ2" src="https://raw.githubusercontent.com/moguura/my-images/main/%E5%8F%AF%E6%84%9B%E3%81%84%E5%8B%95%E4%BD%9C.mp3"></audio>
+            <audio id="wrongAudioQ2" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%97%E3%82%87%E3%81%92%E3%82%8B.mp3"></audio>
         </div>
 
         <!-- 問題3 -->
@@ -246,7 +231,7 @@ iframe {
         <img id="correctImageQ4" src="https://raw.githubusercontent.com/moguura/my-images/main/3-4yes.png" alt="正しい答え">
         <img id="wrongImageQ4" src="https://raw.githubusercontent.com/moguura/my-images/main/3-4no.png" alt="間違った答え">
     </div>
-    <audio id="correctAudioQ4" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E6%AD%A3%E8%A7%A32.mp3"></audio>
+    <audio id="correctAudioQ4" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%8F%E3%81%99%E3%81%90%E3%82%8B.mp3"></audio>
     <audio id="wrongAudioQ4" src="https://raw.githubusercontent.com/moguura/my-images/main/%E9%A3%9F%E3%81%B9%E7%89%A9%E3%82%92%E3%83%91%E3%82%AF%E3%83%83.mp3"></audio>
 </div>
 
@@ -256,14 +241,14 @@ iframe {
     <p style="text-align: center;"><span class="highlight">からい</span> → 　にほんの <ruby>カレー<rt>かれー</rt></ruby>は（ 　　　）</p>
     <button id="startButtonQ5" class="mic-button"></button>
      <div class="feedback" id="feedbackQ5">
-        <img id="correctImageQ5" src="https://raw.githubusercontent.com/moguura/my-images/main/3-5yes.png" alt="正しい答え">
-        <img id="wrongImageQ5" src="https://raw.githubusercontent.com/moguura/my-images/main/3-5no.png" alt="間違った答え">
+        <img id="correctImageQ5" src="https://raw.githubusercontent.com/moguura/my-images/main/3-5no.png" alt="正しい答え">
+        <img id="wrongImageQ5" src="https://raw.githubusercontent.com/moguura/my-images/main/3-5yes.png" alt="間違った答え">
     </div>
-    <audio id="correctAudioQ5" src="https://raw.githubusercontent.com/moguura/my-images/main/%E9%A3%9F%E3%81%B9%E7%89%A9%E3%82%92%E3%83%91%E3%82%AF%E3%83%83.mp3"></audio>
-    <audio id="wrongAudioQ5" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%8F%E3%81%99%E3%81%90%E3%82%8B.mp3"></audio>
+    <audio id="correctAudioQ5" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%8F%E3%81%99%E3%81%90%E3%82%8B.mp3"></audio>
+    <audio id="wrongAudioQ5" src="https://raw.githubusercontent.com/moguura/my-images/main/%E9%A3%9F%E3%81%B9%E7%89%A9%E3%82%92%E3%83%91%E3%82%AF%E3%83%83.mp3"></audio>
 </div>
 
-         <!-- E1とE2の間の説明文 -->
+         <!-- 説明文 -->
         <div class="instructions" style="text-align: center; margin: 20px;">
             <img src="https://raw.githubusercontent.com/moguura/my-images/main/3-OP3.png" alt="Q6 Image">
             <p>
@@ -272,24 +257,18 @@ iframe {
                 Please watch the video.
             </p>
         </div>
-
- <!-- YouTube動画を埋め込み -->
-    <div id="player"></div>
-
-    <!-- 次のページへのリンク -->
-    <div id="nextLink">
-        <a href="next-page.html">次のページへ進む</a>
-    </div>
-
-    <script src="https://www.youtube.com/iframe_api"></script>
-    <script src="script.js"></script>
+        <!-- Notice Board -->
+      <div class="notice-board">
+          <p> Click the 'X' to close this tab.<br>
+              Return to the original page and watch the 1-minute video.
+          </p>
+      </div>
 </body>
 </html>
 <!-- HTML内のJavaScriptコード -->
 <script>
 const answers = {
     E1: ["い"],
-    E2: ["い"],
     Q1: ["い"],
     Q2: ["い"],
     Q3: ["い"],
@@ -297,27 +276,10 @@ const answers = {
     Q5: ["い"],
 };
 
-let player;
-
-function onYouTubeIframeAPIReady() {
-    player = new YT.Player('player', {
-        videoId: '6Gg_9ivGclI',
-        events: {
-            'onStateChange': onPlayerStateChange
-        }
-    });
-}
-
-function onPlayerStateChange(event) {
-    if (event.data === YT.PlayerState.ENDED) {
-        showNextLink();
-    }
-}
-
-function showNextLink() {
-    const nextLink = document.getElementById('nextLink');
-    nextLink.style.display = 'block';
-}
+// ボタン押下状態を管理
+const buttonsPressed = {
+    E1: false, Q1: false, Q2: false, Q3: false, Q4: false, Q5: false,
+};
 
 function startRecognition(questionId) {
     if (!('webkitSpeechRecognition' in window)) {
@@ -331,7 +293,14 @@ function startRecognition(questionId) {
     recognition.onresult = function(event) {
         const transcript = event.results[0][0].transcript.trim();
         const isCorrect = isCorrectAnswer(questionId, transcript);
+
         showFeedback(questionId, isCorrect, transcript);
+
+        // ボタン押下状態を更新
+        buttonsPressed[questionId] = true;
+
+        // 全てのボタンが押されたか確認
+        checkAllButtonsPressed();
     };
 
     recognition.onerror = function(event) {
@@ -342,26 +311,42 @@ function startRecognition(questionId) {
     recognition.start();
 }
 
-function isCorrectAnswer(questionId, userInput) {
-    const normalizedInput = normalizeText(userInput);
-    return normalizedInput.endsWith("い") && !normalizedInput.endsWith("くない");
+// 全てのボタンが押されたか確認
+function checkAllButtonsPressed() {
+    if (Object.values(buttonsPressed).every(Boolean)) {
+        // 最後の説明文とNotice Boardを表示
+        document.querySelector('.instructions:last-of-type').style.display = 'block';
+        document.querySelector('.notice-board').style.display = 'block';
+    }
 }
 
+// 正解判定関数
+function isCorrectAnswer(questionId, userInput) {
+    const normalizedInput = normalizeText(userInput);
+    const correctEnding = answers[questionId][0];
+
+    if (correctEnding === "くない" && normalizedInput.endsWith("くない")) {
+        return true;
+    } else if (correctEnding === "い" && normalizedInput.endsWith("い") && !normalizedInput.endsWith("くない")) {
+        return true;
+    }
+    return false;
+}
+
+// テキストを正規化する関数
 function normalizeText(text) {
     let normalized = text.toLowerCase().replace(/\s+/g, '');
-    normalized = normalized.replace(/です$/, '');
+    normalized = normalized.replace(/です$/, ''); // 「です」を削除
     return normalized;
 }
 
+// フィードバック表示関数
 function showFeedback(questionId, isCorrect, transcript) {
     const correctImage = document.getElementById(`correctImage${questionId}`);
     const wrongImage = document.getElementById(`wrongImage${questionId}`);
     const feedback = document.getElementById(`feedback${questionId}`);
     const correctAudio = document.getElementById(`correctAudio${questionId}`);
     const wrongAudio = document.getElementById(`wrongAudio${questionId}`);
-    const feedbackText = document.getElementById(`feedbackText${questionId}`);
-
-    const feedbackMessage = getFeedbackText(questionId, isCorrect);
 
     if (isCorrect) {
         if (correctImage) correctImage.style.display = 'block';
@@ -373,45 +358,48 @@ function showFeedback(questionId, isCorrect, transcript) {
         if (wrongAudio) wrongAudio.play();
     }
 
-    if (feedbackText) {
-        feedbackText.textContent = feedbackMessage;
-    }
-
     if (feedback) feedback.style.display = 'block';
-    if (feedbackText) feedbackText.style.display = 'block';
 }
 
-function getFeedbackText(questionId, isCorrect) {
+// 各問題ごとのフィードバックメッセージを返す関数
+function getFeedbackText(questionId) {
     const feedbackMessages = {
         E1: {
-            correct: "正解！てんきは いいです。（The weather is good.）",
-            incorrect: "不正解です。答えは「てんきは いいです。」です。（The correct answer is 'The weather is good.'）"
-        },
-        E2: {
-            correct: "正解！てんきは いいです。（The weather is good.）",
-            incorrect: "不正解です。答えは「てんきは いいです。」です。（The correct answer is 'The weather is good.'）"
+            correct: "Your answer： タバコ（たばこ）は よくないです。（Smoking is good.）",
+            incorrect: "Your answer： タバコ（たばこ）は よくないです。（Smoking is not good.）"
         },
         Q1: {
-            correct: "正解！エベレストは たかいです。（Mount Everest is high.）",
-            incorrect: "不正解です。答えは「エベレストは たかいです。」です。（The correct answer is 'Mount Everest is high.'）"
+            correct: "Your answer： べんきょうは　おもしろいです。（Studying is interesting.）",
+            incorrect: "Your answer：べんきょうは　おもしろくないです。（Studying is not interesting.）"
         },
-        // 他の問題も同様に設定
+        Q2: {
+            correct: "Your answer： やさいは　おいしいです。（Vegetables are tasty.）",
+            incorrect: "Your answer： やさいは　おいしくないです。（Vegetables are not tasty.）"
+        },
+        Q3: {
+            correct: "Your answer：スポーツ(すぽーつ)は　たのしいです。（Sports are fun.）",
+            incorrect: "Your answer：スポーツ(すぽーつ)は　たのしくないです。（Sports are not fun.）"
+        },
+        Q4: {
+            correct: "Your answer：きょうは　さむいです。（It is cold today.）",
+            incorrect: "Your answer：きょうは　さむいです。（It is not cold today.）"
+        },
+        Q5: {
+            correct: "Your answer：にほんのカレー（かれー）は　からいです。（Japanese curry is spicy.）",
+            incorrect: "Your answer：にほんのカレー（かれー）は　からくないです。（Japanese curry is not spicy.）"
+        }
     };
 
-    const feedback = feedbackMessages[questionId];
-
-    if (feedback) {
-        return isCorrect ? feedback.correct : feedback.incorrect;
+    if (feedbackMessages[questionId]) {
+        return feedbackMessages[questionId];
+    } else {
+        return "フィードバックが設定されていません";
     }
-
-    return isCorrect 
-        ? "正解！フィードバックが設定されていません。" 
-        : "不正解です。フィードバックが設定されていません。";
 }
 
+// 各マイクボタンにクリックイベントを追加
 document.querySelectorAll('.mic-button').forEach(button => {
     const questionId = button.id.replace('startButton', '');
     button.addEventListener('click', () => startRecognition(questionId));
 });
 </script>
-</html>
