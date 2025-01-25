@@ -283,7 +283,7 @@ const answers = {
 
 // ボタン押下状態を管理
 const buttonsPressed = {
-    E1: false, Q1: false, Q2: false, Q3: false, Q4: false, Q5: false,
+    E1: false, Q1: false, Q2: false, Q3: false, Q4: false, Q5: false
 };
 
 // 初期状態を隠す
@@ -316,8 +316,6 @@ function startRecognition(questionId) {
         showFeedback(questionId, isCorrect, transcript);
 
         buttonsPressed[questionId] = true;
-        console.log(`Button ${questionId} pressed:`, buttonsPressed);
-
         checkAllButtonsPressed();
     };
 
@@ -330,13 +328,8 @@ function startRecognition(questionId) {
 }
 
 function checkAllButtonsPressed() {
-    console.log('buttonsPressed 状態:', buttonsPressed);
-
     if (Object.values(buttonsPressed).every(Boolean)) {
-        console.log("All buttons pressed. Showing Notice Board.");
         showFinalInstructions();
-    } else {
-        console.log("まだ押されていないボタンがあります。");
     }
 }
 
@@ -367,7 +360,7 @@ function isCorrectAnswer(questionId, userInput) {
 
 function normalizeText(text) {
     let normalized = text.toLowerCase().replace(/\s+/g, '');
-    normalized = normalized.replace(/です$/, ''); // 「です」を削除
+    normalized = normalized.replace(/です$/, '');
     return normalized;
 }
 
@@ -380,25 +373,24 @@ function showFeedback(questionId, isCorrect, transcript) {
     const feedbackMessages = getFeedbackText(questionId);
 
     if (isCorrect) {
-        if (correctImage) correctImage.style.display = 'block';
-        if (wrongImage) wrongImage.style.display = 'none';
-        if (feedbackText) feedbackText.textContent = feedbackMessages.correct;
+        correctImage.style.display = 'block';
+        wrongImage.style.display = 'none';
+        feedbackText.textContent = feedbackMessages.correct;
     } else {
-        if (correctImage) correctImage.style.display = 'none';
-        if (wrongImage) wrongImage.style.display = 'block';
-        if (feedbackText) feedbackText.textContent = feedbackMessages.incorrect;
+        correctImage.style.display = 'none';
+        wrongImage.style.display = 'block';
+        feedbackText.textContent = feedbackMessages.incorrect;
     }
 
-    if (feedback) feedback.style.display = 'block';
-    if (feedbackText) feedbackText.style.display = 'block';
+    feedback.style.display = 'block';
+    feedbackText.style.display = 'block';
 }
 
-// 各問題ごとのフィードバックメッセージを返す関数
 function getFeedbackText(questionId) {
     const feedbackMessages = {
         E1: {
-            correct: "Your answer： タバコ（たばこ）は よくないです。（Smoking is good.）",
-            incorrect: "Your answer： タバコ（たばこ）は よくないです。（Smoking is not good.）"
+            correct: "Your answer： タバコ（たばこ）は よくないです。（Smoking is not good.）",
+            incorrect: "Your answer： タバコ（たばこ）は いいです。（Smoking is good.）"
         },
         Q1: {
             correct: "Your answer： べんきょうは　おもしろいです。（Studying is interesting.）",
@@ -413,22 +405,17 @@ function getFeedbackText(questionId) {
             incorrect: "Your answer：スポーツ(すぽーつ)は　たのしくないです。（Sports are not fun.）"
         },
         Q4: {
-            correct: "Your answer：きょうは　さむいです。（It is cold today.）",
-            incorrect: "Your answer：きょうは　さむいです。（It is not cold today.）"
+            correct: "Your answer： きょうは　さむいです。（Today is cold.）",
+            incorrect: "Your answer： きょうは　さむくないです。（Today is not cold.）"
         },
         Q5: {
-            correct: "Your answer：にほんのカレー（かれー）は　からいです。（Japanese curry is spicy.）",
-            incorrect: "Your answer：にほんのカレー（かれー）は　からくないです。（Japanese curry is not spicy.）"
+            correct: "Your answer： にほんのカレー(かれー)は　からいです。（Japanese curry is spicy.）",
+            incorrect: "Your answer： にほんのカレー(かれー)は　からくないです。（Japanese curry is not spicy.）"
         }
     };
-
-return feedbackMessages[questionId] || { correct: "Correct", incorrect: "Incorrect" };
+    return feedbackMessages[questionId];
 }
 
-document.querySelectorAll('.mic-button').forEach(button => {
-    const questionId = button.id.replace('startButton', '');
-    button.addEventListener('click', () => startRecognition(questionId));
-});
 </script>
 
 
