@@ -22,14 +22,13 @@ body {
 
 h1 {
     text-align: center;
-    margin: 40px 0; /* 上下の余白を設定 */
-    margin-bottom: 60px; /* 下の余白を増やして間隔を広げる */
+    margin: 40px 0 60px; /* 上下の余白を設定 */
     font-size: 40px; /* 見出しを大きくする */
 }
 
 /* 質問エリアのスタイル */
 .question {
-    margin-bottom: 100px; 
+    margin-bottom: 100px;
     text-align: center;
     font-size: 24px;
 }
@@ -39,7 +38,7 @@ h1 {
     object-fit: cover;
     display: block;
     margin: 0 auto 10px;
-    max-width: 100%; 
+    max-width: 100%;
 }
 .question p:first-child {
     font-weight: bold;
@@ -82,26 +81,22 @@ h1 {
     box-sizing: border-box;
 }
 
-.instructions {
+/* 説明文のスタイル */
+.instructions,
+#finalInstructions {
     background-color: #ffffff;
     border: 1px solid #d1d5db;
     border-radius: 5px;
     padding: 15px;
     margin: 20px auto;
-    font-size: 24px;
+    max-width: 900px;
+    text-align: center;
     line-height: 1.6;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    max-width: 900px;
-    text-align: center;
 }
 
-#finalInstructions {
+.instructions:last-of-type {
     display: none;
-    margin: 20px auto;
-    text-align: center;
-    max-width: 900px;
-    padding: 15px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 /* フィードバックのスタイル */
@@ -109,7 +104,6 @@ h1 {
     display: none;
 }
 
-/* フィードバックの〇×イラストを小さく */
 .feedback img {
     width: 600px;
     height: auto;
@@ -120,51 +114,36 @@ h1 {
     font-size: 24px;
     color: #333;
     text-align: center;
-    font-weight: normal; /* 太字を解除 */
+    font-weight: normal;
     margin-top: 10px;
-    display: none; /* 初期状態では非表示 */
+    display: none;
 }
+
+/* 通知ボードのスタイル */
 .notice-board {
-    background-color: #ffeeba; /* 背景色 */
-    margin: 20px auto; /* 上下の余白を20pxに、左右をautoで中央寄せ */
-    max-width: 900px; /* 最大幅を設定 */
-    width: 100%; /* 横幅を親要素に合わせる */
-    border: 1px solid #d1d5db; /* 境界線 */
-    border-radius: 5px; /* 角丸 */
-    padding: 15px; /* 内側の余白 */
-    box-sizing: border-box; /* サイズ計算を統一 */
-    text-align: center; /* テキストを中央揃え */
+    background-color: #ffeeba;
+    margin: 20px auto;
+    max-width: 900px;
+    border: 1px solid #d1d5db;
+    border-radius: 5px;
+    padding: 15px;
+    box-sizing: border-box;
+    text-align: center;
 }
-    
-/* Q1の上に十分な間隔を追加 */
+
+/* その他のスタイル */
 #Q1 {
     margin-top: 100px; /* Notice Boardとの間隔を調整 */
 }
 .red-bold {
-            color: red;
-            font-weight: bold;
-        }
-.blue-bold {
-            color: #007bff;      /* 文字色を青に設定 */
-            font-weight: bold;   /* 文字を太字に設定 */
-        }
-
-.instructions:last-of-type,
-.notice-board {
-    display: none; /* 初期状態では非表示 */
-    margin: 20px auto; /* 中央揃え */
-    max-width: 900px; /* 最大幅 */
-    width: 100%; /* 親要素に合わせる */
-    text-align: center; /* テキスト中央揃え */
-    box-sizing: border-box; /* サイズ計算を統一 */
-    margin-left: 100px; /* 左の余白を追加して右に寄せる */
-}
-
-.question > p:first-child {
+    color: red;
     font-weight: bold;
-    font-size: 28px;
-    color: #007bff;
 }
+.blue-bold {
+    color: #007bff;
+    font-weight: bold;
+}
+
 </style>
 </head>
 <body>
