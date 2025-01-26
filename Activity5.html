@@ -1,1 +1,514 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Activity1</title>
+<style>
+/* 全体のスタイル */
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+    color: #333;
+    font-size: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
 
+h1 {
+    text-align: center;
+    margin: 40px 0; /* 上下の余白を設定 */
+    margin-bottom: 60px; /* 下の余白を増やして間隔を広げる */
+    font-size: 40px; /* 見出しを大きくする */
+}
+
+/* 質問エリアのスタイル */
+.question {
+    margin-bottom: 100px; 
+    text-align: center;
+    font-size: 24px;
+}
+.question img {
+    width: 300px;
+    height: auto;
+    object-fit: cover;
+    display: block;
+    margin: 0 auto 10px;
+    max-width: 100%; 
+}
+.question p:first-child {
+    font-weight: bold;
+    font-size: 28px; /* 問題番号の文字サイズを大きく */
+    color: #007bff; /* 青色 */
+}
+
+/* キューのスタイル（緑色と太字） */
+.highlight {
+    color: green;
+    font-weight: bold;
+}
+
+/* マイクボタンのスタイル */
+.mic-button {
+    background-image: url("https://raw.githubusercontent.com/moguura/my-images/main/%E3%83%9E%E3%82%A4%E3%82%AF%E3%81%AE%E3%83%95%E3%83%AA%E3%83%BC%E3%82%A2%E3%82%A4%E3%82%B3%E3%83%B3%E3%81%9D%E3%81%AE21.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-color: #f9f9f9;
+    border: none;
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    cursor: pointer;
+    margin: 10px auto;
+    padding: 0;
+    text-indent: -9999px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* 説明文のスタイル */
+.instructions {
+    background-color: #ffffff;
+    border: 1px solid #d1d5db;
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 20px;
+    font-size: 24px;
+    line-height: 1.6;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    max-width: 900px; /* 幅の最大値を設定 */
+    width: 100%; /* 親要素に合わせる */
+    text-align: center; /* 文字を中央揃え */
+    margin: 0 auto; /* 中央揃え */
+}
+
+/* フィードバックのスタイル */
+.feedback {
+    display: none;
+}
+
+/* フィードバックの〇×イラストを小さく */
+.feedback img {
+    width: 100px;
+    height: auto;
+    margin: 10px auto;
+    display: block;
+}
+.feedback-text {
+    font-size: 24px;
+    color: #333;
+    text-align: center;
+    margin-top: 10px;
+    display: none; /* 初期状態では非表示 */
+}
+
+/* リンクを中央に配置 */
+a {
+    display: block;
+    text-align: center;
+    margin: 30px auto;
+    color: #007bff;
+    text-decoration: none;
+    font-size: 28px;  /* 文字サイズを22pxから28pxに増加 */
+    font-weight: bold;  /* 太字にする */
+    padding: 10px 20px;  /* クリック領域を広げる */
+    transition: all 0.3s ease;  /* ホバー効果をスムーズにする */
+}
+
+a:hover {
+    text-decoration: underline;
+    color: #0056b3;  /* ホバー時の色を少し濃くする */
+    transform: scale(1.05);  /* ホバー時に少し大きくする */
+}
+
+.notice-board {
+    background-color: #ffeeba; /* 背景色 */
+    margin: 20px auto; /* 上下の余白を20pxに、左右をautoで中央寄せ */
+    margin-left: 40px; /* 左の余白を追加して右に寄せる */
+    max-width: 900px; /* 最大幅を設定 */
+    width: 100%; /* 横幅を親要素に合わせる */
+    border: 1px solid #d1d5db; /* 境界線 */
+    border-radius: 5px; /* 角丸 */
+    padding: 15px; /* 内側の余白 */
+    box-sizing: border-box; /* サイズ計算を統一 */
+    text-align: center; /* テキストを中央揃え */
+}
+    
+/* Q1の上に十分な間隔を追加 */
+#Q1 {
+    margin-top: 100px; /* Notice Boardとの間隔を調整 */
+}
+.red-bold {
+            color: red;
+            font-weight: bold;
+        }
+.blue-bold {
+            color: #007bff;      /* 文字色を青に設定 */
+            font-weight: bold;   /* 文字を太字に設定 */
+        }
+</style>
+
+</head>
+<body>
+    <h1>Activity 1</h1>
+    <div id="content">
+        <!-- 初めの説明文 -->
+        <div class="instructions">
+            <p>
+                Please talk about the image using い-adjectives. Look at <span class="blue-bold">Example 1</span>.<br>
+                Please press the microphone button and say<br>
+                <strong>てんきは いいです。</strong> or   <strong>いいです。</strong>
+            </p>
+        </div>
+
+        <!-- E1の例題 -->
+        <div class="question" id="E1">
+            <p>e.g.1</p>
+            <img src="https://raw.githubusercontent.com/moguura/my-images/main/%E4%BE%8B1.jpg" alt="E1 Image">
+            <p><span class="highlight">いい</span> → てんきは（ 　　　）</p>
+            <button id="startButtonE1" class="mic-button" aria-label="音声認識を開始"></button>
+            <div class="feedback" id="feedbackE1">
+                <img id="correctImageE1" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%BE%E3%82%8B.png" alt="正しい答え">
+                <img id="wrongImageE1" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%B0%E3%81%A4.png" alt="間違った答え">
+                <div id="feedbackTextE1" class="feedback-text"></div>
+            </div>
+            <audio id="correctAudioE1" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E6%AD%A3%E8%A7%A32.mp3"></audio>
+            <audio id="wrongAudioE1" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E4%B8%8D%E6%AD%A3%E8%A7%A31.mp3"></audio>
+        </div>
+        
+        <!-- E1とE2の間の説明文 -->
+        <div class="instructions" style="text-align: center; margin: 20px;">
+            <p>
+                <span class="blue-bold">In Example 1</span>, the weather in the image is nice, so the correct answer is<br> 
+                てんきは <span class="red-bold">いいです</span>。 (The weather <span class="red-bold">is good</span>).
+            </p>
+        </div>
+
+         <!-- E1とE2の間の説明文 -->
+        <div class="instructions" style="text-align: center; margin: 20px;">
+            <p>
+                Now, let's try <span class="blue-bold">Example 2</span>.<br> 
+                Press the microphone button and say<br>
+                <strong>てんきは よくないです。</strong> or   <strong>よくないです。</strong>
+            </p>
+        </div>
+
+        <!-- E2 -->
+        <div class="question" id="E2">
+            <p>e.g.2</p>
+            <img src="https://raw.githubusercontent.com/moguura/my-images/main/%E4%BE%8B2.jpg" alt="E2 Image">
+            <p><span class="highlight">いい</span> → てんきは（ 　　　）</p>
+            <button id="startButtonE2" class="mic-button" aria-label="音声認識を開始"></button>
+            <div class="feedback" id="feedbackE2">
+                <img id="correctImageE2" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%BE%E3%82%8B.png" alt="正しい答え">
+                <img id="wrongImageE2" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%B0%E3%81%A4.png" alt="間違った答え">
+                <div id="feedbackTextE2" class="feedback-text"></div>
+            </div>
+            <audio id="correctAudioE2" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E6%AD%A3%E8%A7%A32.mp3"></audio>
+            <audio id="wrongAudioE2" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E4%B8%8D%E6%AD%A3%E8%A7%A31.mp3"></audio>
+        </div>
+
+        <!-- E2の後の説明文 -->
+        <div class="instructions" style="text-align: center; margin: 20px;">
+            <p>
+                <span class="blue-bold">In Example 2</span>, the weather in the image is not good, so the correct answer is <br>
+                てんきは <span class="red-bold">よくないです</span>。 (The weather <span class="red-bold">is not good</span>).<br>
+                Now, please speak in the same way for the following questions as well.
+            </p>
+        </div>
+
+　　　<!-- Notice Board -->
+      <div class="notice-board">
+          <p><span class="blue-bold">Please note:</span>　Speech recognition may not always be 100% accurate.<br> 
+              If your answer is incorrect, don't worry - just continue to the next question.<br></p>
+      </div>
+        
+<!-- Q1 -->
+<div class="question" id="Q1">
+    <p>Q1</p>
+    <img src="https://raw.githubusercontent.com/moguura/my-images/main/%E5%9B%B31.png" alt="Q1 Image">
+    <p><span class="highlight">たかい</span> → <ruby>エベレスト<rt>えべれすと</rt></ruby>（Mt. Everest）は（ 　　　）</p>
+    <button id="startButtonQ1" class="mic-button" aria-label="音声認識を開始"></button>
+    <div class="feedback" id="feedbackQ1">
+        <img id="correctImageQ1" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%BE%E3%82%8B.png" alt="正しい答え">
+        <img id="wrongImageQ1" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%B0%E3%81%A4.png" alt="間違った答え">
+        <div id="feedbackTextQ1" class="feedback-text"></div>
+    </div>
+    <audio id="correctAudioQ1" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E6%AD%A3%E8%A7%A32.mp3"></audio>
+    <audio id="wrongAudioQ1" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E4%B8%8D%E6%AD%A3%E8%A7%A31.mp3"></audio>
+</div>
+
+        <!-- 問題2 -->
+        <div class="question" id="Q2">
+            <p>Q2</p>
+            <img src="https://raw.githubusercontent.com/moguura/my-images/main/%E5%9B%B32.png" alt="Q2 Image">
+            <p style="text-align: center;"><span class="highlight">やすい</span> → 　<ruby>ダイヤモンド<rt>だいやもんど</rt></ruby>（diamond）は（ 　　　）</p>
+            <button id="startButtonQ2" class="mic-button"></button>
+            <div class="feedback" id="feedbackQ2">
+                <img id="correctImageQ2" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%BE%E3%82%8B.png" alt="正しい答え">
+                <img id="wrongImageQ2" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%B0%E3%81%A4.png" alt="間違った答え">
+                <div id="feedbackTextQ2" class="feedback-text"></div>
+            </div>
+            <audio id="correctAudioQ2" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E6%AD%A3%E8%A7%A32.mp3"></audio>
+            <audio id="wrongAudioQ2" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E4%B8%8D%E6%AD%A3%E8%A7%A31.mp3"></audio>
+        </div>
+
+        <!-- 問題3 -->
+        <div class="question" id="Q3">
+            <p>Q3</p>
+            <img src="https://raw.githubusercontent.com/moguura/my-images/main/%E5%9B%B33.png" alt="Q3 Image">
+            <p style="text-align: center;"><span class="highlight">あつい</span> → 　にほんの ８がつは（ 　　　）</p>
+            <button id="startButtonQ3" class="mic-button"></button>
+             <div class="feedback" id="feedbackQ3">
+                <img id="correctImageQ3" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%BE%E3%82%8B.png" alt="正しい答え">
+                <img id="wrongImageQ3" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%B0%E3%81%A4.png" alt="間違った答え">
+            　  <div id="feedbackTextQ3" class="feedback-text"></div>
+             </div>
+            <audio id="correctAudioQ3" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E6%AD%A3%E8%A7%A32.mp3"></audio>
+            <audio id="wrongAudioQ3" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E4%B8%8D%E6%AD%A3%E8%A7%A31.mp3"></audio>
+        </div>
+
+<!-- 問題4 -->
+<div class="question" id="Q4">
+    <p>Q4</p>
+    <img src="https://raw.githubusercontent.com/moguura/my-images/main/%E5%9B%B34.png" alt="Q4 Image">
+    <p style="text-align: center;"><span class="highlight">さむい</span> → 　にほんの ２がつは（ 　　　）</p>
+    <button id="startButtonQ4" class="mic-button"></button>
+     <div class="feedback" id="feedbackQ4">
+        <img id="correctImageQ4" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%BE%E3%82%8B.png" alt="正しい答え">
+        <img id="wrongImageQ4" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%B0%E3%81%A4.png" alt="間違った答え">
+        <div id="feedbackTextQ4" class="feedback-text"></div>
+    </div>
+    <audio id="correctAudioQ4" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E6%AD%A3%E8%A7%A32.mp3"></audio>
+    <audio id="wrongAudioQ4" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E4%B8%8D%E6%AD%A3%E8%A7%A31.mp3"></audio>
+</div>
+
+<!-- 問題5 -->
+<div class="question" id="Q5">
+    <p>Q5</p>
+    <img src="https://raw.githubusercontent.com/moguura/my-images/main/%E5%9B%B35.png" alt="Q5 Image">
+    <p style="text-align: center;"><span class="highlight">いそがしい</span> → 　かいしゃいんの あさは（ 　　　）</p>
+    <button id="startButtonQ5" class="mic-button"></button>
+     <div class="feedback" id="feedbackQ5">
+        <img id="correctImageQ5" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%BE%E3%82%8B.png" alt="正しい答え">
+        <img id="wrongImageQ5" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%B0%E3%81%A4.png" alt="間違った答え">
+        <div id="feedbackTextQ5" class="feedback-text"></div>
+    </div>
+    <audio id="correctAudioQ5" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E6%AD%A3%E8%A7%A32.mp3"></audio>
+    <audio id="wrongAudioQ5" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E4%B8%8D%E6%AD%A3%E8%A7%A31.mp3"></audio>
+</div>
+
+<!-- 問題6 -->
+<div class="question" id="Q6">
+    <p>Q6</p>
+    <img src="https://raw.githubusercontent.com/moguura/my-images/main/%E5%9B%B36.png" alt="Q6 Image">
+    <p style="text-align: center;"><span class="highlight">あたらしい</span> → 　この くるまは（ 　　　）</p>
+    <button id="startButtonQ6" class="mic-button"></button>
+     <div class="feedback" id="feedbackQ6">
+        <img id="correctImageQ6" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%BE%E3%82%8B.png" alt="正しい答え">
+        <img id="wrongImageQ6" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%B0%E3%81%A4.png" alt="間違った答え">
+        <div id="feedbackTextQ6" class="feedback-text"></div>
+    </div>
+    <audio id="correctAudioQ6" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E6%AD%A3%E8%A7%A32.mp3"></audio>
+    <audio id="wrongAudioQ6" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E4%B8%8D%E6%AD%A3%E8%A7%A31.mp3"></audio>
+</div>
+
+<!-- 問題7 -->
+<div class="question" id="Q7">
+    <p>Q7</p>
+    <img src="https://raw.githubusercontent.com/moguura/my-images/main/%E5%9B%B37.png" alt="Q7 Image">
+    <p style="text-align: center;"><span class="highlight">おいしい</span> → 　くすりは（ 　　　）</p>
+    <button id="startButtonQ7" class="mic-button"></button>
+     <div class="feedback" id="feedbackQ7">
+        <img id="correctImageQ7" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%BE%E3%82%8B.png" alt="正しい答え">
+        <img id="wrongImageQ7" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%B0%E3%81%A4.png" alt="間違った答え">
+        <div id="feedbackTextQ7" class="feedback-text"></div>
+    </div>
+    <audio id="correctAudioQ7" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E6%AD%A3%E8%A7%A32.mp3"></audio>
+    <audio id="wrongAudioQ7" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E4%B8%8D%E6%AD%A3%E8%A7%A31.mp3"></audio>
+</div>
+
+<!-- 問題8 -->
+<div class="question" id="Q8">
+    <p>Q8</p>
+    <img src="https://raw.githubusercontent.com/moguura/my-images/main/%E5%9B%B38.jpg" alt="Q8 Image">
+    <p style="text-align: center;"><span class="highlight">おおい</span> → 　いま、ひとは（ 　　　）</p>
+    <button id="startButtonQ8" class="mic-button"></button>
+     <div class="feedback" id="feedbackQ8">
+        <img id="correctImageQ8" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%BE%E3%82%8B.png" alt="正しい答え">
+        <img id="wrongImageQ8" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%B0%E3%81%A4.png" alt="間違った答え">
+        <div id="feedbackTextQ8" class="feedback-text"></div>
+    </div>
+    <audio id="correctAudioQ8" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E6%AD%A3%E8%A7%A32.mp3"></audio>
+    <audio id="wrongAudioQ8" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E4%B8%8D%E6%AD%A3%E8%A7%A31.mp3"></audio>
+</div>
+
+<!-- 問題9 -->
+<div class="question" id="Q9">
+    <p>Q9</p>
+    <img src="https://raw.githubusercontent.com/moguura/my-images/main/%E5%9B%B39.png" alt="Q9 Image">
+    <p style="text-align: center;"><span class="highlight">おおきい</span> → 　この かばんは（ 　　　）</p>
+    <button id="startButtonQ9" class="mic-button"></button>
+     <div class="feedback" id="feedbackQ9">
+        <img id="correctImageQ9" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%BE%E3%82%8B.png" alt="正しい答え">
+        <img id="wrongImageQ9" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%B0%E3%81%A4.png" alt="間違った答え">
+        <div id="feedbackTextQ9" class="feedback-text"></div>
+    </div>
+    <audio id="correctAudioQ9" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E6%AD%A3%E8%A7%A32.mp3"></audio>
+    <audio id="wrongAudioQ9" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E4%B8%8D%E6%AD%A3%E8%A7%A31.mp3"></audio>
+</div>
+
+<!-- 問題10 -->
+<div class="question" id="Q10">
+    <p>Q10</p>
+    <img src="https://raw.githubusercontent.com/moguura/my-images/main/%E5%9B%B310.png" alt="Q10 Image">
+    <p style="text-align: center;"><span class="highlight">ちかい</span> → 　にほんと <ruby>ブラジル<rt>ぶらじる</rt></ruby>は（ 　　　）</p>
+    <button id="startButtonQ10" class="mic-button"></button>
+    <div class="feedback" id="feedbackQ10">
+        <img id="correctImageQ10" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%BE%E3%82%8B.png" alt="正しい答え">
+        <img id="wrongImageQ10" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%B0%E3%81%A4.png" alt="間違った答え">
+        <div id="feedbackTextQ10" class="feedback-text"></div>
+    </div>
+    <audio id="correctAudioQ10" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E6%AD%A3%E8%A7%A32.mp3"></audio>
+    <audio id="wrongAudioQ10" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E4%B8%8D%E6%AD%A3%E8%A7%A31.mp3"></audio>
+ </div>
+
+        <!-- リンク -->
+        <a href="./Activity2.html" id="nextLink" style="display: none;">Go to Activity2</a>
+    </div>
+</body>
+</html>
+<!-- HTML内のJavaScriptコード -->
+<script>
+const answers = {
+    E1: ["い"],
+    E2: ["くない"],
+    Q1: ["い"],
+    Q2: ["くない"],
+    Q3: ["い"],
+    Q4: ["い"],
+    Q5: ["い"],
+    Q6: ["くない"],
+    Q7: ["くない"],
+    Q8: ["くない"],
+    Q9: ["い"],
+    Q10: ["くない"]
+};
+
+const buttonsPressed = {
+    E1: false, E2: false, Q1: false, Q2: false, Q3: false,
+    Q4: false, Q5: false, Q6: false, Q7: false, Q8: false,
+    Q9: false, Q10: false
+};
+
+function startRecognition(questionId) {
+    if (!('webkitSpeechRecognition' in window)) {
+        alert("Speech recognition is not available in this browser. Please use Google Chrome.");
+        return;
+    }
+
+    const recognition = new webkitSpeechRecognition();
+    recognition.lang = 'ja-JP';
+
+    recognition.onresult = function(event) {
+        const transcript = event.results[0][0].transcript.trim();
+        const isCorrect = isCorrectAnswer(questionId, transcript);
+
+        showFeedback(questionId, isCorrect, transcript);
+
+        buttonsPressed[questionId] = true;
+
+        // すべてのボタンが押されたら次へ進む
+        if (Object.values(buttonsPressed).every(Boolean)) {
+            document.getElementById("nextLink").style.display = "block";
+        }
+    };
+
+    recognition.onerror = function(event) {
+        alert("Speech recognition failed. Please try again.");
+        console.error("Speech Recognition Error:", event.error);
+    };
+
+    recognition.start();
+}
+
+// 判定関数
+function isCorrectAnswer(questionId, userInput) {
+    const normalizedInput = normalizeText(userInput);
+    const correctEnding = answers[questionId][0];
+
+    // 「くない」を優先して判定し、それ以外の場合に「い」を判定
+    if (correctEnding === "くない" && normalizedInput.endsWith("くない")) {
+        return true;
+    } else if (correctEnding === "い" && normalizedInput.endsWith("い") && !normalizedInput.endsWith("くない")) {
+        return true;
+    }
+    return false;
+}
+
+// テキストを正規化する関数
+function normalizeText(text) {
+    let normalized = text.toLowerCase().replace(/\s+/g, '');
+    normalized = normalized.replace(/です$/, ''); // 「です」を削除
+    return normalized;
+}
+
+function showFeedback(questionId, isCorrect, transcript) {
+    const correctImage = document.getElementById(`correctImage${questionId}`);
+    const wrongImage = document.getElementById(`wrongImage${questionId}`);
+    const feedback = document.getElementById(`feedback${questionId}`);
+    const correctAudio = document.getElementById(`correctAudio${questionId}`);
+    const wrongAudio = document.getElementById(`wrongAudio${questionId}`);
+    const feedbackText = document.getElementById(`feedbackText${questionId}`);
+
+    // フィードバックメッセージは問題ごとに異なる
+    const feedbackMessage = getFeedbackText(questionId);
+
+    if (isCorrect) {
+        if (correctImage) correctImage.style.display = 'block';
+        if (wrongImage) wrongImage.style.display = 'none';
+        if (correctAudio) correctAudio.play();
+    } else {
+        if (correctImage) correctImage.style.display = 'none';
+        if (wrongImage) wrongImage.style.display = 'block';
+        if (wrongAudio) wrongAudio.play();
+    }
+
+    // どちらのケースでもフィードバックメッセージを表示
+    if (feedbackText) {
+        feedbackText.textContent = feedbackMessage;
+    }
+
+    if (feedback) feedback.style.display = 'block';
+    if (feedbackText) feedbackText.style.display = 'block';
+}
+
+// 各問題ごとのフィードバックメッセージを返す関数
+function getFeedbackText(questionId) {
+    const feedbackMessages = {
+        E1:"てんきは いいです。（The weather is good.）",
+        E2:"てんきは よくないです。（The weather is not good.）",
+        Q1:"エベレストは たかいです。（Mount Everest is high.）",
+        Q2:"ダイヤモンドは やすくないです。（Diamonds are not cheap.）",
+        Q3:"にほんの８がつは あついです。（August in Japan is hot.）",
+        Q4:"にほんの２がつは さむいです。（February in Japan is cold.）",
+        Q5:"かいしゃいんのあさは いそがしいです。（The mornings of office workers are busy.）",
+        Q6:"このくるまは あたらしくないです。（This car is not new.）",
+        Q7:"くすりは おいしくないです。（Medicines are not tasty.）",
+        Q8:"いま ひとは おおくないです。（There are not many people now.）",
+        Q9:"この かばんは おおきいです。（This bag is big.）",
+        Q10:"にほんとブラジルは ちかくないです。（Japan and Brazil are not close.）",
+    };
+    return feedbackMessages[questionId] || "フィードバックが設定されていません";  // デフォルトのメッセージ
+}
+
+document.querySelectorAll('.mic-button').forEach(button => {
+    const questionId = button.id.replace('startButton', '');
+    button.addEventListener('click', () => startRecognition(questionId));
+});
+</script>
