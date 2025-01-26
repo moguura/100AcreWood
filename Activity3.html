@@ -279,7 +279,7 @@ h1 {
             </p>
         </div>
     </div>
- <!-- 音楽再生用 -->
+<!-- 音楽再生用 -->
     <audio id="finalMusic" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%83%AC%E3%83%99%E3%83%AB%E3%82%A2%E3%83%83%E3%83%97.mp3"></audio>
 
     <script>
@@ -355,12 +355,14 @@ h1 {
             finalInstructions.style.display = 'block';
             noticeBoard.style.display = 'block';
 
-            // 音楽再生
-            if (finalMusic) {
-                finalMusic.play().catch((error) => {
-                    console.error('音楽の再生に失敗しました:', error);
-                });
-            }
+            // 音楽再生を遅延して開始（フィードバックが出てから1秒後に再生）
+            setTimeout(() => {
+                if (finalMusic) {
+                    finalMusic.play().catch((error) => {
+                        console.error('音楽の再生に失敗しました:', error);
+                    });
+                }
+            }, 1000); // 1秒遅延
         }
 
         function isCorrectAnswer(questionId, userInput) {
