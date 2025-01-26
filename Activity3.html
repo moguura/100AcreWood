@@ -119,7 +119,7 @@ h1 {
     box-sizing: border-box; /* サイズ計算を統一 */
     text-align: center; /* テキストを中央揃え */
 }
-        
+    
 /* Q1の上に十分な間隔を追加 */
 #Q1 {
     margin-top: 100px; /* Notice Boardとの間隔を調整 */
@@ -136,21 +136,11 @@ h1 {
 .instructions:last-of-type,
 .notice-board {
     display: none; /* 初期状態では非表示 */
-}
-
-.instructions:last-of-type {
-    background-color: #ffffff;
-    border: 1px solid #d1d5db;
-    border-radius: 5px;
-    padding: 15px;
-    margin-bottom: 20px;
-    font-size: 24px;
-    line-height: 1.6;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    max-width: 900px; /* 幅の最大値を設定 */
+    margin: 20px auto; /* 中央揃え */
+    max-width: 900px; /* 最大幅 */
     width: 100%; /* 親要素に合わせる */
-    text-align: center; /* 文字を中央揃え */
-    margin: 0 auto; /* 中央揃え */
+    text-align: center; /* テキスト中央揃え */
+    box-sizing: border-box; /* サイズ計算を統一 */
 }
 
 .question > p:first-child {
