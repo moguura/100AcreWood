@@ -365,18 +365,18 @@ a:hover {
 <!-- HTML内のJavaScriptコード -->
 <script>
 const answers = {
-    E1: ["えいがは よかった"],
-    E2: ["えいがは よくなかった"],
-    Q1: ["せんしゅうは いそがしかった"],
-    Q2: ["りょうりは たかくなかった"],
-    Q3: ["２がつは さむくなかった"],
-    Q4: ["ケーキは おおきくなかった"],
-    Q5: ["ホテルは ちかかった"],
-    Q6: ["レストランは あたらしくなかった"],
-    Q7: ["ゆきは おおくなかった"],
-    Q8: ["８がつは あつかった"],
-    Q9: ["パンは おいしくなかった"],
-    Q10: ["チケットは やすくなかった"]
+    E1: ["よかった"],
+    E2: ["よくなかった"],
+    Q1: ["忙しかった"],
+    Q2: ["高くなかった"],
+    Q3: ["寒くなかった"],
+    Q4: ["大きくなかった"],
+    Q5: ["近かった"],
+    Q6: ["新しくなかった"],
+    Q7: ["多くなかった"],
+    Q8: ["暑かった"],
+    Q9: ["おいしくなかった"],
+    Q10: ["安くなかった"]
 };
 
 const buttonsPressed = {
@@ -416,13 +416,23 @@ function startRecognition(questionId) {
     recognition.start();
 }
 
-// 判定関数（正しい答えと完全一致するかどうかをチェック）
+// ✅ 修正した判定関数
 function isCorrectAnswer(questionId, userInput) {
     const normalizedInput = normalizeText(userInput);
-    return answers[questionId].includes(normalizedInput);
+    const correctEnding = answers[questionId][0]; // 正しい答えを取得
+
+    // **「くなかった」が正解の場合**
+    if (correctEnding.endsWith("くなかった") && normalizedInput.endsWith("くなかった")) {
+        return true;
+    }
+    // **「かった」が正解の場合（「くなかった」ではないもの）**
+    else if (correctEnding.endsWith("かった") && normalizedInput.endsWith("かった") && !normalizedInput.endsWith("くなかった")) {
+        return true;
+    }
+    return false;
 }
 
-// テキストを正規化する関数（スペース削除＆「です」を削除）
+// ✅ 文字の正規化（スペース削除 & 「です」を削除）
 function normalizeText(text) {
     return text.replace(/\s+/g, '').replace(/です$/, '');
 }
@@ -435,7 +445,6 @@ function showFeedback(questionId, isCorrect, transcript) {
     const wrongAudio = document.getElementById(`wrongAudio${questionId}`);
     const feedbackText = document.getElementById(`feedbackText${questionId}`);
 
-    // フィードバックメッセージは問題ごとに異なる
     const feedbackMessage = getFeedbackText(questionId);
 
     if (isCorrect) {
@@ -448,7 +457,6 @@ function showFeedback(questionId, isCorrect, transcript) {
         if (wrongAudio) wrongAudio.play();
     }
 
-    // どちらのケースでもフィードバックメッセージを表示
     if (feedbackText) {
         feedbackText.textContent = feedbackMessage;
     }
@@ -457,7 +465,6 @@ function showFeedback(questionId, isCorrect, transcript) {
     if (feedbackText) feedbackText.style.display = 'block';
 }
 
-// 各問題ごとのフィードバックメッセージを返す関数
 function getFeedbackText(questionId) {
     const feedbackMessages = {
         E1:"えいがは よかったです。（The movie was good.）",
@@ -473,7 +480,7 @@ function getFeedbackText(questionId) {
         Q9:"パン（ぱん）は　おいしくなかったです。（The bread was not good.）",
         Q10:"チケット（ちけっと）は　やすくなかったです。（The ticket was not cheap.）",
     };
-    return feedbackMessages[questionId] || "フィードバックが設定されていません";  // デフォルトのメッセージ
+    return feedbackMessages[questionId] || "フィードバックが設定されていません";  
 }
 
 document.querySelectorAll('.mic-button').forEach(button => {
