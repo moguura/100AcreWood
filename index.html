@@ -58,17 +58,23 @@ h1 {
     background-image: url("https://raw.githubusercontent.com/moguura/my-images/main/%E3%83%9E%E3%82%A4%E3%82%AF%E3%81%AE%E3%83%95%E3%83%AA%E3%83%BC%E3%82%A2%E3%82%A4%E3%82%B3%E3%83%B3%E3%81%9D%E3%81%AE21.png");
     background-size: cover;
     background-repeat: no-repeat;
-    background-color: #f9f9f9;
     border: none;
-    width: 70px;
-    height: 70px;
+    width: 70px; 
+    height: 70px; 
     border-radius: 50%;
-    cursor: pointer;
-    margin: 10px auto;
-    padding: 0;
-    text-indent: -9999px;
-    overflow: hidden;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    cursor: pointer; 
+    margin: 10px auto; 
+    transition: box-shadow 0.3s ease-in-out; /* 光るエフェクトのアニメーション */
+}
+
+/* 押している間に光る */
+.mic-button:active {
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.8); /* 赤く光る */
+}
+
+/* 録音中に光る */
+.mic-button.recording {
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.8); /* 赤く光る */
 }
 
 /* 説明文のスタイル */
@@ -408,30 +414,32 @@ const buttonsPressed = {
 
 function startRecognition(questionId) {
     if (!('webkitSpeechRecognition' in window)) {
-        alert("Speech recognition is not available in this browser. Please use Google Chrome.");
+        alert("このブラウザでは音声認識が利用できません。Google Chromeを使用してください。");
         return;
     }
 
     const recognition = new webkitSpeechRecognition();
     recognition.lang = 'ja-JP';
 
+    // マイクボタンに「recording」クラスを追加（光る）
+    const micButton = document.getElementById(`startButton${questionId}`);
+    micButton.classList.add("recording");
+
     recognition.onresult = function(event) {
         const transcript = event.results[0][0].transcript.trim();
+        console.log(`認識結果 (${questionId}):`, transcript);
+        
         const isCorrect = isCorrectAnswer(questionId, transcript);
-
-        showFeedback(questionId, isCorrect, transcript);
-
-        buttonsPressed[questionId] = true;
-
-        // すべてのボタンが押されたら次へ進む
-        if (Object.values(buttonsPressed).every(Boolean)) {
-            document.getElementById("nextLink").style.display = "block";
-        }
+        showFeedback(questionId, isCorrect);
     };
 
     recognition.onerror = function(event) {
-        alert("Speech recognition failed. Please try again.");
-        console.error("Speech Recognition Error:", event.error);
+        alert("音声認識に失敗しました。もう一度お試しください。");
+        console.error("音声認識エラー:", event.error);
+    };
+
+    recognition.onend = function() {
+        micButton.classList.remove("recording"); // 録音が終わったら光を消す
     };
 
     recognition.start();
