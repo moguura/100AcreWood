@@ -423,5 +423,17 @@ function showFeedback(questionId, isCorrect) {
     
     if (isCorrect && correctAudio) correctAudio.play();
     if (!isCorrect && wrongAudio) wrongAudio.play();
+
+    // すべてのフィードバックが表示されたかチェック
+    checkAllFeedbackDisplayed();
+}
+
+function checkAllFeedbackDisplayed() {
+    const allFeedback = document.querySelectorAll('.feedback');
+    const allDisplayed = Array.from(allFeedback).every(feedback => feedback.style.display === 'block');
+
+    if (allDisplayed) {
+        document.getElementById("nextLink").style.display = "block";
+    }
 }
 </script>
