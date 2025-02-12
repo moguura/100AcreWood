@@ -83,7 +83,19 @@ h1 {
     border-radius: 50%;
     cursor: pointer; 
     margin: 10px auto; 
+    transition: box-shadow 0.3s ease-in-out; /* 光るエフェクトのアニメーション */
 }
+
+/* 押している間に光る */
+.mic-button:active {
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.8); /* 赤く光る */
+}
+
+/* 録音中に光る */
+.mic-button.recording {
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.8); /* 赤く光る */
+}
+
 
 .instructions {
     background-color: #ffffff; 
@@ -388,6 +400,10 @@ function startRecognition(questionId) {
     const recognition = new webkitSpeechRecognition();
     recognition.lang = 'ja-JP';
 
+    // マイクボタンに「recording」クラスを追加（光る）
+    const micButton = document.getElementById(`startButton${questionId}`);
+    micButton.classList.add("recording");
+
     recognition.onresult = function(event) {
         const transcript = event.results[0][0].transcript.trim();
         console.log(`認識結果 (${questionId}):`, transcript);
@@ -399,6 +415,10 @@ function startRecognition(questionId) {
     recognition.onerror = function(event) {
         alert("音声認識に失敗しました。もう一度お試しください。");
         console.error("音声認識エラー:", event.error);
+    };
+
+    recognition.onend = function() {
+        micButton.classList.remove("recording"); // 録音が終わったら光を消す
     };
 
     recognition.start();
