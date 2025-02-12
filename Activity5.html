@@ -35,12 +35,12 @@ h1 {
 }
 
 .question img {
-    width: 600px;
+    width: 100%; /* レスポンシブ対応 */
+    max-width: 600px; /* 最大幅を設定 */
     height: auto;
     object-fit: cover;
     display: block;
     margin: 0 auto 10px;
-    max-width: 100%;
 }
 
 .question p:first-child {
@@ -58,100 +58,82 @@ h1 {
     background-image: url("https://raw.githubusercontent.com/moguura/my-images/main/%E3%83%9E%E3%82%A4%E3%82%AF%E3%81%AE%E3%83%95%E3%83%AA%E3%83%BC%E3%82%A2%E3%82%A4%E3%82%B3%E3%83%B3%E3%81%9D%E3%81%AE21.png");
     background-size: cover;
     background-repeat: no-repeat;
-    background-color: #f9f9f9;
     border: none;
-    width: 70px;
-    height: 70px;
+    width: 70px; 
+    height: 70px; 
     border-radius: 50%;
-    cursor: pointer;
-    margin: 10px auto;
-    padding: 0;
-    white-space: nowrap;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    cursor: pointer; 
+    margin: 10px auto; 
 }
 
 .instructions {
-    background-color: #ffffff;
-    border: 1px solid #d1d5db;
-    border-radius: 5px;
-    padding: 15px;
-    margin-bottom: 20px;
-    font-size: 24px;
-    line-height: 1.6;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    max-width: 900px;
-    width: 100%;
-    text-align: center;
-    margin: 0 auto;
+    background-color: #ffffff; 
+    border-radius: 5px; 
+    padding: 15px; 
+    margin-bottom: 20px; 
+    font-size: 24px; 
+    line-height: 1.6; 
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); 
+    max-width: 900px; 
 }
 
 .feedback {
-    position: absolute;
-    top: 10px;
-    left: 50%;
+    position: absolute; 
+    top: 10px; 
+    left: 50%; 
     transform: translateX(-50%);
-    display: none;
-    width: auto;
-    height: auto;
-    text-align: center;
+    display: none; 
 }
 
-.feedback-image {
-    position: absolute; /* 画像を重ねる */
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    max-width: 80%; /* 画像サイズを調整 */
-    width: 600px;
-    height: auto;
-    margin-top: 20%;
-    display: none;
-    z-index: 10; /* 上に表示 */
+.feedback img {
+   position: absolute; /* 上に重ねる */
+   top: 50%; 
+   left: 50%; 
+   transform: translate(-50%, -50%);
+   max-width: 80%;
+   height:auto; 
+   display:none; 
+   z-index :10; /* 上に表示 */
 }
 
 a {
-    display: block;
-    text-align: center;
-    margin: 30px auto;
-    color: #007bff;
-    text-decoration: none;
-    font-size: 28px;
-    font-weight: bold;
-    padding: 10px 20px;
-    transition: all 0.3s ease;
+   display:block; 
+   text-align:center; 
+   margin:auto; 
+   color:#007bff; 
+   text-decoration:none; 
+   font-size :28px; 
+   font-weight:bold; 
+   padding :10px 20px; 
+   transition : all .3s ease;  
 }
 
 a:hover {
-    text-decoration: underline;
-    color: #0056b3;
-    transform: scale(1.05);
+   text-decoration : underline;  
+   color:#0056b3;  
+   transform : scale(1.05);  
 }
 
 .notice-board {
-    background-color: #ffeeba;
-    margin: 20px auto;
-    max-width: 900px;
-    width: 100%;
-    border: 1px solid #d1d5db;
-    border-radius: 5px;
-    padding: 15px;
-    box-sizing: border-box;
-    text-align: center;
-}
-
-#Q1 {
-    margin-top: 100px;
+   background-color:#ffeeba;  
+   margin:auto;  
+   max-width :900px;  
+   border :1px solid #d1d5db;  
+   border-radius :5px;  
+   padding :15px;  
+   text-align:center;  
 }
 
 .red-bold {
-    color: red;
-    font-weight: bold;
+   color:red;  
+   font-weight:bold;  
 }
 
 .blue-bold {
-    color: #007bff;
-    font-weight: bold;
+   color:#007bff;  
+   font-weight:bold;  
 }
+
 </style>
 
 </head>
@@ -385,30 +367,13 @@ Object.keys(answers).forEach(key => {
     answers[key] = [...answers[key], ...answers[key].map(ans => ans + "です")];
 });
 
-const buttonsPressed = {};
-Object.keys(answers).forEach(key => buttonsPressed[key] = false);
-
 document.addEventListener("DOMContentLoaded", function () {
-    // すべての問題に対して自動で画像URLを設定
-    document.querySelectorAll(".question").forEach((question, index) => {
-        let questionNumber = index + 1; // Q1, Q2, Q3...
-        let questionId = `Q${questionNumber}`;
-
-        let correctImage = question.querySelector(".correctImage");
-        let wrongImage = question.querySelector(".wrongImage");
-
-        // URLを問題番号に基づいて設定
-        if (correctImage) correctImage.src = `https://raw.githubusercontent.com/moguura/my-images/main/5_${questionNumber}maru.JPG`;
-        if (wrongImage) wrongImage.src = `https://raw.githubusercontent.com/moguura/my-images/main/5_${questionNumber}batsu.JPG`;
-
-        // マイクボタンのイベントリスナーを設定
-        let micButton = document.getElementById(`startButton${questionId}`);
-        if (micButton) {
-            micButton.addEventListener('click', () => {
-                console.log("ボタンが押された:", questionId);
-                startRecognition(questionId);
-            });
-        }
+    document.querySelectorAll(".mic-button").forEach((button) => {
+        button.addEventListener('click', () => {
+            const questionId = button.id.replace('startButton', '');
+            console.log("ボタンが押された:", questionId);
+            startRecognition(questionId);
+        });
     });
 });
 
@@ -442,11 +407,13 @@ function isCorrectAnswer(questionId, userInput) {
 }
 
 function showFeedback(questionId, isCorrect) {
-    const correctImage = document.getElementById(`correctImage${questionId}`);
-    const wrongImage = document.getElementById(`wrongImage${questionId}`);
+    const feedbackDiv = document.querySelector(`#${questionId} .feedback`);
+    const correctImage = feedbackDiv.querySelector('.correctImage');
+    const wrongImage = feedbackDiv.querySelector('.wrongImage');
     const correctAudio = document.getElementById(`correctAudio${questionId}`);
     const wrongAudio = document.getElementById(`wrongAudio${questionId}`);
 
+    feedbackDiv.style.display = 'block';
     if (correctImage && wrongImage) {
         correctImage.style.display = isCorrect ? 'block' : 'none';
         wrongImage.style.display = isCorrect ? 'none' : 'block';
