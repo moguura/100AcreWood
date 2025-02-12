@@ -29,6 +29,7 @@ h1 {
 
 .question {
     margin-bottom: 100px;
+    position: relative;  /* これを追加！ */
     text-align: center;
     font-size: 24px;
     position: relative;
@@ -51,15 +52,16 @@ h1 {
 
 .feedback {
     position: absolute; 
-    top: 50%;  /* 画面の中央に */
+    top: 50%;   /* 親要素（.question）の中央 */
     left: 50%;
     transform: translate(-50%, -50%);
     display: none;
-    z-index: 10;  /* 他の要素より前に表示 */
+    z-index: 10;  /* 問題画像より前に表示 */
 }
 
 .feedback img {
-    width: 600px;  /* 画像の大きさを調整（好きなサイズに） */
+    width: auto;  
+    max-width: 80%;  /* 画像が大きすぎないように制限 */
     height: auto;
     display: none; 
 }
