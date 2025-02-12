@@ -50,22 +50,23 @@ h1 {
     color: #007bff;
 }
 
-.feedback {
-    position: absolute; 
-    top: 50%;   /* 親要素（.question）の中央 */
-    left: 50%;
-    transform: translate(-50%, -50%);
-    display: none;
-    z-index: 10;  /* 問題画像より前に表示 */
-}
-
 .feedback img {
-    width: auto;  
-    max-width:100%;  /* 画像が大きすぎないように制限 */
-    height: auto;
-    display: none; 
+    width: 100%;  /* 親要素の幅いっぱいにする */
+    max-width: 600px;  /* 問題画像と同じ最大幅にする */
+    height: auto;  /* 縦横比を維持 */
+    display: none;  /* デフォルトでは非表示 */
 }
 
+.feedback {
+    position: absolute;  
+    top: 50%;   /* 上から50%の位置 */
+    left: 50%;
+    transform: translate(-50%, -50%);  /* 画像の中心を揃える */
+    width: 100%;  /* 親要素いっぱいに広げる */
+    max-width: 600px;  /* 問題画像と同じ幅 */
+    z-index: 20;  /* 他の要素より前面に */
+    display: none;
+}
 
 .highlight {
     color: green;
