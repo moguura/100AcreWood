@@ -51,22 +51,19 @@ h1 {
 
 .feedback {
     position: absolute; 
-    top: 10px; 
-    left: 50%; 
-    transform: translateX(-50%);
-    display: none; 
+    top: 50%;  /* 画面の中央に */
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: none;
+    z-index: 10;  /* 他の要素より前に表示 */
 }
 
 .feedback img {
-   position: absolute; /* 上に重ねる */
-   top: 50%; 
-   left: 50%; 
-   transform: translate(-50%, -50%);
-   max-width: 80%;
-   height: auto; 
-   display: none; 
-   z-index: 10; /* 上に表示 */
+    width: 600px;  /* 画像の大きさを調整（好きなサイズに） */
+    height: auto;
+    display: none; 
 }
+
 
 .highlight {
     color: green;
