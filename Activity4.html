@@ -364,7 +364,7 @@ a:hover {
  </div>
 
         <!-- リンク -->
-        <a href="./Activity5.html" id="nextLink" style="display: none;">Go to Activity5</a>
+        <a href="./Activity5.html" id="nextPageLink" style="display: none;">Go to Activity5</a>
     </div>
 </body>
 </html>
@@ -400,7 +400,6 @@ function startRecognition(questionId) {
     const recognition = new webkitSpeechRecognition();
     recognition.lang = 'ja-JP';
 
-    // マイクボタンに「recording」クラスを追加（光る）
     const micButton = document.getElementById(`startButton${questionId}`);
     micButton.classList.add("recording");
 
@@ -410,6 +409,12 @@ function startRecognition(questionId) {
         
         const isCorrect = isCorrectAnswer(questionId, transcript);
         showFeedback(questionId, isCorrect);
+
+        // ボタンが押されたことを記録
+        buttonsPressed[questionId] = true;
+
+        // 全てのボタンが押されたかチェック
+        checkAllButtonsPressed();
     };
 
     recognition.onerror = function(event) {
@@ -418,24 +423,26 @@ function startRecognition(questionId) {
     };
 
     recognition.onend = function() {
-        micButton.classList.remove("recording"); // 録音が終わったら光を消す
+        micButton.classList.remove("recording");
     };
 
     recognition.start();
 }
 
+function checkAllButtonsPressed() {
+    if (Object.values(buttonsPressed).every(value => value)) {
+        document.getElementById("nextPageLink").style.display = "block";
+    }
+}
 
 // ✅ 修正した判定関数
 function isCorrectAnswer(questionId, userInput) {
     const normalizedInput = normalizeText(userInput);
-    const correctEnding = answers[questionId][0]; // 正しい答えを取得
+    const correctEnding = answers[questionId][0];
 
-    // **「くなかった」が正解の場合**
     if (correctEnding.endsWith("くなかった") && normalizedInput.endsWith("くなかった")) {
         return true;
-    }
-    // **「かった」が正解の場合（「くなかった」ではないもの）**
-    else if (correctEnding.endsWith("かった") && normalizedInput.endsWith("かった") && !normalizedInput.endsWith("くなかった")) {
+    } else if (correctEnding.endsWith("かった") && normalizedInput.endsWith("かった") && !normalizedInput.endsWith("くなかった")) {
         return true;
     }
     return false;
@@ -446,7 +453,7 @@ function normalizeText(text) {
     return text.replace(/\s+/g, '').replace(/です$/, '');
 }
 
-function showFeedback(questionId, isCorrect, transcript) {
+function showFeedback(questionId, isCorrect) {
     const correctImage = document.getElementById(`correctImage${questionId}`);
     const wrongImage = document.getElementById(`wrongImage${questionId}`);
     const feedback = document.getElementById(`feedback${questionId}`);
