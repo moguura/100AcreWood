@@ -397,8 +397,8 @@ a:hover {
     </div>
 </body>
 </html>
-<!-- HTML内のJavaScriptコード -->
 <script>
+<!-- HTML内のJavaScriptコード -->
 const answers = {
     E1: ["い"],
     E2: ["くない"],
@@ -429,7 +429,6 @@ function startRecognition(questionId) {
     const recognition = new webkitSpeechRecognition();
     recognition.lang = 'ja-JP';
 
-    // マイクボタンに「recording」クラスを追加（光る）
     const micButton = document.getElementById(`startButton${questionId}`);
     micButton.classList.add("recording");
 
@@ -439,6 +438,12 @@ function startRecognition(questionId) {
         
         const isCorrect = isCorrectAnswer(questionId, transcript);
         showFeedback(questionId, isCorrect);
+
+        // ボタンが押されたことを記録
+        buttonsPressed[questionId] = true;
+
+        // 全てのボタンが押されたかチェック
+        checkAllAnswered();
     };
 
     recognition.onerror = function(event) {
@@ -447,19 +452,16 @@ function startRecognition(questionId) {
     };
 
     recognition.onend = function() {
-        micButton.classList.remove("recording"); // 録音が終わったら光を消す
+        micButton.classList.remove("recording");
     };
 
     recognition.start();
 }
 
-
-// 判定関数
 function isCorrectAnswer(questionId, userInput) {
     const normalizedInput = normalizeText(userInput);
     const correctEnding = answers[questionId][0];
 
-    // 「くない」を優先して判定し、それ以外の場合に「い」を判定
     if (correctEnding === "くない" && normalizedInput.endsWith("くない")) {
         return true;
     } else if (correctEnding === "い" && normalizedInput.endsWith("い") && !normalizedInput.endsWith("くない")) {
@@ -468,44 +470,39 @@ function isCorrectAnswer(questionId, userInput) {
     return false;
 }
 
-// テキストを正規化する関数
 function normalizeText(text) {
     let normalized = text.toLowerCase().replace(/\s+/g, '');
-    normalized = normalized.replace(/です$/, ''); // 「です」を削除
+    normalized = normalized.replace(/です$/, '');
     return normalized;
 }
 
-function showFeedback(questionId, isCorrect, transcript) {
+function showFeedback(questionId, isCorrect) {
     const correctImage = document.getElementById(`correctImage${questionId}`);
     const wrongImage = document.getElementById(`wrongImage${questionId}`);
-    const feedback = document.getElementById(`feedback${questionId}`);
-    const correctAudio = document.getElementById(`correctAudio${questionId}`);
-    const wrongAudio = document.getElementById(`wrongAudio${questionId}`);
     const feedbackText = document.getElementById(`feedbackText${questionId}`);
-
-    // フィードバックメッセージは問題ごとに異なる
-    const feedbackMessage = getFeedbackText(questionId);
 
     if (isCorrect) {
         if (correctImage) correctImage.style.display = 'block';
         if (wrongImage) wrongImage.style.display = 'none';
-        if (correctAudio) correctAudio.play();
     } else {
         if (correctImage) correctImage.style.display = 'none';
         if (wrongImage) wrongImage.style.display = 'block';
-        if (wrongAudio) wrongAudio.play();
     }
 
-    // どちらのケースでもフィードバックメッセージを表示
     if (feedbackText) {
-        feedbackText.textContent = feedbackMessage;
+        feedbackText.textContent = getFeedbackText(questionId);
+        feedbackText.style.display = 'block';
     }
-
-    if (feedback) feedback.style.display = 'block';
-    if (feedbackText) feedbackText.style.display = 'block';
 }
 
-// 各問題ごとのフィードバックメッセージを返す関数
+// 全ての問題でマイクボタンが押されたかを確認
+function checkAllAnswered() {
+    const allAnswered = Object.values(buttonsPressed).every(value => value);
+    if (allAnswered) {
+        document.getElementById("nextPageLink").style.display = "block";
+    }
+}
+
 function getFeedbackText(questionId) {
     const feedbackMessages = {
         E1:"てんきは いいです。（The weather is good.）",
@@ -521,7 +518,7 @@ function getFeedbackText(questionId) {
         Q9:"このラーメンは からくないです。（This ramen is not spicy.）",
         Q10:"カラオケは たのしいです。(Karaoke is fun.）",
     };
-    return feedbackMessages[questionId] || "フィードバックが設定されていません";  // デフォルトのメッセージ
+    return feedbackMessages[questionId] || "フィードバックが設定されていません";
 }
 
 document.querySelectorAll('.mic-button').forEach(button => {
