@@ -288,38 +288,36 @@ h1 {
 <!-- 音楽再生用 -->
     <audio id="finalMusic" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%83%AC%E3%83%99%E3%83%AB%E3%82%A2%E3%83%83%E3%83%97.mp3"></audio>
 
-    <script>
-        const answers = {
-            E1: ["い"],
-            Q1: ["い"],
-            Q2: ["い"],
-            Q3: ["い"],
-            Q4: ["い"],
-            Q5: ["い"],
-        };
+<script>
+const answers = {
+    E1: ["い"],
+    Q1: ["い"],
+    Q2: ["い"],
+    Q3: ["い"],
+    Q4: ["い"],
+    Q5: ["い"]
+};
 
-        const buttonsPressed = {
-            E1: false, Q1: false, Q2: false, Q3: false, Q4: false, Q5: false
-        };
+const buttonsPressed = {
+    E1: false, Q1: false, Q2: false, Q3: false, Q4: false, Q5: false
+};
 
-        document.addEventListener('DOMContentLoaded', () => {
-            const finalInstructions = document.getElementById('finalInstructions');
-            const noticeBoard = document.querySelector('.notice-board');
+document.addEventListener('DOMContentLoaded', () => {
+    const finalInstructions = document.getElementById('finalInstructions');
+    const noticeBoard = document.querySelector('.notice-board');
 
-            // 初期状態で非表示にする
-            finalInstructions.style.display = 'none';
-            noticeBoard.style.display = 'none';
+    finalInstructions.style.display = 'none';
+    noticeBoard.style.display = 'none';
 
-            // 各ボタンにイベントリスナーを追加
-            document.getElementById('startButtonE1').addEventListener('click', () => startRecognition('E1'));
-            document.getElementById('startButtonQ1').addEventListener('click', () => startRecognition('Q1'));
-            document.getElementById('startButtonQ2').addEventListener('click', () => startRecognition('Q2'));
-            document.getElementById('startButtonQ3').addEventListener('click', () => startRecognition('Q3'));
-            document.getElementById('startButtonQ4').addEventListener('click', () => startRecognition('Q4'));
-            document.getElementById('startButtonQ5').addEventListener('click', () => startRecognition('Q5'));
-        });
+    document.getElementById('startButtonE1').addEventListener('click', () => startRecognition('E1'));
+    document.getElementById('startButtonQ1').addEventListener('click', () => startRecognition('Q1'));
+    document.getElementById('startButtonQ2').addEventListener('click', () => startRecognition('Q2'));
+    document.getElementById('startButtonQ3').addEventListener('click', () => startRecognition('Q3'));
+    document.getElementById('startButtonQ4').addEventListener('click', () => startRecognition('Q4'));
+    document.getElementById('startButtonQ5').addEventListener('click', () => startRecognition('Q5'));
+});
 
-        function startRecognition(questionId) {
+function startRecognition(questionId) {
     if (!('webkitSpeechRecognition' in window)) {
         alert("このブラウザでは音声認識が利用できません。Google Chromeを使用してください。");
         return;
@@ -328,7 +326,6 @@ h1 {
     const recognition = new webkitSpeechRecognition();
     recognition.lang = 'ja-JP';
 
-    // マイクボタンに「recording」クラスを追加（光る）
     const micButton = document.getElementById(`startButton${questionId}`);
     micButton.classList.add("recording");
 
@@ -338,6 +335,12 @@ h1 {
         
         const isCorrect = isCorrectAnswer(questionId, transcript);
         showFeedback(questionId, isCorrect);
+
+        // ボタンが押されたことを記録
+        buttonsPressed[questionId] = true;
+
+        // 全てのボタンが押されたかチェック
+        checkAllButtonsPressed();
     };
 
     recognition.onerror = function(event) {
@@ -346,114 +349,113 @@ h1 {
     };
 
     recognition.onend = function() {
-        micButton.classList.remove("recording"); // 録音が終わったら光を消す
+        micButton.classList.remove("recording");
     };
 
     recognition.start();
 }
 
-        function checkAllButtonsPressed() {
-            if (Object.values(buttonsPressed).every(Boolean)) {
-                showFinalInstructions();
-            }
+function checkAllButtonsPressed() {
+    if (Object.values(buttonsPressed).every(value => value)) {
+        showFinalInstructions();
+    }
+}
+
+function showFinalInstructions() {
+    const finalInstructions = document.getElementById('finalInstructions');
+    const noticeBoard = document.querySelector('.notice-board');
+    const finalMusic = document.getElementById('finalMusic');
+
+    finalInstructions.style.display = 'block';
+    noticeBoard.style.display = 'block';
+
+    setTimeout(() => {
+        if (finalMusic) {
+            finalMusic.play().catch((error) => {
+                console.error('音楽の再生に失敗しました:', error);
+            });
         }
+    }, 1500);
+}
 
-        function showFinalInstructions() {
-            const finalInstructions = document.getElementById('finalInstructions');
-            const noticeBoard = document.querySelector('.notice-board');
-            const finalMusic = document.getElementById('finalMusic'); // 音楽要素を取得
+function isCorrectAnswer(questionId, userInput) {
+    const normalizedInput = normalizeText(userInput);
+    const correctEnding = answers[questionId][0];
 
-            // 表示
-            finalInstructions.style.display = 'block';
-            noticeBoard.style.display = 'block';
+    if (correctEnding === "くない" && normalizedInput.endsWith("くない")) {
+        return true;
+    } else if (correctEnding === "い" && normalizedInput.endsWith("い") && !normalizedInput.endsWith("くない")) {
+        return true;
+    }
+    return false;
+}
 
-            // 音楽再生を遅延して開始（フィードバックが出てから1秒後に再生）
-            setTimeout(() => {
-                if (finalMusic) {
-                    finalMusic.play().catch((error) => {
-                        console.error('音楽の再生に失敗しました:', error);
-                    });
-                }
-            }, 1500); // 1.5秒遅延
+function normalizeText(text) {
+    let normalized = text.toLowerCase().replace(/\s+/g, '');
+    normalized = normalized.replace(/です$/, '');
+    return normalized;
+}
+
+function showFeedback(questionId, isCorrect) {
+    const correctImage = document.getElementById(`correctImage${questionId}`);
+    const wrongImage = document.getElementById(`wrongImage${questionId}`);
+    const feedback = document.getElementById(`feedback${questionId}`);
+    const feedbackText = document.getElementById(`feedbackText${questionId}`);
+
+    const feedbackMessages = getFeedbackText(questionId);
+
+    if (isCorrect) {
+        correctImage.style.display = 'block';
+        wrongImage.style.display = 'none';
+        feedbackText.textContent = feedbackMessages.correct;
+    } else {
+        correctImage.style.display = 'none';
+        wrongImage.style.display = 'block';
+        feedbackText.textContent = feedbackMessages.incorrect;
+    }
+
+    feedback.style.display = 'block';
+    feedbackText.style.display = 'block';
+
+    const correctAudio = document.getElementById(`correctAudio${questionId}`);
+    const wrongAudio = document.getElementById(`wrongAudio${questionId}`);
+
+    if (isCorrect) {
+        correctAudio.play();
+    } else {
+        wrongAudio.play();
+    }
+}
+
+function getFeedbackText(questionId) {
+    const feedbackMessages = {
+        E1: {
+            correct: "Your answer： タバコは いいです。（Smoking is good.）",
+            incorrect: "Your answer： タバコは よくないです。（Smoking is not good.）"
+        },
+        Q1: {
+            correct: "Your answer： べんきょうは　おもしろいです。（Studying is interesting.）",
+            incorrect: "Your answer：べんきょうは　おもしろくないです。（Studying is not interesting.）"
+        },
+        Q2: {
+            correct: "Your answer： やさいは　おいしいです。（Vegetables are tasty.）",
+            incorrect: "Your answer： やさいは　おいしくないです。（Vegetables are not tasty.）"
+        },
+        Q3: {
+            correct: "Your answer：スポーツは　たのしいです。（Sports are fun.）",
+            incorrect: "Your answer：スポーツは　たのしくないです。（Sports are not fun.）"
+        },
+        Q4: {
+            correct: "Your answer： きょうは　さむいです。（Today is cold.）",
+            incorrect: "Your answer： きょうは　さむくないです。（Today is not cold.）"
+        },
+        Q5: {
+            correct: "Your answer： にほんのカレーは　からいです。（Japanese curry is spicy.）",
+            incorrect: "Your answer： にほんのカレーは　からくないです。（Japanese curry is not spicy.）"
         }
-
-        function isCorrectAnswer(questionId, userInput) {
-            const normalizedInput = normalizeText(userInput);
-            const correctEnding = answers[questionId][0];
-
-            if (correctEnding === "くない" && normalizedInput.endsWith("くない")) {
-                return true;
-            } else if (correctEnding === "い" && normalizedInput.endsWith("い") && !normalizedInput.endsWith("くない")) {
-                return true;
-            }
-            return false;
-        }
-
-        function normalizeText(text) {
-            let normalized = text.toLowerCase().replace(/\s+/g, '');
-            normalized = normalized.replace(/です$/, '');
-            return normalized;
-        }
-
-        function showFeedback(questionId, isCorrect, transcript) {
-            const correctImage = document.getElementById(`correctImage${questionId}`);
-            const wrongImage = document.getElementById(`wrongImage${questionId}`);
-            const feedback = document.getElementById(`feedback${questionId}`);
-            const feedbackText = document.getElementById(`feedbackText${questionId}`);
-
-            const feedbackMessages = getFeedbackText(questionId);
-
-            if (isCorrect) {
-                correctImage.style.display = 'block';
-                wrongImage.style.display = 'none';
-                feedbackText.textContent = feedbackMessages.correct;
-            } else {
-                correctImage.style.display = 'none';
-                wrongImage.style.display = 'block';
-                feedbackText.textContent = feedbackMessages.incorrect;
-            }
-
-            feedback.style.display = 'block';
-            feedbackText.style.display = 'block';
-            const correctAudio = document.getElementById(`correctAudio${questionId}`);
-            const wrongAudio = document.getElementById(`wrongAudio${questionId}`);
-
-            if (isCorrect) {
-                correctAudio.play();
-            } else {
-                wrongAudio.play();
-            }
-        }
-
-        function getFeedbackText(questionId) {
-            const feedbackMessages = {
-                E1: {
-                    correct: "Your answer： タバコは いいです。（Smoking is good.）",
-                    incorrect: "Your answer： タバコは よくないです。（Smoking is not good.）"
-                },
-                Q1: {
-                    correct: "Your answer： べんきょうは　おもしろいです。（Studying is interesting.）",
-                    incorrect: "Your answer：べんきょうは　おもしろくないです。（Studying is not interesting.）"
-                },
-                Q2: {
-                    correct: "Your answer： やさいは　おいしいです。（Vegetables are tasty.）",
-                    incorrect: "Your answer： やさいは　おいしくないです。（Vegetables are not tasty.）"
-                },
-                Q3: {
-                    correct: "Your answer：スポーツは　たのしいです。（Sports are fun.）",
-                    incorrect: "Your answer：スポーツは　たのしくないです。（Sports are not fun.）"
-                },
-                Q4: {
-                    correct: "Your answer： きょうは　さむいです。（Today is cold.）",
-                    incorrect: "Your answer： きょうは　さむくないです。（Today is not cold.）"
-                },
-                Q5: {
-                    correct: "Your answer： にほんのカレーは　からいです。（Japanese curry is spicy.）",
-                    incorrect: "Your answer： にほんのカレーは　からくないです。（Japanese curry is not spicy.）"
-                }
-            };
-            return feedbackMessages[questionId];
-        }
+    };
+    return feedbackMessages[questionId];
+}
     </script>
 </body>
 </html>
