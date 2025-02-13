@@ -480,13 +480,17 @@ function showFeedback(questionId, isCorrect) {
     const correctImage = document.getElementById(`correctImage${questionId}`);
     const wrongImage = document.getElementById(`wrongImage${questionId}`);
     const feedbackText = document.getElementById(`feedbackText${questionId}`);
+    const correctAudio = document.getElementById(`correctAudio${questionId}`);
+    const wrongAudio = document.getElementById(`wrongAudio${questionId}`);
 
     if (isCorrect) {
         if (correctImage) correctImage.style.display = 'block';
         if (wrongImage) wrongImage.style.display = 'none';
+        if (correctAudio) correctAudio.play().catch(e => console.error("音声再生エラー:", e));
     } else {
         if (correctImage) correctImage.style.display = 'none';
         if (wrongImage) wrongImage.style.display = 'block';
+        if (wrongAudio) wrongAudio.play().catch(e => console.error("音声再生エラー:", e));
     }
 
     if (feedbackText) {
