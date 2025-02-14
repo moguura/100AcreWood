@@ -468,16 +468,27 @@ function normalizeText(text) {
 }
 
 function showFeedback(questionId, isCorrect) {
+    const feedback = document.getElementById(`feedback${questionId}`);
     const correctImage = document.getElementById(`correctImage${questionId}`);
     const wrongImage = document.getElementById(`wrongImage${questionId}`);
     const feedbackText = document.getElementById(`feedbackText${questionId}`);
     const correctAudio = document.getElementById(`correctAudio${questionId}`);
     const wrongAudio = document.getElementById(`wrongAudio${questionId}`);
 
-    // **画像を確実に表示**
+    // **フィードバック全体を表示**
+    if (feedback) {
+        feedback.style.display = 'block';
+    }
+
+    // **正解・不正解の画像を適切に切り替え**
     if (correctImage && wrongImage) {
-        correctImage.style.display = isCorrect ? 'block' : 'none';
-        wrongImage.style.display = isCorrect ? 'none' : 'block';
+        if (isCorrect) {
+            correctImage.style.display = 'block';
+            wrongImage.style.display = 'none';
+        } else {
+            correctImage.style.display = 'none';
+            wrongImage.style.display = 'block';
+        }
     }
 
     // **音を鳴らす**
