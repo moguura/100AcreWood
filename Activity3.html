@@ -402,30 +402,43 @@ function showFeedback(questionId, isCorrect) {
     const feedback = document.getElementById(`feedback${questionId}`);
     const feedbackText = document.getElementById(`feedbackText${questionId}`);
 
-    const feedbackMessages = getFeedbackText(questionId);
-
-    if (isCorrect) {
-        correctImage.style.display = 'block';
-        wrongImage.style.display = 'none';
-        feedbackText.textContent = feedbackMessages.correct;
-    } else {
-        correctImage.style.display = 'none';
-        wrongImage.style.display = 'block';
-        feedbackText.textContent = feedbackMessages.incorrect;
-    }
-
-    feedback.style.display = 'block';
-    feedbackText.style.display = 'block';
-
     const correctAudio = document.getElementById(`correctAudio${questionId}`);
     const wrongAudio = document.getElementById(`wrongAudio${questionId}`);
 
+    // **フィードバックメッセージを設定**
+    const feedbackMessages = getFeedbackText(questionId);
+    if (feedbackText) {
+        feedbackText.textContent = isCorrect ? feedbackMessages.correct : feedbackMessages.incorrect;
+        feedbackText.style.display = 'block';
+    }
+
+    // **画像を表示**
+    if (correctImage && wrongImage) {
+        correctImage.style.display = isCorrect ? 'block' : 'none';
+        wrongImage.style.display = isCorrect ? 'none' : 'block';
+    }
+
+    // **フィードバック全体を表示**
+    if (feedback) {
+        feedback.style.display = 'block';
+    }
+
+    // **音を鳴らす（`null` チェック付き）**
     if (isCorrect) {
-        correctAudio.play();
+        if (correctAudio) {
+            correctAudio.play().catch(e => console.error("正解音の再生エラー:", e));
+        } else {
+            console.warn(`正解音が見つかりません: correctAudio${questionId}`);
+        }
     } else {
-        wrongAudio.play();
+        if (wrongAudio) {
+            wrongAudio.play().catch(e => console.error("不正解音の再生エラー:", e));
+        } else {
+            console.warn(`不正解音が見つかりません: wrongAudio${questionId}`);
+        }
     }
 }
+
 
 function getFeedbackText(questionId) {
     const feedbackMessages = {
