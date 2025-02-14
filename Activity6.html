@@ -120,13 +120,14 @@ h1 {
 #audio-section {
     display: flex;
     justify-content: center; /* 水平方向の中央揃え */
-    align-items: center; /* 必要なら垂直方向の中央揃え */
-    margin-top: 15px;
+    align-items: center; /* 垂直方向の中央揃え */
+    width: 100%; /* 親要素をフル幅にする */
+    text-align: center; /* 追加：念のためボタンも中央揃え */
 }
 
 /* プレイボタンのデザイン */
 #play-audio {
-    background-color: #007BFF; /* 青色ボタン */
+    background-color: #007BFF;
     color: white;
     border: none;
     padding: 10px 20px;
@@ -134,11 +135,14 @@ h1 {
     cursor: pointer;
     border-radius: 5px;
     transition: background-color 0.3s;
+    display: block; /* 追加：ボタンをブロック要素にする */
+    margin: 0 auto; /* 追加：ボタンを中央配置 */
 }
 
 #play-audio:hover {
-    background-color: #0056b3; /* ホバー時の色 */
+    background-color: #0056b3;
 }
+
 
 /* 通知ボード固有のスタイル */
 .notice-board {
