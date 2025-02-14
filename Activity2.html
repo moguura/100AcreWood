@@ -398,7 +398,6 @@ a:hover {
 </body>
 </html>
 <script>
-<!-- HTML内のJavaScriptコード -->
 const answers = {
     E1: ["い"],
     E2: ["くない"],
@@ -499,11 +498,12 @@ function showFeedback(questionId, isCorrect) {
     }
 }
 
-// 全ての問題でマイクボタンが押されたかを確認
+// ✅ 全ての問題でマイクボタンが押されたかを確認
 function checkAllAnswered() {
     const allAnswered = Object.values(buttonsPressed).every(value => value);
-    if (allAnswered) {
-        document.getElementById("nextPageLink").style.display = "block";
+    const nextPageLink = document.getElementById("nextPageLink");
+    if (allAnswered && nextPageLink) {
+        nextPageLink.style.display = "block";
     }
 }
 
