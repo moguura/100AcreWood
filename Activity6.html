@@ -26,11 +26,23 @@ h1 {
     font-size: 40px; /* 見出しを大きくする */
 }
 
-/* 質問エリアのスタイル */
+/* 質問エリアのスタイル（Q1の間隔を縮める） */
 .question {
-    margin-bottom: 100px;
+    margin-bottom: 60px; /* 各問題の間隔を少し縮める */
     text-align: center;
     font-size: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* 要素を中央揃え */
+    gap: 10px; /* Q1, Playボタン, 文章の間隔を一括調整 */
+}
+
+/* Q1のスタイル（問題番号の間隔を縮める） */
+.question p:first-child {
+    font-weight: bold;
+    font-size: 28px; /* 問題番号の文字サイズ */
+    color: #007bff;
+    margin-bottom: 5px; /* Playボタンとの間隔を小さくする */
 }
 .question img {
     width: 300px;
@@ -39,11 +51,6 @@ h1 {
     display: block;
     margin: 0 auto 10px;
     max-width: 100%;
-}
-.question p:first-child {
-    font-weight: bold;
-    font-size: 28px; /* 問題番号の文字サイズを大きく */
-    color: #007bff; /* 青色 */
 }
 
 /* キューのスタイル（緑色と太字） */
@@ -116,16 +123,12 @@ h1 {
     max-width: 600px; /* 調整可能（最大幅を制限） */
 }
 
-/* 音声再生ボタンの配置 */
-#audio-section {
-    display: flex;
-    justify-content: center; /* 水平方向の中央揃え */
-    align-items: center; /* 垂直方向の中央揃え */
-    width: 100%; /* 親要素をフル幅にする */
-    text-align: center; /* 追加：念のためボタンも中央揃え */
+/* 音声再生ボタンのスタイル（余白調整） */
+.audio-section {
+    margin-bottom: 5px; /* Playボタンと次の文章の間隔を縮める */
 }
 
-/* プレイボタンのデザイン */
+/* Playボタンのスタイル */
 .play-audio {
     background-color: #007BFF;
     color: white;
@@ -135,8 +138,8 @@ h1 {
     cursor: pointer;
     border-radius: 5px;
     transition: background-color 0.3s;
-    display: block; /* 追加：ボタンをブロック要素にする */
-    margin: 0 auto; /* 追加：ボタンを中央配置 */
+    display: block;
+    margin: 0 auto;
 }
 
 .play-audio:hover {
