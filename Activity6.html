@@ -26,20 +26,20 @@ h1 {
     font-size: 40px; /* 見出しを大きくする */
 }
 
-/* 各質問エリアの共通スタイル */
 .question {
-    margin-bottom: 60px; /* 各質問間の間隔を統一 */
+    margin-bottom: 80px !important; /* 元が 60px なら 80px などに増やす */
     text-align: center;
     font-size: 24px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 5px; /* まず全体的な隙間を狭める */
+    /* gapは要素間の共通余白になるので、用途に応じて調整してください */
+    gap: 5px; 
 }
 
-/* Q1やQ2の「Q1」・「Playボタン」・「英文」の間隔を統一 */
+/* 質問番号（Q1, Q2, ...） */
 .question-number {
-    margin-bottom: 5px !important; /* 「Q1」と「Playボタン」の間隔を縮める */
+    margin: 0 0 5px 0 !important; /* 下だけ少し余白を取る */
 }
     
 /* 質問番号（Q1, Q2, ...）の間隔を詰める */
@@ -59,22 +59,17 @@ h1 {
     max-width: 100%;
 }
     
-/* 質問文 (How was last week?) の余白をなくす */
-.question p {
-    margin: 5px 0 !important; /* すべての余白を削除 */
-    padding: 0px;
-}
-
-/* 英文と日本語の間隔を統一 */
+/* 英文(How was ~ ?) */
 .english-text {
-    margin-bottom: 10px !important; /* 英文の下に適度な間隔を入れる */
+    margin: 0 0 5px 0 !important; /* 下だけ少し余白 */
 }
 
 /* 日本語（いそがしい→ 〇〇）の上に適度な間隔を確保 */
 .japanese-text {
-    margin-top: 10px !important;
-    margin-bottom: 10px !important; /* マイクボタンとの間隔を統一 */
+    margin-top: 15px !important; /* 英文との間を広げる */
+    margin-bottom: 10px !important; /* マイクボタンとの間はお好みで */
 }
+
 
 /* 各質問（Q1, Q2, ...）の間隔をしっかり開ける */
 .question:last-of-type {
@@ -175,7 +170,11 @@ h1 {
 .play-audio:hover {
     background-color: #0056b3;
 }
-
+    
+/* Playボタン周りの余白 */
+.audio-section {
+    margin: 0 0 5px 0 !important; /* 下だけ少し余白 */
+}
 
 /* 通知ボード固有のスタイル */
 .notice-board {
