@@ -28,21 +28,21 @@ h1 {
 
 /* 質問エリアのスタイル（Q1の間隔を縮める） */
 .question {
-    margin-bottom: 60px; /* 各問題の間隔を少し縮める */
+    margin-bottom: 40px; /* 各問題の間隔をさらに縮める */
     text-align: center;
     font-size: 24px;
     display: flex;
     flex-direction: column;
     align-items: center; /* 要素を中央揃え */
-    gap: 10px; /* Q1, Playボタン, 文章の間隔を一括調整 */
+    gap: 5px; /* Q1, Playボタン, 文章の間隔をより縮める */
 }
 
 /* Q1のスタイル（問題番号の間隔を縮める） */
 .question p:first-child {
     font-weight: bold;
-    font-size: 28px; /* 問題番号の文字サイズ */
+    font-size: 28px;
     color: #007bff;
-    margin-bottom: 5px; /* Playボタンとの間隔を小さくする */
+    margin-bottom: 2px; /* Playボタンとの間隔をさらに縮める */
 }
 .question img {
     width: 300px;
@@ -123,9 +123,9 @@ h1 {
     max-width: 600px; /* 調整可能（最大幅を制限） */
 }
 
-/* 音声再生ボタンのスタイル（余白調整） */
+/* 音声再生ボタンのスタイル（余白を縮める） */
 .audio-section {
-    margin-bottom: 5px; /* Playボタンと次の文章の間隔を縮める */
+    margin-bottom: 0px; /* Playボタンと次の文章の間隔を縮める */
 }
 
 /* Playボタンのスタイル */
@@ -133,13 +133,14 @@ h1 {
     background-color: #007BFF;
     color: white;
     border: none;
-    padding: 10px 20px;
+    padding: 8px 16px; /* ボタンのサイズを微調整 */
     font-size: 16px;
     cursor: pointer;
     border-radius: 5px;
     transition: background-color 0.3s;
     display: block;
     margin: 0 auto;
+    margin-bottom: 0px; /* 下の文章との余白をなくす */
 }
 
 .play-audio:hover {
