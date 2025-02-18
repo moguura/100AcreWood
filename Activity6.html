@@ -26,23 +26,23 @@ h1 {
     font-size: 40px; /* 見出しを大きくする */
 }
 
-/* 質問エリアのスタイル（Q1の間隔を縮める） */
+/* 各質問エリアの共通スタイル */
 .question {
-    margin-bottom: 50px; /* 各問題間の間隔を統一 */
+    margin-bottom: 60px; /* 各質問間の間隔を統一 */
     text-align: center;
     font-size: 24px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px; /* 各要素の間隔を適度に開ける */
+    gap: 5px; /* まず全体的な隙間を狭める */
 }
 
-/* Q1（問題番号）の間隔を縮める */
+/* 質問番号（Q1, Q2, ...）の間隔を詰める */
 .question p:first-child {
     font-weight: bold;
     font-size: 28px;
     color: #007bff;
-    margin-bottom: 5px; /* 余白を少し確保 */
+    margin-bottom: 3px; /* Playボタンとの間隔を詰める */
 }
 
 .question img {
@@ -58,6 +58,22 @@ h1 {
 .question p {
     margin: 5px 0 !important; /* すべての余白を削除 */
     padding: 0px;
+}
+
+/* 英文の間隔を詰める */
+.question .english-text {
+    margin: 3px 0; /* Playボタンとの間隔を詰める */
+}
+
+/* 日本語のキューとマイクボタンの間隔を詰める */
+.question .japanese-text {
+    margin-top: 10px; /* ほんの少し開ける */
+    margin-bottom: 3px; /* マイクボタンとの間隔を詰める */
+}
+
+/* 各質問（Q1, Q2, ...）の間隔をしっかり開ける */
+.question:last-of-type {
+    margin-bottom: 80px; /* Q1とQ2の間隔を広げる */
 }
 
 /* キューのスタイル（緑色と太字） */
@@ -146,7 +162,7 @@ h1 {
     border-radius: 5px;
     transition: background-color 0.3s;
     display: block;
-    margin: 5px auto;
+    margin: 3px auto;
     margin-bottom: -5px; /* 強制的に下の余白を詰める */
 }
     
@@ -218,8 +234,8 @@ h1 {
      　　   <button class="play-audio" id="play-audio-E1">▶ Play</button>
       　　  <audio id="audio-E1" src="https://raw.githubusercontent.com/moguura/my-images/main/6-e.g.oto.wav"></audio>
   　　  </div>  
-   　　 <p>How was the weather yesterday?</p>
-   　　 <p><span class="highlight">さむい</span> → きのうは（ 　　　）</p>
+   　　 <p class="english-text">How was the weather yesterday?</p>
+   　　 <p class="japanese-text"><span class="highlight">さむい</span> → きのうは（ 　　　）</p>
   　　  <button id="startButtonE1" class="mic-button" aria-label="音声認識を開始"></button>
   　　  <div class="feedback" id="feedbackE1">
      　　   <p id="feedbackTextE1" class="feedback-text"></p>
@@ -249,8 +265,8 @@ h1 {
      　　   <button class="play-audio" id="play-audio-Q1">▶ Play</button>
       　　  <audio id="audio-Q1" src="https://raw.githubusercontent.com/moguura/my-images/main/6-1oto.wav"></audio>
   　　  </div>  
-   　　 <p>How was last week?</p>    
- 　　   <p><span class="highlight">いそがしい</span> → 　（ 　　　）</p>
+   　　 <p class="english-text">How was last week?</p>    
+ 　　   <p class="japanese-text"><span class="highlight">いそがしい</span> → （ 　　　）</p>
  　　   <button id="startButtonQ1" class="mic-button" aria-label="音声認識を開始"></button>
  　　   <div class="feedback" id="feedbackQ1">
    　　     <p id="feedbackTextQ1" class="feedback-text"></p>
@@ -268,8 +284,8 @@ h1 {
      　　 　　  <button class="play-audio" id="play-audio-Q2">▶ Play</button>
       　　 　　 <audio id="audio-Q2" src="https://raw.githubusercontent.com/moguura/my-images/main/6-2oto.wav"></audio>
   　　 　　 </div>  
-   　　　　 <p>How was the journey to Japan?</p>            
-            <p style="text-align: center;"><span class="highlight">ちかい</span> → 　（ 　　　）</p>
+   　　　　 <p class="english-text">How was the journey to Japan?</p>            
+            <p class="japanese-text"><span class="highlight">ちかい</span> → （ 　　　）</p>
             <button id="startButtonQ2" class="mic-button"></button>
             <div class="feedback" id="feedbackQ2">
                 <p id="feedbackTextQ2" class="feedback-text"></p>
@@ -287,8 +303,8 @@ h1 {
      　　 　　  <button class="play-audio" id="play-audio-Q3">▶ Play</button>
       　　 　　 <audio id="audio-Q3" src="https://raw.githubusercontent.com/moguura/my-images/main/6-3oto.wav"></audio>
   　　 　　 </div>  
-   　　　　 <p>How was your bag last week?</p>            
-            <p style="text-align: center;"><span class="highlight">おもい</span> →　（ 　　　）</p>
+   　　　　 <p class="english-text">How was your bag last week?</p>            
+            <p class="japanese-text"><span class="highlight">おもい</span> → （ 　　　）</p>
             <button id="startButtonQ3" class="mic-button"></button>
              <div class="feedback" id="feedbackQ3">
                 <p id="feedbackTextQ3" class="feedback-text"></p>
@@ -306,8 +322,8 @@ h1 {
      　　 　　  <button class="play-audio" id="play-audio-Q4">▶ Play</button>
       　　 　　 <audio id="audio-Q4" src="https://raw.githubusercontent.com/moguura/my-images/main/6-4oto.wav"></audio>
   　　 　　 </div>  
-   　　　　 <p>How were your clothes?</p>    
-    <p style="text-align: center;"><span class="highlight">やすい</span> → 　（ 　　　）</p></p>
+   　　　　 <p class="english-text">How were your clothes?</p>    
+    <p class="japanese-text"><span class="highlight">やすい</span> → （ 　　　）</p>
     <button id="startButtonQ4" class="mic-button"></button>
      <div class="feedback" id="feedbackQ4">
         <p id="feedbackTextQ4" class="feedback-text"></p>
@@ -325,8 +341,8 @@ h1 {
      　　 　　  <button class="play-audio" id="play-audio-Q5">▶ Play</button>
       　　 　　 <audio id="audio-Q5" src="https://raw.githubusercontent.com/moguura/my-images/main/6-5oto.wav"></audio>
   　　 　　 </div>  
-   　　　　 <p>How was your Japanese test yesterday?</p>
-    <p style="text-align: center;"><span class="highlight">むずかしい</span> → 　（ 　　　）</p>
+   　　　　 <p class="english-text">How was your Japanese test yesterday?</p>
+    <p class="japanese-text"><span class="highlight">むずかしい</span> → （ 　　　）</p>
     <button id="startButtonQ5" class="mic-button"></button>
     <div class="feedback" id="feedbackQ5">
         <p id="feedbackTextQ5" class="feedback-text"></p>
