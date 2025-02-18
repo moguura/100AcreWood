@@ -204,8 +204,8 @@ h1 {
         <div class="question" id="E1">
    　　 <p>e.g.</p>
    　　 <div class="audio-section">
-     　　   <button id="play-audio">▶ Play</button>
-      　　  <audio id="audio" src="https://raw.githubusercontent.com/moguura/my-images/main/6-e.g.oto.wav"></audio>
+     　　   <button id="play-audio-E1">▶ Play</button>
+      　　  <audio id="audio-E1" src="https://raw.githubusercontent.com/moguura/my-images/main/6-e.g.oto.wav"></audio>
   　　  </div>  
    　　 <p>How was the weather yesterday?</p>
    　　 <p><span class="highlight">さむい</span> → きのうは（ 　　　）</p>
@@ -235,8 +235,8 @@ h1 {
 <div class="question" id="Q1">
     <p>Q1</p>
      　 <div class="audio-section">
-     　　   <button id="play-audio">▶ Play</button>
-      　　  <audio id="audio" src="https://raw.githubusercontent.com/moguura/my-images/main/6-1oto.wav"></audio>
+     　　   <button id="play-audio-Q1">▶ Play</button>
+      　　  <audio id="audio-Q1" src="https://raw.githubusercontent.com/moguura/my-images/main/6-1oto.wav"></audio>
   　　  </div>  
    　　 <p>How was last week?</p>    
  　　   <p><span class="highlight">いそがしい</span> → 　（ 　　　）</p>
@@ -254,8 +254,8 @@ h1 {
         <div class="question" id="Q2">
             <p>Q2</p>
      　     <div class="audio-section">
-     　　 　　  <button id="play-audio">▶ Play</button>
-      　　 　　 <audio id="audio" src="https://raw.githubusercontent.com/moguura/my-images/main/6-2oto.wav"></audio>
+     　　 　　  <button id="play-audio-Q2">▶ Play</button>
+      　　 　　 <audio id="audio-Q2" src="https://raw.githubusercontent.com/moguura/my-images/main/6-2oto.wav"></audio>
   　　 　　 </div>  
    　　　　 <p>How was the journey to Japan?</p>            
             <p style="text-align: center;"><span class="highlight">ちかい</span> → 　（ 　　　）</p>
@@ -273,8 +273,8 @@ h1 {
         <div class="question" id="Q3">
             <p>Q3</p>
             <div class="audio-section">
-     　　 　　  <button id="play-audio">▶ Play</button>
-      　　 　　 <audio id="audio" src="https://raw.githubusercontent.com/moguura/my-images/main/6-3oto.wav"></audio>
+     　　 　　  <button id="play-audio-Q3">▶ Play</button>
+      　　 　　 <audio id="audio-Q3" src="https://raw.githubusercontent.com/moguura/my-images/main/6-3oto.wav"></audio>
   　　 　　 </div>  
    　　　　 <p>How was your bag last week?</p>            
             <p style="text-align: center;"><span class="highlight">おもい</span> →　（ 　　　）</p>
@@ -292,8 +292,8 @@ h1 {
 <div class="question" id="Q4">
     <p>Q4</p>
     <div class="audio-section">
-     　　 　　  <button id="play-audio">▶ Play</button>
-      　　 　　 <audio id="audio" src="https://raw.githubusercontent.com/moguura/my-images/main/6-4oto.wav"></audio>
+     　　 　　  <button id="play-audio-Q4">▶ Play</button>
+      　　 　　 <audio id="audio-Q4" src="https://raw.githubusercontent.com/moguura/my-images/main/6-4oto.wav"></audio>
   　　 　　 </div>  
    　　　　 <p>How were your clothes?</p>    
     <p style="text-align: center;"><span class="highlight">やすい</span> → 　（ 　　　）</p></p>
@@ -311,8 +311,8 @@ h1 {
 <div class="question" id="Q5">
     <p>Q5</p>
     <div class="audio-section">
-     　　 　　  <button id="play-audio">▶ Play</button>
-      　　 　　 <audio id="audio" src="https://raw.githubusercontent.com/moguura/my-images/main/6-5oto.wav"></audio>
+     　　 　　  <button id="play-audio-Q5">▶ Play</button>
+      　　 　　 <audio id="audio-Q5" src="https://raw.githubusercontent.com/moguura/my-images/main/6-5oto.wav"></audio>
   　　 　　 </div>  
    　　　　 <p>How was your Japanese test yesterday?</p>
     <p style="text-align: center;"><span class="highlight">むずかしい</span> → 　（ 　　　）</p>
@@ -371,8 +371,19 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('startButtonQ3').addEventListener('click', () => startRecognition('Q3'));
     document.getElementById('startButtonQ4').addEventListener('click', () => startRecognition('Q4'));
     document.getElementById('startButtonQ5').addEventListener('click', () => startRecognition('Q5'));
-    document.getElementById('play-audio').addEventListener('click', function() {
-        document.getElementById('audio').play();
+
+    // 音声再生処理の追加
+    const questions = ["E1", "Q1", "Q2", "Q3", "Q4", "Q5"];
+    
+    questions.forEach(id => {
+        const playButton = document.getElementById(`play-audio-${id}`);
+        const audio = document.getElementById(`audio-${id}`);
+
+        if (playButton && audio) {
+            playButton.addEventListener("click", function () {
+                audio.play();
+            });
+        }
     });
 });
 
