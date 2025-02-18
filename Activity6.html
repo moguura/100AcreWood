@@ -42,7 +42,7 @@ h1 {
     font-weight: bold;
     font-size: 28px;
     color: #007bff;
-    margin-bottom: 3px; /* Playボタンとの間隔を詰める */
+    margin-bottom: 5px !important;
 }
 
 .question img {
@@ -60,15 +60,15 @@ h1 {
     padding: 0px;
 }
 
-/* 英文の間隔を詰める */
-.question .english-text {
-    margin: 3px 0; /* Playボタンとの間隔を詰める */
+/* 英文と日本語の間隔を統一 */
+.english-text {
+    margin-bottom: 10px !important; /* 英文の下に適度な間隔を入れる */
 }
 
-/* 日本語のキューとマイクボタンの間隔を詰める */
-.question .japanese-text {
-    margin-top: 10px; /* ほんの少し開ける */
-    margin-bottom: 3px; /* マイクボタンとの間隔を詰める */
+/* 日本語（いそがしい→ 〇〇）の上に適度な間隔を確保 */
+.japanese-text {
+    margin-top: 10px !important;
+    margin-bottom: 10px !important; /* マイクボタンとの間隔を統一 */
 }
 
 /* 各質問（Q1, Q2, ...）の間隔をしっかり開ける */
@@ -92,7 +92,8 @@ h1 {
     height: 70px; 
     border-radius: 50%;
     cursor: pointer; 
-    margin: 10px auto; 
+    margin: 10px auto;
+    margin-top: 15px;
     transition: box-shadow 0.3s ease-in-out; /* 光るエフェクトのアニメーション */
 }
 
@@ -146,9 +147,9 @@ h1 {
     max-width: 600px; /* 調整可能（最大幅を制限） */
 }
 
-/* 音声再生ボタンのスタイル（余白を縮める） */
+/* Playボタンの下の間隔を統一 */
 .audio-section {
-    margin-bottom: 0px; /* Playボタンと次の文章の間隔を縮める */
+    margin-bottom: 5px;
 }
 
 /* Playボタンの間隔を減らす */
