@@ -91,6 +91,8 @@ h1 {
 /* 説明文（インストラクションボックス） */
 .instructions,
 #finalInstructions {
+    min-width: 300px; /* 必要に応じて調整 */
+    min-height: 150px; /* 必要に応じて調整 */
     background-color: #ffffff;
     border: 1px solid #d1d5db;
     text-align: center;
@@ -124,7 +126,7 @@ h1 {
 
 /* イラストのスタイル */
 .illustration1 {
-    width: 50%;  /* 画像の幅を50%に縮小 */
+    width: 50%; /* 必要に応じて調整 */
     max-width: 200px; /* 最大幅を200pxに設定 */
     height: auto; /* 縦横比を維持 */
     display: block;
@@ -136,7 +138,7 @@ h1 {
 }
 
 .illustration2 {
-    display: block;
+    display: inline-block;
     margin: 0 auto; /* 画像を中央に配置 */
     width: 80%; /* 画像サイズを調整（必要に応じて変更） */
     max-width: 400px; /* 最大幅を設定 */
@@ -234,15 +236,16 @@ h1 {
             </p>
         </div>
 
-　　　　<div class="instruction-box">
-   　　　　 <img src="https://raw.githubusercontent.com/moguura/my-images/main/7-kotoba1.png" alt="説明用のイラスト" class="illustration">
-         　<img src="https://raw.githubusercontent.com/moguura/my-images/main/7-friend.png" alt="説明用のイラスト" class="illustration">
-  　　　　  <button onclick="https://raw.githubusercontent.com/moguura/my-images/main/7-oto1.wav">音声を再生</button>
-   　　　　 <audio id="audio1" src="path/to/your/audio.mp3"></audio>
-　　　　</div>
+　　　　<img src="https://raw.githubusercontent.com/moguura/my-images/main/7-kotoba1.png" alt="説明用のイラスト" class="illustration illustration1">
+       <div class="image-container">
+           <img src="https://raw.githubusercontent.com/moguura/my-images/main/7-friend.png" alt="説明用のイラスト" class="illustration illustration2">
+    　　</div>
 
-
-        
+        <div class="audio-section">
+        <button class="play-audio" id="play-audio-audio1">▶ Play</button>
+        <audio id="audio-E1" src="https://raw.githubusercontent.com/moguura/my-images/main/7-oto1.wav"></audio>
+       </div>  
+  　       
 
         <!-- E1の例題 -->
         <div class="question" id="E1">
