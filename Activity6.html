@@ -270,8 +270,8 @@ h1 {
                 In <span class="blue-bold">Example 1</span>, the <span class="red-bold">AI robot</span> asked you,<br>
                 <strong>きのうの てんきは</strong> <span class="blue-bold">どうでしたか</span>。<br>
                 (<span class="blue-bold">How was</span> the weather yesterday?）<br><br>  
-                If it was cold, please say <strong>さむかったです</strong>.<br>  
-                If it wasn't cold, please say <strong>さむくなかったです</strong>.<br><br>  
+                If it was cold, please say きのうは <strong>さむかったです</strong>。<br>  
+                If it wasn't cold, please say きのうは <strong>さむくなかったです</strong>。<br><br>  
                 There is no correct answer to this question. Please share <span class="red-bold">your thoughts</span> with the <span class="red-bold">AI robot</span>.
             </p>
         </div>
@@ -285,7 +285,7 @@ h1 {
         <audio id="audio-Q1" src="https://raw.githubusercontent.com/moguura/my-images/main/6-1oto.wav"></audio>
     </div>  
     <p class="english-text">How was last week?</p>    
-    <p class="japanese-text"><span class="highlight">いそがしい</span> → （ 　　　）</p>
+    <p class="japanese-text"><span class="highlight">いそがしい</span> →  せんしゅうは（ 　　　）</p>
     <button id="startButtonQ1" class="mic-button" aria-label="音声認識を開始"></button>
     <div class="feedback" id="feedbackQ1">
         <p id="feedbackTextQ1" class="feedback-text"></p>
@@ -304,7 +304,7 @@ h1 {
         <audio id="audio-Q2" src="https://raw.githubusercontent.com/moguura/my-images/main/6-2oto.wav"></audio>
     </div>
     <p class="english-text">How was the journey to Japan?</p>
-    <p class="japanese-text"><span class="highlight">ちかい</span> → （ 　　　）</p>
+    <p class="japanese-text"><span class="highlight">ちかい</span> →  にほんは（ 　　　）</p>
     <button id="startButtonQ2" class="mic-button"></button>
     <div class="feedback" id="feedbackQ2">
         <p id="feedbackTextQ2" class="feedback-text"></p>
@@ -324,7 +324,7 @@ h1 {
         <audio id="audio-Q3" src="https://raw.githubusercontent.com/moguura/my-images/main/6-3oto.wav"></audio>
     </div>
     <p class="english-text">How was your bag last week?</p>
-    <p class="japanese-text"><span class="highlight">おもい</span> → （ 　　　）</p>
+    <p class="japanese-text"><span class="highlight">おもい</span> →  かばんは（ 　　　）</p>
     <button id="startButtonQ3" class="mic-button"></button>
     <div class="feedback" id="feedbackQ3">
         <p id="feedbackTextQ3" class="feedback-text"></p>
@@ -344,7 +344,7 @@ h1 {
         <audio id="audio-Q4" src="https://raw.githubusercontent.com/moguura/my-images/main/6-4oto.wav"></audio>
     </div>
     <p class="english-text">How were your clothes?</p>
-    <p class="japanese-text"><span class="highlight">やすい</span> → （ 　　　）</p>
+    <p class="japanese-text"><span class="highlight">やすい</span> →  ふくは（ 　　　）</p>
     <button id="startButtonQ4" class="mic-button"></button>
     <div class="feedback" id="feedbackQ4">
         <p id="feedbackTextQ4" class="feedback-text"></p>
@@ -363,7 +363,7 @@ h1 {
         <audio id="audio-Q5" src="https://raw.githubusercontent.com/moguura/my-images/main/6-5oto.wav"></audio>
     </div>
     <p class="english-text">How was your Japanese test yesterday?</p>
-    <p class="japanese-text"><span class="highlight">むずかしい</span> → （ 　　　）</p>
+    <p class="japanese-text"><span class="highlight">むずかしい</span> → 　<ruby>テスト<rt>てすと</rt></ruby>は（ 　　　）</p>
     <button id="startButtonQ5" class="mic-button"></button>
     <div class="feedback" id="feedbackQ5">
         <p id="feedbackTextQ5" class="feedback-text"></p>
@@ -395,12 +395,12 @@ h1 {
 
 <script>
 const answers = {
-    E1: ["寒かったです"],
-    Q1: ["忙しかったです"],
-    Q2: ["近かったです"],
-    Q3: ["重かったです"],
-    Q4: ["安かったです"],
-    Q5: ["難しかったです"]
+    E1: ["さむかった","寒かった"],
+    Q1: ["いそがしかった","忙しかった"],
+    Q2: ["ちかかった","近かった"],
+    Q3: ["おもかった","重かった"],
+    Q4: ["やすかった","安かった"],
+    Q5: ["むずかしかった","難しかった"]
 };
 
 const buttonsPressed = {
@@ -562,28 +562,28 @@ function showFeedback(questionId, isCorrect) {
 function getFeedbackText(questionId) {
     const feedbackMessages = {
         E1: {
-            correct: "Your answer： タバコは いいです。（Smoking is good.）",
-            incorrect: "Your answer： タバコは よくないです。（Smoking is not good.）"
+            correct: "Your answer： きのうは さむかったです。（Yesterday was cold.）",
+            incorrect: "Your answer： きのうは さむくなかったです。（Yesterday was not cold.）"
         },
         Q1: {
-            correct: "Your answer： べんきょうは　おもしろいです。（Studying is interesting.）",
-            incorrect: "Your answer：べんきょうは　おもしろくないです。（Studying is not interesting.）"
+            correct: "Your answer： せんしゅうは いそがしかったです。（Last week was busy.）",
+            incorrect: "Your answer：せんしゅうは いそがしくなかったです。（Last week was not busy.）"
         },
         Q2: {
-            correct: "Your answer： やさいは　おいしいです。（Vegetables are tasty.）",
-            incorrect: "Your answer： やさいは　おいしくないです。（Vegetables are not tasty.）"
+            correct: "Your answer： にほんは ちかかったです。（Japan was close.）",
+            incorrect: "Your answer： にほんは ちかくなかったです。（Japan was not close.）"
         },
         Q3: {
-            correct: "Your answer：スポーツは　たのしいです。（Sports are fun.）",
-            incorrect: "Your answer：スポーツは　たのしくないです。（Sports are not fun.）"
+            correct: "Your answer：かばんは おもかったです。（The bag was heavy.）",
+            incorrect: "Your answer：かばんは おもくなかったです。（The bag was not heavy.）"
         },
         Q4: {
-            correct: "Your answer： きょうは　さむいです。（Today is cold.）",
-            incorrect: "Your answer： きょうは　さむくないです。（Today is not cold.）"
+            correct: "Your answer： ふくは やすかったです。（The clothes were cheap.）",
+            incorrect: "Your answer： ふくは やすくなかったです。（The clothes were not cheap.）"
         },
         Q5: {
-            correct: "Your answer： にほんのカレーは　からいです。（Japanese curry is spicy.）",
-            incorrect: "Your answer： にほんのカレーは　からくないです。（Japanese curry is not spicy.）"
+            correct: "Your answer： テストは むずかしかったです。（The test was difficult.）",
+            incorrect: "Your answer： テストは むずかしくなかったです。（The test was not difficult.）"
         }
     };
     return feedbackMessages[questionId];
