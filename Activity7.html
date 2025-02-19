@@ -140,10 +140,10 @@ h1 {
 .illustration2 {
     display: block;
     margin: 0 auto;
-    width: 80%; /* 幅をさらに縮小 */
-    max-width: 400px; /* 最大幅を縮小 */
+    width: 80%;
+    max-width: 400px;
     height: auto;
-    margin-bottom: 5px; /* 下の余白を狭める */
+    margin-bottom: 0px; /* 余白を完全になくす */
 }
 
 /* 親要素の中央配置を確実にする */
@@ -171,7 +171,6 @@ h1 {
     box-shadow: 0 0 15px rgba(255, 0, 0, 0.8);
 }
 
-/* Playボタン */
 .play-audio {
     background-color: #007BFF;
     color: white;
@@ -182,7 +181,12 @@ h1 {
     border-radius: 5px;
     transition: background-color 0.3s;
     display: block;
-　　margin: -10px auto 0; /* 上の余白をマイナスで調整 */
+    margin: -10px auto 0; /* 余白を調整 */
+}
+
+.audio-section {
+    margin-top: -10px; /* 画像とボタンの間を狭める */
+    text-align: center;
 }
 
 .play-audio:hover {
@@ -243,12 +247,13 @@ h1 {
 
 　　　　<img src="https://raw.githubusercontent.com/moguura/my-images/main/7-kotoba1.png" alt="説明用のイラスト" class="illustration illustration1">
        <div class="image-container">
-           <img src="https://raw.githubusercontent.com/moguura/my-images/main/7-friend.png" alt="説明用のイラスト" class="illustration illustration2">
-    　　</div>
-        <div class="audio-section">
-  　　  <button class="play-audio" id="play-audio-1">▶ Play 1</button>
-   　　 <audio id="audio-1" src="https://raw.githubusercontent.com/moguura/my-images/main/7-oto1.wav"></audio>
-　　　　</div>
+   　　 <img src="https://raw.githubusercontent.com/moguura/my-images/main/7-friend.png" alt="説明用のイラスト" class="illustration illustration2">
+       </div>
+       <div class="audio-section">
+      <button class="play-audio" id="play-audio-1">▶ Play 1</button>
+      <audio id="audio-1" src="https://raw.githubusercontent.com/moguura/my-images/main/7-oto1.wav"></audio>
+　     </div>
+
 
           <!-- E1とE2の間の説明文 -->
         <div class="instructions">
