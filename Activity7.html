@@ -20,139 +20,207 @@ body {
     justify-content: center;
 }
 
+/* 見出し */
 h1 {
     text-align: center;
-    margin: 40px 0; /* 上下の余白を設定 */
-    margin-bottom: 60px; /* 下の余白を増やして間隔を広げる */
-    font-size: 40px; /* 見出しを大きくする */
+    margin: 40px 0 60px;
+    font-size: 40px;
 }
 
-/* 質問エリアのスタイル */
+/* コンテンツ全体のスタイル */
+#content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    box-sizing: border-box;
+}
+
+/* 質問ブロック（Q1, Q2, ...） */
 .question {
-    margin-bottom: 100px; 
+    margin-bottom: 80px;
     text-align: center;
     font-size: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
 }
+
+.question-number {
+    margin-bottom: 5px;
+    font-weight: bold;
+    font-size: 28px;
+    color: #007bff;
+}
+
 .question img {
     width: 300px;
     height: auto;
     object-fit: cover;
     display: block;
     margin: 0 auto 10px;
-    max-width: 100%; 
-}
-.question p:first-child {
-    font-weight: bold;
-    font-size: 28px; /* 問題番号の文字サイズを大きく */
-    color: #007bff; /* 青色 */
+    max-width: 100%;
 }
 
-/* キューのスタイル（緑色と太字） */
+/* 英文 & 日本語テキスト */
+.english-text, 
+.japanese-text {
+    margin-bottom: 5px;
+}
+
+.japanese-text {
+    margin-top: 25px;
+    margin-bottom: 10px;
+}
+
+/* 最後の質問の余白 */
+.question:last-of-type {
+    margin-bottom: 80px;
+}
+
+/* 強調テキスト */
 .highlight {
     color: green;
     font-weight: bold;
 }
 
-/* マイクボタンのスタイル */
+/* 説明文（インストラクションボックス） */
+.instructions,
+#finalInstructions {
+    background-color: #ffffff;
+    border: 1px solid #d1d5db;
+    text-align: center;
+    line-height: 1.6;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.instructions p {
+    text-align: left;
+    width: 100%;
+    max-width: 600px;
+}
+
+/* インストラクションボックスの最後を非表示 */
+.instructions:last-of-type {
+    display: none;
+}
+
+/* ボックスデザイン（共通） */
+.box {
+    max-width: 1400px;
+    padding: 20px 80px;
+    margin: 20px auto;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+}
+
+/* イラストのスタイル */
+.illustration1 {
+    width: 50%;  /* 画像の幅を50%に縮小 */
+    max-width: 200px; /* 最大幅を200pxに設定 */
+    height: auto; /* 縦横比を維持 */
+    display: block;
+    margin: 10px auto; /* 余白を調整 */
+}
+
+.illustration-container {
+    text-align: center; /* 親要素で中央配置 */
+}
+
+.illustration2 {
+    display: block;
+    margin: 0 auto; /* 画像を中央に配置 */
+    width: 80%; /* 画像サイズを調整（必要に応じて変更） */
+    max-width: 400px; /* 最大幅を設定 */
+    height: auto; /* 縦横比を維持 */
+}
+
+/* マイクボタン */
 .mic-button {
     background-image: url("https://raw.githubusercontent.com/moguura/my-images/main/%E3%83%9E%E3%82%A4%E3%82%AF%E3%81%AE%E3%83%95%E3%83%AA%E3%83%BC%E3%82%A2%E3%82%A4%E3%82%B3%E3%83%B3%E3%81%9D%E3%81%AE21.png");
     background-size: cover;
     background-repeat: no-repeat;
-    background-color: #f9f9f9;
     border: none;
-    width: 70px;
-    height: 70px;
+    width: 70px; 
+    height: 70px; 
     border-radius: 50%;
+    cursor: pointer; 
+    margin: 15px auto;
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+/* マイクボタンのアクション */
+.mic-button:active,
+.mic-button.recording {
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.8);
+}
+
+/* Playボタン */
+.play-audio {
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    font-size: 16px;
     cursor: pointer;
-    margin: 10px auto;
-    padding: 0;
-    text-indent: -9999px;
-    overflow: hidden;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-/* 説明文のスタイル */
-.instructions {
-    background-color: #ffffff;
-    border: 1px solid #d1d5db;
     border-radius: 5px;
-    padding: 15px;
-    margin-bottom: 20px;
-    font-size: 24px;
-    line-height: 1.6;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    max-width: 900px; /* 幅の最大値を設定 */
-    width: 100%; /* 親要素に合わせる */
-    text-align: center; /* 文字を中央揃え */
-    margin: 0 auto; /* 中央揃え */
+    transition: background-color 0.3s;
+    display: block;
+    margin: 3px auto;
+    margin-bottom: -5px;
 }
 
-/* フィードバックのスタイル */
+.play-audio:hover {
+    background-color: #0056b3;
+}
+
+/* 通知ボード */
+.notice-board {
+    background-color: #ffeeba;
+    border: 1px solid #d1d5db;
+    text-align: center;
+}
+
+/* フィードバック */
 .feedback {
     display: none;
 }
 
-/* フィードバックの〇×イラストを小さく */
 .feedback img {
-    width: 100px;
+    width: 600px;
     height: auto;
-    margin: 10px auto;
+    margin: 30px auto;
     display: block;
 }
+
 .feedback-text {
     font-size: 24px;
     color: #333;
     text-align: center;
+    font-weight: normal;
     margin-top: 10px;
-    display: none; /* 初期状態では非表示 */
+    display: none;
 }
 
-/* リンクを中央に配置 */
-a {
-    display: block;
-    text-align: center;
-    margin: 30px auto;
-    color: #007bff;
-    text-decoration: none;
-    font-size: 28px;  /* 文字サイズを22pxから28pxに増加 */
-    font-weight: bold;  /* 太字にする */
-    padding: 10px 20px;  /* クリック領域を広げる */
-    transition: all 0.3s ease;  /* ホバー効果をスムーズにする */
-}
-
-a:hover {
-    text-decoration: underline;
-    color: #0056b3;  /* ホバー時の色を少し濃くする */
-    transform: scale(1.05);  /* ホバー時に少し大きくする */
-}
-
-.notice-board {
-    background-color: #ffeeba; /* 背景色 */
-    margin: 20px auto; /* 上下の余白を20pxに、左右をautoで中央寄せ */
-    margin-left: 40px; /* 左の余白を追加して右に寄せる */
-    max-width: 900px; /* 最大幅を設定 */
-    width: 100%; /* 横幅を親要素に合わせる */
-    border: 1px solid #d1d5db; /* 境界線 */
-    border-radius: 5px; /* 角丸 */
-    padding: 15px; /* 内側の余白 */
-    box-sizing: border-box; /* サイズ計算を統一 */
-    text-align: center; /* テキストを中央揃え */
-}
-    
-/* Q1の上に十分な間隔を追加 */
-#Q1 {
-    margin-top: 100px; /* Notice Boardとの間隔を調整 */
-}
+/* 色付き強調 */
 .red-bold {
-            color: red;
-            font-weight: bold;
-        }
-.blue-bold {
-            color: #007bff;      /* 文字色を青に設定 */
-            font-weight: bold;   /* 文字を太字に設定 */
-        }
-</style>
+    color: red;
+    font-weight: bold;
+}
 
+.blue-bold {
+    color: #007bff;
+    font-weight: bold;
+}
+</style>
 </head>
 <body>
     <h1>Activity 7</h1>
