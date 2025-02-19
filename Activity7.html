@@ -88,7 +88,6 @@ h1 {
     font-weight: bold;
 }
 
-/* 説明文固有のスタイル */
 .instructions,
 #finalInstructions {
     background-color: #ffffff;
@@ -97,14 +96,17 @@ h1 {
     line-height: 1.6;
     display: flex;
     flex-direction: column;
-    align-items: center; /* 説明文全体を中央配置 */
-    margin-bottom: 20px;
+    align-items: center;
+    margin: 20px auto; /* 余白を増やす */
+    padding: 20px; /* 余白を追加 */
+    width: 80%; /* 横幅を広げる */
+    max-width: 800px; /* 最大幅を広げる */
 }
 
 .instructions p {
     text-align: left;
     width: 100%;
-    max-width: 600px;
+    max-width: 700px; /* 幅を増やす */
 }
 
 /* インストラクションボックスの最後を非表示 */
