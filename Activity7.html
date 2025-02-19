@@ -138,11 +138,16 @@ h1 {
 }
 
 .illustration2 {
-    display: inline-block;
+    display: block; /* ブロック要素に変更 */
     margin: 0 auto; /* 画像を中央に配置 */
-    width: 80%; /* 画像サイズを調整（必要に応じて変更） */
-    max-width: 400px; /* 最大幅を設定 */
+    width: 70%; /* 画像サイズを少し縮小 */
+    max-width: 350px; /* 最大幅を少し縮小 */
     height: auto; /* 縦横比を維持 */
+}
+
+/* 親要素の中央配置を確実にする */
+.illustration-container {
+    text-align: center;
 }
 
 /* マイクボタン */
@@ -242,9 +247,9 @@ h1 {
     　　</div>
 
         <div class="audio-section">
-        <button class="play-audio" id="play-audio-audio1">▶ Play</button>
-        <audio id="audio-E1" src="https://raw.githubusercontent.com/moguura/my-images/main/7-oto1.wav"></audio>
-       </div>  
+  　　  <button class="play-audio" id="play-audio-1">▶ Play 1</button>
+   　　 <audio id="audio-1" src="https://raw.githubusercontent.com/moguura/my-images/main/7-oto1.wav"></audio>
+　　　　</div>
   　       
 
         <!-- E1の例題 -->
@@ -486,6 +491,31 @@ const buttonsPressed = {
     Q4: false, Q5: false, Q6: false, Q7: false, Q8: false,
     Q9: false, Q10: false
 };
+
+document.addEventListener("DOMContentLoaded", function() {
+    // すべてのボタンを取得
+    const buttons = document.querySelectorAll(".play-audio");
+
+    buttons.forEach(button => {
+        button.addEventListener("click", function() {
+            const audioId = this.id.replace("play-audio-", "audio-");
+            const audio = document.getElementById(audioId);
+
+            // すべての音声を停止
+            document.querySelectorAll("audio").forEach(a => {
+                if (!a.paused) {
+                    a.pause();
+                    a.currentTime = 0;
+                }
+            });
+
+            // 選択された音声を再生
+            if (audio.paused) {
+                audio.play();
+            }
+        });
+    });
+});
 
 function startRecognition(questionId) {
     if (!('webkitSpeechRecognition' in window)) {
