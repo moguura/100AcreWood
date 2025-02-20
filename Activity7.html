@@ -58,14 +58,23 @@ h1 {
 }
 
 .question img {
-    width: 100%; /* 親要素に合わせてサイズを調整 */
-    max-width: 900px; /* 最大幅を指定 */
+    width: 300px;
     height: auto;
-    object-fit: contain; /* 縦横比を保持して表示 */
+    object-fit: cover;
+    display: block;
+    margin: 0 auto 10px;
+    max-width: 100%;
+}
+
+/* 質問ブロック内の問題画像だけに適用 */
+.question img.illustration {
+    width: 100%; /* 親要素に合わせる */
+    max-width: 900px; /* 最大幅 */
+    height: auto;
+    object-fit: contain;
     display: block;
     margin: 0 auto 10px;
 }
-
 
 /* 英文 & 日本語テキスト */
 .english-text, 
