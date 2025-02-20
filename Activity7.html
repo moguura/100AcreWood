@@ -58,13 +58,14 @@ h1 {
 }
 
 .question img {
-    width: 300px;
+    width: 100%; /* 親要素に合わせてサイズを調整 */
+    max-width: 900px; /* 最大幅を指定 */
     height: auto;
-    object-fit: cover;
+    object-fit: contain; /* 縦横比を保持して表示 */
     display: block;
     margin: 0 auto 10px;
-    max-width: 100%;
 }
+
 
 /* 英文 & 日本語テキスト */
 .english-text, 
@@ -118,15 +119,6 @@ h1 {
     border-radius: 5px; /* 角丸 */
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* 軽いシャドウ */
     box-sizing: border-box; /* パディングを含めた幅計算 */
-}
-
-/* 共通のイラストスタイル（例題 + 問題1〜10） */
-.illustration {
-    width: 100%; /* 大きく表示 */
-    max-width: 900px; /* 最大幅を設定 */
-    height: auto;
-    display: block;
-    margin: 20px auto;
 }
 
 /* イラストのスタイル */
