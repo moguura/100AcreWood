@@ -120,6 +120,15 @@ h1 {
     box-sizing: border-box; /* パディングを含めた幅計算 */
 }
 
+/* 共通のイラストスタイル（例題 + 問題1〜10） */
+.illustration {
+    width: 200%; /* 大きく表示 */
+    max-width: 700px; /* 最大幅を設定 */
+    height: auto;
+    display: block;
+    margin: 20px auto;
+}
+
 /* イラストのスタイル */
 .illustration1 {
     width: 150%; /* 画像の幅を拡大（必要に応じて100%も試す） */
@@ -202,11 +211,12 @@ h1 {
     display: none;
 }
 
-.feedback img {
-    width: 600px;
+/* フィードバック（〇×）のサイズを小さく */
+.feedback-icon {
+    width: 150px; /* 小さくする */
     height: auto;
-    margin: 30px auto;
     display: block;
+    margin: 20px auto;
 }
 
 .feedback-text {
@@ -268,20 +278,20 @@ h1 {
     </div>
   </div>
   　       
-
-        <!-- E1の例題 -->
-        <div class="question" id="E1">
-        <p class="question-number">e.g.</p>
-            <img src="https://raw.githubusercontent.com/moguura/my-images/main/7-e.g..png" alt="E1 Image">
-            <button id="startButtonE1" class="mic-button" aria-label="音声認識を開始"></button>
-            <div class="feedback" id="feedbackE1">
-                <img id="correctImageE1" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%BE%E3%82%8B.png" alt="正しい答え">
-                <img id="wrongImageE1" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%B0%E3%81%A4.png" alt="間違った答え">
-                <div id="feedbackTextE1" class="feedback-text"></div>
-            </div>
-            <audio id="correctAudioE1" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E6%AD%A3%E8%A7%A32.mp3"></audio>
-            <audio id="wrongAudioE1" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E4%B8%8D%E6%AD%A3%E8%A7%A31.mp3"></audio>
-        </div>
+　　<!-- E1の例題 -->
+    <div class="question" id="E1">
+    <p class="question-number">e.g.</p>
+    <!-- 共通のイラストクラスを適用 -->
+    <img src="https://raw.githubusercontent.com/moguura/my-images/main/7-e.g..png" alt="E1 Image" class="illustration">
+    <button id="startButtonE1" class="mic-button" aria-label="音声認識を開始"></button>
+    <div class="feedback" id="feedbackE1">
+        <img id="correctImageE1" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%BE%E3%82%8B.png" alt="正しい答え" class="feedback-icon">
+        <img id="wrongImageE1" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%B0%E3%81%A4.png" alt="間違った答え" class="feedback-icon">
+        <div id="feedbackTextE1" class="feedback-text"></div>
+    </div>
+    <audio id="correctAudioE1" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E6%AD%A3%E8%A7%A32.mp3"></audio>
+    <audio id="wrongAudioE1" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E4%B8%8D%E6%AD%A3%E8%A7%A31.mp3"></audio>
+</div>
         
         <!-- E1とE2の間の説明文 -->
         <div class="instructions" style="text-align: center; margin: 20px;">
