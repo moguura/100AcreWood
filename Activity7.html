@@ -179,7 +179,7 @@ h1 {
 
 /* 録音中に光る */
 .mic-button.recording {
-    box-shadow: 0 0 15px rgba(255, 0, 0, 0.8); /* 赤く光る */
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.8)!important;/* 赤く光る */
 }
     
 .play-audio {
@@ -210,6 +210,7 @@ h1 {
     background-color: #ffeeba;
     border: 1px solid #d1d5db;
     text-align: center;
+    margin-bottom: 50px; 
     padding: 30px; /* 全体に余白を追加 */
 }
 
@@ -263,6 +264,22 @@ a:hover {
    transform : scale(1.05);  
 }
 
+/* 録音中に光るアニメーション */
+@keyframes glow {
+    0% {
+        box-shadow: 0 0 5px rgba(255, 0, 0, 0.6);
+    }
+    50% {
+        box-shadow: 0 0 20px rgba(255, 0, 0, 1);
+    }
+    100% {
+        box-shadow: 0 0 5px rgba(255, 0, 0, 0.6);
+    }
+}
+
+.mic-button.recording {
+    animation: glow 1s infinite ease-in-out;
+}
 </style>
 </head>
 <body>
@@ -507,7 +524,6 @@ a:hover {
     </div>
 </body>
 </html>
-<!-- HTML内のJavaScriptコード -->
 <script>
 const answers = {
     E1: ["い"],
@@ -530,7 +546,7 @@ const buttonsPressed = {
 };
 
 document.addEventListener("DOMContentLoaded", function() {
-    // すべてのボタンを取得
+    // すべての音声再生ボタンを取得
     const buttons = document.querySelectorAll(".play-audio");
 
     buttons.forEach(button => {
@@ -563,6 +579,12 @@ function startRecognition(questionId) {
     const recognition = new webkitSpeechRecognition();
     recognition.lang = 'ja-JP';
 
+    // 対象のマイクボタンを取得
+    const micButton = document.getElementById(`startButton${questionId}`);
+
+    // 録音開始時に recording クラスを追加
+    micButton.classList.add('recording');
+
     recognition.onresult = function(event) {
         const transcript = event.results[0][0].transcript.trim();
         const isCorrect = isCorrectAnswer(questionId, transcript);
@@ -571,21 +593,32 @@ function startRecognition(questionId) {
 
         buttonsPressed[questionId] = true;
 
-        // すべてのボタンが押されたら次へ進む
+        // すべてのボタンが押されたら次のリンクを表示
         if (Object.values(buttonsPressed).every(Boolean)) {
             document.getElementById("nextLink").style.display = "block";
         }
+
+        // 録音終了後に recording クラスを削除
+        micButton.classList.remove('recording');
     };
 
     recognition.onerror = function(event) {
         alert("Speech recognition failed. Please try again.");
         console.error("Speech Recognition Error:", event.error);
+
+        // エラー発生時も recording クラスを削除
+        micButton.classList.remove('recording');
+    };
+
+    recognition.onend = function() {
+        // 録音が自然に終了した場合も recording クラスを削除
+        micButton.classList.remove('recording');
     };
 
     recognition.start();
 }
 
-// 判定関数
+// 正誤判定関数
 function isCorrectAnswer(questionId, userInput) {
     const normalizedInput = normalizeText(userInput);
     const correctEnding = answers[questionId][0];
@@ -606,6 +639,7 @@ function normalizeText(text) {
     return normalized;
 }
 
+// フィードバック表示関数
 function showFeedback(questionId, isCorrect, transcript) {
     const correctImage = document.getElementById(`correctImage${questionId}`);
     const wrongImage = document.getElementById(`wrongImage${questionId}`);
@@ -614,7 +648,7 @@ function showFeedback(questionId, isCorrect, transcript) {
     const wrongAudio = document.getElementById(`wrongAudio${questionId}`);
     const feedbackText = document.getElementById(`feedbackText${questionId}`);
 
-    // フィードバックメッセージは問題ごとに異なる
+    // フィードバックメッセージを取得
     const feedbackMessage = getFeedbackText(questionId);
 
     if (isCorrect) {
@@ -627,7 +661,7 @@ function showFeedback(questionId, isCorrect, transcript) {
         if (wrongAudio) wrongAudio.play();
     }
 
-    // どちらのケースでもフィードバックメッセージを表示
+    // フィードバックメッセージを表示
     if (feedbackText) {
         feedbackText.textContent = feedbackMessage;
     }
@@ -636,26 +670,30 @@ function showFeedback(questionId, isCorrect, transcript) {
     if (feedbackText) feedbackText.style.display = 'block';
 }
 
-// 各問題ごとのフィードバックメッセージを返す関数
+// 各問題のフィードバックメッセージを返す関数
 function getFeedbackText(questionId) {
     const feedbackMessages = {
-        E1:"せんせいは いいです。（The teacher is good.）",
-        Q1:"じゅぎょうは おもしろいです。（The class is interesting.）",
-        Q2:"えいごのテスト（てすと）は むずかしくないです。（The English test is not difficult.）",
-        Q3:"きょうしつは あつくないです。（The classroom is not hot.）",
-        Q4:"パソコン（ぱそこん）は あたらしいです。（The computer is new.）",
-        Q5:"としょかんは おおきいです。（The library is big.）",
-        Q6:"みせのなかは さむくないです。（It is not cold inside the store.）",
-        Q7:"パスタ（ぱすた）は すくなくないです。（There is not a small amount of pasta.）",
-        Q8:"りょうりは おいしいです。（The food is delicious.）",
-        Q9:"ねだんは やすいです。（The prices are cheap.）",
-        Q10:"てんいんさんは いそがしくないです。（The staff is not busy.）",
+        E1: "せんせいは いいです。（The teacher is good.）",
+        Q1: "じゅぎょうは おもしろいです。（The class is interesting.）",
+        Q2: "えいごのテスト（てすと）は むずかしくないです。（The English test is not difficult.）",
+        Q3: "きょうしつは あつくないです。（The classroom is not hot.）",
+        Q4: "パソコン（ぱそこん）は あたらしいです。（The computer is new.）",
+        Q5: "としょかんは おおきいです。（The library is big.）",
+        Q6: "みせのなかは さむくないです。（It is not cold inside the store.）",
+        Q7: "パスタ（ぱすた）は すくなくないです。（There is not a small amount of pasta.）",
+        Q8: "りょうりは おいしいです。（The food is delicious.）",
+        Q9: "ねだんは やすいです。（The prices are cheap.）",
+        Q10: "てんいんさんは いそがしくないです。（The staff is not busy.）",
     };
-    return feedbackMessages[questionId] || "フィードバックが設定されていません";  // デフォルトのメッセージ
+    return feedbackMessages[questionId] || "フィードバックが設定されていません";
 }
 
+// マイクボタンにイベントリスナーを追加
 document.querySelectorAll('.mic-button').forEach(button => {
     const questionId = button.id.replace('startButton', '');
     button.addEventListener('click', () => startRecognition(questionId));
 });
 </script>
+</body>
+</html>
+
