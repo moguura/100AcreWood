@@ -205,7 +205,7 @@ h1 {
     background-color: #ffeeba;
     border: 1px solid #d1d5db;
     text-align: center;
-    padding: 20px; /* 全体に余白を追加 */
+    padding: 30px; /* 全体に余白を追加 */
 }
 
 /* フィードバック */
@@ -248,16 +248,29 @@ h1 {
     <!-- 初めの説明文 -->
     <div class="instructions">
       <p>
-        You and your friend are looking at Google Maps reviews for<br><br> 
+        You and your friend are looking at Google Maps reviews for:<br><br> 
         ① <span class="blue-bold">あおばだいがく（Aoba University）</span> and<br> 
         ② <span class="red-bold"><ruby>トマトカフェ<rt>とまとかふぇ</rt></ruby>（Tomato Café）</span>.<br><br>
-        You noticed that in <strong>2020</strong>, most ratings were 1 star, but <strong>now</strong> they are mostly 5 stars.<br>
+        Notice that in 2020, most ratings were 1 star, but now they are mostly 5 stars.<br> 
+        Compare the old reviews with the new ones.
       </p>
       <img src="https://raw.githubusercontent.com/moguura/my-images/main/7-inst.png" alt="説明用のイラスト" class="illustration illustration1">
     </div>
   </div>
 
-  <img src="https://raw.githubusercontent.com/moguura/my-images/main/7-kotoba1.png" alt="説明用のイラスト" class="illustration illustration1">
+    <div id="content">
+    <div class="instructions">
+      <p>
+        Example: 
+        First, let's talk about <span class="blue-bold">あおばだいがく（Aoba University）</span>.<br>
+        Press the microphone button and say: <br>
+        <strong>せんせいは いいです</strong>。（The teacher is good.）
+      </p>
+      <img src="https://raw.githubusercontent.com/moguura/my-images/main/7-hyo1.png" alt="説明用のイラスト" class="illustration illustration1">
+    </div>
+  </div>
+
+    <img src="https://raw.githubusercontent.com/moguura/my-images/main/7-kotoba1.png" alt="説明用のイラスト" class="illustration illustration1">
   
   <div class="image-container">
     <img src="https://raw.githubusercontent.com/moguura/my-images/main/7-friend.png" alt="説明用のイラスト" class="illustration illustration2">
@@ -266,18 +279,6 @@ h1 {
   <div class="audio-section">
     <button class="play-audio" id="play-audio-1">▶ Play</button>
     <audio id="audio-1" src="https://raw.githubusercontent.com/moguura/my-images/main/7-oto1.wav"></audio>
-  </div>
-
-
-    <div id="content">
-    <div class="instructions">
-      <p>
-        Compare the old reviews with the new ones.Look at the 2020 review on the screen and explain how it has improved.<br>
-        Let’s try an example.<br>
-        Press the microphone button and say, せんせいは いいです."   
-      </p>
-      <img src="https://raw.githubusercontent.com/moguura/my-images/main/7-hyo1.png" alt="説明用のイラスト" class="illustration illustration1">
-    </div>
   </div>
   　       
 　　<!-- E1の例題 -->
@@ -297,9 +298,7 @@ h1 {
 
    　　 <div class="instructions">
             <p>
-                The rating in 2020 was bad, but the current rating is high. Therefore, it becomes<br> 
-                <strong>せんせいは いいです。</strong>（The teacher is good.）<br>
-                In the same way, please talk about the current ratings for questions 1 through 10.
+                For questions 1-10, explain how each place has improved since 2020 using a similar pattern.
             </p>
         </div>
 
@@ -311,7 +310,7 @@ h1 {
         
 <!-- Q1 -->
 <div class="question" id="Q1">
-    <p>Q1</p>
+    <p class="question-number">Q1</p>
     <img src="https://raw.githubusercontent.com/moguura/my-images/main/7-1.png" alt="Q1 Image" class="illustration">
     <button id="startButtonQ1" class="mic-button" aria-label="音声認識を開始"></button>
     <div class="feedback" id="feedbackQ1">
@@ -325,7 +324,7 @@ h1 {
 
         <!-- 問題2 -->
         <div class="question" id="Q2">
-            <p>Q2</p>
+            <p class="question-number">Q2</p>
             <img src="https://raw.githubusercontent.com/moguura/my-images/main/7-2.png" alt="Q2 Image" class="illustration">
             <button id="startButtonQ2" class="mic-button"></button>
             <div class="feedback" id="feedbackQ2">
@@ -339,7 +338,7 @@ h1 {
 
         <!-- 問題3 -->
         <div class="question" id="Q3">
-            <p>Q3</p>
+            <p class="question-number">Q3</p>
             <img src="https://raw.githubusercontent.com/moguura/my-images/main/7-3.png" alt="Q3 Image" class="illustration">
             <button id="startButtonQ3" class="mic-button"></button>
              <div class="feedback" id="feedbackQ3">
@@ -353,7 +352,7 @@ h1 {
 
 <!-- 問題4 -->
 <div class="question" id="Q4">
-    <p>Q4</p>
+    <p class="question-number">Q4</p>
     <img src="https://raw.githubusercontent.com/moguura/my-images/main/7-4.png" alt="Q4 Image" class="illustration">
     <button id="startButtonQ4" class="mic-button"></button>
      <div class="feedback" id="feedbackQ4">
@@ -367,7 +366,7 @@ h1 {
 
 <!-- 問題5 -->
 <div class="question" id="Q5">
-    <p>Q5</p>
+    <p class="question-number">Q5</p>
     <img src="https://raw.githubusercontent.com/moguura/my-images/main/7-5.png" alt="Q5 Image" class="illustration">
     <button id="startButtonQ5" class="mic-button"></button>
      <div class="feedback" id="feedbackQ5">
@@ -379,9 +378,28 @@ h1 {
     <audio id="wrongAudioQ5" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E4%B8%8D%E6%AD%A3%E8%A7%A31.mp3"></audio>
 </div>
 
+    <div id="content">
+    <div class="instructions">
+      <p>
+        Next, let's talk about <span class="red-bold">トマトカフェ（Tomato Café）</span>.<br>
+      </p>
+      <img src="https://raw.githubusercontent.com/moguura/my-images/main/7-hyo2.png" alt="説明用のイラスト" class="illustration illustration1">
+    </div>
+  </div>
+
+  <img src="https://raw.githubusercontent.com/moguura/my-images/main/7-kotoba2.png" alt="説明用のイラスト" class="illustration illustration1">
+  <div class="image-container">
+    <img src="https://raw.githubusercontent.com/moguura/my-images/main/7-friend.png" alt="説明用のイラスト" class="illustration illustration2">
+  </div>
+  
+  <div class="audio-section">
+    <button class="play-audio" id="play-audio-1">▶ Play</button>
+    <audio id="audio-1" src="https://raw.githubusercontent.com/moguura/my-images/main/7-oto2.wav"></audio>
+  </div>
+
 <!-- 問題6 -->
 <div class="question" id="Q6">
-    <p>Q6</p>
+    <p class="question-number">Q6</p>
     <img src="https://raw.githubusercontent.com/moguura/my-images/main/7-6.png" alt="Q6 Image" class="illustration">
     <button id="startButtonQ6" class="mic-button"></button>
      <div class="feedback" id="feedbackQ6">
@@ -395,7 +413,7 @@ h1 {
 
 <!-- 問題7 -->
 <div class="question" id="Q7">
-    <p>Q7</p>
+    <p class="question-number">Q7</p>
     <img src="https://raw.githubusercontent.com/moguura/my-images/main/7-7.png" alt="Q7 Image" class="illustration"> 
     <button id="startButtonQ7" class="mic-button"></button>
      <div class="feedback" id="feedbackQ7">
@@ -409,7 +427,7 @@ h1 {
 
 <!-- 問題8 -->
 <div class="question" id="Q8">
-    <p>Q8</p>
+    <p class="question-number">Q8</p>
     <img src="https://raw.githubusercontent.com/moguura/my-images/main/7-8.png" alt="Q8 Image" class="illustration">
     <button id="startButtonQ8" class="mic-button"></button>
      <div class="feedback" id="feedbackQ8">
@@ -423,7 +441,7 @@ h1 {
 
 <!-- 問題9 -->
 <div class="question" id="Q9">
-    <p>Q9</p>
+    <p class="question-number">Q9</p>
     <img src="https://raw.githubusercontent.com/moguura/my-images/main/7-9.png" alt="Q9 Image" class="illustration">
     <button id="startButtonQ9" class="mic-button"></button>
      <div class="feedback" id="feedbackQ9">
@@ -437,7 +455,7 @@ h1 {
 
 <!-- 問題10 -->
 <div class="question" id="Q10">
-    <p>Q10</p>
+    <p class="question-number">Q10</p>
     <img src="https://raw.githubusercontent.com/moguura/my-images/main/7-10.png" alt="Q10 Image" class="illustration">
     <button id="startButtonQ10" class="mic-button"></button>
     <div class="feedback" id="feedbackQ10">
@@ -448,6 +466,18 @@ h1 {
     <audio id="correctAudioQ10" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E6%AD%A3%E8%A7%A32.mp3"></audio>
     <audio id="wrongAudioQ10" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E4%B8%8D%E6%AD%A3%E8%A7%A31.mp3"></audio>
  </div>
+    
+  <img src="https://raw.githubusercontent.com/moguura/my-images/main/7-kotoba3.png" alt="説明用のイラスト" class="illustration illustration1">
+  <div class="image-container">
+    <img src="https://raw.githubusercontent.com/moguura/my-images/main/7-friend2.png" alt="説明用のイラスト" class="illustration illustration2">
+  </div>
+  
+  <div class="audio-section">
+    <button class="play-audio" id="play-audio-1">▶ Play</button>
+    <audio id="audio-1" src="https://raw.githubusercontent.com/moguura/my-images/main/7-oto3.wav"></audio>
+  </div>
+
+
 
         <!-- リンク -->
         <a href="./Activity8.html" id="nextLink" style="display: none;">Go to Activity8</a>
@@ -458,7 +488,6 @@ h1 {
 <script>
 const answers = {
     E1: ["い"],
-    E2: ["くない"],
     Q1: ["い"],
     Q2: ["くない"],
     Q3: ["い"],
@@ -472,9 +501,9 @@ const answers = {
 };
 
 const buttonsPressed = {
-    E1: false, E2: false, Q1: false, Q2: false, Q3: false,
-    Q4: false, Q5: false, Q6: false, Q7: false, Q8: false,
-    Q9: false, Q10: false
+    E1: false, Q1: false, Q2: false, Q3: false, Q4: false,
+    Q5: false, Q6: false, Q7: false, Q8: false, Q9: false,
+    Q10: false
 };
 
 document.addEventListener("DOMContentLoaded", function() {
