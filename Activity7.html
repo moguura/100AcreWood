@@ -177,9 +177,22 @@ h1 {
     box-shadow: 0 0 15px rgba(255, 0, 0, 0.8); /* 赤く光る */
 }
 
-/* 録音中に光る */
+/* 録音中に光る + アニメーション */
 .mic-button.recording {
-    box-shadow: 0 0 15px rgba(255, 0, 0, 0.8)!important;/* 赤く光る */
+    animation: glow 1s infinite ease-in-out;
+}
+
+/* 光るアニメーションの定義 */
+@keyframes glow {
+    0% {
+        box-shadow: 0 0 5px rgba(255, 0, 0, 0.6);
+    }
+    50% {
+        box-shadow: 0 0 20px rgba(255, 0, 0, 1);
+    }
+    100% {
+        box-shadow: 0 0 5px rgba(255, 0, 0, 0.6);
+    }
 }
     
 .play-audio {
