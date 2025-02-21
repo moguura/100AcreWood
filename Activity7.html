@@ -261,10 +261,10 @@ h1 {
     <div id="content">
     <div class="instructions">
       <p>
-        Example: 
+        Example:<br> 
         First, let's talk about <span class="blue-bold">あおばだいがく（Aoba University）</span>.<br>
         Press the microphone button and say: <br>
-        <strong>せんせいは いいです</strong>。（The teacher is good.）
+        <strong>せんせいは いいです</strong>。（The teacher is good.）or <strong>いいです</strong>。
       </p>
       <img src="https://raw.githubusercontent.com/moguura/my-images/main/7-hyo1.png" alt="説明用のイラスト" class="illustration illustration1">
     </div>
@@ -393,8 +393,8 @@ h1 {
   </div>
   
   <div class="audio-section">
-    <button class="play-audio" id="play-audio-1">▶ Play</button>
-    <audio id="audio-1" src="https://raw.githubusercontent.com/moguura/my-images/main/7-oto2.wav"></audio>
+    <button class="play-audio" id="play-audio-2">▶ Play</button>
+    <audio id="audio-2" src="https://raw.githubusercontent.com/moguura/my-images/main/7-oto2.wav"></audio>
   </div>
 
 <!-- 問題6 -->
@@ -473,8 +473,8 @@ h1 {
   </div>
   
   <div class="audio-section">
-    <button class="play-audio" id="play-audio-1">▶ Play</button>
-    <audio id="audio-1" src="https://raw.githubusercontent.com/moguura/my-images/main/7-oto3.wav"></audio>
+    <button class="play-audio" id="play-audio-3">▶ Play</button>
+    <audio id="audio-3" src="https://raw.githubusercontent.com/moguura/my-images/main/7-oto3.wav"></audio>
   </div>
 
 
@@ -490,12 +490,12 @@ const answers = {
     E1: ["い"],
     Q1: ["い"],
     Q2: ["くない"],
-    Q3: ["い"],
+    Q3: ["くない"],
     Q4: ["い"],
     Q5: ["い"],
     Q6: ["くない"],
     Q7: ["くない"],
-    Q8: ["くない"],
+    Q8: ["い"],
     Q9: ["い"],
     Q10: ["くない"]
 };
@@ -616,18 +616,17 @@ function showFeedback(questionId, isCorrect, transcript) {
 // 各問題ごとのフィードバックメッセージを返す関数
 function getFeedbackText(questionId) {
     const feedbackMessages = {
-        E1:"てんきは いいです。（The weather is good.）",
-        E2:"てんきは よくないです。（The weather is not good.）",
-        Q1:"エベレストは たかいです。（Mount Everest is high.）",
-        Q2:"ダイヤモンドは やすくないです。（Diamonds are not cheap.）",
-        Q3:"にほんの８がつは あついです。（August in Japan is hot.）",
-        Q4:"にほんの２がつは さむいです。（February in Japan is cold.）",
-        Q5:"かいしゃいんのあさは いそがしいです。（The mornings of office workers are busy.）",
-        Q6:"このくるまは あたらしくないです。（This car is not new.）",
-        Q7:"くすりは おいしくないです。（Medicines are not tasty.）",
-        Q8:"いま ひとは おおくないです。（There are not many people now.）",
-        Q9:"この かばんは おおきいです。（This bag is big.）",
-        Q10:"にほんとブラジルは ちかくないです。（Japan and Brazil are not close.）",
+        E1:"せんせいは いいです。（The teacher is good.）",
+        Q1:"じゅぎょうは おもしろいです。（The class is interesting.）",
+        Q2:"えいごのテスト（てすと）は むずかしくないです。（The English test is not difficult.）",
+        Q3:"きょうしつは あつくないです。（The classroom is not hot.）",
+        Q4:"パソコン（ぱそこん）は あたらしいです。（The computer is new.）",
+        Q5:"としょかんは おおきいです。（The library is big.）",
+        Q6:"みせのなかは さむくないです。（It is not cold inside the store.）",
+        Q7:"パスタ（ぱすた）は すくなくないです。（There is not a small amount of pasta.）",
+        Q8:"りょうりは おいしいです。（The food is delicious.）",
+        Q9:"ねだんは やすいです。（The prices are cheap.）",
+        Q10:"てんいんさんは いそがしくないです。（The staff is not busy.）",
     };
     return feedbackMessages[questionId] || "フィードバックが設定されていません";  // デフォルトのメッセージ
 }
