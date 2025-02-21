@@ -118,6 +118,10 @@ h1 {
     width: 100%;
     max-width: 700px; /* 幅を増やす */
 }
+    
+#Q1 {
+    margin-top: 20px; /* Q1の上にスペースを追加 */
+}
 
 
 /* 共通のスタイル */
@@ -171,12 +175,16 @@ h1 {
     transition: box-shadow 0.3s ease-in-out;
 }
 
-/* マイクボタンのアクション */
-.mic-button:active,
-.mic-button.recording {
-    box-shadow: 0 0 15px rgba(255, 0, 0, 0.8);
+/* 押している間に光る */
+.mic-button:active {
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.8); /* 赤く光る */
 }
 
+/* 録音中に光る */
+.mic-button.recording {
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.8); /* 赤く光る */
+}
+    
 .play-audio {
     background-color: #007BFF;
     color: white;
@@ -243,7 +251,7 @@ h1 {
 a {
    display:block; 
    text-align:center; 
-   margin:auto; 
+   margin-top: 20px; 
    color:#007bff; 
    text-decoration:none; 
    font-size :28px; 
