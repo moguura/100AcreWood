@@ -57,23 +57,14 @@ h1 {
     color: #007bff;
 }
 
-.question img {
-    width: 300px;
-    height: auto;
-    object-fit: cover;
-    display: block;
-    margin: 0 auto 10px;
-    max-width: 100%;
-}
-
-/* 質問ブロック内の問題画像だけに適用 */
-.question img.illustration {
-    width: 100%; /* 親要素に合わせる */
-    max-width: 900px; /* 最大幅 */
+/* 共通の画像スタイルで中央揃え */
+img {
+    width: 100%;
+    max-width: 900px;
     height: auto;
     object-fit: contain;
     display: block;
-    margin: 0 auto 10px;
+    margin: 0 auto 10px; /* 中央揃え */
 }
 
 /* 英文 & 日本語テキスト */
@@ -128,33 +119,6 @@ h1 {
     border-radius: 5px; /* 角丸 */
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* 軽いシャドウ */
     box-sizing: border-box; /* パディングを含めた幅計算 */
-}
-
-/* イラストのスタイル */
-.illustration1 {
-    width: 150%; /* 画像の幅を拡大（必要に応じて100%も試す） */
-    max-width: 500px; /* 最大幅を200px → 300pxに増やす */
-    height: auto; /* 縦横比を維持 */
-    display: block;
-    margin: 10px auto; /* 余白を調整 */
-}
-
-.illustration-container {
-    text-align: center; /* 親要素で中央配置 */
-}
-
-.illustration2 {
-    display: block;
-    margin: 0 auto;
-    width: 80%;
-    max-width: 400px;
-    height: auto;
-    margin-bottom: 50px; 
-}
-
-/* 親要素の中央配置を確実にする */
-.illustration-container {
-    text-align: center;
 }
 
 /* マイクボタンのスタイル */
@@ -315,12 +279,6 @@ a:hover {
                 For questions 1-10, explain how each place has improved since 2020 using a similar pattern.
             </p>
         </div>
-
-　　　<!-- Notice Board -->
-      <div class="notice-board">
-          <p><span class="blue-bold">Please note:</span>　Speech recognition may not always be 100% accurate.<br> 
-              If your answer is incorrect, don't worry - just continue to the next question.<br></p>
-      </div>
         
 <!-- Q1 -->
 <div class="question" id="Q1">
