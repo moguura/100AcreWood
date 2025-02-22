@@ -57,14 +57,14 @@ h1 {
     color: #007bff;
 }
 
-/* 共通の画像スタイルで中央揃え */
-img {
-    width: 100%;
-    max-width: 900px;
-    height: auto;
-    object-fit: contain;
+/* 共通の画像スタイル */
+img.illustration {
+    width: 100%; /* 親要素の幅に合わせる */
+    max-width: 900px; /* 最大幅を制限 */
+    height: auto; /* 縦横比を保持 */
+    object-fit: contain; /* 画像を枠内に収める */
     display: block;
-    margin: 0 auto 10px; /* 中央揃え */
+    margin: 0 auto 10px; /* 中央寄せと下余白 */
 }
 
 /* 英文 & 日本語テキスト */
@@ -237,10 +237,7 @@ a:hover {
             </p>
         </div>
 
-  <div class="image-container">
-    <img src="https://raw.githubusercontent.com/moguura/my-images/main/8-1.JPG" alt="説明用のイラスト" class="illustration illustration2">
-  </div>
-  
+  <img src="https://raw.githubusercontent.com/moguura/my-images/main/8-1.JPG" alt="説明用のイラスト" class="illustration">
   <div class="audio-section">
     <button class="play-audio" id="play-audio-1">▶ Play</button>
     <audio id="audio-1" src="https://raw.githubusercontent.com/moguura/my-images/main/8-1koe.wav"></audio>
@@ -256,7 +253,7 @@ a:hover {
     <div class="question" id="E1">
     <p class="question-number">e.g.</p>
     <div class="image-container">
-    <img src="https://raw.githubusercontent.com/moguura/my-images/main/8-2.JPG" alt="説明用のイラスト" class="illustration illustration2">
+    <img src="https://raw.githubusercontent.com/moguura/my-images/main/8-2.JPG" alt="説明用のイラスト" class="illustration">
     </div>
     <div class="audio-section">
     <button class="play-audio" id="play-audio-2">▶ Play</button>
