@@ -57,14 +57,26 @@ h1 {
     color: #007bff;
 }
     
+/* 問題グループ全体を囲むボックス */
 .question-group {
-  border: 2px solid #007bff; /* 枠線の色と太さ */
-  border-radius: 8px;        /* 角の丸み */
+  border: 2px solid #007bff; /* 青色の枠線 */
+  border-radius: 8px;        /* 角丸 */
   padding: 16px;             /* 内側の余白 */
-  margin-bottom: 24px;       /* 下部の余白 */
+  margin-bottom: 24px;       /* 下の余白 */
   background-color: #f9f9f9; /* 背景色 */
 }
 
+/* 各問題に軽く枠をつける */
+.question {
+  padding: 12px;
+  border-bottom: 1px dashed #ccc; /* 区切り線 */
+}
+
+/* 最後の問題の下線を消す */
+.question:last-of-type {
+  border-bottom: none;
+　margin-bottom: 80px;
+}
 
 /* 共通の画像スタイル */
 img.illustration {
@@ -85,11 +97,6 @@ img.illustration {
 .japanese-text {
     margin-top: 25px;
     margin-bottom: 10px;
-}
-
-/* 最後の質問の余白 */
-.question:last-of-type {
-    margin-bottom: 80px;
 }
 
 /* 強調テキスト */
@@ -306,6 +313,7 @@ a:hover {
     <audio id="correctAudioQ1" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E6%AD%A3%E8%A7%A32.mp3"></audio>
     <audio id="wrongAudioQ1" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E4%B8%8D%E6%AD%A3%E8%A7%A31.mp3"></audio>
 　　</div>
+    </div>
 
         <!-- 問題2 -->
     　 <div class="question-group">
