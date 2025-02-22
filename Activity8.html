@@ -60,7 +60,7 @@ h1 {
 /* 共通の画像スタイル */
 img.illustration {
     width: 100%; /* 親要素の幅に合わせる */
-    max-width: 900px; /* 最大幅を制限 */
+    max-width: 600px; /* 最大幅を制限 */
     height: auto; /* 縦横比を保持 */
     object-fit: contain; /* 画像を枠内に収める */
     display: block;
@@ -252,14 +252,12 @@ a:hover {
 　　<!-- E1の例題 -->
     <div class="question" id="E1">
     <p class="question-number">e.g.</p>
-    <div class="image-container">
     <img src="https://raw.githubusercontent.com/moguura/my-images/main/8-2.JPG" alt="説明用のイラスト" class="illustration">
-    </div>
     <div class="audio-section">
     <button class="play-audio" id="play-audio-2">▶ Play</button>
     <audio id="audio-2" src="https://raw.githubusercontent.com/moguura/my-images/main/8-2koe.wav"></audio>
     </div>
-    <p class="english-text">The weather was good. </p>    
+    <p class="english-text">The weather was good.</p>    
     <p class="japanese-text"><span class="highlight">いい</span> → てんきは（ 　　　）</p>
     <button id="startButtonE1" class="mic-button" aria-label="音声認識を開始"></button>
     <div class="feedback" id="feedbackE1">
@@ -280,7 +278,13 @@ a:hover {
 <!-- Q1 -->
 <div class="question" id="Q1">
     <p class="question-number">Q1</p>
-    <img src="https://raw.githubusercontent.com/moguura/my-images/main/7-1.png" alt="Q1 Image" class="illustration">
+    <img src="https://raw.githubusercontent.com/moguura/my-images/main/8-3.JPG" alt="説明用のイラスト" class="illustration">
+    <div class="audio-section">
+    <button class="play-audio" id="play-audio-3">▶ Play</button>
+    <audio id="audio-3" src="https://raw.githubusercontent.com/moguura/my-images/main/8-3koe.wav"></audio>
+    </div>
+    <p class="english-text">The suitcase was heavy.</p>    
+    <p class="japanese-text"><span class="highlight">おもい</span> → はい、<ruby>スーツケース<rt>すーつけーす</rt></ruby>は（ 　　　）</p>
     <button id="startButtonQ1" class="mic-button" aria-label="音声認識を開始"></button>
     <div class="feedback" id="feedbackQ1">
         <img id="correctImageQ1" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%BE%E3%82%8B.png" alt="正しい答え" class="feedback-icon">
@@ -294,7 +298,13 @@ a:hover {
         <!-- 問題2 -->
         <div class="question" id="Q2">
             <p class="question-number">Q2</p>
-            <img src="https://raw.githubusercontent.com/moguura/my-images/main/7-2.png" alt="Q2 Image" class="illustration">
+            <img src="https://raw.githubusercontent.com/moguura/my-images/main/8-4.JPG" alt="説明用のイラスト" class="illustration">
+   　　　 　 <div class="audio-section">
+  　　　　   <button class="play-audio" id="play-audio-4">▶ Play</button>
+   　　　 　 <audio id="audio-4" src="https://raw.githubusercontent.com/moguura/my-images/main/8-4koe.wav"></audio>
+   　　　　  </div>
+            <p class="english-text">The hotel was good.</p>    
+            <p class="japanese-text"><span class="highlight">いい</span> → <ruby>ホテル<rt>ほてる</rt></ruby>は（ 　　　）</p>
             <button id="startButtonQ2" class="mic-button"></button>
             <div class="feedback" id="feedbackQ2">
                 <img id="correctImageQ2" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%BE%E3%82%8B.png" alt="正しい答え" class="feedback-icon">
@@ -308,7 +318,8 @@ a:hover {
         <!-- 問題3 -->
         <div class="question" id="Q3">
             <p class="question-number">Q3</p>
-            <img src="https://raw.githubusercontent.com/moguura/my-images/main/7-3.png" alt="Q3 Image" class="illustration">
+            <p class="english-text">The bed was big.</p>    
+            <p class="japanese-text"><span class="highlight">おおきい</span> → <ruby>ベッド<rt>べっど</rt></ruby>は（ 　　　）</p>
             <button id="startButtonQ3" class="mic-button"></button>
              <div class="feedback" id="feedbackQ3">
                 <img id="correctImageQ3" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%BE%E3%82%8B.png" alt="正しい答え" class="feedback-icon">
@@ -321,9 +332,15 @@ a:hover {
 
 <!-- 問題4 -->
 <div class="question" id="Q4">
-    <p class="question-number">Q4</p>
-    <img src="https://raw.githubusercontent.com/moguura/my-images/main/7-4.png" alt="Q4 Image" class="illustration">
-    <button id="startButtonQ4" class="mic-button"></button>
+     <p class="question-number">Q4</p>
+     <img src="https://raw.githubusercontent.com/moguura/my-images/main/8-5.JPG" alt="説明用のイラスト" class="illustration">
+     <div class="audio-section">
+  　 <button class="play-audio" id="play-audio-5">▶ Play</button>
+     <audio id="audio-5" src="https://raw.githubusercontent.com/moguura/my-images/main/8-5koe.wav"></audio>
+     </div>
+     <p class="english-text">The hot spring was not warm.</p>    
+     <p class="japanese-text"><span class="highlight">あたたかい</span> →  おんせんは（ 　　　）</p>
+     <button id="startButtonQ4" class="mic-button"></button>
      <div class="feedback" id="feedbackQ4">
         <img id="correctImageQ4" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%BE%E3%82%8B.png" alt="正しい答え" class="feedback-icon">
         <img id="wrongImageQ4" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%B0%E3%81%A4.png" alt="間違った答え" class="feedback-icon">
@@ -336,7 +353,8 @@ a:hover {
 <!-- 問題5 -->
 <div class="question" id="Q5">
     <p class="question-number">Q5</p>
-    <img src="https://raw.githubusercontent.com/moguura/my-images/main/7-5.png" alt="Q5 Image" class="illustration">
+    <p class="english-text">There were many people.</p>    
+    <p class="japanese-text"><span class="highlight">おおい</span> →  ひとは（ 　　　）</p>
     <button id="startButtonQ5" class="mic-button"></button>
      <div class="feedback" id="feedbackQ5">
         <img id="correctImageQ5" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%BE%E3%82%8B.png" alt="正しい答え" class="feedback-icon">
@@ -347,29 +365,16 @@ a:hover {
     <audio id="wrongAudioQ5" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E4%B8%8D%E6%AD%A3%E8%A7%A31.mp3"></audio>
 </div>
 
-    <div id="content">
-    <div class="instructions">
-      <p>
-        Next, let's talk about <span class="red-bold">トマトカフェ（Tomato Café）</span>.<br>
-      </p>
-      <img src="https://raw.githubusercontent.com/moguura/my-images/main/7-hyo2.png" alt="説明用のイラスト" class="illustration illustration1">
-    </div>
-  </div>
-
-  <img src="https://raw.githubusercontent.com/moguura/my-images/main/7-kotoba2.png" alt="説明用のイラスト" class="illustration illustration1">
-  <div class="image-container">
-    <img src="https://raw.githubusercontent.com/moguura/my-images/main/7-friend.png" alt="説明用のイラスト" class="illustration illustration2">
-  </div>
-  
-  <div class="audio-section">
-    <button class="play-audio" id="play-audio-2">▶ Play</button>
-    <audio id="audio-2" src="https://raw.githubusercontent.com/moguura/my-images/main/7-oto2.wav"></audio>
-  </div>
-
 <!-- 問題6 -->
 <div class="question" id="Q6">
     <p class="question-number">Q6</p>
-    <img src="https://raw.githubusercontent.com/moguura/my-images/main/7-6.png" alt="Q6 Image" class="illustration">
+    <img src="https://raw.githubusercontent.com/moguura/my-images/main/8-6.JPG" alt="説明用のイラスト" class="illustration">
+     <div class="audio-section">
+  　 <button class="play-audio" id="play-audio-6">▶ Play</button>
+     <audio id="audio-6" src="https://raw.githubusercontent.com/moguura/my-images/main/8-6koe.wav"></audio>
+     </div>
+     <p class="english-text">The mountain was not fun.</p>    
+     <p class="japanese-text"><span class="highlight">たのしい</span> →  やまは（ 　　　）</p>
     <button id="startButtonQ6" class="mic-button"></button>
      <div class="feedback" id="feedbackQ6">
         <img id="correctImageQ6" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%BE%E3%82%8B.png" alt="正しい答え" class="feedback-icon">
@@ -383,7 +388,8 @@ a:hover {
 <!-- 問題7 -->
 <div class="question" id="Q7">
     <p class="question-number">Q7</p>
-    <img src="https://raw.githubusercontent.com/moguura/my-images/main/7-7.png" alt="Q7 Image" class="illustration"> 
+    <p class="english-text">The hike was not cool.</p>    
+    <p class="japanese-text"><span class="highlight">すずしい</span> →  とざんは（ 　　　）</p>
     <button id="startButtonQ7" class="mic-button"></button>
      <div class="feedback" id="feedbackQ7">
         <img id="correctImageQ7" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%BE%E3%82%8B.png" alt="正しい答え" class="feedback-icon">
@@ -397,7 +403,13 @@ a:hover {
 <!-- 問題8 -->
 <div class="question" id="Q8">
     <p class="question-number">Q8</p>
-    <img src="https://raw.githubusercontent.com/moguura/my-images/main/7-8.png" alt="Q8 Image" class="illustration">
+    <img src="https://raw.githubusercontent.com/moguura/my-images/main/8-7.JPG" alt="説明用のイラスト" class="illustration">
+     <div class="audio-section">
+  　 <button class="play-audio" id="play-audio-7">▶ Play</button>
+     <audio id="audio-7" src="https://raw.githubusercontent.com/moguura/my-images/main/8-7koe.wav"></audio>
+     </div>
+     <p class="english-text">The restaurant was not close.</p>    
+     <p class="japanese-text"><span class="highlight">ちかい</span> →  やまは（ 　　　）</p>
     <button id="startButtonQ8" class="mic-button"></button>
      <div class="feedback" id="feedbackQ8">
         <img id="correctImageQ8" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%BE%E3%82%8B.png" alt="正しい答え" class="feedback-icon">
