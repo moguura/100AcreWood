@@ -78,14 +78,44 @@ h1 {
 　margin-bottom: 80px;
 }
 
-/* 共通の画像スタイル */
+/* 画像とボタンを縦に中央揃え */
+.media-container {
+    display: flex;
+    flex-direction: column; /* 縦に並べる */
+    align-items: center;    /* 中央寄せ */
+    margin-bottom: 20px;
+}
+
+/* 画像サイズを統一 */
 img.illustration {
-    width: 100%; /* 親要素の幅に合わせる */
-    max-width: 600px; /* 最大幅を制限 */
-    height: auto; /* 縦横比を保持 */
-    object-fit: contain; /* 画像を枠内に収める */
+    width: 100%;
+    max-width: 500px; /* 少し小さくして統一感を出す */
+    height: auto;
+    object-fit: contain;
     display: block;
-    margin: 0 auto 10px; /* 中央寄せと下余白 */
+    margin: 0 auto 10px;
+}
+
+/* プレイボタンの中央寄せ */
+.audio-section {
+    text-align: center;
+    margin-top: -10px; /* 画像との間隔調整 */
+}
+
+.play-audio {
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    font-size: 18px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+    display: inline-block;
+}
+
+.play-audio:hover {
+    background-color: #0056b3;
 }
 
 /* 英文 & 日本語テキスト */
@@ -160,29 +190,6 @@ img.illustration {
 /* 録音中に光る */
 .mic-button.recording {
     box-shadow: 0 0 15px rgba(255, 0, 0, 0.8)!important;/* 赤く光る */
-}
-    
-.play-audio {
-    background-color: #007BFF;
-    color: white;
-    border: none;
-    padding: 12px 24px; /* 内側の余白を大きく */
-    font-size: 18px; /* フォントサイズを大きく */
-    cursor: pointer;
-    border-radius: 5px;
-    transition: background-color 0.3s;
-    display: block;
-    margin: -10px auto 0; /* 余白を調整 */
-}
-
-
-.audio-section {
-    margin-top: -10px; /* 画像とボタンの間を狭める */
-    text-align: center;
-}
-
-.play-audio:hover {
-    background-color: #0056b3;
 }
 
 /* 通知ボード */
@@ -269,10 +276,12 @@ a:hover {
     <div class="question-group">
     <div class="question" id="E1">
     <p class="question-number">e.g.</p>
-    <img src="https://raw.githubusercontent.com/moguura/my-images/main/8-2.JPG" alt="説明用のイラスト" class="illustration">
-    <div class="audio-section">
-    <button class="play-audio" id="play-audio-2">▶ Play</button>
-    <audio id="audio-2" src="https://raw.githubusercontent.com/moguura/my-images/main/8-2koe.wav"></audio>
+    <div class="media-container">
+       <img src="https://raw.githubusercontent.com/moguura/my-images/main/8-2.JPG" alt="説明用のイラスト" class="illustration">
+      <div class="audio-section">
+       <button class="play-audio" id="play-audio-2">▶ Play</button>
+       <audio id="audio-2" src="https://raw.githubusercontent.com/moguura/my-images/main/8-2koe.wav"></audio>
+      </div>
     </div>
     <p class="english-text">The weather was good.</p>    
     <p class="japanese-text"><span class="highlight">いい</span> → てんきは（ 　　　）</p>
@@ -297,10 +306,12 @@ a:hover {
  <div class="question-group">
 　<div class="question" id="Q1">
     <p class="question-number">Q1</p>
-    <img src="https://raw.githubusercontent.com/moguura/my-images/main/8-3.JPG" alt="説明用のイラスト" class="illustration">
-    <div class="audio-section">
-    <button class="play-audio" id="play-audio-3">▶ Play</button>
-    <audio id="audio-3" src="https://raw.githubusercontent.com/moguura/my-images/main/8-3koe.wav"></audio>
+    <div class="media-container">
+      <img src="https://raw.githubusercontent.com/moguura/my-images/main/8-3.JPG" alt="説明用のイラスト" class="illustration">
+     <div class="audio-section">
+      <button class="play-audio" id="play-audio-3">▶ Play</button>
+      <audio id="audio-3" src="https://raw.githubusercontent.com/moguura/my-images/main/8-3koe.wav"></audio>
+     </div>
     </div>
     <p class="english-text">The suitcase was heavy.</p>    
     <p class="japanese-text"><span class="highlight">おもい</span> → はい、<ruby>スーツケース<rt>すーつけーす</rt></ruby>は（ 　　　）</p>
@@ -319,11 +330,13 @@ a:hover {
     　 <div class="question-group">
         <div class="question" id="Q2">
             <p class="question-number">Q2</p>
+        <div class="media-container">
             <img src="https://raw.githubusercontent.com/moguura/my-images/main/8-4.JPG" alt="説明用のイラスト" class="illustration">
    　　　 　 <div class="audio-section">
   　　　　   <button class="play-audio" id="play-audio-4">▶ Play</button>
    　　　 　 <audio id="audio-4" src="https://raw.githubusercontent.com/moguura/my-images/main/8-4koe.wav"></audio>
-   　　　　  </div>
+   　　　　</div>
+        </div>
             <p class="english-text">The hotel was good.</p>    
             <p class="japanese-text"><span class="highlight">いい</span> → <ruby>ホテル<rt>ほてる</rt></ruby>は（ 　　　）</p>
             <button id="startButtonQ2" class="mic-button"></button>
@@ -357,11 +370,13 @@ a:hover {
 <div class="question-group">
 <div class="question" id="Q4">
      <p class="question-number">Q4</p>
-     <img src="https://raw.githubusercontent.com/moguura/my-images/main/8-5.JPG" alt="説明用のイラスト" class="illustration">
+     <div class="media-container">
+      <img src="https://raw.githubusercontent.com/moguura/my-images/main/8-5.JPG" alt="説明用のイラスト" class="illustration">
      <div class="audio-section">
-  　 <button class="play-audio" id="play-audio-5">▶ Play</button>
-     <audio id="audio-5" src="https://raw.githubusercontent.com/moguura/my-images/main/8-5koe.wav"></audio>
-     </div>
+  　   <button class="play-audio" id="play-audio-5">▶ Play</button>
+       <audio id="audio-5" src="https://raw.githubusercontent.com/moguura/my-images/main/8-5koe.wav"></audio>
+      </div> 
+     </dev>
      <p class="english-text">The hot spring was not warm.</p>    
      <p class="japanese-text"><span class="highlight">あたたかい</span> →  おんせんは（ 　　　）</p>
      <button id="startButtonQ4" class="mic-button"></button>
@@ -394,11 +409,13 @@ a:hover {
 <div class="question-group">     
  <div class="question" id="Q6">
     <p class="question-number">Q6</p>
+    <div class="media-container">
     <img src="https://raw.githubusercontent.com/moguura/my-images/main/8-6.JPG" alt="説明用のイラスト" class="illustration">
      <div class="audio-section">
   　 <button class="play-audio" id="play-audio-6">▶ Play</button>
      <audio id="audio-6" src="https://raw.githubusercontent.com/moguura/my-images/main/8-6koe.wav"></audio>
      </div>
+    </div>
      <p class="english-text">The mountain was not fun.</p>    
      <p class="japanese-text"><span class="highlight">たのしい</span> →  やまは（ 　　　）</p>
     <button id="startButtonQ6" class="mic-button"></button>
@@ -430,12 +447,14 @@ a:hover {
 <!-- 問題8 -->
 <div class="question-group">
 <div class="question" id="Q8">
+    <div class="media-container">
     <p class="question-number">Q8</p>
     <img src="https://raw.githubusercontent.com/moguura/my-images/main/8-7.JPG" alt="説明用のイラスト" class="illustration">
      <div class="audio-section">
   　 <button class="play-audio" id="play-audio-7">▶ Play</button>
      <audio id="audio-7" src="https://raw.githubusercontent.com/moguura/my-images/main/8-7koe.wav"></audio>
      </div>
+    </div>
      <p class="english-text">The restaurant was not close.</p>    
      <p class="japanese-text"><span class="highlight">ちかい</span> →  <ruby>レストラン<rt>れすとらん</rt></ruby>は（ 　　　）</p>
      <button id="startButtonQ8" class="mic-button"></button>
