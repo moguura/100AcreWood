@@ -96,26 +96,28 @@ img.illustration {
     margin: 0 auto 10px;
 }
 
-/* プレイボタンの中央寄せ */
+/* プレイボタンを中央に配置 */
 .audio-section {
-    text-align: center;
-    margin-top: -10px; /* 画像との間隔調整 */
+  text-align: center; /* 中央寄せ */
+  margin-top: -10px;  /* 画像との間隔調整 */
 }
 
+/* プレイボタンの見た目 */
 .play-audio {
-    background-color: #007BFF;
-    color: white;
-    border: none;
-    padding: 12px 24px;
-    font-size: 18px;
-    cursor: pointer;
-    border-radius: 5px;
-    transition: background-color 0.3s;
-    display: inline-block;
+  background-color: #007BFF;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  font-size: 18px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+  display: inline-block; /* インライン要素として表示 */
+  text-align: center;
 }
 
 .play-audio:hover {
-    background-color: #0056b3;
+  background-color: #0056b3;
 }
 
 /* 英文 & 日本語テキスト */
@@ -326,29 +328,41 @@ a:hover {
 　　</div>
     </div>
 
-        <!-- 問題2 -->
-    　 <div class="question-group">
-        <div class="question" id="Q2">
-            <p class="question-number">Q2</p>
-        <div class="media-container">
-            <img src="https://raw.githubusercontent.com/moguura/my-images/main/8-4.JPG" alt="説明用のイラスト" class="illustration">
-   　　　 　 <div class="audio-section">
-  　　　　   <button class="play-audio" id="play-audio-4">▶ Play</button>
-   　　　 　 <audio id="audio-4" src="https://raw.githubusercontent.com/moguura/my-images/main/8-4koe.wav"></audio>
-   　　　　</div>
-        </div>
-            <p class="english-text">The hotel was good.</p>    
-            <p class="japanese-text"><span class="highlight">いい</span> → <ruby>ホテル<rt>ほてる</rt></ruby>は（ 　　　）</p>
-            <button id="startButtonQ2" class="mic-button"></button>
-            <div class="feedback" id="feedbackQ2">
-                <img id="correctImageQ2" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%BE%E3%82%8B.png" alt="正しい答え" class="feedback-icon">
-                <img id="wrongImageQ2" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%B0%E3%81%A4.png" alt="間違った答え" class="feedback-icon">
-                <div id="feedbackTextQ2" class="feedback-text"></div>
-            </div>
-            <audio id="correctAudioQ2" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E6%AD%A3%E8%A7%A32.mp3"></audio>
-            <audio id="wrongAudioQ2" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E4%B8%8D%E6%AD%A3%E8%A7%A31.mp3"></audio>
-       　　 </div>
-    
+     <!-- 問題2 -->
+<div class="question-group">
+  <div class="question" id="Q2">
+    <p class="question-number">Q2</p>
+
+    <!-- メディアコンテナ -->
+    <div class="media-container">
+      <img src="https://raw.githubusercontent.com/moguura/my-images/main/8-4.JPG" alt="説明用のイラスト" class="illustration">
+
+      <div class="audio-section">
+        <button class="play-audio" id="play-audio-4">▶ Play</button>
+        <audio id="audio-4" src="https://raw.githubusercontent.com/moguura/my-images/main/8-4koe.wav"></audio>
+      </div>
+    </div>
+
+    <!-- テキスト部分 -->
+    <p class="english-text">The hotel was good.</p>
+    <p class="japanese-text"><span class="highlight">いい</span> → <ruby>ホテル<rt>ほてる</rt></ruby>は（ 　　　）</p>
+
+    <!-- 音声認識ボタン -->
+    <button id="startButtonQ2" class="mic-button"></button>
+
+    <!-- フィードバック -->
+    <div class="feedback" id="feedbackQ2">
+      <img id="correctImageQ2" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%BE%E3%82%8B.png" alt="正しい答え" class="feedback-icon">
+      <img id="wrongImageQ2" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%B0%E3%81%A4.png" alt="間違った答え" class="feedback-icon">
+      <div id="feedbackTextQ2" class="feedback-text"></div>
+    </div>
+
+    <!-- 正誤のオーディオ -->
+    <audio id="correctAudioQ2" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E6%AD%A3%E8%A7%A32.mp3"></audio>
+    <audio id="wrongAudioQ2" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E4%B8%8D%E6%AD%A3%E8%A7%A31.mp3"></audio>
+
+  </div>
+</div>
 
         <!-- 問題3 -->
         <div class="question" id="Q3">
