@@ -315,7 +315,7 @@ a:hover {
       <audio id="audio-3" src="https://raw.githubusercontent.com/moguura/my-images/main/8-3koe.wav"></audio>
      </div>
     </div>
-    <p class="english-text">The suitcase was heavy.😩</p>    
+    <p class="english-text">The suitcase was heavy.😩💦</p>    
     <p class="japanese-text"><span class="highlight">おもい</span> → はい、<ruby>スーツケース<rt>すーつけーす</rt></ruby>は（ 　　　）</p>
     <button id="startButtonQ1" class="mic-button" aria-label="音声認識を開始"></button>
     <div class="feedback" id="feedbackQ1">
@@ -365,7 +365,7 @@ a:hover {
         <!-- 問題3 -->
         <div class="question" id="Q3">
             <p class="question-number">Q3</p>
-            <p class="english-text">The bed was big.👍</p>    
+            <p class="english-text">The bed was big.👍✨</p>    
             <p class="japanese-text"><span class="highlight">おおきい</span> → <ruby>ベッド<rt>べっど</rt></ruby>は（ 　　　）</p>
             <button id="startButtonQ3" class="mic-button"></button>
              <div class="feedback" id="feedbackQ3">
@@ -405,7 +405,7 @@ a:hover {
 <!-- 問題5 -->
  <div class="question" id="Q5">
     <p class="question-number">Q5</p>
-    <p class="english-text">There were many people.😔</p>    
+    <p class="english-text">There were too many people.😔💧</p>    
     <p class="japanese-text"><span class="highlight">おおい</span> →  ひとは（ 　　　）</p>
     <button id="startButtonQ5" class="mic-button"></button>
      <div class="feedback" id="feedbackQ5">
@@ -444,7 +444,7 @@ a:hover {
 <!-- 問題7 -->
 <div class="question" id="Q7">
     <p class="question-number">Q7</p>
-    <p class="english-text">The hike was not cool.😩</p>    
+    <p class="english-text">The hike was not cool.🥵☀️</p>    
     <p class="japanese-text"><span class="highlight">すずしい</span> →  とざんは（ 　　　）</p>
     <button id="startButtonQ7" class="mic-button"></button>
      <div class="feedback" id="feedbackQ7">
@@ -468,7 +468,7 @@ a:hover {
      <audio id="audio-7" src="https://raw.githubusercontent.com/moguura/my-images/main/8-7koe.wav"></audio>
      </div>
     </div>
-     <p class="english-text">The restaurant was not close.😔</p>    
+     <p class="english-text">The restaurant was not close to my hiking location.😩💦</p>    
      <p class="japanese-text"><span class="highlight">ちかい</span> →  <ruby>レストラン<rt>れすとらん</rt></ruby>は（ 　　　）</p>
      <button id="startButtonQ8" class="mic-button"></button>
      <div class="feedback" id="feedbackQ8">
@@ -498,7 +498,7 @@ a:hover {
 <!-- 問題10 -->
 <div class="question" id="Q10">
     <p class="question-number">Q10</p>
-    <p class="english-text">The fish was delicious.💖👍</p>    
+    <p class="english-text">The fish was delicious.😋💖</p>    
 　  <p class="japanese-text"><span class="highlight">おいしい</span> →  さかなは（ 　　　）</p>
     <button id="startButtonQ10" class="mic-button"></button>
     <div class="feedback" id="feedbackQ10">
@@ -674,16 +674,16 @@ function showFeedback(questionId, isCorrect, transcript) {
 function getFeedbackText(questionId) {
     const feedbackMessages = {
         E1: "てんきは よかったです。（The weather was good.）",
-        Q1: "スーツケース（すーつけーす）は おもかったです。（The suitcase was heavy.）",
-        Q2: "ホテル（ほてる）は よかったです。（The hotel was good.）",
-        Q3: "ベッド（べっど）は おおきかったです。（The bed was big.）",
-        Q4: "おんせんは あたたかくなかったです。（The hot spring was not warm.）",
-        Q5: "ひとは おおかったです。（There were many people.）",
-        Q6: "やまは たのしくなかったです。（The mountain was not fun.）",
-        Q7: "とざんは すずしくなかったです。（The mountain climbing was not cool.）",
-        Q8: "レストラン（れすとらん）は ちかくなかったです。（The restaurant was not close.）",
-        Q9: "さかなは たかくなかったです。（The fish was not expensive.）",
-        Q10: "さかなは おいしかったです。（The fish was delicious.）",
+        Q1: "スーツケース（すーつけーす）は おもかったです。",
+        Q2: "ホテル（ほてる）は よかったです。",
+        Q3: "ベッド（べっど）は おおきかったです。",
+        Q4: "おんせんは あたたかくなかったです。",
+        Q5: "ひとは おおかったです。",
+        Q6: "やまは たのしくなかったです。",
+        Q7: "とざんは すずしくなかったです。",
+        Q8: "レストラン（れすとらん）は ちかくなかったです。",
+        Q9: "さかなは たかくなかったです。",
+        Q10: "さかなは おいしかったです。",
     };
     return feedbackMessages[questionId] || "フィードバックが設定されていません";
 }
