@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Activity6</title>
+    <title>Activity9</title>
 <style>
 /* 全体のスタイル */
 body {
@@ -388,12 +388,12 @@ h1 {
 
 <script>
 const answers = {
-    E1: ["さむかった","寒かった"],
-    Q1: ["いそがしかった","忙しかった"],
-    Q2: ["ちかかった","近かった"],
-    Q3: ["おもかった","重かった"],
-    Q4: ["やすかった","安かった"],
-    Q5: ["むずかしかった","難しかった"]
+    E1: ["はい","おいしい"],
+    Q1: ["はい","多い"],
+    Q2: ["はい","新しい"],
+    Q3: ["はい","いい"],
+    Q4: ["はい","高かった"],
+    Q5: ["はい","あたたかかった"]
 };
 
 const buttonsPressed = {
@@ -555,28 +555,28 @@ function showFeedback(questionId, isCorrect) {
 function getFeedbackText(questionId) {
     const feedbackMessages = {
         E1: {
-            correct: "Your answer： きのうは さむかったです。（Yesterday was cold.）",
-            incorrect: "Your answer： きのうは さむくなかったです。（Yesterday was not cold.）"
+            correct: "Your answer： はい、おいしいです（Yes, it is delicious.）",
+            incorrect: "Your answer： いいえ、おいしくないです。（No, it is not delicious.）"
         },
         Q1: {
-            correct: "Your answer： せんしゅうは いそがしかったです。（Last week was busy.）",
-            incorrect: "Your answer：せんしゅうは いそがしくなかったです。（Last week was not busy.）"
+            correct: "Your answer： はい、おおいです。（Yes, I am taking many classes.）",
+            incorrect: "Your answer： いいえ、おおくないです。（No, I'm not taking many classes.）"
         },
         Q2: {
-            correct: "Your answer： にほんは ちかかったです。（Japan was close.）",
-            incorrect: "Your answer： にほんは ちかくなかったです。（Japan was not close.）"
+            correct: "Your answer： はい、あたらしいです。（Yes, it is new.）",
+            incorrect: "Your answer： いいえ、あたらしくないです。（No, it is not new.）"
         },
         Q3: {
-            correct: "Your answer：かばんは おもかったです。（The bag was heavy.）",
-            incorrect: "Your answer：かばんは おもくなかったです。（The bag was not heavy.）"
+            correct: "Your answer： はい、いいです。（Yes, it is good.）",
+            incorrect: "Your answer： いいえ、よくないです。（No, it is not good.）"
         },
         Q4: {
-            correct: "Your answer： ふくは やすかったです。（The clothes were cheap.）",
-            incorrect: "Your answer： ふくは やすくなかったです。（The clothes were not cheap.）"
+            correct: "Your answer： はい、たかかったです。（Yes, they were expensive.）",
+            incorrect: "Your answer： いいえ、たかくなかったです。（No, they were not expensive.）"
         },
         Q5: {
-            correct: "Your answer： テストは むずかしかったです。（The test was difficult.）",
-            incorrect: "Your answer： テストは むずかしくなかったです。（The test was not difficult.）"
+            correct: "Your answer： はい、あたたかかったです。（Yes, it was warm.）",
+            incorrect: "Your answer： いいえ、あたたかくなかったです。（No, it was not warm.）"
         }
     };
     return feedbackMessages[questionId];
