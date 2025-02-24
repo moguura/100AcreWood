@@ -500,13 +500,13 @@ function isCorrectAnswer(questionId, userInput) {
     const normalizedInput = normalizeText(userInput);
     const correctAnswers = answers[questionId].map(ans => normalizeText(ans));
 
-    // 正しい答えと完全一致するか確認
-    return correctAnswers.includes(normalizedInput);
+    // ユーザーの発話に正解のフレーズが含まれていればOK
+    return correctAnswers.some(correct => normalizedInput.includes(correct));
 }
 
 function normalizeText(text) {
     let normalized = text.toLowerCase().replace(/\s+/g, '');
-    normalized = normalized.replace(/です$/, '');  // 「です」を削除
+    normalized = normalized.replace(/です$/, '');  // 文末の「です」を削除
     return normalized;
 }
 
