@@ -492,21 +492,19 @@ function showFinalInstructions() {
 
 function isCorrectAnswer(questionId, userInput) {
     const normalizedInput = normalizeText(userInput);
-    const correctEnding = answers[questionId][0];
+    const correctAnswers = answers[questionId].map(ans => normalizeText(ans));
 
-    if (correctEnding === "くない" && normalizedInput.endsWith("くない")) {
-        return true;
-    } else if (correctEnding === "い" && normalizedInput.endsWith("い") && !normalizedInput.endsWith("くない")) {
-        return true;
-    }
-    return false;
+    // 正しい答えと完全一致するか確認
+    return correctAnswers.includes(normalizedInput);
 }
+
 
 function normalizeText(text) {
     let normalized = text.toLowerCase().replace(/\s+/g, '');
-    normalized = normalized.replace(/です$/, '');
+    normalized = normalized.replace(/です$/, '');  // 「です」を削除
     return normalized;
 }
+
 
 function showFeedback(questionId, isCorrect) {
     const correctImage = document.getElementById(`correctImage${questionId}`);
