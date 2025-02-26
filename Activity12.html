@@ -128,15 +128,6 @@ h1 {
     box-sizing: border-box;
 }
 
-/* 最初の説明用ボックスの幅を統一 */
-.instructions:first-of-type {
-    max-width: 800px !important;  /* 幅を他のボックスと統一 */
-    width: 100%;                  /* 画面サイズに応じて可変 */
-    margin: 0 auto;               /* 中央揃え */
-    padding: 20px 40px;           /* `.box` と同じパディングに統一 */
-    box-sizing: border-box;       /* パディングを含めた幅計算 */
-}
-
 /* 最初の説明用ボックス（.instructions）の画像サイズを統一 */
 .instructions:first-of-type img {
     max-width: 50%; /* 画像の幅を調整 */
@@ -164,12 +155,6 @@ h1 {
     margin-bottom: 20px;
 }
     
-/* 説明文の段落（pタグ）のスタイル */
-.instructions p {
-    text-align: left; /* 文頭を揃える */
-    width: 100%; /* 調整可能（説明文の幅を制限して見やすくする） */
-    max-width: 600px; /* 調整可能（最大幅を制限） */
-}
     
 #Q1 {
     margin-top: 20px; /* Q1の上にスペースを追加 */
