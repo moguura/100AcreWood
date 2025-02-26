@@ -118,16 +118,15 @@ h1 {
     box-sizing: border-box;
 }
 
-/* 共通のスタイル */
 .box {
-    max-width: 1400px; /* 幅を統一 */
-    padding: 20px 80px; /* 横のパディングも少し増やす */
-    margin: 20px auto; /* 中央揃え */
-    border-radius: 5px; /* 角丸 */
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* 軽いシャドウ */
-    box-sizing: border-box; /* パディングを含めた幅計算 */
+    max-width: 100%; /* 幅を100%に設定 */
+    padding: 20px 80px;
+    margin: 20px auto;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
 }
-
+    
 /* 説明文固有のスタイル */
 .instructions,
 #finalInstructions {
@@ -140,7 +139,17 @@ h1 {
     align-items: center; /* 説明文全体を中央配置 */
     margin-bottom: 20px;
 }
+    
+.instructions img {
+    width: 100%; /* ボックス幅に合わせる */
+    max-width: 300px; /* 最大幅を300pxに設定 */
+    height: auto; /* 高さを自動調整 */
+    object-fit: cover;
+    display: block;
+    margin: 0 auto 10px;
+}
 
+    
 /* 説明文の段落（pタグ）のスタイル */
 .instructions p {
     text-align: left; /* 文頭を揃える */
