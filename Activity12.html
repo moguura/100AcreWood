@@ -128,7 +128,16 @@ h1 {
     box-sizing: border-box;
 }
 
-/* 最初の説明用ボックスの画像サイズ調整 */
+/* 最初の説明用ボックスの幅を統一 */
+.instructions:first-of-type {
+    max-width: 800px !important;  /* 幅を他のボックスと統一 */
+    width: 100%;                  /* 画面サイズに応じて可変 */
+    margin: 0 auto;               /* 中央揃え */
+    padding: 20px 40px;           /* `.box` と同じパディングに統一 */
+    box-sizing: border-box;       /* パディングを含めた幅計算 */
+}
+
+/* 最初の説明用ボックス（.instructions）の画像サイズを統一 */
 .instructions:first-of-type img {
     max-width: 50%; /* 画像の幅を調整 */
     height: auto;
@@ -144,19 +153,17 @@ h1 {
     max-width: 700px; /* 文章の最大幅を調整 */
 }
 
-/* 説明文全体のスタイル */
+/* 説明文のスタイル統一 */
 .instructions,
 #finalInstructions {
     background-color: #ffffff;
     border: 1px solid #d1d5db;
     text-align: center;
     line-height: 1.6;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    display: block !important; /* `display: flex` を `block` に戻す */
     margin-bottom: 20px;
 }
-
+    
 /* 説明文の段落（pタグ）のスタイル */
 .instructions p {
     text-align: left; /* 文頭を揃える */
@@ -243,9 +250,6 @@ h1 {
         <!-- 初めの説明文 -->
         <div class="instructions box">
             <p> 
-                Welcome back! This is the third time <span class="red-bold">あい</span>ちゃん at <span class="blue-bold">Tohoku University</span> is meeting you, 
-                and it is excited to chat with you in Japanese. <span class="red-bold">あい</span>ちゃん has learned new phrases 
-                and will ask you questions.
                 Welcome back! This is the fourth time <span class="red-bold">あい</span>ちゃん at <span class="blue-bold">Tohoku University</span> is 
                 meeting you. 
                 <span class="red-bold">あい</span>ちゃん is interested in your country.<br> 
