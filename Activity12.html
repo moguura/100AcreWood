@@ -128,6 +128,14 @@ h1 {
     box-sizing: border-box; /* パディングを含めた幅計算 */
 }
 
+/* 最初の説明用ボックス（.instructions）の画像を小さくする */
+.instructions:first-of-type img {
+    max-width: 40%;  /* 最初の説明用ボックスの画像だけ40%にする */
+    height: auto;
+    display: block;
+    margin: 10px auto;
+    object-fit: contain;
+}
 /* 説明文固有のスタイル */
 .instructions,
 #finalInstructions {
@@ -568,28 +576,28 @@ function showFeedback(questionId, isCorrect) {
 function getFeedbackText(questionId) {
     const feedbackMessages = {
         E1: {
-            correct: "Your answer： はい、おいしいです（Yes, it is delicious.）",
-            incorrect: "Your answer： いいえ、おいしくないです。（No, it is not delicious.）"
+            correct: "Your answer： はい、さむいです（Yes, it is cold.）",
+            incorrect: "Your answer： いいえ、さむくないです。（No, it is not cold.）"
         },
         Q1: {
-            correct: "Your answer： はい、おおいです。（Yes, I am taking many classes.）",
-            incorrect: "Your answer： いいえ、おおくないです。（No, I'm not taking many classes.）"
+            correct: "Your answer： はい、あついです。（Yes, it is hot.）",
+            incorrect: "Your answer： いいえ、あつくないです。（No, it is not hot.）"
         },
         Q2: {
-            correct: "Your answer： はい、あたらしいです。（Yes, it is new.）",
-            incorrect: "Your answer： いいえ、あたらしくないです。（No, it is not new.）"
+            correct: "Your answer： はい、すずしいです。（Yes, it is cool.）",
+            incorrect: "Your answer： いいえ、すずしくないです。（No, it is not cool.）"
         },
         Q3: {
-            correct: "Your answer： はい、いいです。（Yes, it is good.）",
-            incorrect: "Your answer： いいえ、よくないです。（No, it is not good.）"
+            correct: "Your answer： はい、おおきかったです。（Yes, it was big.）",
+            incorrect: "Your answer： いいえ、おおきくなかったです。（No, it was not big.）"
         },
         Q4: {
-            correct: "Your answer： はい、たかかったです。（Yes, they were expensive.）",
-            incorrect: "Your answer： いいえ、たかくなかったです。（No, they were not expensive.）"
+            correct: "Your answer： はい、すくなかったです。（Yes, it was little.）",
+            incorrect: "Your answer： いいえ、すくなくなかったです。（No, it was not little.）"
         },
         Q5: {
-            correct: "Your answer： はい、あたたかかったです。（Yes, it was warm.）",
-            incorrect: "Your answer： いいえ、あたたかくなかったです。（No, it was not warm.）"
+            correct: "Your answer： はい、つめたかったです。（Yes, it was cold.）",
+            incorrect: "Your answer： いいえ、つめたくなかったです。（No, it was not cold.）"
         }
     };
     return feedbackMessages[questionId];
