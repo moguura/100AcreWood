@@ -120,30 +120,31 @@ h1 {
 
 /* 共通のスタイル */
 .box {
-    max-width: 1400px; /* 幅を統一 */
-    padding: 20px 80px; /* 横のパディングも少し増やす */
+    max-width: 800px; /* 幅を統一 */
+    padding: 20px 40px; /* 横のパディングを調整 */
     margin: 20px auto; /* 中央揃え */
-    border-radius: 5px; /* 角丸 */
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* 軽いシャドウ */
-    box-sizing: border-box; /* パディングを含めた幅計算 */
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
 }
 
-/* 最初の説明用ボックスの幅を他のボックスと統一 */
-.instructions:first-of-type {
-    max-width: 800px;  /* 他のボックスと同じ最大幅に調整 */
-    width: 100%;       /* 画面サイズに応じて可変 */
-    margin: 0 auto;    /* 中央揃え */
-}
-
-/* 最初の説明用ボックス（.instructions）の画像を小さくする */
+/* 最初の説明用ボックスの画像サイズ調整 */
 .instructions:first-of-type img {
-    max-width: 40%;  /* 最初の説明用ボックスの画像だけ40%にする */
+    max-width: 50%; /* 画像の幅を調整 */
     height: auto;
     display: block;
     margin: 10px auto;
     object-fit: contain;
 }
-/* 説明文固有のスタイル */
+
+/* 説明文のスタイル調整 */
+.instructions p {
+    text-align: left;
+    width: 100%;
+    max-width: 700px; /* 文章の最大幅を調整 */
+}
+
+/* 説明文全体のスタイル */
 .instructions,
 #finalInstructions {
     background-color: #ffffff;
@@ -152,7 +153,7 @@ h1 {
     line-height: 1.6;
     display: flex;
     flex-direction: column;
-    align-items: center; /* 説明文全体を中央配置 */
+    align-items: center;
     margin-bottom: 20px;
 }
 
@@ -287,8 +288,8 @@ h1 {
                 <span class="blue-bold">In Example</span>, <span class="red-bold">あい</span>ちゃん asked you,<br>
                 <strong>１がつは さむいですか</strong> 。<br>
                 (Is it cold in January in your country?）<br><br>  
-                If it's cold, answer <strong>はい、さむいです</strong>。(Yes, it is delicious).<br> 
-                If it's not cold, answer <strong>いいえ、さむくないです</strong>。(No, it is not delicious)<br><br>
+                If it's cold, answer <strong>はい、さむいです</strong>。<br> 
+                If it's not cold, answer <strong>いいえ、さむくないです</strong>。<br><br>
                 There is no correct answer to this question. Please share your life in <u><strong>your country</strong></u> with 
                 <span class="red-bold">あい</span>ちゃん.  
             </p>
