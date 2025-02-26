@@ -390,7 +390,7 @@ h1 {
         　<audio id="audio-Q6" src="https://raw.githubusercontent.com/moguura/my-images/main/12-last.wav"></audio>
 　　　　　</div>
             <p>
-                Let's keep talking a lot in Japanese from now on. I'll do my best too. From <span class="red-bold">Ai</span>🤖🩷
+                Let's keep talking a lot in Japanese from now on. I'll do my best too. From <span class="red-bold">Ai</span> 🤖🩷
             </p>
             
         </div>
@@ -398,7 +398,7 @@ h1 {
         <!-- Notice Board -->
         <div class="notice-board box" style="display: none;">
             <p> <strong>Click the 'X' to close this tab.</strong><br>
-                </strong>Return to the original page and watch the 1-minute video.</strong>
+                </strong>Return to the original page and watch the 5-minute video.</strong>
             </p>
         </div>
     </div>
@@ -511,19 +511,17 @@ function showFinalInstructions() {
 
 function isCorrectAnswer(questionId, userInput) {
     const normalizedInput = normalizeText(userInput);
-    const correctEnding = answers[questionId][0];
+    const correctAnswers = answers[questionId];
 
-    if (correctEnding === "くない" && normalizedInput.endsWith("くない")) {
-        return true;
-    } else if (correctEnding === "い" && normalizedInput.endsWith("い") && !normalizedInput.endsWith("くない")) {
-        return true;
-    }
-    return false;
+    // ユーザーの入力が正しいかどうかを判定
+    const isCorrect = correctAnswers.some(answer => normalizedInput.includes(normalizeText(answer)));
+
+    return isCorrect;
 }
 
 function normalizeText(text) {
     let normalized = text.toLowerCase().replace(/\s+/g, '');
-    normalized = normalized.replace(/です$/, '');
+    normalized = normalized.replace(/です$/, ''); // "です"を取り除いて一致しやすくする
     return normalized;
 }
 
