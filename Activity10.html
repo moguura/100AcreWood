@@ -69,7 +69,7 @@ h1 {
 /* 画像サイズを統一 */
 img.illustration {
     width: 100%;
-    max-width: 200px; /* 少し小さくして統一感を出す */
+    max-width: 300px; /* 少し小さくして統一感を出す */
     height: auto;
     object-fit: contain;
     display: block;
@@ -545,18 +545,18 @@ a:hover {
 </html>
 <script>
 const answers = {
-    E1: ["よかった"],
-    E2: ["よかった"],
-    Q1: ["重かった","おもかった"],
-    Q2: ["よかった"],
-    Q3: ["大きかった","おおきかった"],
-    Q4: ["温かくなかった","あたたかくなかった"],
-    Q5: ["多かった","おおかった"],
-    Q6: ["楽しくなかった","たのしくなかった"],
-    Q7: ["涼しくなかった","すずしくなかった"],
-    Q8: ["近くなかった","ちかくなかった"],
-    Q9: ["高くなかった","たかくなかった"],
-    Q10: ["おいしかった"]
+    E1: ["難しい"],
+    E2: ["難しくなかった"],
+    Q1: ["近い"],
+    Q2: ["安かった"],
+    Q3: ["重い"],
+    Q4: ["冷たくない"],
+    Q5: ["多い"],
+    Q6: ["いい"],
+    Q7: ["新しかった"],
+    Q8: ["少なくなかった"],
+    Q9: ["熱くなかった"],
+    Q10: ["からい"]
 };
 
 const buttonsPressed = {
@@ -637,27 +637,22 @@ function startRecognition(questionId) {
     recognition.start();
 }
 
-// 正誤判定関数
 function isCorrectAnswer(questionId, userInput) {
     const normalizedInput = normalizeText(userInput);
-    const correctEnding = answers[questionId][0];
+    const correctAnswers = answers[questionId];
 
-    // 「くない」を優先して判定し、それ以外の場合に「い」を判定
-    if (correctEnding === "くない" && normalizedInput.endsWith("くない")) {
-        return true;
-    } else if (correctEnding === "い" && normalizedInput.endsWith("い") && !normalizedInput.endsWith("くない")) {
-        return true;
-    }
-    return false;
+    // ユーザーの入力が正しいかどうかを判定
+    const isCorrect = correctAnswers.some(answer => normalizedInput.includes(normalizeText(answer)));
+
+    return isCorrect;
 }
 
-// テキストを正規化する関数
 function normalizeText(text) {
     let normalized = text.toLowerCase().replace(/\s+/g, '');
-    normalized = normalized.replace(/です$/, ''); // 「です」を削除
+    normalized = normalized.replace(/です$/, ''); // "です"を取り除いて一致しやすくする
     return normalized;
 }
-
+    
 // フィードバック表示関数
 function showFeedback(questionId, isCorrect, transcript) {
     const correctImage = document.getElementById(`correctImage${questionId}`);
@@ -692,18 +687,18 @@ function showFeedback(questionId, isCorrect, transcript) {
 // 各問題のフィードバックメッセージを返す関数
 function getFeedbackText(questionId) {
     const feedbackMessages = {
-        E1: "てんきは よかったです。（The weather was good.）",
-        E2: "てんきは よかったです。（The weather was good.）",
-        Q1: "スーツケース（すーつけーす）は おもかったです。",
-        Q2: "ホテル（ほてる）は よかったです。",
-        Q3: "ベッド（べっど）は おおきかったです。",
-        Q4: "おんせんは あたたかくなかったです。",
-        Q5: "ひとは おおかったです。",
-        Q6: "やまは たのしくなかったです。",
-        Q7: "とざんは すずしくなかったです。",
-        Q8: "レストラン（れすとらん）は ちかくなかったです。",
-        Q9: "さかなは たかくなかったです。",
-        Q10: "さかなは おいしかったです。",
+        E1: "はい、むずかしいです。 (Yes, it's difficult.)",
+        E2: "いいえ、むずかしくなかったです。 (No, it wasn't difficult.)",
+        Q1: "はい、ちかいです。 (Yes, it's nearby.)",
+        Q2: "はい、やすかったです。 (Yes, it was cheap.)",
+        Q3: "はい、おもいです。 (Yes, it's heavy.)",
+        Q4: "いいえ、つめたくないです。 (No, it's not cold.)",
+        Q5: "はい、おおいです。 (Yes, there's a lot.)",
+        Q6: "はい、いいです。 (Yes, it's good.)",
+        Q7: "はい、あたらしかったです。 (Yes, it was new.)",
+        Q8: "いいえ、すくなくなかったです。 (No, there wasn't little.)",
+        Q9: "いいえ、あつくなかったです。 (No, it wasn't hot.)",
+        Q10: "はい、からいです。 (Yes, it's spicy.)",
     };
     return feedbackMessages[questionId] || "フィードバックが設定されていません";
 }
