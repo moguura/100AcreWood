@@ -56,14 +56,13 @@ h1 {
     font-size: 28px;
     color: #007bff;
 }
-    
 
-/* 画像とボタンを縦に中央揃え */
 .media-container {
-    display: flex;
-    flex-direction: column; /* 縦に並べる */
-    align-items: center;    /* 中央寄せ */
-    margin-bottom: 20px;
+    display: flex;               /* 横並び配置 */
+    justify-content: space-between; /* 要素の間隔を均等に */
+    align-items: center;          /* 垂直中央配置 */
+    gap: 20px;                    /* 要素間の隙間 */
+    margin-bottom: 20px;          /* 下の余白 */
 }
 
 /* 画像サイズを統一 */
@@ -78,7 +77,8 @@ img.illustration {
 
 /* プレイボタンを中央に配置 */
 .audio-section {
-  text-align: center; /* 中央寄せ */
+　display: flex;
+  align-items: center;
   margin-top: 20px;  /* 画像との間隔調整 */
 }
 
@@ -101,14 +101,15 @@ img.illustration {
 }
 
 /* 英文 & 日本語テキスト */
-.english-text, 
-.japanese-text {
+.english-text, {
     margin-bottom: 5px;
 }
 
 .japanese-text {
     margin-top: 25px;
     margin-bottom: 10px;
+    text-align: center;           /* テキスト中央配置 */
+    font-weight: bold;    
 }
 
 /* 強調テキスト */
@@ -254,9 +255,9 @@ a:hover {
     <p class="question-number">e.g.1</p>
     <div class="media-container">
        <img src="https://raw.githubusercontent.com/moguura/my-images/main/10-1e.g.1.png" alt="説明用のイラスト" class="illustration">
-      <div class="audio-section">
-       <button class="play-audio" id="play-audio-E1">▶ Play</button>
-       <audio id="audio-E1" src="https://raw.githubusercontent.com/moguura/my-images/main/10-e.g.1.wav"></audio>
+       <div class="audio-section">
+        <button class="play-audio" id="play-audio-E1">▶ Play</button>
+        <audio id="audio-E1" src="https://raw.githubusercontent.com/moguura/my-images/main/10-e.g.1.wav"></audio>
       </div>
     </div>
     <p class="english-text">Is the test difficult?</p>    
