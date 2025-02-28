@@ -561,7 +561,7 @@ function startRecognition(questionId) {
     recognition.lang = 'ja-JP';
 
     // 対象のマイクボタンを取得
-    const micButton = document.getElementById(startButton${questionId});
+    const micButton = document.getElementById(`startButton${questionId}`);
 
     // 録音開始時に recording クラスを追加
     micButton.classList.add('recording');
@@ -621,7 +621,7 @@ function showFeedback(questionId, isCorrect, transcript) {
     const feedback = document.getElementById(feedback${questionId});
     const correctAudio = document.getElementById(correctAudio${questionId});
     const wrongAudio = document.getElementById(wrongAudio${questionId});
-    const feedbackText = document.getElementById(feedbackText${questionId});
+    const feedbackText = document.getElementById(`feedbackText${questionId}`);
 
     // フィードバックメッセージを取得
     const feedbackMessage = getFeedbackText(questionId);
