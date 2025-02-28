@@ -616,12 +616,13 @@ function normalizeText(text) {
 }
     
 function showFeedback(questionId, isCorrect, transcript) {
-    const correctImage = document.getElementById(correctImage${questionId});
-    const wrongImage = document.getElementById(wrongImage${questionId});
-    const feedback = document.getElementById(feedback${questionId});
-    const correctAudio = document.getElementById(correctAudio${questionId});
-    const wrongAudio = document.getElementById(wrongAudio${questionId});
+    const correctImage = document.getElementById(`correctImage${questionId}`);
+    const wrongImage = document.getElementById(`wrongImage${questionId}`);
+    const feedback = document.getElementById(`feedback${questionId}`);
+    const correctAudio = document.getElementById(`correctAudio${questionId}`);
+    const wrongAudio = document.getElementById(`wrongAudio${questionId}`);
     const feedbackText = document.getElementById(`feedbackText${questionId}`);
+
 
     // フィードバックメッセージを取得
     const feedbackMessage = getFeedbackText(questionId);
@@ -666,7 +667,7 @@ function getFeedbackText(questionId) {
 
 function displayFeedback(questionId) {
     const feedback = getFeedbackText(questionId);
-    const feedbackElement = document.getElementById(feedbackText${questionId});
+    const feedbackElement = document.getElementById(`feedbackText${questionId}`);
     if (feedbackElement) {
         feedbackElement.innerHTML = feedback.replace(/\n/g, "<br>");
     }
