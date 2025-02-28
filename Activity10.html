@@ -48,7 +48,7 @@ h1 {
     flex-direction: column;
     align-items: center;
     gap: 5px;
-    margin-bottom: 20px; /* 下部に20pxのマージンを設定 */
+    margin-bottom: 30px; /* 下部に20pxのマージンを設定 */
 }
 
 .question-number {
@@ -615,7 +615,6 @@ function normalizeText(text) {
     return normalized;
 }
     
-// フィードバック表示関数
 function showFeedback(questionId, isCorrect, transcript) {
     const correctImage = document.getElementById(`correctImage${questionId}`);
     const wrongImage = document.getElementById(`wrongImage${questionId}`);
@@ -639,7 +638,7 @@ function showFeedback(questionId, isCorrect, transcript) {
 
     // フィードバックメッセージを表示
     if (feedbackText) {
-        feedbackText.textContent = feedbackMessage;
+        feedbackText.innerHTML = feedbackMessage.replace(/\n/g, "<br>"); // ← <br> に変換
     }
 
     if (feedback) feedback.style.display = 'block';
