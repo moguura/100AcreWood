@@ -414,7 +414,7 @@ const buttonsPressed = {
 
 function startRecognition(questionId) {
     if (!('webkitSpeechRecognition' in window)) {
-        alert("このブラウザでは音声認識が利用できません。Google Chromeを使用してください。");
+        alert("Speech recognition is not available in this browser. Please use Google Chrome.");
         return;
     }
 
