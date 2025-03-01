@@ -97,15 +97,25 @@ h1 {
 }
 
 
-.instructions {
-    background-color: #ffffff; 
-    border-radius: 5px; 
-    padding: 15px; 
-    margin-bottom: 20px; 
-    font-size: 24px; 
-    line-height: 1.6; 
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); 
-    max-width: 900px; 
+.instructions,
+#finalInstructions {
+    background-color: #ffffff;
+    border: 1px solid #d1d5db;
+    text-align: center;
+    line-height: 1.6;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px auto;
+    padding: 20px;
+    width: 80%;
+    max-width: 800px;
+}
+
+.instructions p {
+    text-align: left;
+    width: 100%;
+    max-width: 700px;
 }
 
 a {
