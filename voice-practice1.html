@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>voice-practice1</title>
+<style>
+/* 全体のスタイル */
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+    color: #333;
+    font-size: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+h1 {
+    text-align: center;
+    margin: 40px 0 60px; /* 上下の余白を設定 */
+    font-size: 40px; /* 見出しを大きくする */
+}
+
+.question {
+    margin-bottom: 80px !important; /* 元が 60px なら 80px などに増やす */
+    text-align: center;
+    font-size: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* gapは要素間の共通余白になるので、用途に応じて調整してください */
+    gap: 5px; 
+}
+
+/* 質問番号（Q1, Q2, ...） */
+.question-number {
+    margin: 0 0 5px 0 !important; /* 下だけ少し余白を取る */
+}
+    
+/* 質問番号（Q1, Q2, ...）の間隔を詰める */
+.question p:first-child {
+    font-weight: bold;
+    font-size: 28px;
+    color: #007bff;
+    margin-bottom: 5px !important;
+}
+
+.question img {
+    width: 300px;
+    height: auto;
+    object-fit: cover;
+    display: block;
+    margin: 0 auto 10px;
+    max-width: 100%;
+}
+    
+/* 英文(How was ~ ?) */
+.english-text {
+    margin: 0 0 5px 0 !important; /* 下だけ少し余白 */
+}
+
+/* 日本語（いそがしい→ 〇〇）の上に適度な間隔を確保 */
+.japanese-text {
+    margin-top: 25px !important; /* 英文との間を広げる */
+    margin-bottom: 10px !important; /* マイクボタンとの間はお好みで */
+}
+
+
+/* 各質問（Q1, Q2, ...）の間隔をしっかり開ける */
+.question:last-of-type {
+    margin-bottom: 80px; /* Q1とQ2の間隔を広げる */
+}
+
+/* キューのスタイル（緑色と太字） */
+.highlight {
+    color: green;
+    font-weight: bold;
+}
+
+/* マイクボタンのスタイル */
+.mic-button {
+    background-image: url("https://raw.githubusercontent.com/moguura/my-images/main/%E3%83%9E%E3%82%A4%E3%82%AF%E3%81%AE%E3%83%95%E3%83%AA%E3%83%BC%E3%82%A2%E3%82%A4%E3%82%B3%E3%83%B3%E3%81%9D%E3%81%AE21.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    border: none;
+    width: 70px; 
+    height: 70px; 
+    border-radius: 50%;
+    cursor: pointer; 
+    margin: 10px auto;
+    margin-top: 15px;
+    transition: box-shadow 0.3s ease-in-out; /* 光るエフェクトのアニメーション */
+}
+
+/* 押している間に光る */
+.mic-button:active {
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.8); /* 赤く光る */
+}
+
+/* 録音中に光る */
+.mic-button.recording {
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.8); /* 赤く光る */
+}
+
+#content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    box-sizing: border-box;
+}
+
+/* 共通のスタイル */
+.box {
+    max-width: 1400px; /* 幅を統一 */
+    padding: 20px 80px; /* 横のパディングも少し増やす */
+    margin: 20px auto; /* 中央揃え */
+    border-radius: 5px; /* 角丸 */
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* 軽いシャドウ */
+    box-sizing: border-box; /* パディングを含めた幅計算 */
+}
+
+/* 説明文固有のスタイル */
+.instructions,
+#finalInstructions {
+    background-color: #ffffff;
+    border: 1px solid #d1d5db;
+    text-align: center;
+    line-height: 1.6;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* 説明文全体を中央配置 */
+    margin-bottom: 20px;
+}
+
+/* 説明文の段落（pタグ）のスタイル */
+.instructions p {
+    text-align: left; /* 文頭を揃える */
+    width: 100%; /* 調整可能（説明文の幅を制限して見やすくする） */
+    max-width: 600px; /* 調整可能（最大幅を制限） */
+}
+    
+#Q1 {
+    margin-top: 20px; /* Q1の上にスペースを追加 */
+}
+    
+/* Playボタンの下の間隔を統一 */
+.audio-section {
+    margin-bottom: 5px;
+}
+
+/* Playボタンの間隔を減らす */
+.play-audio {
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+    display: block;
+    margin: 3px auto;
+    margin-bottom: -5px; /* 強制的に下の余白を詰める */
+}
+    
+.play-audio:hover {
+    background-color: #0056b3;
+}
+    
+/* Playボタン周りの余白 */
+.audio-section {
+    margin: 0 0 5px 0 !important; /* 下だけ少し余白 */
+}
+
+/* 通知ボード固有のスタイル */
+.notice-board {
+    background-color: #ffeeba;
+    border: 1px solid #d1d5db;
+    text-align: center;
+}
+.instructions:last-of-type {
+    display: none;
+}
+
+/* フィードバックのスタイル */
+.feedback {
+    display: none;
+}
+
+.feedback img {
+    width: 600px;
+    height: auto;
+    margin: 30px auto;
+    display: block;
+}
+.feedback-text {
+    font-size: 24px;
+    color: #333;
+    text-align: center;
+    font-weight: normal;
+    margin-top: 10px;
+    display: none;
+}
+
+.red-bold {
+    color: red;
+    font-weight: bold;
+}
+.blue-bold {
+    color: #007bff;
+    font-weight: bold;
+}
+</style>
+</head>
+<body>
+    <h1>Voice Practice 1</h1>
+    <div id="content">
+        <!-- 初めの説明文 -->
+        <div class="instructions box">
+            <p> 
+                Now, we will practice pronouncing the present and future tense forms of i-adjectives in both affirmative and negative forms.
+            </p>
+            <img src="https://raw.githubusercontent.com/moguura/my-images/main/1.JPG" alt="E1 Image">
+        </div>
+        <div class="instructions box">
+            <p> 
+                First, press the play button and listen to the audio. Then, press the microphone button and repeat what you heard. 
+                If your pronunciation is correct,<br> 
+                you'll see a <span class="red-bold">〇</span>;<br> 
+                if it's not correct, you'll see an <span class="blue-bold">✖</span>.<br> 
+             　 This is not a test, so please relax and speak naturally. Let's begin.😆
+            </p>
+        </div>
+        
+　　　　<!-- E1の例題 -->
+　　<div class="question" id="E1">
+    <p class="question-number">Practice 1</p>
+    <div class="audio-section">
+        <button class="play-audio" id="play-audio-E1">▶ Play</button>
+        <audio id="audio-E1" src="https://raw.githubusercontent.com/moguura/my-images/main/voice1.wav"></audio>
+    </div>  
+    <button id="startButtonE1" class="mic-button" aria-label="音声認識を開始"></button>
+    <div class="feedback" id="feedbackE1">
+        <p id="feedbackTextE1" class="feedback-text"></p>
+        <img id="correctImageE1" src="https://raw.githubusercontent.com/moguura/my-images/main/9-e.g.fbyes.png" alt="正しい答え">
+        <img id="wrongImageE1" src="https://raw.githubusercontent.com/moguura/my-images/main/9-e.g.fbno.png" alt="間違った答え">
+    </div>
+    <audio id="correctAudioE1" src="https://raw.githubusercontent.com/moguura/my-images/main/9-e.g.yes.wav"></audio>
+    <audio id="wrongAudioE1" src="https://raw.githubusercontent.com/moguura/my-images/main/9-e.g.no.wav"></audio>
+</div>
+
+　　　<!-- E2の例題 -->
+　　<div class="question" id="E2">
+    <p class="question-number">Practice 2</p>
+    <div class="audio-section">
+        <button class="play-audio" id="play-audio-E2">▶ Play</button>
+        <audio id="audio-E2" src="https://raw.githubusercontent.com/moguura/my-images/main/voice2.wav"></audio>
+    </div>  
+    <button id="startButtonE2" class="mic-button" aria-label="音声認識を開始"></button>
+    <div class="feedback" id="feedbackE2">
+        <p id="feedbackTextE2" class="feedback-text"></p>
+        <img id="correctImageE2" src="https://raw.githubusercontent.com/moguura/my-images/main/9-e.g.fbyes.png" alt="正しい答え">
+        <img id="wrongImageE2" src="https://raw.githubusercontent.com/moguura/my-images/main/9-e.g.fbno.png" alt="間違った答え">
+    </div>
+    <audio id="correctAudioE2" src="https://raw.githubusercontent.com/moguura/my-images/main/9-e.g.yes.wav"></audio>
+    <audio id="wrongAudioE2" src="https://raw.githubusercontent.com/moguura/my-images/main/9-e.g.no.wav"></audio>
+</div>
+
+      　　<!-- E3の例題 -->
+　　<div class="question" id="E3">
+    <p class="question-number">Practice 3</p>
+    <div class="audio-section">
+        <button class="play-audio" id="play-audio-E3">▶ Play</button>
+        <audio id="audio-E3" src="https://raw.githubusercontent.com/moguura/my-images/main/voice3.wav"></audio>
+    </div>  
+    <button id="startButtonE3" class="mic-button" aria-label="音声認識を開始"></button>
+    <div class="feedback" id="feedbackE3">
+        <p id="feedbackTextE3" class="feedback-text"></p>
+        <img id="correctImageE3" src="https://raw.githubusercontent.com/moguura/my-images/main/9-e.g.fbyes.png" alt="正しい答え">
+        <img id="wrongImageE3" src="https://raw.githubusercontent.com/moguura/my-images/main/9-e.g.fbno.png" alt="間違った答え">
+    </div>
+    <audio id="correctAudioE3" src="https://raw.githubusercontent.com/moguura/my-images/main/9-e.g.yes.wav"></audio>
+    <audio id="wrongAudioE3" src="https://raw.githubusercontent.com/moguura/my-images/main/9-e.g.no.wav"></audio>
+</div>
+
+   　　<!-- E4の例題 -->
+　　<div class="question" id="E4">
+    <p class="question-number">Practice 4</p>
+    <div class="audio-section">
+        <button class="play-audio" id="play-audio-E4">▶ Play</button>
+        <audio id="audio-E4" src="https://raw.githubusercontent.com/moguura/my-images/main/voice4.wav"></audio>
+    </div>  
+    <button id="startButtonE4" class="mic-button" aria-label="音声認識を開始"></button>
+    <div class="feedback" id="feedbackE4">
+        <p id="feedbackTextE4" class="feedback-text"></p>
+        <img id="correctImageE4" src="https://raw.githubusercontent.com/moguura/my-images/main/9-e.g.fbyes.png" alt="正しい答え">
+        <img id="wrongImageE4" src="https://raw.githubusercontent.com/moguura/my-images/main/9-e.g.fbno.png" alt="間違った答え">
+    </div>
+    <audio id="correctAudioE4" src="https://raw.githubusercontent.com/moguura/my-images/main/9-e.g.yes.wav"></audio>
+    <audio id="wrongAudioE4" src="https://raw.githubusercontent.com/moguura/my-images/main/9-e.g.no.wav"></audio>
+</div>
+        
+    　  
+        <!-- 最後の説明文 -->
+        <div id="finalInstructions" class="instructions box" style="display: none;">
+            <p>
+                You did a great job speaking!👍✨<br>
+                Now, click the link below to move on to the next page and start <span class="red-bold">Activity 1</span>.
+            </p>
+        </div>
+      　 <!-- リンク -->
+        <a href="./index.html" id="nextLink" style="display: none;">Go to Activity1</a>
+    </div>
+<!-- 音楽再生用 -->
+    <audio id="finalMusic" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%83%AC%E3%83%99%E3%83%AB%E3%82%A2%E3%83%83%E3%83%97.mp3"></audio>
+
+<script>
+const answers = {
+    E1: ["あついです"],
+    E2: ["あつくないです"],
+    E3: ["いいです"],
+    E4: ["よくないです"],
+};
+
+const buttonsPressed = {
+    E1: false, E2: false, E3: false, E4: false
+};
+
+document.addEventListener('DOMContentLoaded', () => {
+    const finalInstructions = document.getElementById('finalInstructions');
+    const noticeBoard = document.querySelector('.notice-board');
+
+    finalInstructions.style.display = 'none';
+    noticeBoard.style.display = 'none';
+
+    document.getElementById('startButtonE1').addEventListener('click', () => startRecognition('E1'));
+    document.getElementById('startButtonE2').addEventListener('click', () => startRecognition('E2'));
+    document.getElementById('startButtonE3').addEventListener('click', () => startRecognition('E3'));
+    document.getElementById('startButtonE4').addEventListener('click', () => startRecognition('E4'));
+
+    // 音声再生処理の追加
+    const questions = ["E1", "E2", "E3", "E4"];
+    
+    questions.forEach(id => {
+        const playButton = document.getElementById(`play-audio-${id}`);
+        const audio = document.getElementById(`audio-${id}`);
+
+        if (playButton && audio) {
+            playButton.addEventListener("click", function () {
+                audio.play();
+            });
+        }
+    });
+});
+
+function startRecognition(questionId) {
+    if (!('webkitSpeechRecognition' in window)) {
+        alert("Speech recognition is not available in this browser. Please use Google Chrome.");
+        return;
+    }
+
+    const recognition = new webkitSpeechRecognition();
+    recognition.lang = 'ja-JP';
+
+    const micButton = document.getElementById(`startButton${questionId}`);
+    micButton.classList.add("recording");
+
+    recognition.onresult = function(event) {
+        const transcript = event.results[0][0].transcript.trim();
+        console.log(`認識結果 (${questionId}):`, transcript);
+        
+        const isCorrect = isCorrectAnswer(questionId, transcript);
+        showFeedback(questionId, isCorrect);
+
+        // ボタンが押されたことを記録
+        buttonsPressed[questionId] = true;
+
+        // 全てのボタンが押されたかチェック
+        checkAllButtonsPressed();
+    };
+
+    recognition.onerror = function(event) {
+        alert("Speech recognition failed. Please try again.");
+        console.error("Speech Recognition Error:", event.error);
+    };
+
+    recognition.onend = function() {
+        micButton.classList.remove("recording");
+    };
+
+    recognition.start();
+}
+
+function checkAllButtonsPressed() {
+    if (Object.values(buttonsPressed).every(value => value)) {
+        showFinalInstructions();
+    }
+}
+
+function showFinalInstructions() {
+    const finalInstructions = document.getElementById('finalInstructions');
+    const noticeBoard = document.querySelector('.notice-board');
+    const finalMusic = document.getElementById('finalMusic');
+
+    finalInstructions.style.display = 'block';
+    noticeBoard.style.display = 'block';
+
+    setTimeout(() => {
+        if (finalMusic) {
+            finalMusic.play().catch((error) => {
+                console.error('音楽の再生に失敗しました:', error);
+            });
+        }
+    }, 1500);
+}
+
+function isCorrectAnswer(questionId, userInput) {
+    const normalizedInput = normalizeText(userInput);
+    const correctAnswers = answers[questionId].map(ans => normalizeText(ans));
+
+    // ユーザーの発話に正解のフレーズが含まれていればOK
+    return correctAnswers.some(correct => normalizedInput.includes(correct));
+}
+
+function normalizeText(text) {
+    let normalized = text.toLowerCase().replace(/\s+/g, '');
+    normalized = normalized.replace(/です$/, '');  // 「です」を削除
+    return normalized;
+}
+
+
+function showFeedback(questionId, isCorrect) {
+    const correctImage = document.getElementById(`correctImage${questionId}`);
+    const wrongImage = document.getElementById(`wrongImage${questionId}`);
+    const feedback = document.getElementById(`feedback${questionId}`);
+    const feedbackText = document.getElementById(`feedbackText${questionId}`);
+
+    const correctAudio = document.getElementById(`correctAudio${questionId}`);
+    const wrongAudio = document.getElementById(`wrongAudio${questionId}`);
+
+    // **フィードバックメッセージを設定**
+    const feedbackMessages = getFeedbackText(questionId);
+    if (feedbackText) {
+        feedbackText.textContent = isCorrect ? feedbackMessages.correct : feedbackMessages.incorrect;
+        feedbackText.style.display = 'block';
+    }
+
+    // **画像を表示**
+    if (correctImage && wrongImage) {
+        correctImage.style.display = isCorrect ? 'block' : 'none';
+        wrongImage.style.display = isCorrect ? 'none' : 'block';
+    }
+
+    // **フィードバック全体を表示**
+    if (feedback) {
+        feedback.style.display = 'block';
+    }
+
+    // **音を鳴らす（`null` チェック付き）**
+    if (isCorrect) {
+        if (correctAudio) {
+            correctAudio.play().catch(e => console.error("正解音の再生エラー:", e));
+        } else {
+            console.warn(`正解音が見つかりません: correctAudio${questionId}`);
+        }
+    } else {
+        if (wrongAudio) {
+            wrongAudio.play().catch(e => console.error("不正解音の再生エラー:", e));
+        } else {
+            console.warn(`不正解音が見つかりません: wrongAudio${questionId}`);
+        }
+    }
+}
+
+
+function getFeedbackText(questionId) {
+    const feedbackMessages = {
+        E1: {
+            correct: "あついです。 (It's hot.)Your answer",
+            incorrect: "Oops! Please try speaking again."
+        },
+        E2: {
+            correct: "あつくないです。（It's not hot.）",
+            incorrect: "Oops! Please try speaking again."
+        },
+        E3: {
+            correct: "いいです。（It's good.）",
+            incorrect: "Oops! Please try speaking again."
+        },
+        E4: {
+            correct: "よくないです。（It's not good.）",
+            incorrect: "Oops! Please try speaking again."
+        },
+    };
+    return feedbackMessages[questionId];
+}
+    </script>
+</body>
+</html>
