@@ -388,10 +388,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
         recognition.onerror = function (event) {
             console.error("Speech Recognition Error:", event.error);
-            let errorMessage = "音声認識に失敗しました。もう一度試してください。";
+            let errorMessage = "Speech recognition failed. Please try again.";
 
             if (event.error === "no-speech") {
-                errorMessage = "音声が認識されませんでした。もう一度はっきり話してください。";
+                errorMessage = "Your voice wasn't recognized. Please speak clearly again.";
             } else if (event.error === "network") {
                 errorMessage = "ネットワークエラーが発生しました。接続を確認してください。";
             }
