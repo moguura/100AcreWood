@@ -400,9 +400,10 @@ document.addEventListener("DOMContentLoaded", function () {
             console.log(`認識結果 (${questionId}):`, transcript);
 
             const isCorrect = transcript.includes(answers[questionId]);
-            showFeedback(questionId, isCorrect);
-            completedQuestions.add(questionId);
-            checkCompletion();
+            showFeedback(questionId, isCorrect, () => {
+                completedQuestions.add(questionId);
+                checkCompletion();
+            });
         };
 
         recognition.onerror = function (event) {
@@ -427,18 +428,16 @@ document.addEventListener("DOMContentLoaded", function () {
         recognition.start();
     }
 
-    function showFeedback(questionId, isCorrect) {
+    function showFeedback(questionId, isCorrect, callback) {
         const correctImage = document.getElementById(`correctImage${questionId}`);
         const wrongImage = document.getElementById(`wrongImage${questionId}`);
-        const feedback = document.getElementById(`feedback${questionId}`);
         const feedbackText = document.getElementById(`feedbackText${questionId}`);
 
         const correctAudio = document.getElementById(`correctAudio${questionId}`);
         const wrongAudio = document.getElementById(`wrongAudio${questionId}`);
 
-        const feedbackMessages = getFeedbackText(questionId);
         if (feedbackText) {
-            feedbackText.textContent = isCorrect ? feedbackMessages.correct : feedbackMessages.incorrect;
+            feedbackText.textContent = isCorrect ? getFeedbackText(questionId).correct : getFeedbackText(questionId).incorrect;
             feedbackText.style.display = 'block';
         }
 
@@ -447,36 +446,34 @@ document.addEventListener("DOMContentLoaded", function () {
             wrongImage.style.display = isCorrect ? 'none' : 'block';
         }
 
-        if (feedback) {
-            feedback.style.display = 'block';
-        }
-
-        if (isCorrect) {
-            if (correctAudio) {
-                correctAudio.play().catch(e => console.error("正解音の再生エラー:", e));
-            }
+        let feedbackAudio = isCorrect ? correctAudio : wrongAudio;
+        if (feedbackAudio) {
+            feedbackAudio.play().catch(e => console.error("フィードバック音の再生エラー:", e));
+            feedbackAudio.onended = () => {
+                if (callback) callback();
+            };
         } else {
-            if (wrongAudio) {
-                wrongAudio.play().catch(e => console.error("不正解音の再生エラー:", e));
-            }
+            if (callback) callback();
         }
     }
 
     function checkCompletion() {
         if (completedQuestions.size === Object.keys(answers).length) {
-            const finalInstructions = document.getElementById("finalInstructions");
-            const nextLink = document.getElementById("nextLink");
-            const finalMusic = document.getElementById("finalMusic");
-            
-            if (finalInstructions) {
-                finalInstructions.style.display = "block";
-            }
-            if (nextLink) {
-                nextLink.style.display = "block";
-            }
-            if (finalMusic) {
-                finalMusic.play().catch(e => console.error("Final music playback error:", e));
-            }
+            setTimeout(() => {
+                const finalInstructions = document.getElementById("finalInstructions");
+                const nextLink = document.getElementById("nextLink");
+                const finalMusic = document.getElementById("finalMusic");
+                
+                if (finalInstructions) {
+                    finalInstructions.style.display = "block";
+                }
+                if (nextLink) {
+                    nextLink.style.display = "block";
+                }
+                if (finalMusic) {
+                    finalMusic.play().catch(e => console.error("Final music playback error:", e));
+                }
+            }, 3000);
         }
     }
 
