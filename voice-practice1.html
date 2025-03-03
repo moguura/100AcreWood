@@ -343,93 +343,80 @@ const buttonsPressed = {
     E1: false, E2: false, E3: false, E4: false
 };
 
-document.addEventListener('DOMContentLoaded', () => {
-    const finalInstructions = document.getElementById('finalInstructions');
-    const noticeBoard = document.querySelector('.notice-board');
-
-    finalInstructions.style.display = 'none';
-    noticeBoard.style.display = 'none';
-
-    document.getElementById('startButtonE1').addEventListener('click', () => startRecognition('E1'));
-    document.getElementById('startButtonE2').addEventListener('click', () => startRecognition('E2'));
-    document.getElementById('startButtonE3').addEventListener('click', () => startRecognition('E3'));
-    document.getElementById('startButtonE4').addEventListener('click', () => startRecognition('E4'));
-
-    // 音声再生処理の追加
-    const questions = ["E1", "E2", "E3", "E4"];
+document.addEventListener("DOMContentLoaded", function () {
+    const audio = document.getElementById("audio");
+    const playButton = document.getElementById("playButton");
+    const finalMusic = document.getElementById("finalMusic");
+    const finalInstructions = document.getElementById("finalInstructions");
+    const noticeBoard = document.querySelector(".notice-board");
+    let buttonsPressed = {};
     
-    questions.forEach(id => {
-        const playButton = document.getElementById(`play-audio-${id}`);
-        const audio = document.getElementById(`audio-${id}`);
-
-        if (playButton && audio) {
-            playButton.addEventListener("click", function () {
-                audio.play();
-            });
-        }
+    // 再生ボタンのイベントリスナー
+    playButton.addEventListener("click", function () {
+        audio.play().catch(error => {
+            console.error("Audio playback failed:", error);
+        });
     });
-});
-
-function startRecognition(questionId) {
-    if (!('webkitSpeechRecognition' in window)) {
-        alert("Speech recognition is not available in this browser. Please use Google Chrome.");
-        return;
-    }
-
-    const recognition = new webkitSpeechRecognition();
-    recognition.lang = 'ja-JP';
-
-    const micButton = document.getElementById(`startButton${questionId}`);
-    micButton.classList.add("recording");
-
-    recognition.onresult = function(event) {
-        const transcript = event.results[0][0].transcript.trim();
-        console.log(`認識結果 (${questionId}):`, transcript);
-        
-        const isCorrect = isCorrectAnswer(questionId, transcript);
-        showFeedback(questionId, isCorrect);
-
-        // ボタンが押されたことを記録
-        buttonsPressed[questionId] = true;
-
-        // 全てのボタンが押されたかチェック
-        checkAllButtonsPressed();
-    };
-
-    recognition.onerror = function(event) {
-        alert("Speech recognition failed. Please try again.");
-        console.error("Speech Recognition Error:", event.error);
-    };
-
-    recognition.onend = function() {
-        micButton.classList.remove("recording");
-    };
-
-    recognition.start();
-}
-
-function checkAllButtonsPressed() {
-    if (Object.values(buttonsPressed).every(value => value)) {
-        showFinalInstructions();
-    }
-}
-
-function showFinalInstructions() {
-    const finalInstructions = document.getElementById('finalInstructions');
-    const noticeBoard = document.querySelector('.notice-board');
-    const finalMusic = document.getElementById('finalMusic');
-
-    finalInstructions.style.display = 'block';
-    noticeBoard.style.display = 'block';
-
-    setTimeout(() => {
-        if (finalMusic) {
-            finalMusic.play().catch((error) => {
-                console.error('音楽の再生に失敗しました:', error);
-            });
+    
+    // 音声認識の関数
+    function startRecognition(questionId) {
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (!SpeechRecognition) {
+            alert("このブラウザは音声認識をサポートしていません。Google Chromeを使用してください。");
+            return;
         }
-    }, 1500);
-}
+
+        const recognition = new SpeechRecognition();
+        recognition.lang = 'ja-JP';
+        recognition.continuous = false;
+        recognition.interimResults = false;
+
+        const micButton = document.getElementById(`startButton${questionId}`);
+        micButton.classList.add("recording");
+
+        recognition.onresult = function (event) {
+            const transcript = event.results[0][0].transcript.trim();
+            console.log(`認識結果 (${questionId}):`, transcript);
+
+            const isCorrect = isCorrectAnswer(questionId, transcript);
+            showFeedback(questionId, isCorrect);
+            
+            buttonsPressed[questionId] = true;
+            checkAllButtonsPressed();
+        };
+
+        recognition.onerror = function (event) {
+            alert("音声認識に失敗しました。もう一度試してください。");
+            console.error("Speech Recognition Error:", event.error);
+        };
+
+        recognition.onend = function () {
+            micButton.classList.remove("recording");
+        };
+
+        recognition.start();
+    }
+    
+    // 全ボタン押下チェック
+    function checkAllButtonsPressed() {
+        const allButtons = document.querySelectorAll("[id^='startButton']");
+        const allPressed = Array.from(allButtons).every(button => buttonsPressed[button.id.replace("startButton", "")] === true);
+        
+        if (allPressed) {
+            showFinalInstructions();
+        }
+    }
+    
+    // 最後の指示を表示
+    function showFinalInstructions() {
+        finalInstructions.style.display = 'block';
+        noticeBoard.style.display = 'block';
+        
+        finalMusic.play().catch(error => {
+            console.error("Final music playback failed:", error);
+        });
+    }
+});
 
 function isCorrectAnswer(questionId, userInput) {
     const normalizedInput = normalizeText(userInput);
