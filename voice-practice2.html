@@ -205,7 +205,7 @@ h1 {
 }
 
 .feedback img {
-    width: 600px;
+    width: 200px;
     height: auto;
     margin: 30px auto;
     display: block;
@@ -226,6 +226,24 @@ h1 {
 .blue-bold {
     color: #007bff;
     font-weight: bold;
+}
+
+a {
+    display: block;
+    text-align: center;
+    margin-top: 100px;
+    color: #007bff;
+    text-decoration: none;
+    font-size: 28px;
+    font-weight: bold;
+    padding: 10px 20px;
+    transition: all 0.3s ease;
+}
+
+a:hover {
+    text-decoration: underline;
+    color: #0056b3;
+    transform: scale(1.05);
 }
 </style>
 </head>
@@ -257,8 +275,8 @@ h1 {
     <button id="startButtonE1" class="mic-button" aria-label="音声認識を開始"></button>
     <div class="feedback" id="feedbackE1">
         <p id="feedbackTextE1" class="feedback-text"></p>
-        <img id="correctImageE1" src="https://raw.githubusercontent.com/moguura/my-images/main/9-e.g.fbyes.png" alt="正しい答え">
-        <img id="wrongImageE1" src="https://raw.githubusercontent.com/moguura/my-images/main/9-e.g.fbno.png" alt="間違った答え">
+        <img id="correctImageE1" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%BE%E3%82%8B.png" alt="正しい答え">
+        <img id="wrongImageE1" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%B0%E3%81%A4.png" alt="間違った答え">
     </div>
     <audio id="correctAudioE1" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E6%AD%A3%E8%A7%A32.mp3"></audio>
     <audio id="wrongAudioE1" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E4%B8%8D%E6%AD%A3%E8%A7%A31.mp3"></audio>
@@ -274,11 +292,11 @@ h1 {
     <button id="startButtonE2" class="mic-button" aria-label="音声認識を開始"></button>
     <div class="feedback" id="feedbackE2">
         <p id="feedbackTextE2" class="feedback-text"></p>
-        <img id="correctImageE2" src="https://raw.githubusercontent.com/moguura/my-images/main/9-e.g.fbyes.png" alt="正しい答え">
-        <img id="wrongImageE2" src="https://raw.githubusercontent.com/moguura/my-images/main/9-e.g.fbno.png" alt="間違った答え">
+        <img id="correctImageE2" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%BE%E3%82%8B.png" alt="正しい答え">
+        <img id="wrongImageE2" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%B0%E3%81%A4.png" alt="間違った答え">
     </div>
-    <audio id="correctAudioE1" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E6%AD%A3%E8%A7%A32.mp3"></audio>
-    <audio id="wrongAudioE1" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E4%B8%8D%E6%AD%A3%E8%A7%A31.mp3"></audio>
+    <audio id="correctAudioE2" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E6%AD%A3%E8%A7%A32.mp3"></audio>
+    <audio id="wrongAudioE2" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E4%B8%8D%E6%AD%A3%E8%A7%A31.mp3"></audio>
 </div>
 
       　　<!-- E3の例題 -->
@@ -291,11 +309,11 @@ h1 {
     <button id="startButtonE3" class="mic-button" aria-label="音声認識を開始"></button>
     <div class="feedback" id="feedbackE3">
         <p id="feedbackTextE3" class="feedback-text"></p>
-        <img id="correctImageE3" src="https://raw.githubusercontent.com/moguura/my-images/main/9-e.g.fbyes.png" alt="正しい答え">
-        <img id="wrongImageE3" src="https://raw.githubusercontent.com/moguura/my-images/main/9-e.g.fbno.png" alt="間違った答え">
+        <img id="correctImageE3" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%BE%E3%82%8B.png" alt="正しい答え">
+        <img id="wrongImageE3" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%B0%E3%81%A4.png" alt="間違った答え">
     </div>
-    <audio id="correctAudioE1" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E6%AD%A3%E8%A7%A32.mp3"></audio>
-    <audio id="wrongAudioE1" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E4%B8%8D%E6%AD%A3%E8%A7%A31.mp3"></audio>
+    <audio id="correctAudioE3" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E6%AD%A3%E8%A7%A32.mp3"></audio>
+    <audio id="wrongAudioE3" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E4%B8%8D%E6%AD%A3%E8%A7%A31.mp3"</audio>
 </div>
 
    　　<!-- E4の例題 -->
@@ -308,11 +326,11 @@ h1 {
     <button id="startButtonE4" class="mic-button" aria-label="音声認識を開始"></button>
     <div class="feedback" id="feedbackE4">
         <p id="feedbackTextE4" class="feedback-text"></p>
-        <img id="correctImageE4" src="https://raw.githubusercontent.com/moguura/my-images/main/9-e.g.fbyes.png" alt="正しい答え">
-        <img id="wrongImageE4" src="https://raw.githubusercontent.com/moguura/my-images/main/9-e.g.fbno.png" alt="間違った答え">
+        <img id="correctImageE4" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%BE%E3%82%8B.png" alt="正しい答え">
+        <img id="wrongImageE4" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%B0%E3%81%A4.png" alt="間違った答え">
     </div>
-    <audio id="correctAudioE1" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E6%AD%A3%E8%A7%A32.mp3"></audio>
-    <audio id="wrongAudioE1" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E4%B8%8D%E6%AD%A3%E8%A7%A31.mp3"></audio>
+    <audio id="correctAudioE4" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E6%AD%A3%E8%A7%A32.mp3"></audio>
+    <audio id="wrongAudioE4" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E4%B8%8D%E6%AD%A3%E8%A7%A31.mp3"></audio>
 </div>
         
     　  
@@ -330,163 +348,135 @@ h1 {
     <audio id="finalMusic" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%83%AC%E3%83%99%E3%83%AB%E3%82%A2%E3%83%83%E3%83%97.mp3"></audio>
 
 <script>
-const answers = {
-    E1: ["あつかったです"],
-    E2: ["あつくなかったです"],
-    E3: ["よかったです"],
-    E4: ["よくなかったです"],
-};
-
-const buttonsPressed = {
-    E1: false, E2: false, E3: false, E4: false
-};
-
-document.addEventListener('DOMContentLoaded', () => {
-    const finalInstructions = document.getElementById('finalInstructions');
-    const noticeBoard = document.querySelector('.notice-board');
-
-    finalInstructions.style.display = 'none';
-    noticeBoard.style.display = 'none';
-
-    document.getElementById('startButtonE1').addEventListener('click', () => startRecognition('E1'));
-    document.getElementById('startButtonE2').addEventListener('click', () => startRecognition('E2'));
-    document.getElementById('startButtonE3').addEventListener('click', () => startRecognition('E3'));
-    document.getElementById('startButtonE4').addEventListener('click', () => startRecognition('E4'));
-
-    // 音声再生処理の追加
-    const questions = ["E1", "E2", "E3", "E4"];
+document.addEventListener("DOMContentLoaded", function () {
+    const answers = {
+        E1: "かった",
+        E2: "くなかった",
+        E3: "かった",
+        E4: "くなかった",
+    };
     
-    questions.forEach(id => {
-        const playButton = document.getElementById(`play-audio-${id}`);
-        const audio = document.getElementById(`audio-${id}`);
-
-        if (playButton && audio) {
-            playButton.addEventListener("click", function () {
-                audio.play();
-            });
-        }
+    document.querySelectorAll(".play-audio").forEach(button => {
+        button.addEventListener("click", function () {
+            const questionId = this.id.replace("play-audio-", "");
+            const audio = document.getElementById(`audio-${questionId}`);
+            if (audio) {
+                audio.play().catch(error => console.error("Audio playback failed:", error));
+            } else {
+                console.error(`Audio element not found for ${questionId}`);
+            }
+        });
     });
-});
-
-function startRecognition(questionId) {
-    if (!('webkitSpeechRecognition' in window)) {
-        alert("Speech recognition is not available in this browser. Please use Google Chrome.");
-        return;
-    }
-
-    const recognition = new webkitSpeechRecognition();
-    recognition.lang = 'ja-JP';
-
-    const micButton = document.getElementById(`startButton${questionId}`);
-    micButton.classList.add("recording");
-
-    recognition.onresult = function(event) {
-        const transcript = event.results[0][0].transcript.trim();
-        console.log(`認識結果 (${questionId}):`, transcript);
-        
-        const isCorrect = isCorrectAnswer(questionId, transcript);
-        showFeedback(questionId, isCorrect);
-
-        // ボタンが押されたことを記録
-        buttonsPressed[questionId] = true;
-
-        // 全てのボタンが押されたかチェック
-        checkAllButtonsPressed();
-    };
-
-    recognition.onerror = function(event) {
-        alert("Speech recognition failed. Please try again.");
-        console.error("Speech Recognition Error:", event.error);
-    };
-
-    recognition.onend = function() {
-        micButton.classList.remove("recording");
-    };
-
-    recognition.start();
-}
-
-function checkAllButtonsPressed() {
-    if (Object.values(buttonsPressed).every(value => value)) {
-        showFinalInstructions();
-    }
-}
-
-function showFinalInstructions() {
-    const finalInstructions = document.getElementById('finalInstructions');
-    const noticeBoard = document.querySelector('.notice-board');
-    const finalMusic = document.getElementById('finalMusic');
-
-    finalInstructions.style.display = 'block';
-    noticeBoard.style.display = 'block';
-
-    setTimeout(() => {
-        if (finalMusic) {
-            finalMusic.play().catch((error) => {
-                console.error('音楽の再生に失敗しました:', error);
-            });
+    
+    document.querySelectorAll(".mic-button").forEach(button => {
+        button.addEventListener("click", function () {
+            const questionId = this.id.replace("startButton", "");
+            startRecognition(questionId);
+        });
+    });
+    
+    let completedQuestions = new Set();
+    function startRecognition(questionId) {
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (!SpeechRecognition) {
+            alert("このブラウザは音声認識をサポートしていません。Google Chromeを使用してください。");
+            return;
         }
-    }, 1500);
-}
 
-function isCorrectAnswer(questionId, userInput) {
-    const normalizedInput = normalizeText(userInput);
-    const correctAnswers = answers[questionId].map(ans => normalizeText(ans));
+        const recognition = new SpeechRecognition();
+        recognition.lang = 'ja-JP';
+        recognition.continuous = false;
+        recognition.interimResults = false;
 
-    // ユーザーの発話に正解のフレーズが含まれていればOK
-    return correctAnswers.some(correct => normalizedInput.includes(correct));
-}
+        const micButton = document.getElementById(`startButton${questionId}`);
+        if (micButton) {
+            micButton.classList.add("recording");
+        }
 
-function normalizeText(text) {
-    let normalized = text.toLowerCase().replace(/\s+/g, '');
-    normalized = normalized.replace(/です$/, '');  // 「です」を削除
-    return normalized;
-}
+        recognition.onresult = function (event) {
+            const transcript = event.results[0][0].transcript.trim();
+            console.log(`認識結果 (${questionId}):`, transcript);
 
+            const isCorrect = transcript.includes(answers[questionId]);
+            showFeedback(questionId, isCorrect);
+            completedQuestions.add(questionId);
+            checkCompletion();
+        };
 
-function showFeedback(questionId, isCorrect) {
-    const correctImage = document.getElementById(`correctImage${questionId}`);
-    const wrongImage = document.getElementById(`wrongImage${questionId}`);
-    const feedback = document.getElementById(`feedback${questionId}`);
-    const feedbackText = document.getElementById(`feedbackText${questionId}`);
+        recognition.onerror = function (event) {
+            console.error("Speech Recognition Error:", event.error);
+            let errorMessage = "Speech recognition failed. Please try again.";
 
-    const correctAudio = document.getElementById(`correctAudio${questionId}`);
-    const wrongAudio = document.getElementById(`wrongAudio${questionId}`);
+            if (event.error === "no-speech") {
+                errorMessage = "Your voice wasn't recognized. Please speak clearly again.";
+            } else if (event.error === "network") {
+                errorMessage = "ネットワークエラーが発生しました。接続を確認してください。";
+            }
 
-    // **フィードバックメッセージを設定**
-    const feedbackMessages = getFeedbackText(questionId);
-    if (feedbackText) {
-        feedbackText.textContent = isCorrect ? feedbackMessages.correct : feedbackMessages.incorrect;
-        feedbackText.style.display = 'block';
+            alert(errorMessage);
+        };
+
+        recognition.onend = function () {
+            if (micButton) {
+                micButton.classList.remove("recording");
+            }
+        };
+
+        recognition.start();
     }
 
-    // **画像を表示**
-    if (correctImage && wrongImage) {
-        correctImage.style.display = isCorrect ? 'block' : 'none';
-        wrongImage.style.display = isCorrect ? 'none' : 'block';
-    }
+    function showFeedback(questionId, isCorrect) {
+        const correctImage = document.getElementById(`correctImage${questionId}`);
+        const wrongImage = document.getElementById(`wrongImage${questionId}`);
+        const feedback = document.getElementById(`feedback${questionId}`);
+        const feedbackText = document.getElementById(`feedbackText${questionId}`);
 
-    // **フィードバック全体を表示**
-    if (feedback) {
-        feedback.style.display = 'block';
-    }
+        const correctAudio = document.getElementById(`correctAudio${questionId}`);
+        const wrongAudio = document.getElementById(`wrongAudio${questionId}`);
 
-    // **音を鳴らす（`null` チェック付き）**
-    if (isCorrect) {
-        if (correctAudio) {
-            correctAudio.play().catch(e => console.error("正解音の再生エラー:", e));
+        const feedbackMessages = getFeedbackText(questionId);
+        if (feedbackText) {
+            feedbackText.textContent = isCorrect ? feedbackMessages.correct : feedbackMessages.incorrect;
+            feedbackText.style.display = 'block';
+        }
+
+        if (correctImage && wrongImage) {
+            correctImage.style.display = isCorrect ? 'block' : 'none';
+            wrongImage.style.display = isCorrect ? 'none' : 'block';
+        }
+
+        if (feedback) {
+            feedback.style.display = 'block';
+        }
+
+        if (isCorrect) {
+            if (correctAudio) {
+                correctAudio.play().catch(e => console.error("正解音の再生エラー:", e));
+            }
         } else {
-            console.warn(`正解音が見つかりません: correctAudio${questionId}`);
-        }
-    } else {
-        if (wrongAudio) {
-            wrongAudio.play().catch(e => console.error("不正解音の再生エラー:", e));
-        } else {
-            console.warn(`不正解音が見つかりません: wrongAudio${questionId}`);
+            if (wrongAudio) {
+                wrongAudio.play().catch(e => console.error("不正解音の再生エラー:", e));
+            }
         }
     }
-}
 
+    function checkCompletion() {
+        if (completedQuestions.size === Object.keys(answers).length) {
+            const finalInstructions = document.getElementById("finalInstructions");
+            const nextLink = document.getElementById("nextLink");
+            const finalMusic = document.getElementById("finalMusic");
+            
+            if (finalInstructions) {
+                finalInstructions.style.display = "block";
+            }
+            if (nextLink) {
+                nextLink.style.display = "block";
+            }
+            if (finalMusic) {
+                finalMusic.play().catch(e => console.error("Final music playback error:", e));
+            }
+        }
+    }
 
 function getFeedbackText(questionId) {
     const feedbackMessages = {
