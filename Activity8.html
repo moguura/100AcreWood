@@ -629,9 +629,10 @@ function isCorrectAnswer(questionId, userInput) {
     const normalizedInput = normalizeText(userInput);
     const correctAnswers = answers[questionId];
 
-    // 答えのリストに含まれるどの答えの一部分でも一致すれば正解
     for (let correct of correctAnswers) {
         const normalizedCorrect = normalizeText(correct);
+        
+        // 部分一致を確認
         if (normalizedInput.includes(normalizedCorrect)) {
             return true;
         }
@@ -641,15 +642,18 @@ function isCorrectAnswer(questionId, userInput) {
 
 // テキストを正規化する関数
 function normalizeText(text) {
-    let normalized = text.toLowerCase().replace(/\s+/g, '');
+    let normalized = text.toLowerCase().replace(/\s+/g, ''); // 小文字にして空白を除去
     normalized = normalized.replace(/です$/, ''); // 「です」を削除
-    normalized = normalized.replace(/ー/g, '');   // 長音を削除
+    normalized = normalized.replace(/ー/g, ''); // 長音を削除
+
+    // カタカナをひらがなに変換
     normalized = normalized.replace(/[\u30A1-\u30F6]/g, function(match) {
-        return String.fromCharCode(match.charCodeAt(0) - 0x60); // カタカナをひらがなに変換
+        return String.fromCharCode(match.charCodeAt(0) - 0x60);
     });
+
     return normalized;
 }
-
+    
 // フィードバック表示関数
 function showFeedback(questionId, isCorrect, transcript) {
     const correctImage = document.getElementById(`correctImage${questionId}`);
