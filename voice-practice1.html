@@ -334,13 +334,12 @@ h1 {
 <script>
 document.addEventListener("DOMContentLoaded", function () {
     const answers = {
-        E1: ["い"],
-        E2: ["くない"],
-        E3: ["い"],
-        E4: ["くない"],
+        E1: "い",
+        E2: "くない",
+        E3: "い",
+        E4: "くない",
     };
     
-    // **各問題の再生ボタンにイベントを追加**
     document.querySelectorAll(".play-audio").forEach(button => {
         button.addEventListener("click", function () {
             const questionId = this.id.replace("play-audio-", "");
@@ -353,7 +352,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
     
-    // **各マイクボタンにイベントを追加**
     document.querySelectorAll(".mic-button").forEach(button => {
         button.addEventListener("click", function () {
             const questionId = this.id.replace("startButton", "");
@@ -382,7 +380,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const transcript = event.results[0][0].transcript.trim();
             console.log(`認識結果 (${questionId}):`, transcript);
 
-            const isCorrect = answers[questionId].includes(transcript);
+            const isCorrect = transcript.includes(answers[questionId]);
             showFeedback(questionId, isCorrect);
         };
 
@@ -417,62 +415,42 @@ document.addEventListener("DOMContentLoaded", function () {
         const correctAudio = document.getElementById(`correctAudio${questionId}`);
         const wrongAudio = document.getElementById(`wrongAudio${questionId}`);
 
-        // **フィードバックメッセージを設定**
         const feedbackMessages = getFeedbackText(questionId);
         if (feedbackText) {
             feedbackText.textContent = isCorrect ? feedbackMessages.correct : feedbackMessages.incorrect;
             feedbackText.style.display = 'block';
         }
 
-        // **画像を表示**
         if (correctImage && wrongImage) {
             correctImage.style.display = isCorrect ? 'block' : 'none';
             wrongImage.style.display = isCorrect ? 'none' : 'block';
         }
 
-        // **フィードバック全体を表示**
         if (feedback) {
             feedback.style.display = 'block';
         }
 
-        // **音を鳴らす（`null` チェック付き）**
         if (isCorrect) {
             if (correctAudio) {
                 correctAudio.play().catch(e => console.error("正解音の再生エラー:", e));
-            } else {
-                console.warn(`正解音が見つかりません: correctAudio${questionId}`);
             }
         } else {
             if (wrongAudio) {
                 wrongAudio.play().catch(e => console.error("不正解音の再生エラー:", e));
-            } else {
-                console.warn(`不正解音が見つかりません: wrongAudio${questionId}`);
             }
         }
     }
 
     function getFeedbackText(questionId) {
         const feedbackMessages = {
-            E1: {
-                correct: "あついです。 (It's hot.)",
-                incorrect: "Oops! Please try speaking again."
-            },
-            E2: {
-                correct: "あつくないです。（It's not hot.）",
-                incorrect: "Oops! Please try speaking again."
-            },
-            E3: {
-                correct: "いいです。（It's good.）",
-                incorrect: "Oops! Please try speaking again."
-            },
-            E4: {
-                correct: "よくないです。（It's not good.）",
-                incorrect: "Oops! Please try speaking again."
-            },
+            E1: { correct: "あついです。 (It's hot.)", incorrect: "Oops! Please try speaking again." },
+            E2: { correct: "あつくないです。（It's not hot.）", incorrect: "Oops! Please try speaking again." },
+            E3: { correct: "いいです。（It's good.）", incorrect: "Oops! Please try speaking again." },
+            E4: { correct: "よくないです。（It's not good.）", incorrect: "Oops! Please try speaking again." },
         };
         return feedbackMessages[questionId];
     }
 });
-    </script>
+</script>
 </body>
 </html>
