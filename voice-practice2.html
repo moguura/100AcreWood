@@ -357,25 +357,33 @@ document.addEventListener("DOMContentLoaded", function () {
         E4: "くなかった",
     };
     
-    document.querySelectorAll(".play-audio").forEach(button => {
-        button.addEventListener("click", function () {
-            const questionId = this.id.replace("play-audio-", "");
-            const audio = document.getElementById(`audio-${questionId}`);
-            if (audio) {
-                audio.play().catch(error => console.error("Audio playback failed:", error));
-            } else {
-                console.error(`Audio element not found for ${questionId}`);
-            }
+    function setupEventListeners() {
+        document.querySelectorAll(".play-audio").forEach(button => {
+            button.removeEventListener("click", handlePlayAudio);
+            button.addEventListener("click", handlePlayAudio);
         });
-    });
-    
-    document.querySelectorAll(".mic-button").forEach(button => {
-        button.addEventListener("click", function () {
-            const questionId = this.id.replace("startButton", "");
-            startRecognition(questionId);
+
+        document.querySelectorAll(".mic-button").forEach(button => {
+            button.removeEventListener("click", handleMicButtonClick);
+            button.addEventListener("click", handleMicButtonClick);
         });
-    });
-    
+    }
+
+    function handlePlayAudio(event) {
+        const questionId = event.target.id.replace("play-audio-", "");
+        const audio = document.getElementById(`audio-${questionId}`);
+        if (audio) {
+            audio.play().catch(error => console.error("Audio playback failed:", error));
+        } else {
+            console.error(`Audio element not found for ${questionId}`);
+        }
+    }
+
+    function handleMicButtonClick(event) {
+        const questionId = event.target.id.replace("startButton", "");
+        startRecognition(questionId);
+    }
+
     let completedQuestions = new Set();
     function startRecognition(questionId) {
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -479,27 +487,18 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-function getFeedbackText(questionId) {
-    const feedbackMessages = {
-        E1: {
-            correct: "あつかったです。 (It was hot.)",
-            incorrect: "Oops! Please try speaking again."
-        },
-        E2: {
-            correct: "あつくなかったです。（It was not hot.）",
-            incorrect: "Oops! Please try speaking again."
-        },
-        E3: {
-            correct: "よかったです。（It was good.）",
-            incorrect: "Oops! Please try speaking again."
-        },
-        E4: {
-            correct: "よくなかったです。（It was not good.）",
-            incorrect: "Oops! Please try speaking again."
-        },
-    };
-    return feedbackMessages[questionId];
-}
+    function getFeedbackText(questionId) {
+        const feedbackMessages = {
+            E1: { correct: "あつかったです。 (It was hot.)", incorrect: "Oops! Please try speaking again." },
+            E2: { correct: "あつくなかったです。（It was not hot.）", incorrect: "Oops! Please try speaking again." },
+            E3: { correct: "よかったです。（It was good.）", incorrect: "Oops! Please try speaking again." },
+            E4: { correct: "よくなかったです。（It was not good.）", incorrect: "Oops! Please try speaking again." },
+        };
+        return feedbackMessages[questionId];
+    }
+    
+    setupEventListeners();
+});
     </script>
 </body>
 </html>
