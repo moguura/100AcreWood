@@ -432,6 +432,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const finalInstructions = document.getElementById('finalInstructions');
     const noticeBoard = document.querySelector('.notice-board');
+    const finalMusic = document.getElementById('finalMusic');
 
     if (finalInstructions) finalInstructions.style.display = 'none';
     if (noticeBoard) noticeBoard.style.display = 'none';
@@ -471,9 +472,10 @@ document.addEventListener("DOMContentLoaded", () => {
             console.log(`認識結果 (${questionId}):`, transcript);
             
             const isCorrect = answers[questionId].some(ans => transcript.includes(ans));
-            showFeedback(questionId, isCorrect);
-            buttonsPressed[questionId] = true;
-            checkAllButtonsPressed();
+            showFeedback(questionId, isCorrect, () => {
+                buttonsPressed[questionId] = true;
+                checkAllButtonsPressed();
+            });
         };
 
         recognition.onerror = event => {
@@ -498,18 +500,20 @@ document.addEventListener("DOMContentLoaded", () => {
         if (finalInstructions) finalInstructions.style.display = 'block';
         if (noticeBoard) noticeBoard.style.display = 'block';
         
-        const finalMusic = document.getElementById('finalMusic');
         setTimeout(() => {
             if (finalMusic) {
                 finalMusic.play().catch(e => console.error('音楽の再生に失敗しました:', e));
             }
-        }, 1500);
+        }, 3000); // フィードバック音が終わるのを待ってから再生
     }
 
-    function showFeedback(questionId, isCorrect) {
+    function showFeedback(questionId, isCorrect, callback) {
         const correctImage = document.getElementById(`correctImage${questionId}`);
         const wrongImage = document.getElementById(`wrongImage${questionId}`);
         const feedbackText = document.getElementById(`feedbackText${questionId}`);
+
+        const correctAudio = document.getElementById(`correctAudio${questionId}`);
+        const wrongAudio = document.getElementById(`wrongAudio${questionId}`);
 
         if (feedbackText) {
             feedbackText.textContent = isCorrect ? getFeedbackText(questionId).correct : getFeedbackText(questionId).incorrect;
@@ -519,6 +523,16 @@ document.addEventListener("DOMContentLoaded", () => {
         if (correctImage && wrongImage) {
             correctImage.style.display = isCorrect ? 'block' : 'none';
             wrongImage.style.display = isCorrect ? 'none' : 'block';
+        }
+
+        let feedbackAudio = isCorrect ? correctAudio : wrongAudio;
+        if (feedbackAudio) {
+            feedbackAudio.play().catch(e => console.error("フィードバック音の再生エラー:", e));
+            feedbackAudio.onended = () => {
+                if (callback) callback();
+            };
+        } else {
+            if (callback) callback();
         }
     }
 
