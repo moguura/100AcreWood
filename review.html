@@ -199,9 +199,13 @@ h1 {
     display: none;
 }
 
-/* フィードバックのスタイル */
 .feedback {
-    display: none;
+    display: none; /* ここはそのままでOK */
+    text-align: center; /* 画像を中央に配置 */
+}
+
+.feedback.show {
+    display: block; /* 正解・不正解の場合に表示 */
 }
 
 .feedback img {
@@ -509,33 +513,35 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function showFeedback(questionId, isCorrect, callback) {
-        const correctImage = document.getElementById(`correctImage${questionId}`);
-        const wrongImage = document.getElementById(`wrongImage${questionId}`);
-        const feedbackText = document.getElementById(`feedbackText${questionId}`);
+    const correctImage = document.getElementById(`correctImage${questionId}`);
+    const wrongImage = document.getElementById(`wrongImage${questionId}`);
+    const feedbackText = document.getElementById(`feedbackText${questionId}`);
+    const feedbackContainer = document.getElementById(`feedback${questionId}`);
 
-        const correctAudio = document.getElementById(`correctAudio${questionId}`);
-        const wrongAudio = document.getElementById(`wrongAudio${questionId}`);
-
-        if (feedbackText) {
-            feedbackText.textContent = isCorrect ? getFeedbackText(questionId).correct : getFeedbackText(questionId).incorrect;
-            feedbackText.style.display = 'block';
-        }
-
-        if (correctImage && wrongImage) {
-            correctImage.style.display = isCorrect ? 'block' : 'none';
-            wrongImage.style.display = isCorrect ? 'none' : 'block';
-        }
-
-        let feedbackAudio = isCorrect ? correctAudio : wrongAudio;
-        if (feedbackAudio) {
-            feedbackAudio.play().catch(e => console.error("フィードバック音の再生エラー:", e));
-            feedbackAudio.onended = () => {
-                if (callback) callback();
-            };
-        } else {
-            if (callback) callback();
-        }
+    if (feedbackContainer) {
+        feedbackContainer.classList.add('show'); // 表示クラスを追加
     }
+
+    if (feedbackText) {
+        feedbackText.textContent = isCorrect ? getFeedbackText(questionId).correct : getFeedbackText(questionId).incorrect;
+        feedbackText.style.display = 'block';
+    }
+
+    if (correctImage && wrongImage) {
+        correctImage.style.display = isCorrect ? 'block' : 'none';
+        wrongImage.style.display = isCorrect ? 'none' : 'block';
+    }
+
+    const feedbackAudio = isCorrect ? document.getElementById(`correctAudio${questionId}`) : document.getElementById(`wrongAudio${questionId}`);
+    if (feedbackAudio) {
+        feedbackAudio.play().catch(e => console.error("フィードバック音の再生エラー:", e));
+        feedbackAudio.onended = () => {
+            if (callback) callback();
+        };
+    } else {
+        if (callback) callback();
+    }
+}
 
     function getFeedbackText(questionId) {
         return {
