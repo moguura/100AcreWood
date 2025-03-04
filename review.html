@@ -509,7 +509,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (finalMusic) {
                 finalMusic.play().catch(e => console.error('音楽の再生に失敗しました:', e));
             }
-        }, 3000); // フィードバック音が終わるのを待ってから再生
+        }, 1500); // フィードバック音が終わるのを待ってから再生
     }
 
     function showFeedback(questionId, isCorrect, callback) {
