@@ -501,26 +501,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    function showFinalInstructions() {
-    if (finalInstructions) {
-        finalInstructions.classList.add('show'); // インストラクションボックス表示
-    }
-    if (noticeBoard) {
-        noticeBoard.classList.add('show');
-    }
-    const nextLink = document.getElementById("nextLink");
-    if (nextLink) {
-        nextLink.style.display = "block"; // 次のページへのリンク表示
-    }
-
-    setTimeout(() => {
-        if (finalMusic) {
-            finalMusic.play().catch(e => console.error('音楽の再生に失敗しました:', e));
-        }
-    }, 1500); 
-}
-
-
     function showFeedback(questionId, isCorrect, callback) {
     const correctImage = document.getElementById(`correctImage${questionId}`);
     const wrongImage = document.getElementById(`wrongImage${questionId}`);
@@ -551,7 +531,27 @@ document.addEventListener("DOMContentLoaded", () => {
         if (callback) callback();
     }
 }
-
+    
+function checkCompletion() {
+        if (completedQuestions.size === Object.keys(answers).length) {
+            setTimeout(() => {
+                const finalInstructions = document.getElementById("finalInstructions");
+                const nextLink = document.getElementById("nextLink");
+                const finalMusic = document.getElementById("finalMusic");
+                
+                if (finalInstructions) {
+                    finalInstructions.style.display = "block";
+                }
+                if (nextLink) {
+                    nextLink.style.display = "block";
+                }
+                if (finalMusic) {
+                    finalMusic.play().catch(e => console.error("Final music playback error:", e));
+                }
+            }, 1500);
+        }
+    }
+    
     function getFeedbackText(questionId) {
         return {
             E1: { correct: "あついです。 (It's hot.)", incorrect: "Oops! Please try speaking again." },
