@@ -229,6 +229,11 @@ a:hover {
     color: #0056b3;
     transform: scale(1.05);
 }
+.red-text {
+    color: red;
+    font-weight: bold; /* 太字にしたい場合は追加 */
+}
+
 </style>
 </head>
 <body>
@@ -648,24 +653,24 @@ function showFeedback(questionId, isCorrect, transcript) {
     if (feedbackText) feedbackText.style.display = 'block';
 }
 
-// 各問題のフィードバックメッセージを返す関数
 function getFeedbackText(questionId) {
     const feedbackMessages = {
-        E1: "まえは あたらしかったです。 (It was new before.)\nいまは あたらしくないです。 (It's not new now.)",
-        E2: "まえは ちかくなかったです。 (It wasn't close before.)\nいまは ちかいです。 (It's close now.)",
-        Q1: "まえは たのしかったです。 (It was fun before.)\nいまは たのしくないです。 (It's not fun now.)",
-        Q2: "まえは さむかったです。 (It was cold before.)\nいまは さむくないです。 (It's not cold now.)",
-        Q3: "まえは からかったです。 (It was spicy before.)\nいまは からくないです。 (It's not spicy now.)",
-        Q4: "まえは むずかしくなかったです。 (It wasn't difficult before.)\nいまは むずかしいです。 (It's difficult now.)",
-        Q5: "まえは すずしかったです。 (It was cool (temperature) before.)\nいまは すずしくないです。 (It's not cool now.)",
-        Q6: "まえは つめたくなかったです。 (It wasn't cold (to the touch) before.)\nいまは つめたいです。 (It's cold  (to the touch) now.)",
-        Q7: "まえは いそがしくなかったです。 (It wasn't busy before.)\nいまは いそがしいです。 (It's busy now.)",
-        Q8: "まえは たかかったです。 (It was expensive before.)\nいまは たかくないです。 (It's not expensive now.)",
-        Q9: "まえは おもしろかったです。 (It was interesting before.)\nいまは おもしろくないです。 (It's not interesting now.)",
-        Q10: "まえは あたたかかったです。 (It was warm before.) \nいまは あたたかくないです。 (It was warm before.)",
+        E1: "まえは あたらしかったです。 (It was new before.)<br><span class='red-text'>いまは あたらしくないです。</span> (It's not new now.)",
+        E2: "<span class='red-text'>まえは ちかくなかったです。</span> (It wasn't close before.)<br>いまは ちかいです。 (It's close now.)",
+        Q1: "まえは たのしかったです。 (It was fun before.)<br><span class='red-text'>いまは たのしくないです。</span> (It's not fun now.)",
+        Q2: "<span class='red-text'>まえは さむかったです。</span> (It was cold before.)<br>いまは さむくないです。 (It's not cold now.)",
+        Q3: "<span class='red-text'>まえは からかったです。</span> (It was spicy before.)<br>いまは からくないです。 (It's not spicy now.)",
+        Q4: "<span class='red-text'>まえは むずかしくなかったです。</span> (It wasn't difficult before.)<br>いまは むずかしいです。 (It's difficult now.)",
+        Q5: "まえは すずしかったです。 (It was cool before.)<br><span class='red-text'>いまは すずしくないです。</span> (It's not cool now.)",
+        Q6: "<span class='red-text'>まえは つめたくなかったです。</span> (It wasn't cold before.)<br>いまは つめたいです。 (It's cold now.)",
+        Q7: "<span class='red-text'>まえは いそがしくなかったです。</span> (It wasn't busy before.)<br>いまは いそがしいです。 (It's busy now.)",
+        Q8: "まえは たかかったです。 (It was expensive before.)<br><span class='red-text'>いまは たかくないです。</span> (It's not expensive now.)",
+        Q9: "まえは おもしろかったです。 (It was interesting before.)<br><span class='red-text'>いまは おもしろくないです。</span> (It's not interesting now.)",
+        Q10: "<span class='red-text'>まえは あたたかかったです。</span> (It was warm before.)<br>いまは あたたかくないです。 (It's not warm now.)"
     };
     return feedbackMessages[questionId] || "フィードバックが設定されていません";
 }
+
 
 function displayFeedback(questionId) {
     const feedback = getFeedbackText(questionId);
