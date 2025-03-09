@@ -388,16 +388,16 @@ function startRecognition(questionId) {
         }, maxWaitTime);
     };
 
-    recognition.onerror = function(event) {
+   recognition.onerror = function(event) {
+    console.error("🚨 Speech Recognition Error:", event.error);
     alert("Speech recognition failed. Please try again.");
-    console.error("Speech Recognition Error:", event.error);
     
     micButton.classList.remove("recording"); // ボタンの録音状態を解除
-    micButton.disabled = true; // ボタンを無効化
+    micButton.disabled = false; // 🔴 ボタンを無効化しないよう修正
 };
 
 
-   recognition.onend = function() {
+  recognition.onend = function() {
     micButton.classList.remove("recording"); // ここで録音状態を解除
     if (!recognitionFinalized) {
         setTimeout(() => {
@@ -405,6 +405,7 @@ function startRecognition(questionId) {
                 console.log(`最終判定 (${questionId}):`, finalTranscript);
                 finalizeRecognition(questionId, finalTranscript, micButton);
                 recognitionFinalized = true;
+                recognition.stop(); // ここで録音を停止する
             }
         }, maxWaitTime);
     }
@@ -466,10 +467,11 @@ function showFeedback(questionId, isCorrect) {
 
     // **フィードバックメッセージを設定**
     const feedbackMessages = getFeedbackText(questionId);
-    if (feedbackText) {
-        feedbackText.textContent = isCorrect ? feedbackMessages.correct : feedbackMessages.incorrect;
-        feedbackText.style.display = 'block';
-    }
+　　if (feedbackText && feedbackMessages) { // 🔴 feedbackMessages が undefined でないか確認
+   　　 feedbackText.textContent = isCorrect ? feedbackMessages.correct : feedbackMessages.incorrect;
+ 　　   feedbackText.style.display = 'block';
+　　}
+
 
     // **画像を表示**
     if (correctImage && wrongImage) {
@@ -499,32 +501,14 @@ function showFeedback(questionId, isCorrect) {
 
 function getFeedbackText(questionId) {
     const feedbackMessages = {
-        E1: {
-            correct: "Your answer： タバコは いいです。（Smoking is good.）",
-            incorrect: "Your answer： タバコは よくないです。（Smoking is not good.）"
-        },
-        Q1: {
-            correct: "Your answer： べんきょうは　おもしろいです。（Studying is interesting.）",
-            incorrect: "Your answer：べんきょうは　おもしろくないです。（Studying is not interesting.）"
-        },
-        Q2: {
-            correct: "Your answer： やさいは　おいしいです。（Vegetables are tasty.）",
-            incorrect: "Your answer： やさいは　おいしくないです。（Vegetables are not tasty.）"
-        },
-        Q3: {
-            correct: "Your answer：スポーツは　たのしいです。（Sports are fun.）",
-            incorrect: "Your answer：スポーツは　たのしくないです。（Sports are not fun.）"
-        },
-        Q4: {
-            correct: "Your answer： きょうは　さむいです。（Today is cold.）",
-            incorrect: "Your answer： きょうは　さむくないです。（Today is not cold.）"
-        },
-        Q5: {
-            correct: "Your answer： にほんのカレーは　からいです。（Japanese curry is spicy.）",
-            incorrect: "Your answer： にほんのカレーは　からくないです。（Japanese curry is not spicy.）"
-        }
+        E1: { correct: "タバコは いいです。（Smoking is good.）", incorrect: "タバコは よくないです。（Smoking is not good.）" },
+        Q1: { correct: "べんきょうは おもしろいです。（Studying is interesting.）", incorrect: "べんきょうは おもしろくないです。（Studying is not interesting.）" },
+        Q2: { correct: "やさいは おいしいです。（Vegetables are tasty.）", incorrect: "やさいは おいしくないです。（Vegetables are not tasty.）" },
+        Q3: { correct: "スポーツは たのしいです。（Sports are fun.）", incorrect: "スポーツは たのしくないです。（Sports are not fun.）" },
+        Q4: { correct: "きょうは さむいです。（Today is cold.）", incorrect: "きょうは さむくないです。（Today is not cold.）" },
+        Q5: { correct: "にほんのカレーは からいです。（Japanese curry is spicy.）", incorrect: "にほんのカレーは からくないです。（Japanese curry is not spicy.）" }
     };
-    return feedbackMessages[questionId];
+    return feedbackMessages[questionId] || { correct: "No feedback available", incorrect: "No feedback available" }; // 🔴 デフォルト値を追加
 }
     </script>
 </body>
