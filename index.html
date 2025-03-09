@@ -437,7 +437,8 @@ function startRecognition(questionId) {
     let finalTranscript = "";
     let lastResultTime = Date.now();
     const maxWaitTime = 2000;
-    let recognitionFinalized = false; // ★ 判定が1回だけ行われるようにする
+    let recognitionFinalized = false; // ★ 判定を1回だけにする
+    let timeoutId = null; // ★ タイムアウト処理を管理する
 
     const micButton = document.getElementById(`startButton${questionId}`);
     micButton.classList.add("recording");
@@ -449,12 +450,21 @@ function startRecognition(questionId) {
         lastResultTime = currentTime;
         console.log(`認識結果 (${questionId}):`, finalTranscript);
 
-        // スムーズに話せた場合は即時判定
-        if (!recognitionFinalized) {
-            finalizeRecognition(questionId, finalTranscript, micButton);
-            recognitionFinalized = true;
-            recognition.stop(); // 認識を停止
-        }
+        // 既に判定されていたら処理しない
+        if (recognitionFinalized) return;
+
+        // ★ 既にタイムアウトがセットされていたらクリアし、再セット
+        if (timeoutId) clearTimeout(timeoutId);
+
+        // ★ 2秒後に判定を行う（最後の発話を待つ）
+        timeoutId = setTimeout(() => {
+            if (!recognitionFinalized) {
+                console.log(`最終判定 (${questionId}):`, finalTranscript);
+                finalizeRecognition(questionId, finalTranscript, micButton);
+                recognitionFinalized = true;
+                recognition.stop(); // ★ マイクを停止
+            }
+        }, maxWaitTime);
     };
 
     recognition.onerror = function(event) {
@@ -465,14 +475,16 @@ function startRecognition(questionId) {
     recognition.onend = function() {
         micButton.classList.remove("recording");
 
-        setTimeout(() => {
-            // もし2秒待機しても判定が行われていなければ、ここで判定
-            if (!recognitionFinalized && Date.now() - lastResultTime >= maxWaitTime) {
-                console.log(`最終判定 (${questionId}):`, finalTranscript);
-                finalizeRecognition(questionId, finalTranscript, micButton);
-                recognitionFinalized = true;
-            }
-        }, maxWaitTime);
+        // ★ 発話が途中で終わっている可能性があるので、まだ判定されていなければ2秒待って判定
+        if (!recognitionFinalized) {
+            setTimeout(() => {
+                if (!recognitionFinalized) {
+                    console.log(`最終判定 (${questionId}):`, finalTranscript);
+                    finalizeRecognition(questionId, finalTranscript, micButton);
+                    recognitionFinalized = true;
+                }
+            }, maxWaitTime);
+        }
     };
 
     recognition.start();
