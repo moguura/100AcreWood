@@ -106,6 +106,11 @@ h1 {
 .mic-button.recording {
     box-shadow: 0 0 15px rgba(255, 0, 0, 0.8); /* 赤く光る */
 }
+    
+.mic-button:disabled {
+    background-color: gray;
+    cursor: not-allowed;
+}
 
 #content {
     display: flex;
@@ -266,9 +271,17 @@ a:hover {
             <p> 
                 First, press the play button▶️ and listen to the audio.<br>
                 Then, press the microphone button🎙️ and repeat what you heard.<br> 
-                Let's try it out!😆
+                Let's try it out!😆<br><br>
+                You can speak into the microphone <span class="red-bold">just once</span>.
             </p>
         </div>
+        <!-- Notice Board -->
+      <div class="notice-board">
+          <p><span class="blue-bold">Please note:</span>　Speech recognition may not always be 100% accurate.<br>
+              If your answer is incorrect, don't worry - just continue to the next question.<br>
+              🚫 <strong>Please don't press the browser's refresh button, even if the speech recognition is wrong. </strong>
+          </p>
+      </div>
         
 　　　　<!-- E1の例題 -->
 　　<div class="question" id="E1">
@@ -417,7 +430,7 @@ a:hover {
         <a href="./Activity7.html" id="nextLink" style="display: none;">Go to Activity7</a>
     </div>
 <!-- 音楽再生用 -->
-    <audio id="finalMusic" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%83%AC%E3%83%99%E3%83%AB%E3%82%A2%E3%83%83%E3%83%97.mp3"></audio>
+    <audio id="finalMusic" src="https://raw.githubusercontent.com/moguura/my-images/main/taskend1.mp3"></audio>
 
 <script>
 document.addEventListener("DOMContentLoaded", () => {
@@ -432,25 +445,33 @@ document.addEventListener("DOMContentLoaded", () => {
         E8: ["くなかった"],
     };
 
-     document.querySelectorAll(".play-audio").forEach(button => {
-        button.addEventListener("click", function () {
-            const questionId = this.id.replace("play-audio-", "");
-            const audio = document.getElementById(`audio-${questionId}`);
-            if (audio) {
-                audio.play().catch(error => console.error("Audio playback failed:", error));
-            } else {
-                console.error(`Audio element not found for ${questionId}`);
-            }
+    function setupEventListeners() {
+        document.querySelectorAll(".play-audio").forEach(button => {
+            button.removeEventListener("click", handlePlayAudio);
+            button.addEventListener("click", handlePlayAudio);
         });
-    });
-    
-    document.querySelectorAll(".mic-button").forEach(button => {
-        button.addEventListener("click", function () {
-            const questionId = this.id.replace("startButton", "");
-            startRecognition(questionId);
+
+        document.querySelectorAll(".mic-button").forEach(button => {
+            button.removeEventListener("click", handleMicButtonClick);
+            button.addEventListener("click", handleMicButtonClick);
         });
-    });
-    
+    }
+
+    function handlePlayAudio(event) {
+        const questionId = event.target.id.replace("play-audio-", "");
+        const audio = document.getElementById(`audio-${questionId}`);
+        if (audio) {
+            audio.play().catch(error => console.error("Audio playback failed:", error));
+        } else {
+            console.error(`Audio element not found for ${questionId}`);
+        }
+    }
+
+    function handleMicButtonClick(event) {
+        const questionId = event.target.id.replace("startButton", "");
+        startRecognition(questionId);
+    }
+
     let completedQuestions = new Set();
     function startRecognition(questionId) {
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -467,13 +488,14 @@ document.addEventListener("DOMContentLoaded", () => {
         const micButton = document.getElementById(`startButton${questionId}`);
         if (micButton) {
             micButton.classList.add("recording");
+            micButton.disabled = true;
         }
 
         recognition.onresult = function (event) {
             const transcript = event.results[0][0].transcript.trim();
             console.log(`認識結果 (${questionId}):`, transcript);
 
-            const isCorrect = transcript.includes(answers[questionId]);
+            const isCorrect = answers[questionId].some(answer => transcript.includes(answer));
             showFeedback(questionId, isCorrect, () => {
                 completedQuestions.add(questionId);
                 checkCompletion();
@@ -496,6 +518,7 @@ document.addEventListener("DOMContentLoaded", () => {
         recognition.onend = function () {
             if (micButton) {
                 micButton.classList.remove("recording");
+                micButton.disabled = false;
             }
         };
 
@@ -503,35 +526,35 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function showFeedback(questionId, isCorrect, callback) {
-    const correctImage = document.getElementById(`correctImage${questionId}`);
-    const wrongImage = document.getElementById(`wrongImage${questionId}`);
-    const feedbackText = document.getElementById(`feedbackText${questionId}`);
-    const feedbackContainer = document.getElementById(`feedback${questionId}`);
+        const correctImage = document.getElementById(`correctImage${questionId}`);
+        const wrongImage = document.getElementById(`wrongImage${questionId}`);
+        const feedbackText = document.getElementById(`feedbackText${questionId}`);
+        const feedbackContainer = document.getElementById(`feedback${questionId}`);
 
-    if (feedbackContainer) {
-        feedbackContainer.classList.add('show'); // 表示クラスを追加
-    }
+        if (feedbackContainer) {
+            feedbackContainer.classList.add('show');
+        }
 
-    if (feedbackText) {
-        feedbackText.textContent = isCorrect ? getFeedbackText(questionId).correct : getFeedbackText(questionId).incorrect;
-        feedbackText.style.display = 'block';
-    }
+        if (feedbackText) {
+    　　　　feedbackText.textContent = getFeedbackText(questionId);
+   　　　　 feedbackText.style.display = 'block';
+　　　　}
 
-    if (correctImage && wrongImage) {
-        correctImage.style.display = isCorrect ? 'block' : 'none';
-        wrongImage.style.display = isCorrect ? 'none' : 'block';
-    }
+        if (correctImage && wrongImage) {
+            correctImage.style.display = isCorrect ? 'block' : 'none';
+            wrongImage.style.display = isCorrect ? 'none' : 'block';
+        }
 
-    const feedbackAudio = isCorrect ? document.getElementById(`correctAudio${questionId}`) : document.getElementById(`wrongAudio${questionId}`);
-    if (feedbackAudio) {
-        feedbackAudio.play().catch(e => console.error("フィードバック音の再生エラー:", e));
-        feedbackAudio.onended = () => {
+        const feedbackAudio = isCorrect ? document.getElementById(`correctAudio${questionId}`) : document.getElementById(`wrongAudio${questionId}`);
+        if (feedbackAudio) {
+            feedbackAudio.play().catch(e => console.error("フィードバック音の再生エラー:", e));
+            feedbackAudio.onended = () => {
+                if (callback) callback();
+            };
+        } else {
             if (callback) callback();
-        };
-    } else {
-        if (callback) callback();
+        }
     }
-}
 
     function checkCompletion() {
         if (completedQuestions.size === Object.keys(answers).length) {
@@ -554,18 +577,18 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     
     function getFeedbackText(questionId) {
-        return {
-            E1: { correct: "あついです。 (It's hot.)", incorrect: "Oops! Please try speaking again." },
-            E2: { correct: "あつくないです。（It's not hot.）", incorrect: "Oops! Please try speaking again." },
-            E3: { correct: "あつかったです。（It was hot.）", incorrect: "Oops! Please try speaking again." },
-            E4: { correct: "あつくなかったです。（It was not hot.）", incorrect: "Oops! Please try speaking again." },
-            E5: { correct: "いいです。 (It's good.)", incorrect: "Oops! Please try speaking again." },
-            E6: { correct: "よくないです。（It's not good.）", incorrect: "Oops! Please try speaking again." },
-            E7: { correct: "よかったです。（It was good.）", incorrect: "Oops! Please try speaking again." },
-            E8: { correct: "よくなかったです。（It was not good.）", incorrect: "Oops! Please try speaking again." },
-        }[questionId];
-    }
-
+    return {
+        E1: "あついです。 (It's hot.)",
+        E2: "あつくないです。（It's not hot.）",
+        E3: "あつかったです。（It was hot.）",
+        E4: "あつくなかったです。（It was not hot.）",
+        E5: "いいです。 (It's good.)",
+        E6: "よくないです。（It's not good.）",
+        E7: "よかったです。（It was good.）",
+        E8: "よくなかったです。（It was not good.）",
+    }[questionId];
+}
+    
     setupEventListeners();
 });
 </script>
