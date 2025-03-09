@@ -233,13 +233,6 @@ a:hover {
             </p>
         </div>
 
-　　　<!-- Notice Board -->
-      <div class="notice-board">
-          <p><span class="blue-bold">Please note:</span>　Speech recognition may not always be 100% accurate.<br> 
-              If your answer is incorrect, don't worry - just continue to the next question.<br>
-              🚫 <strong>Please don't press the browser's refresh button, even if the speech recognition is wrong. </strong>
-          </p>
-      </div>
         
 <!-- Q1 -->
 <div class="question" id="Q1">
@@ -554,8 +547,15 @@ function showFeedback(questionId, isCorrect) {
 function checkAllAnswered() {
     const allAnswered = Object.values(buttonsPressed).every(value => value);
     const nextPageLink = document.getElementById("nextPageLink");
-    if (allAnswered && nextPageLink) {
-        nextPageLink.style.display = "block";
+
+    if (allAnswered) {
+        if (nextPageLink) {
+            nextPageLink.style.display = "block";
+        }
+
+        // ★ タスク終了の音楽を流す
+        const taskEndAudio = new Audio("https://raw.githubusercontent.com/moguura/my-images/main/taskend2.mp3");
+        taskEndAudio.play().catch(e => console.error("タスク終了音の再生エラー:", e));
     }
 }
 
