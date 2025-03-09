@@ -570,7 +570,21 @@ function finalizeRecognition(questionId, transcript, micButton) {
     micButton.disabled = true; // ★ ボタンを無効化
     checkAllAnswered();
 }
+function checkAllAnswered() {
+    const allAnswered = Object.values(buttonsPressed).every(value => value);
+    const nextPageLink = document.getElementById("nextPageLink");
 
+    if (allAnswered) {
+        if (nextPageLink) {
+            nextPageLink.style.display = "block";
+        }
+
+        // ★ タスク終了の音楽を流す
+        const taskEndAudio = new Audio("https://raw.githubusercontent.com/moguura/my-images/main/taskend2.mp3");
+        taskEndAudio.play().catch(e => console.error("タスク終了音の再生エラー:", e));
+    }
+}
+    
 function startRecognition(questionId) {
     if (!('webkitSpeechRecognition' in window)) {
         alert("Speech recognition is not available in this browser. Please use Google Chrome.");
