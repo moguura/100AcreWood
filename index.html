@@ -425,11 +425,6 @@ function finalizeRecognition(questionId, transcript, micButton) {
 }
 
 function startRecognition(questionId) {
-    if (buttonsPressed[questionId]) {
-        console.log(`質問 ${questionId} はすでに回答済みです。`);
-        return; // ★ すでに回答済みなら何もしない
-    }
-
     if (!('webkitSpeechRecognition' in window)) {
         alert("Speech recognition is not available in this browser. Please use Google Chrome.");
         return;
@@ -441,7 +436,8 @@ function startRecognition(questionId) {
 
     let finalTranscript = "";
     let lastResultTime = Date.now();
-    const maxWaitTime = 3000;
+    const maxWaitTime = 2000;
+    let recognitionFinalized = false; // ★ 判定が1回だけ行われるようにする
 
     const micButton = document.getElementById(`startButton${questionId}`);
     micButton.classList.add("recording");
@@ -453,10 +449,11 @@ function startRecognition(questionId) {
         lastResultTime = currentTime;
         console.log(`認識結果 (${questionId}):`, finalTranscript);
 
-        // ★ スムーズに発話した場合（結果が即得られたら）、すぐに判定する
-        if (event.results[event.results.length - 1].isFinal) {
+        // スムーズに話せた場合は即時判定
+        if (!recognitionFinalized) {
             finalizeRecognition(questionId, finalTranscript, micButton);
-            recognition.stop(); // 明示的に停止
+            recognitionFinalized = true;
+            recognition.stop(); // 認識を停止
         }
     };
 
@@ -468,11 +465,12 @@ function startRecognition(questionId) {
     recognition.onend = function() {
         micButton.classList.remove("recording");
 
-        // ★ 最後の音声入力から maxWaitTime 経過したら最終判定
         setTimeout(() => {
-            if (Date.now() - lastResultTime >= maxWaitTime) {
+            // もし2秒待機しても判定が行われていなければ、ここで判定
+            if (!recognitionFinalized && Date.now() - lastResultTime >= maxWaitTime) {
                 console.log(`最終判定 (${questionId}):`, finalTranscript);
                 finalizeRecognition(questionId, finalTranscript, micButton);
+                recognitionFinalized = true;
             }
         }, maxWaitTime);
     };
