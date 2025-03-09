@@ -404,7 +404,7 @@ function startRecognition(questionId) {
     };
 
       recognition.start();
-    }); // 追加（audioContext.resume().then()の閉じ括弧）
+    }); // ← ここが正しい閉じ括弧の位置
 }
 
 function checkAllAnswered() {
@@ -446,14 +446,17 @@ function normalizeText(text) {
 
 function showFeedback(questionId, isCorrect) {
     const elements = {
-        elements.feedbackDiv.classList.add(isCorrect ? 'correct' : 'incorrect');
-        elements.feedbackDiv.style.display = 'block';
-        elements.correctImage.style.display = isCorrect ? 'block' : 'none';
-        elements.wrongImage.style.display = isCorrect ? 'none' : 'block';
-        elements.feedbackText.style.display = 'block';
-        correctAudio: document.getElementById(`correctAudio${questionId}`),
-        wrongAudio: document.getElementById(`wrongAudio${questionId}`)
-    };
+        const elements = {
+    　　feedbackDiv: document.getElementById(`feedback${questionId}`),
+    　　correctImage: document.getElementById(`correctImage${questionId}`),
+   　　 wrongImage: document.getElementById(`wrongImage${questionId}`),
+    　　feedbackText: document.getElementById(`feedbackText${questionId}`),
+    　　correctAudio: document.getElementById(`correctAudio${questionId}`),
+   　　 wrongAudio: document.getElementById(`wrongAudio${questionId}`)
+　　};
+
+// CSSクラス追加（別途処理）
+elements.feedbackDiv.classList.add(isCorrect ? 'correct' : 'incorrect');
 
     // 要素の存在チェック
     if (!elements.feedbackDiv || !elements.correctImage || !elements.wrongImage) {
@@ -473,16 +476,15 @@ function showFeedback(questionId, isCorrect) {
 
     // 音声再生処理
     const targetAudio = isCorrect ? elements.correctAudio : elements.wrongAudio;
-    if (!targetAudio) {
-        console.warn(`音声要素が見つかりません: ${questionId}`);
-        return;
-    }
+if (!targetAudio) {
+    console.warn(`音声要素が見つかりません: ${questionId}`);
+    return;
+}
 
-    try {
-    targetAudio.pause(); // 再生中の音声を停止
+try {
+    targetAudio.pause();
     targetAudio.currentTime = 0;
     
-    // ユーザージェスチャー連鎖を保証
     const playPromise = targetAudio.play();
     
     if (playPromise !== undefined) {
@@ -498,7 +500,6 @@ function showFeedback(questionId, isCorrect) {
                     timestamp: new Date().toISOString()
                 });
                 
-                // エラー表示をUIに反映
                 elements.feedbackText.style.border = "2px solid #ff0000";
                 elements.feedbackText.innerHTML += `<br><small>エラー: ${error.message}</small>`;
             });
@@ -507,10 +508,9 @@ function showFeedback(questionId, isCorrect) {
     console.error('音声再生例外:', {
         questionId,
         errorDetails: error,
-        stackTrace: error.stack // スタックトレース追加
+        stackTrace: error.stack
     });
     
-    // 例外発生時のフォールバック処理
     elements.feedbackText.style.color = "#ff0000";
     elements.feedbackText.textContent = "システムエラーが発生しました";
 }
