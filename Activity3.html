@@ -137,13 +137,60 @@ h1 {
     margin: 30px auto;
     display: block;
 }
+/* フィードバックのテキスト */
 .feedback-text {
-    font-size: 24px;
+    font-size: 22px;
     color: #333;
     text-align: center;
-    font-weight: normal;
+    font-weight: bold;
     margin-top: 10px;
     display: none;
+}
+
+/* 正解のときのエフェクト */
+.feedback.correct img {
+    transform: scale(1.1);
+    animation: pop 0.5s ease-in-out;
+}
+
+.feedback.correct .feedback-text {
+    color: #4CAF50;
+    font-size: 26px;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+/* 不正解のときのエフェクト */
+.feedback.incorrect img {
+    transform: scale(0.9);
+    animation: shake 0.4s ease-in-out;
+}
+
+.feedback.incorrect .feedback-text {
+    color: #F44336;
+    font-size: 26px;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+/* ポップアップアニメーション */
+@keyframes pop {
+    0% { transform: scale(0.8); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+/* シェイクアニメーション（不正解のとき） */
+@keyframes shake {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-10px); }
+    50% { transform: translateX(10px); }
+    75% { transform: translateX(-10px); }
+    100% { transform: translateX(0); }
+}
+
+/* フェードインアニメーション */
+@keyframes fadeIn {
+    0% { opacity: 0; transform: translateY(-10px); }
+    100% { opacity: 1; transform: translateY(0); }
 }
 /* その他のスタイル */
 #Q1 {
@@ -434,23 +481,26 @@ function showFeedback(questionId, isCorrect) {
     const correctAudio = document.getElementById(`correctAudio${questionId}`);
     const wrongAudio = document.getElementById(`wrongAudio${questionId}`);
 
-    const feedbackMessages = getFeedbackText(questionId);
+    // 画像とテキストを表示する
     if (feedbackText) {
-        feedbackText.textContent = isCorrect ? feedbackMessages.correct : feedbackMessages.incorrect;
+        feedbackText.textContent = isCorrect ? getFeedbackText(questionId).correct : getFeedbackText(questionId).incorrect;
         feedbackText.style.display = 'block';
     }
 
+    // 画像表示の切り替え
     if (correctImage && wrongImage) {
         correctImage.style.display = isCorrect ? 'block' : 'none';
         wrongImage.style.display = isCorrect ? 'none' : 'block';
     }
 
+    // 音声の再生（エラーをキャッチする）
     if (isCorrect) {
-        if (correctAudio) correctAudio.play();
+        if (correctAudio) correctAudio.play().catch(() => {});
     } else {
-        if (wrongAudio) wrongAudio.play();
+        if (wrongAudio) wrongAudio.play().catch(() => {});
     }
 }
+
 
 function getFeedbackText(questionId) {
     const feedbackMessages = {
