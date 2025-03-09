@@ -456,13 +456,22 @@ function startRecognition(questionId) {
 
         if (timeoutId) clearTimeout(timeoutId);
 
-        // ★ 発話が途切れても、2秒間は待つ
+        // ★「です。」まで言ったら即時判定
+        if (finalTranscript.endsWith("です") || finalTranscript.endsWith("です。")) {
+            console.log(`即時判定 (${questionId}):`, finalTranscript);
+            finalizeRecognition(questionId, finalTranscript, micButton);
+            recognitionFinalized = true;
+            recognition.stop();
+            return;
+        }
+
+        // ★ 発話が途切れても、最大2秒待つ
         timeoutId = setTimeout(() => {
             if (!recognitionFinalized) {
                 console.log(`最終判定 (${questionId}):`, finalTranscript);
                 finalizeRecognition(questionId, finalTranscript, micButton);
                 recognitionFinalized = true;
-                recognition.stop(); // ★ ここでマイクを止める
+                recognition.stop();
             }
         }, maxWaitTime);
     };
@@ -488,7 +497,7 @@ function startRecognition(questionId) {
 
     recognition.start();
 }
-
+    
 function isCorrectAnswer(questionId, userInput) {
     const normalizedInput = normalizeText(userInput);
     console.log(`Normalized Input (${questionId}):`, normalizedInput);
