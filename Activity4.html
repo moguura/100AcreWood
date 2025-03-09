@@ -478,11 +478,21 @@ function startRecognition(questionId) {
     recognition.start();
 }
 
-function checkAllButtonsPressed() {
-    if (Object.values(buttonsPressed).every(value => value)) {
-        document.getElementById("nextPageLink").style.display = "block";
+function checkAllAnswered() {
+    const allAnswered = Object.values(buttonsPressed).every(value => value);
+    const nextPageLink = document.getElementById("nextPageLink");
+
+    if (allAnswered) {
+        if (nextPageLink) {
+            nextPageLink.style.display = "block";
+        }
+
+        // ★ タスク終了の音楽を流す
+        const taskEndAudio = new Audio("https://raw.githubusercontent.com/moguura/my-images/main/taskend2.mp3");
+        taskEndAudio.play().catch(e => console.error("タスク終了音の再生エラー:", e));
     }
 }
+
 
 // ✅ 修正した判定関数
 function isCorrectAnswer(questionId, userInput) {
