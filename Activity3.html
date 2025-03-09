@@ -127,8 +127,16 @@ h1 {
 }
 
 /* フィードバックのスタイル */
+/* 修正前 */
 .feedback {
     display: none;
+}
+
+/* 修正後 */
+.feedback {
+    display: none;
+    position: relative; /* 子要素の表示を保証 */
+    z-index: 1000; /* 最前面に表示 */
 }
 
 .feedback img {
@@ -136,7 +144,9 @@ h1 {
     height: auto;
     margin: 30px auto;
     display: none;
+    position: relative; /* 追加 */
 }
+
 /* フィードバックのテキスト */
 .feedback-text {
     font-size: 22px;
@@ -147,51 +157,6 @@ h1 {
     display: none;
 }
 
-/* 正解のときのエフェクト */
-.feedback.correct img {
-    transform: scale(1.1);
-    animation: pop 0.5s ease-in-out;
-}
-
-.feedback.correct .feedback-text {
-    color: #4CAF50;
-    font-size: 26px;
-    animation: fadeIn 0.5s ease-in-out;
-}
-
-/* 不正解のときのエフェクト */
-.feedback.incorrect img {
-    transform: scale(0.9);
-    animation: shake 0.4s ease-in-out;
-}
-
-.feedback.incorrect .feedback-text {
-    color: #F44336;
-    font-size: 26px;
-    animation: fadeIn 0.5s ease-in-out;
-}
-
-/* ポップアップアニメーション */
-@keyframes pop {
-    0% { transform: scale(0.8); }
-    50% { transform: scale(1.1); }
-    100% { transform: scale(1); }
-}
-
-/* シェイクアニメーション（不正解のとき） */
-@keyframes shake {
-    0% { transform: translateX(0); }
-    25% { transform: translateX(-10px); }
-    50% { transform: translateX(10px); }
-    75% { transform: translateX(-10px); }
-    100% { transform: translateX(0); }
-}
-
-/* フェードインアニメーション */
-@keyframes fadeIn {
-    0% { opacity: 0; transform: translateY(-10px); }
-    100% { opacity: 1; transform: translateY(0); }
-}
 /* その他のスタイル */
 #Q1 {
     margin-top: 100px; /* Notice Boardとの間隔を調整 */
@@ -386,9 +351,12 @@ function finalizeRecognition(questionId, transcript, micButton) {
 }
 
 function startRecognition(questionId) {
+    // startRecognition関数内に追加（348行目付近）
     const audioContext = new (window.AudioContext || window.webkitAudioContext)();
     audioContext.resume().then(() => {
+    // 既存の録音処理をこの中に移動
     if (!('webkitSpeechRecognition' in window)) {
+
         alert("Speech recognition is not available in this browser. Please use Google Chrome.");
         return;
     }
@@ -435,7 +403,8 @@ function startRecognition(questionId) {
         micButton.classList.remove("recording");
     };
 
-    recognition.start();
+      recognition.start();
+    }); // 追加（audioContext.resume().then()の閉じ括弧）
 }
 
 function checkAllAnswered() {
@@ -477,10 +446,11 @@ function normalizeText(text) {
 
 function showFeedback(questionId, isCorrect) {
     const elements = {
-        feedbackDiv: document.getElementById(`feedback${questionId}`),
-        correctImage: document.getElementById(`correctImage${questionId}`),
-        wrongImage: document.getElementById(`wrongImage${questionId}`),
-        feedbackText: document.getElementById(`feedbackText${questionId}`),
+        elements.feedbackDiv.classList.add(isCorrect ? 'correct' : 'incorrect');
+        elements.feedbackDiv.style.display = 'block';
+        elements.correctImage.style.display = isCorrect ? 'block' : 'none';
+        elements.wrongImage.style.display = isCorrect ? 'none' : 'block';
+        elements.feedbackText.style.display = 'block';
         correctAudio: document.getElementById(`correctAudio${questionId}`),
         wrongAudio: document.getElementById(`wrongAudio${questionId}`)
     };
@@ -509,20 +479,40 @@ function showFeedback(questionId, isCorrect) {
     }
 
     try {
-        targetAudio.currentTime = 0;
-        targetAudio.play().catch(error => {
-            console.error(`${isCorrect ? '正解' : '不正解'}音声再生エラー (${questionId}):`, {
-                errorType: error.name,
-                message: error.message,
-                audioSrc: targetAudio.src
+    targetAudio.pause(); // 再生中の音声を停止
+    targetAudio.currentTime = 0;
+    
+    // ユーザージェスチャー連鎖を保証
+    const playPromise = targetAudio.play();
+    
+    if (playPromise !== undefined) {
+        playPromise
+            .then(() => {
+                console.log(`${isCorrect ? '正解' : '不正解'}音声再生成功: ${questionId}`);
+            })
+            .catch(error => {
+                console.error(`${isCorrect ? '正解' : '不正解'}音声再生エラー (${questionId}):`, {
+                    errorType: error.name,
+                    message: error.message,
+                    audioSrc: targetAudio.src,
+                    timestamp: new Date().toISOString()
+                });
+                
+                // エラー表示をUIに反映
+                elements.feedbackText.style.border = "2px solid #ff0000";
+                elements.feedbackText.innerHTML += `<br><small>エラー: ${error.message}</small>`;
             });
-        });
-    } catch (error) {
-        console.error('音声再生例外:', {
-            questionId,
-            errorDetails: error
-        });
     }
+} catch (error) {
+    console.error('音声再生例外:', {
+        questionId,
+        errorDetails: error,
+        stackTrace: error.stack // スタックトレース追加
+    });
+    
+    // 例外発生時のフォールバック処理
+    elements.feedbackText.style.color = "#ff0000";
+    elements.feedbackText.textContent = "システムエラーが発生しました";
 }
 
 function getFeedbackText(questionId) {
