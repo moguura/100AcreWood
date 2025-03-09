@@ -462,24 +462,34 @@ document.addEventListener("DOMContentLoaded", function () {
         recognition.start();
     }
 
-    function showFeedback(questionId, isCorrect) {
-        const correctImage = document.getElementById(`correctImage${questionId}`);
-        const wrongImage = document.getElementById(`wrongImage${questionId}`);
-        const feedbackText = document.getElementById(`feedbackText${questionId}`);
-        const feedbackContainer = document.getElementById(`feedback${questionId}`);
+function showFeedback(questionId) {
+    const correctImage = document.getElementById(`correctImage${questionId}`);
+    const wrongImage = document.getElementById(`wrongImage${questionId}`);
+    const feedbackText = document.getElementById(`feedbackText${questionId}`);
+    const feedbackContainer = document.getElementById(`feedback${questionId}`);
 
-        if (feedbackContainer) feedbackContainer.classList.add('show');
-        if (feedbackText) {
-            feedbackText.textContent = isCorrect ? getFeedbackText(questionId).correct : getFeedbackText(questionId).incorrect;
-            feedbackText.style.display = 'block';
-        }
-        if (correctImage && wrongImage) {
-            correctImage.style.display = isCorrect ? 'block' : 'none';
-            wrongImage.style.display = isCorrect ? 'none' : 'block';
-        }
-        const feedbackAudio = isCorrect ? document.getElementById(`correctAudio${questionId}`) : document.getElementById(`wrongAudio${questionId}`);
-        if (feedbackAudio) feedbackAudio.play().catch(e => console.error("フィードバック音の再生エラー:", e));
+    if (feedbackContainer) feedbackContainer.classList.add('show');
+    if (feedbackText) {
+        feedbackText.textContent = getFeedbackText(questionId); // 常にcorrectのテキストのみ表示
+        feedbackText.style.display = 'block';
     }
+    if (correctImage && wrongImage) {
+        correctImage.style.display = 'block'; // 正解画像を表示
+        wrongImage.style.display = 'none';   // 不正解画像を非表示
+    }
+    const feedbackAudio = document.getElementById(`correctAudio${questionId}`);
+    if (feedbackAudio) feedbackAudio.play().catch(e => console.error("フィードバック音の再生エラー:", e));
+}
+
+function getFeedbackText(questionId) {
+    const feedbackMessages = {
+        E1: "あつかったです。 (It was hot.)",
+        E2: "あつくなかったです。（It was not hot.）",
+        E3: "よかったです。（It was good.）",
+        E4: "よくなかったです。（It was not good.）",
+    };
+    return feedbackMessages[questionId];
+}
 
     function checkCompletion() {
         if (Object.keys(buttonsPressed).length === Object.keys(answers).length) {
