@@ -76,6 +76,10 @@ h1 {
 .mic-button.recording {
     box-shadow: 0 0 15px rgba(255, 0, 0, 0.8); /* 赤く光る */
 }
+.mic-button:disabled {
+    background-color: gray;
+    cursor: not-allowed;
+}
 
 /* 説明文のスタイル */
 .instructions {
@@ -412,7 +416,20 @@ const buttonsPressed = {
     Q9: false, Q10: false
 };
 
+function finalizeRecognition(questionId, transcript, micButton) {
+    const isCorrect = isCorrectAnswer(questionId, transcript);
+    showFeedback(questionId, isCorrect);
+    buttonsPressed[questionId] = true; // ★ マイク入力を1回に制限
+    micButton.disabled = true; // ★ ボタンを無効化
+    checkAllAnswered();
+}
+
 function startRecognition(questionId) {
+    if (buttonsPressed[questionId]) {
+        console.log(`質問 ${questionId} はすでに回答済みです。`);
+        return; // ★ すでに回答済みなら何もしない
+    }
+
     if (!('webkitSpeechRecognition' in window)) {
         alert("Speech recognition is not available in this browser. Please use Google Chrome.");
         return;
@@ -420,19 +437,27 @@ function startRecognition(questionId) {
 
     const recognition = new webkitSpeechRecognition();
     recognition.lang = 'ja-JP';
+    recognition.interimResults = true;
+
+    let finalTranscript = "";
+    let lastResultTime = Date.now();
+    const maxWaitTime = 2000;
 
     const micButton = document.getElementById(`startButton${questionId}`);
     micButton.classList.add("recording");
 
     recognition.onresult = function(event) {
-        const transcript = event.results[0][0].transcript.trim();
-        console.log(`認識結果 (${questionId}):`, transcript);
-        
-        const isCorrect = isCorrectAnswer(questionId, transcript);
-        showFeedback(questionId, isCorrect);
-        
-        buttonsPressed[questionId] = true;
-        checkAllAnswered();
+        let currentTime = Date.now();
+        let newTranscript = event.results[event.results.length - 1][0].transcript.trim();
+        finalTranscript = newTranscript;
+        lastResultTime = currentTime;
+        console.log(`認識結果 (${questionId}):`, finalTranscript);
+
+        // ★ スムーズに発話した場合（結果が即得られたら）、すぐに判定する
+        if (event.results[event.results.length - 1].isFinal) {
+            finalizeRecognition(questionId, finalTranscript, micButton);
+            recognition.stop(); // 明示的に停止
+        }
     };
 
     recognition.onerror = function(event) {
@@ -442,6 +467,14 @@ function startRecognition(questionId) {
 
     recognition.onend = function() {
         micButton.classList.remove("recording");
+
+        // ★ 最後の音声入力から maxWaitTime 経過したら最終判定
+        setTimeout(() => {
+            if (Date.now() - lastResultTime >= maxWaitTime) {
+                console.log(`最終判定 (${questionId}):`, finalTranscript);
+                finalizeRecognition(questionId, finalTranscript, micButton);
+            }
+        }, maxWaitTime);
     };
 
     recognition.start();
@@ -450,22 +483,14 @@ function startRecognition(questionId) {
 function isCorrectAnswer(questionId, userInput) {
     const normalizedInput = normalizeText(userInput);
     console.log(`Normalized Input (${questionId}):`, normalizedInput);
-
     const correctEnding = answers[questionId][0];
-
-    if (correctEnding === "くない" && normalizedInput.endsWith("くない")) {
-        return true;
-    } else if (correctEnding === "い" && normalizedInput.endsWith("い") && !normalizedInput.endsWith("くない")) {
-        return true;
-    }
-    return false;
+    return correctEnding === "くない" ? normalizedInput.endsWith("くない") : normalizedInput.endsWith("い") && !normalizedInput.endsWith("くない");
 }
 
 function normalizeText(text) {
-    let normalized = text.toLowerCase().replace(/\s+/g, '');
-    normalized = normalized.replace(/です$/, '');
-    return normalized;
+    return text.toLowerCase().replace(/\s+/g, '').replace(/です$/, '');
 }
+
 
 function showFeedback(questionId, isCorrect) {
     const feedback = document.getElementById(`feedback${questionId}`);
