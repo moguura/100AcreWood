@@ -480,9 +480,9 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         if (feedbackText) {
-            feedbackText.textContent = isCorrect ? getFeedbackText(questionId).correct : getFeedbackText(questionId).incorrect;
-            feedbackText.style.display = 'block';
-        }
+   　　　　 feedbackText.textContent = getFeedbackText(questionId);
+    　　　　feedbackText.style.display = 'block';
+　　　　}
 
         if (correctImage && wrongImage) {
             correctImage.style.display = isCorrect ? 'block' : 'none';
@@ -522,10 +522,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function getFeedbackText(questionId) {
         const feedbackMessages = {
-            E1: { correct: "あついです。 (It's hot.)", incorrect: "Oops! Please try speaking again." },
-            E2: { correct: "あつくないです。（It's not hot.）", incorrect: "Oops! Please try speaking again." },
-            E3: { correct: "いいです。（It's good.）", incorrect: "Oops! Please try speaking again." },
-            E4: { correct: "よくないです。（It's not good.）", incorrect: "Oops! Please try speaking again." },
+            E1: "あついです。 (It's hot.)",
+            E2: "あつくないです。（It's not hot.）", 
+            E3: "いいです。（It's good.）", 
+            E4: "よくないです。（It's not good.）", 
         };
         return feedbackMessages[questionId];
     }
