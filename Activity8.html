@@ -193,6 +193,11 @@ img.illustration {
 .mic-button.recording {
     box-shadow: 0 0 15px rgba(255, 0, 0, 0.8)!important;/* 赤く光る */
 }
+.mic-button:disabled {
+    background-color: gray;
+    cursor: not-allowed;
+}
+
 
 /* 通知ボード */
 .notice-board {
@@ -576,6 +581,14 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 });
 
+function finalizeRecognition(questionId, transcript, micButton) {
+    const isCorrect = isCorrectAnswer(questionId, transcript);
+    showFeedback(questionId, isCorrect);
+    buttonsPressed[questionId] = true; // ★ マイク入力を1回に制限
+    micButton.disabled = true; // ★ ボタンを無効化
+    checkAllAnswered();
+}
+
 function startRecognition(questionId) {
     if (!('webkitSpeechRecognition' in window)) {
         alert("Speech recognition is not available in this browser. Please use Google Chrome.");
@@ -584,41 +597,37 @@ function startRecognition(questionId) {
 
     const recognition = new webkitSpeechRecognition();
     recognition.lang = 'ja-JP';
+    recognition.interimResults = true;
 
-    // 対象のマイクボタンを取得
+    let finalTranscript = "";
+    let lastResultTime = Date.now();
+    const maxWaitTime = 2000;
+
     const micButton = document.getElementById(`startButton${questionId}`);
-
-    // 録音開始時に recording クラスを追加
-    micButton.classList.add('recording');
+    micButton.classList.add("recording");
 
     recognition.onresult = function(event) {
-        const transcript = event.results[0][0].transcript.trim();
-        const isCorrect = isCorrectAnswer(questionId, transcript);
-
-        showFeedback(questionId, isCorrect, transcript);
-
-        buttonsPressed[questionId] = true;
-
-        // すべてのボタンが押されたら次のリンクを表示
-        if (Object.values(buttonsPressed).every(Boolean)) {
-            document.getElementById("nextLink").style.display = "block";
-        }
-
-        // 録音終了後に recording クラスを削除
-        micButton.classList.remove('recording');
+        let currentTime = Date.now();
+        let newTranscript = event.results[event.results.length - 1][0].transcript.trim();
+        finalTranscript = newTranscript;
+        lastResultTime = currentTime;
+        console.log(`認識結果 (${questionId}):`, finalTranscript);
     };
 
     recognition.onerror = function(event) {
         alert("Speech recognition failed. Please try again.");
         console.error("Speech Recognition Error:", event.error);
-
-        // エラー発生時も recording クラスを削除
-        micButton.classList.remove('recording');
     };
 
     recognition.onend = function() {
-        // 録音が自然に終了した場合も recording クラスを削除
-        micButton.classList.remove('recording');
+        micButton.classList.remove("recording");
+
+        setTimeout(() => {
+            if (Date.now() - lastResultTime >= maxWaitTime) {
+                console.log(`最終判定 (${questionId}):`, finalTranscript);
+                finalizeRecognition(questionId, finalTranscript, micButton);
+            }
+        }, maxWaitTime);
     };
 
     recognition.start();
