@@ -415,7 +415,7 @@ function startRecognition(questionId) {
 
     let finalTranscript = "";
     let lastResultTime = Date.now();
-    const maxWaitTime = 2000;
+    const maxWaitTime = 3000;
 
     const micButton = document.getElementById(`startButton${questionId}`);
     micButton.classList.add("recording");
