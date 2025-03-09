@@ -389,23 +389,27 @@ function startRecognition(questionId) {
     };
 
     recognition.onerror = function(event) {
-        alert("Speech recognition failed. Please try again.");
-        console.error("Speech Recognition Error:", event.error);
-    };
+    alert("Speech recognition failed. Please try again.");
+    console.error("Speech Recognition Error:", event.error);
+    
+    micButton.classList.remove("recording"); // ボタンの録音状態を解除
+    micButton.disabled = true; // ボタンを無効化
+};
 
-    recognition.onend = function() {
-        micButton.classList.remove("recording");
 
-        if (!recognitionFinalized) {
-            setTimeout(() => {
-                if (!recognitionFinalized) {
-                    console.log(`最終判定 (${questionId}):`, finalTranscript);
-                    finalizeRecognition(questionId, finalTranscript, micButton);
-                    recognitionFinalized = true;
-                }
-            }, maxWaitTime);
-        }
-    };
+   recognition.onend = function() {
+    micButton.classList.remove("recording"); // ここで録音状態を解除
+    if (!recognitionFinalized) {
+        setTimeout(() => {
+            if (!recognitionFinalized) {
+                console.log(`最終判定 (${questionId}):`, finalTranscript);
+                finalizeRecognition(questionId, finalTranscript, micButton);
+                recognitionFinalized = true;
+            }
+        }, maxWaitTime);
+    }
+};
+
 
     recognition.start();
 }
@@ -479,21 +483,19 @@ function showFeedback(questionId, isCorrect) {
     }
 
     // **音を鳴らす（`null` チェック付き）**
-    if (isCorrect) {
-        if (correctAudio) {
-            correctAudio.play().catch(e => console.error("正解音の再生エラー:", e));
-        } else {
-            console.warn(`正解音が見つかりません: correctAudio${questionId}`);
-        }
-    } else {
-        if (wrongAudio) {
-            wrongAudio.play().catch(e => console.error("不正解音の再生エラー:", e));
-        } else {
-            console.warn(`不正解音が見つかりません: wrongAudio${questionId}`);
-        }
+   if (isCorrect) {
+    if (correctAudio) {
+        correctAudio.pause(); // 一度停止
+        correctAudio.currentTime = 0; // 再生位置をリセット
+        correctAudio.play().catch(e => console.error("正解音の再生エラー:", e));
+    }
+} else {
+    if (wrongAudio) {
+        wrongAudio.pause(); // 一度停止
+        wrongAudio.currentTime = 0; // 再生位置をリセット
+        wrongAudio.play().catch(e => console.error("不正解音の再生エラー:", e));
     }
 }
-
 
 function getFeedbackText(questionId) {
     const feedbackMessages = {
