@@ -474,35 +474,38 @@ function normalizeText(text) {
 }
 
 function showFeedback(questionId, isCorrect) {
-    const feedbackDiv = document.getElementById(`feedback${questionId}`); // 追加
+    // 要素取得（音声要素を追加）
+    const feedbackDiv = document.getElementById(`feedback${questionId}`);
     const correctImage = document.getElementById(`correctImage${questionId}`);
     const wrongImage = document.getElementById(`wrongImage${questionId}`);
     const feedbackText = document.getElementById(`feedbackText${questionId}`);
+    const correctAudio = document.getElementById(`correctAudio${questionId}`);
+    const wrongAudio = document.getElementById(`wrongAudio${questionId}`);
 
-    feedbackDiv.style.display = 'block'; // 追加：親要素を表示
+    // フィードバック表示制御
+    feedbackDiv.style.display = 'block';
     correctImage.style.display = isCorrect ? 'block' : 'none';
     wrongImage.style.display = isCorrect ? 'none' : 'block';
     feedbackText.style.display = 'block';
-}
+    
+    // フィードバックテキスト設定（追加）
+    const feedbackContent = getFeedbackText(questionId);
+    feedbackText.textContent = isCorrect ? feedbackContent.correct : feedbackContent.incorrect;
 
-
-    // 音声の再生（エラーをキャッチする）
-if (isCorrect) {
-    if (correctAudio) {
-        correctAudio.play().catch(error => {
-            console.error(`正解音声再生エラー (${questionId}):`, error);
-            alert(`音声の再生に失敗しました: ${error.message}`);
-        });
+    // 音声再生処理（関数内に統合）
+    try {
+        const targetAudio = isCorrect ? correctAudio : wrongAudio;
+        if (targetAudio) {
+            targetAudio.currentTime = 0; // 再生位置リセット
+            targetAudio.play().catch(error => {
+                console.error(`${isCorrect ? '正解' : '不正解'}音声再生エラー (${questionId}):`, error);
+                alert(`音声再生失敗: ${error.message}`);
+            });
+        }
+    } catch (error) {
+        console.error('音声再生例外:', error);
     }
-} else {
-    if (wrongAudio) {
-        wrongAudio.play().catch(error => {
-            console.error(`不正解音声再生エラー (${questionId}):`, error);
-            alert(`音声の再生に失敗しました: ${error.message}`);
-        });
-    }
 }
-
 
 
 function getFeedbackText(questionId) {
