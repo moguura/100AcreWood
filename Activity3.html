@@ -314,18 +314,25 @@ const buttonsPressed = {
 };
 
 document.addEventListener('DOMContentLoaded', () => {
+    console.log("📢 DOMContentLoaded fired!");
+
     const finalInstructions = document.getElementById('finalInstructions');
     const noticeBoard = document.querySelector('.notice-board');
 
-    finalInstructions.style.display = 'none';
-    noticeBoard.style.display = 'none';
+    if (finalInstructions) finalInstructions.style.display = 'none';
+    if (noticeBoard) noticeBoard.style.display = 'none';
 
-    document.getElementById('startButtonE1').addEventListener('click', () => startRecognition('E1'));
-    document.getElementById('startButtonQ1').addEventListener('click', () => startRecognition('Q1'));
-    document.getElementById('startButtonQ2').addEventListener('click', () => startRecognition('Q2'));
-    document.getElementById('startButtonQ3').addEventListener('click', () => startRecognition('Q3'));
-    document.getElementById('startButtonQ4').addEventListener('click', () => startRecognition('Q4'));
-    document.getElementById('startButtonQ5').addEventListener('click', () => startRecognition('Q5'));
+    const buttonIds = ["startButtonE1", "startButtonQ1", "startButtonQ2", "startButtonQ3", "startButtonQ4", "startButtonQ5"];
+    
+    buttonIds.forEach(buttonId => {
+        const button = document.getElementById(buttonId);
+        if (button) {
+            console.log(`✅ Found button: ${buttonId}`);
+            button.addEventListener('click', () => startRecognition(buttonId.replace("startButton", "")));
+        } else {
+            console.error(`❌ Button not found: ${buttonId}`);
+        }
+    });
 });
 
 function finalizeRecognition(questionId, transcript, micButton) {
@@ -337,82 +344,73 @@ function finalizeRecognition(questionId, transcript, micButton) {
 }
 
 function startRecognition(questionId) {
+    console.log(`🔍 startRecognition called for: ${questionId}`);
+
     if (!('webkitSpeechRecognition' in window)) {
         alert("Speech recognition is not available in this browser. Please use Google Chrome.");
+        console.error("🚨 Speech recognition not supported");
         return;
     }
 
     const recognition = new webkitSpeechRecognition();
     recognition.lang = 'ja-JP';
     recognition.interimResults = true;
-    recognition.continuous = true; // ★ 途中で止まらないようにする
+    recognition.continuous = true;
     recognition.maxAlternatives = 1;
 
     let finalTranscript = "";
-    let lastResultTime = Date.now();
-    const maxWaitTime = 2000;
     let recognitionFinalized = false;
     let timeoutId = null;
 
     const micButton = document.getElementById(`startButton${questionId}`);
+    if (!micButton) {
+        console.error(`❌ micButton not found for questionId: ${questionId}`);
+        return;
+    }
+
     micButton.classList.add("recording");
+    console.log("🎤 Recognition started..."); // ②録音が開始されたか確認
 
     recognition.onresult = function(event) {
-        let currentTime = Date.now();
         let newTranscript = event.results[event.results.length - 1][0].transcript.trim();
         finalTranscript = newTranscript;
-        lastResultTime = currentTime;
-        console.log(`認識結果 (${questionId}):`, finalTranscript);
+        console.log(`📢 認識結果 (${questionId}):`, finalTranscript);
 
         if (recognitionFinalized) return;
-
         if (timeoutId) clearTimeout(timeoutId);
 
-        // ★「です。」まで言ったら即時判定
         if (finalTranscript.endsWith("です") || finalTranscript.endsWith("です。")) {
-            console.log(`即時判定 (${questionId}):`, finalTranscript);
+            console.log(`✅ 即時判定 (${questionId}):`, finalTranscript);
             finalizeRecognition(questionId, finalTranscript, micButton);
             recognitionFinalized = true;
             recognition.stop();
             return;
         }
 
-        // ★ 発話が途切れても、最大2秒待つ
         timeoutId = setTimeout(() => {
             if (!recognitionFinalized) {
-                console.log(`最終判定 (${questionId}):`, finalTranscript);
+                console.log(`⏳ 最終判定 (${questionId}):`, finalTranscript);
                 finalizeRecognition(questionId, finalTranscript, micButton);
                 recognitionFinalized = true;
                 recognition.stop();
             }
-        }, maxWaitTime);
+        }, 2000);
     };
 
-   recognition.onerror = function(event) {
-    console.error("🚨 Speech Recognition Error:", event.error);
-    alert("Speech recognition failed. Please try again.");
-    
-    micButton.classList.remove("recording"); // ボタンの録音状態を解除
-    micButton.disabled = false; // 🔴 ボタンを無効化しないよう修正
-};
+    recognition.onerror = function(event) {
+        console.error("🚨 Speech Recognition Error:", event.error);
+        alert("Speech recognition failed. Please try again.");
+        micButton.classList.remove("recording");
+        micButton.disabled = false;
+    };
 
-
-  recognition.onend = function() {
-    micButton.classList.remove("recording"); // ここで録音状態を解除
-    if (!recognitionFinalized) {
-        setTimeout(() => {
-            if (!recognitionFinalized) {
-                console.log(`最終判定 (${questionId}):`, finalTranscript);
-                finalizeRecognition(questionId, finalTranscript, micButton);
-                recognitionFinalized = true;
-                recognition.stop(); // ここで録音を停止する
-            }
-        }, maxWaitTime);
-    }
-};
-
+    recognition.onend = function() {
+        console.log("🛑 Recognition ended.");
+        micButton.classList.remove("recording");
+    };
 
     recognition.start();
+    console.log("✅ recognition.start() called"); // ③ここまで到達するか確認
 }
 
 function checkAllButtonsPressed() {
