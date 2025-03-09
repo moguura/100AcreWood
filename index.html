@@ -433,6 +433,8 @@ function startRecognition(questionId) {
     const recognition = new webkitSpeechRecognition();
     recognition.lang = 'ja-JP';
     recognition.interimResults = true;
+    recognition.continuous = false; // ★自動停止を防ぐ
+    recognition.maxAlternatives = 1;
 
     let finalTranscript = "";
     let lastResultTime = Date.now();
@@ -450,19 +452,16 @@ function startRecognition(questionId) {
         lastResultTime = currentTime;
         console.log(`認識結果 (${questionId}):`, finalTranscript);
 
-        // 既に判定されていたら処理しない
         if (recognitionFinalized) return;
 
-        // ★ 既にタイムアウトがセットされていたらクリアし、再セット
         if (timeoutId) clearTimeout(timeoutId);
 
-        // ★ 2秒後に判定を行う（最後の発話を待つ）
+        // ★ 2秒後に最終判定を行う（途中で止まっても待つ）
         timeoutId = setTimeout(() => {
             if (!recognitionFinalized) {
                 console.log(`最終判定 (${questionId}):`, finalTranscript);
                 finalizeRecognition(questionId, finalTranscript, micButton);
                 recognitionFinalized = true;
-                recognition.stop(); // ★ マイクを停止
             }
         }, maxWaitTime);
     };
@@ -475,7 +474,6 @@ function startRecognition(questionId) {
     recognition.onend = function() {
         micButton.classList.remove("recording");
 
-        // ★ 発話が途中で終わっている可能性があるので、まだ判定されていなければ2秒待って判定
         if (!recognitionFinalized) {
             setTimeout(() => {
                 if (!recognitionFinalized) {
