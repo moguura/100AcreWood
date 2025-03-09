@@ -135,7 +135,7 @@ h1 {
     width: 600px;
     height: auto;
     margin: 30px auto;
-    display: block;
+    display: none;
 }
 /* フィードバックのテキスト */
 .feedback-text {
@@ -474,32 +474,35 @@ function normalizeText(text) {
 }
 
 function showFeedback(questionId, isCorrect) {
+    const feedbackDiv = document.getElementById(`feedback${questionId}`); // 追加
     const correctImage = document.getElementById(`correctImage${questionId}`);
     const wrongImage = document.getElementById(`wrongImage${questionId}`);
     const feedbackText = document.getElementById(`feedbackText${questionId}`);
 
-    const correctAudio = document.getElementById(`correctAudio${questionId}`);
-    const wrongAudio = document.getElementById(`wrongAudio${questionId}`);
+    feedbackDiv.style.display = 'block'; // 追加：親要素を表示
+    correctImage.style.display = isCorrect ? 'block' : 'none';
+    wrongImage.style.display = isCorrect ? 'none' : 'block';
+    feedbackText.style.display = 'block';
+}
 
-    // 画像とテキストを表示する
-    if (feedbackText) {
-        feedbackText.textContent = isCorrect ? getFeedbackText(questionId).correct : getFeedbackText(questionId).incorrect;
-        feedbackText.style.display = 'block';
-    }
-
-    // 画像表示の切り替え
-    if (correctImage && wrongImage) {
-        correctImage.style.display = isCorrect ? 'block' : 'none';
-        wrongImage.style.display = isCorrect ? 'none' : 'block';
-    }
 
     // 音声の再生（エラーをキャッチする）
-    if (isCorrect) {
-        if (correctAudio) correctAudio.play().catch(() => {});
-    } else {
-        if (wrongAudio) wrongAudio.play().catch(() => {});
+if (isCorrect) {
+    if (correctAudio) {
+        correctAudio.play().catch(error => {
+            console.error(`正解音声再生エラー (${questionId}):`, error);
+            alert(`音声の再生に失敗しました: ${error.message}`);
+        });
+    }
+} else {
+    if (wrongAudio) {
+        wrongAudio.play().catch(error => {
+            console.error(`不正解音声再生エラー (${questionId}):`, error);
+            alert(`音声の再生に失敗しました: ${error.message}`);
+        });
     }
 }
+
 
 
 function getFeedbackText(questionId) {
