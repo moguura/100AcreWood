@@ -386,6 +386,8 @@ function finalizeRecognition(questionId, transcript, micButton) {
 }
 
 function startRecognition(questionId) {
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    audioContext.resume().then(() => {
     if (!('webkitSpeechRecognition' in window)) {
         alert("Speech recognition is not available in this browser. Please use Google Chrome.");
         return;
@@ -474,39 +476,54 @@ function normalizeText(text) {
 }
 
 function showFeedback(questionId, isCorrect) {
-    // 要素取得（音声要素を追加）
-    const feedbackDiv = document.getElementById(`feedback${questionId}`);
-    const correctImage = document.getElementById(`correctImage${questionId}`);
-    const wrongImage = document.getElementById(`wrongImage${questionId}`);
-    const feedbackText = document.getElementById(`feedbackText${questionId}`);
-    const correctAudio = document.getElementById(`correctAudio${questionId}`);
-    const wrongAudio = document.getElementById(`wrongAudio${questionId}`);
+    const elements = {
+        feedbackDiv: document.getElementById(`feedback${questionId}`),
+        correctImage: document.getElementById(`correctImage${questionId}`),
+        wrongImage: document.getElementById(`wrongImage${questionId}`),
+        feedbackText: document.getElementById(`feedbackText${questionId}`),
+        correctAudio: document.getElementById(`correctAudio${questionId}`),
+        wrongAudio: document.getElementById(`wrongAudio${questionId}`)
+    };
 
-    // フィードバック表示制御
-    feedbackDiv.style.display = 'block';
-    correctImage.style.display = isCorrect ? 'block' : 'none';
-    wrongImage.style.display = isCorrect ? 'none' : 'block';
-    feedbackText.style.display = 'block';
+    // 要素の存在チェック
+    if (!elements.feedbackDiv || !elements.correctImage || !elements.wrongImage) {
+        console.error(`フィードバック要素が見つかりません: ${questionId}`);
+        return;
+    }
+
+    // 表示制御
+    elements.feedbackDiv.style.display = 'block';
+    elements.correctImage.style.display = isCorrect ? 'block' : 'none';
+    elements.wrongImage.style.display = isCorrect ? 'none' : 'block';
+    elements.feedbackText.style.display = 'block';
     
-    // フィードバックテキスト設定（追加）
+    // フィードバックテキスト更新
     const feedbackContent = getFeedbackText(questionId);
-    feedbackText.textContent = isCorrect ? feedbackContent.correct : feedbackContent.incorrect;
+    elements.feedbackText.textContent = isCorrect ? feedbackContent.correct : feedbackContent.incorrect;
 
-    // 音声再生処理（関数内に統合）
+    // 音声再生処理
+    const targetAudio = isCorrect ? elements.correctAudio : elements.wrongAudio;
+    if (!targetAudio) {
+        console.warn(`音声要素が見つかりません: ${questionId}`);
+        return;
+    }
+
     try {
-        const targetAudio = isCorrect ? correctAudio : wrongAudio;
-        if (targetAudio) {
-            targetAudio.currentTime = 0; // 再生位置リセット
-            targetAudio.play().catch(error => {
-                console.error(`${isCorrect ? '正解' : '不正解'}音声再生エラー (${questionId}):`, error);
-                alert(`音声再生失敗: ${error.message}`);
+        targetAudio.currentTime = 0;
+        targetAudio.play().catch(error => {
+            console.error(`${isCorrect ? '正解' : '不正解'}音声再生エラー (${questionId}):`, {
+                errorType: error.name,
+                message: error.message,
+                audioSrc: targetAudio.src
             });
-        }
+        });
     } catch (error) {
-        console.error('音声再生例外:', error);
+        console.error('音声再生例外:', {
+            questionId,
+            errorDetails: error
+        });
     }
 }
-
 
 function getFeedbackText(questionId) {
     const feedbackMessages = {
