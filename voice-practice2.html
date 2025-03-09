@@ -194,12 +194,16 @@ h1 {
     margin: 0 0 5px 0 !important; /* 下だけ少し余白 */
 }
 
-/* 通知ボード固有のスタイル */
 .notice-board {
     background-color: #ffeeba;
     border: 1px solid #d1d5db;
     text-align: center;
+    padding: 20px;
+    margin: 30px auto;
+    max-width: 1000px; /* 説明ボックスよりも広めに設定 */
+    width: 80%; /* 画面幅に応じて調整 */
 }
+    
 .instructions:last-of-type {
     display: none;
 }
@@ -275,6 +279,16 @@ a:hover {
                 You can speak into the microphone <span class="red-bold">just once</span>.               
             </p>
         </div>
+
+        <!-- Notice Board -->
+      <div class="notice-board">
+          <p>　
+              <span class="blue-bold">Please note:</span>　Speech recognition may not always be 100% accurate.<br>
+              If your answer is incorrect, don't worry - just continue to the next question.<br><br>
+              🚫 <strong>Please don't press the browser's refresh button, <br>
+                  even if the speech recognition is wrong. </strong>
+          </p>
+      </div>
         
 　　　　<!-- E1の例題 -->
 　　<div class="question" id="E1">
