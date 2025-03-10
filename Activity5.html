@@ -415,7 +415,7 @@ function finalizeRecognition(questionId, transcript, micButton) {
 
 function checkAllAnswered() {
     const allAnswered = Object.values(buttonsPressed).every(value => value);
-    const nextPageLink = document.getElementById("nextPageLink");
+    const nextPageLink = document.getElementById("nextLink");
 
     if (allAnswered) {
         if (nextPageLink) {
@@ -486,28 +486,30 @@ function isCorrectAnswer(questionId, userInput) {
 
 function showFeedback(questionId, isCorrect) {
     const feedbackDiv = document.querySelector(`#${questionId} .feedback`);
+    
+    if (!feedbackDiv) return; // フィードバック要素が存在しない場合は処理を終了
+
     const correctImage = feedbackDiv.querySelector('.correctImage');
     const wrongImage = feedbackDiv.querySelector('.wrongImage');
-    const correctAudio = document.getElementById(`correctAudio${questionId}`);
-    const wrongAudio = document.getElementById(`wrongAudio${questionId}`);
-
+    
     feedbackDiv.style.display = 'block';
     
     if (correctImage && wrongImage) {
         correctImage.style.display = isCorrect ? 'block' : 'none';
         wrongImage.style.display = isCorrect ? 'none' : 'block';
     }
+
+    const feedbackAudio = isCorrect 
+        ? document.getElementById(`correctAudio${questionId}`) 
+        : document.getElementById(`wrongAudio${questionId}`);
     
-    if (isCorrect && correctAudio) correctAudio.play();
-    if (!isCorrect && wrongAudio) wrongAudio.play();
+    if (feedbackAudio) feedbackAudio.play().catch(e => console.error("フィードバック音の再生エラー:", e));
 }
 
-    // すべてのフィードバックが表示されたかチェック
-    checkAllFeedbackDisplayed();
-}
-
+// すべてのフィードバックが表示されたかチェック
 function checkAllFeedbackDisplayed() {
     const allFeedback = document.querySelectorAll('.feedback');
+    
     const allDisplayed = Array.from(allFeedback).every(feedback => feedback.style.display === 'block');
 
     if (allDisplayed) {
