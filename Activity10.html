@@ -540,29 +540,38 @@ document.addEventListener("DOMContentLoaded", function() {
     // すべての音声再生ボタンを取得
     const buttons = document.querySelectorAll(".play-audio");
 
-buttons.forEach(button => {
-    button.addEventListener("click", function() {
-        const audioId = this.id.replace("play-audio-", "audio-");
-        const audio = document.getElementById(audioId);
+    buttons.forEach(button => {
+        button.addEventListener("click", function() {
+            const audioId = this.id.replace("play-audio-", "audio-");
+            const audio = document.getElementById(audioId);
 
-        if (!audio) {
-            console.error(`音声が見つかりません: ${audioId}`);
-            return;
-        }
+            if (!audio) {
+                console.error(`音声が見つかりません: ${audioId}`);
+                return;
+            }
 
-        // すべての音声を停止
-        document.querySelectorAll("audio").forEach(a => {
-            if (!a.paused) {
-                a.pause();
-                a.currentTime = 0;
+            // すべての音声を停止
+            document.querySelectorAll("audio").forEach(a => {
+                if (!a.paused) {
+                    a.pause();
+                    a.currentTime = 0;
+                }
+            });
+
+            // 選択された音声を再生
+            if (audio.paused) {
+                audio.play();
             }
         });
-
-        // 選択された音声を再生
-        if (audio.paused) {
-            audio.play();
-        }
     });
+
+    // マイクボタンにイベントリスナーを追加
+   document.querySelectorAll('.mic-button').forEach(button => {
+    const questionId = button.id.replace('startButton', '');
+    console.log(`マイクボタン登録: ${button.id} → ${questionId}`);  // ✅ ここでIDが正しく取得できているか確認
+    if (questionId) {  
+        button.addEventListener('click', () => startRecognition(questionId));
+    }
 });
 
 
@@ -585,7 +594,7 @@ function checkAllAnswered() {
             nextLink.style.display = "block";
         }
 
-        // 🔽 ここに移動する
+        // 🔽 修正: ここでタスク終了音を再生
         const taskEndAudio = new Audio("https://raw.githubusercontent.com/moguura/my-images/main/taskend2.mp3");
         taskEndAudio.play().catch(e => console.error("タスク終了音の再生エラー:", e));
     }
@@ -738,14 +747,6 @@ function displayFeedback(questionId) {
         feedbackElement.innerHTML = feedback.replace(/\n/g, "<br>");
     }
 }
-
-document.querySelectorAll('.mic-button').forEach(button => {
-    const questionId = button.id.replace('startButton', '');
-    console.log(`マイクボタン登録: ${button.id} → ${questionId}`);  // ✅ デバッグ用
-    if (questionId) {  // ✅ 空文字を防ぐ
-        button.addEventListener('click', () => startRecognition(questionId));
-    }
-});
 </script>
 </body>
 </html>
