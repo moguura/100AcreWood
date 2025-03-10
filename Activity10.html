@@ -540,26 +540,31 @@ document.addEventListener("DOMContentLoaded", function() {
     // すべての音声再生ボタンを取得
     const buttons = document.querySelectorAll(".play-audio");
 
-    buttons.forEach(button => {
-        button.addEventListener("click", function() {
-            const audioId = this.id.replace("play-audio-", "audio-");
-            const audio = document.getElementById(audioId);
+buttons.forEach(button => {
+    button.addEventListener("click", function() {
+        const audioId = this.id.replace("play-audio-", "audio-");
+        const audio = document.getElementById(audioId);
 
-            // すべての音声を停止
-            document.querySelectorAll("audio").forEach(a => {
-                if (!a.paused) {
-                    a.pause();
-                    a.currentTime = 0;
-                }
-            });
+        if (!audio) {
+            console.error(`音声が見つかりません: ${audioId}`);
+            return;
+        }
 
-            // 選択された音声を再生
-            if (audio.paused) {
-                audio.play();
+        // すべての音声を停止
+        document.querySelectorAll("audio").forEach(a => {
+            if (!a.paused) {
+                a.pause();
+                a.currentTime = 0;
             }
         });
+
+        // 選択された音声を再生
+        if (audio.paused) {
+            audio.play();
+        }
     });
 });
+
 
 function finalizeRecognition(questionId, transcript, micButton) {
     const isCorrect = isCorrectAnswer(questionId, transcript);
@@ -570,19 +575,17 @@ function finalizeRecognition(questionId, transcript, micButton) {
 }
     
 function checkAllAnswered() {
-    console.log("ボタンの状態:", buttonsPressed);  // デバッグ用
+    console.log("ボタンの状態:", buttonsPressed);
     const allAnswered = Object.values(buttonsPressed).every(value => value);
     const nextLink = document.getElementById("nextLink");
 
     if (allAnswered) {
-        console.log("すべての問題が完了しました！リンクを表示します。"); // デバッグ
+        console.log("すべての問題が完了しました！リンクを表示します。");
         if (nextLink) {
             nextLink.style.display = "block";
         }
-    }
-}
 
-        // ★ タスク終了の音楽を流す
+        // 🔽 ここに移動する
         const taskEndAudio = new Audio("https://raw.githubusercontent.com/moguura/my-images/main/taskend2.mp3");
         taskEndAudio.play().catch(e => console.error("タスク終了音の再生エラー:", e));
     }
@@ -736,10 +739,12 @@ function displayFeedback(questionId) {
     }
 }
 
-// マイクボタンにイベントリスナーを追加
 document.querySelectorAll('.mic-button').forEach(button => {
     const questionId = button.id.replace('startButton', '');
-    button.addEventListener('click', () => startRecognition(questionId));
+    console.log(`マイクボタン登録: ${button.id} → ${questionId}`);  // ✅ デバッグ用
+    if (questionId) {  // ✅ 空文字を防ぐ
+        button.addEventListener('click', () => startRecognition(questionId));
+    }
 });
 </script>
 </body>
