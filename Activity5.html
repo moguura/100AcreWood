@@ -499,16 +499,11 @@ function showFeedback(questionId, isCorrect) {
         wrongImage.style.display = isCorrect ? 'none' : 'block';
     }
 
-    const correctAudioId = `correctAudio${questionId}`;
-    const wrongAudioId = `wrongAudio${questionId}`;
-    
     const feedbackAudio = isCorrect 
-        ? document.getElementById(correctAudioId) 
-        : document.getElementById(wrongAudioId);
+        ? document.getElementById(`correctAudio${questionId}`) 
+        : document.getElementById(`wrongAudio${questionId}`);
     
-    if (feedbackAudio) {
-        feedbackAudio.play().catch(e => console.error(`フィードバック音の再生エラー (${questionId}):`, e));
-    }
+    if (feedbackAudio) feedbackAudio.play().catch(e => console.error("フィードバック音の再生エラー:", e));
 }
 
 // すべてのフィードバックが表示されたかチェック
