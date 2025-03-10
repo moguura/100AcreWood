@@ -373,8 +373,8 @@ a:hover {
         <!-- リンク -->
         <a href="./Activity6.html" id="nextLink" style="display: none;">Go to Activity6</a>
         
-<!-- タスク終了音をHTMLに直接記述 -->
-<audio id="finalMusic" src="https://raw.githubusercontent.com/moguura/my-images/main/taskend2.mp3" autoplay></audio>
+<!-- タスク終了音 -->
+<audio id="finalMusic" src="https://raw.githubusercontent.com/moguura/my-images/main/taskend2.mp3" preload="auto"></audio>
     </div>
 </body>
 </html>
@@ -427,7 +427,7 @@ function checkAllAnswered() {
         if (nextPageLink) {
             nextPageLink.style.display = "block";
         }
-        if (finalMusic) {
+        if (finalMusic && !finalMusic.playing) { // タスク終了音がすでに再生中でない場合のみ再生
             finalMusic.play().catch(e => console.error("タスク終了音の再生エラー:", e));
         }
     }
