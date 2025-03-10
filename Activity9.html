@@ -435,12 +435,16 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function finalizeRecognition(questionId, transcript, micButton) {
+    // 既に処理済みなら何もしない
+    if (buttonsPressed[questionId]) return;
+    
     const isCorrect = isCorrectAnswer(questionId, transcript);
     showFeedback(questionId, isCorrect);
-    buttonsPressed[questionId] = true; // ★ マイク入力を1回に制限
-    micButton.disabled = true; // ★ ボタンを無効化
-    checkAllAnswered();
+    buttonsPressed[questionId] = true; // マイク入力を1回に制限
+    micButton.disabled = true; // ボタンを無効化
+    checkAllAnswered();  // ここも、重複呼び出しの影響を受けにくくするために必要ならガードを入れる
 }
+
 
 function startRecognition(questionId) {
     if (!('webkitSpeechRecognition' in window)) {
