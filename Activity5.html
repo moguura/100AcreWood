@@ -408,8 +408,8 @@ document.addEventListener("DOMContentLoaded", function () {
 function finalizeRecognition(questionId, transcript, micButton) {
     const isCorrect = isCorrectAnswer(questionId, transcript);
     showFeedback(questionId, isCorrect);
-    buttonsPressed[questionId] = true; // ★ マイク入力を1回に制限
-    micButton.disabled = true; // ★ ボタンを無効化
+    buttonsPressed[questionId] = true; // マイク入力を1回に制限
+    micButton.disabled = true; // ボタンを無効化
     checkAllAnswered();
 }
 
@@ -422,7 +422,7 @@ function checkAllAnswered() {
             nextPageLink.style.display = "block";
         }
 
-        // ★ タスク終了の音楽を流す
+        // タスク終了の音楽を流す
         const taskEndAudio = new Audio("https://raw.githubusercontent.com/moguura/my-images/main/taskend2.mp3");
         taskEndAudio.play().catch(e => console.error("タスク終了音の再生エラー:", e));
     }
@@ -437,7 +437,7 @@ function startRecognition(questionId) {
     const recognition = new webkitSpeechRecognition();
     recognition.lang = 'ja-JP';
     recognition.interimResults = true;
-    recognition.continuous = false; // ★ 音声認識を一度の発話で終了させる
+    recognition.continuous = false; // 音声認識を一度の発話で終了させる
     recognition.maxAlternatives = 1;
 
     let finalTranscript = "";
@@ -454,14 +454,14 @@ function startRecognition(questionId) {
 
         if (timeoutId) clearTimeout(timeoutId);
 
-        // ★「です。」まで言ったら即時判定
+        // 「です。」まで言ったら即時判定
         if (finalTranscript.endsWith("です") || finalTranscript.endsWith("です。")) {
             finalizeRecognition(questionId, finalTranscript, micButton);
             recognition.stop();
             return;
         }
 
-        // ★ 発話が途切れても、最大2秒待つ
+        // 発話が途切れても、最大2秒待つ
         timeoutId = setTimeout(() => {
             finalizeRecognition(questionId, finalTranscript, micButton);
             recognition.stop();
@@ -501,7 +501,6 @@ function showFeedback(questionId, isCorrect) {
     if (isCorrect && correctAudio) correctAudio.play();
     if (!isCorrect && wrongAudio) wrongAudio.play();
 }
-
 
     // すべてのフィードバックが表示されたかチェック
     checkAllFeedbackDisplayed();
