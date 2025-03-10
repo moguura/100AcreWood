@@ -253,7 +253,7 @@ h1 {
     <p class="question-number">e.g.</p>
     <div class="audio-section">
         <button class="play-audio" id="play-audio-E1">▶ Play</button>
-        <audio id="audio-E1" src="https://raw.githubusercontent.com/moguura/my-images/main/6-e.g.oto.wav"></audio>
+        <audio id="audio-E1" src="https://raw.githubusercontent.com/moguura/my-images/main/6-e.g.wav"></audio>
     </div>  
     <p class="english-text">How was the weather yesterday?</p>
     <p class="japanese-text"><span class="highlight">さむい</span> → きのうは（ 　　　）</p>
@@ -286,7 +286,7 @@ h1 {
     <p class="question-number">Q1</p>
     <div class="audio-section">
         <button class="play-audio" id="play-audio-Q1">▶ Play</button>
-        <audio id="audio-Q1" src="https://raw.githubusercontent.com/moguura/my-images/main/6-1oto.wav"></audio>
+        <audio id="audio-Q1" src="https://raw.githubusercontent.com/moguura/my-images/main/6-1.wav"></audio>
     </div>  
     <p class="english-text">How was last week?</p>    
     <p class="japanese-text"><span class="highlight">いそがしい</span> →  せんしゅうは（ 　　　）</p>
@@ -305,7 +305,7 @@ h1 {
     <p class="question-number">Q2</p>
     <div class="audio-section">
         <button class="play-audio" id="play-audio-Q2">▶ Play</button>
-        <audio id="audio-Q2" src="https://raw.githubusercontent.com/moguura/my-images/main/6-2oto.wav"></audio>
+        <audio id="audio-Q2" src="https://raw.githubusercontent.com/moguura/my-images/main/6-2.wav"></audio>
     </div>
     <p class="english-text">How was the journey to Japan?</p>
     <p class="japanese-text"><span class="highlight">ちかい</span> →  にほんは（ 　　　）</p>
@@ -325,7 +325,7 @@ h1 {
     <p class="question-number">Q3</p>
     <div class="audio-section">
         <button class="play-audio" id="play-audio-Q3">▶ Play</button>
-        <audio id="audio-Q3" src="https://raw.githubusercontent.com/moguura/my-images/main/6-3oto.wav"></audio>
+        <audio id="audio-Q3" src="https://raw.githubusercontent.com/moguura/my-images/main/6-3.wav"></audio>
     </div>
     <p class="english-text">How was your bag last week?</p>
     <p class="japanese-text"><span class="highlight">おもい</span> →  かばんは（ 　　　）</p>
@@ -345,7 +345,7 @@ h1 {
     <p class="question-number">Q4</p>
     <div class="audio-section">
         <button class="play-audio" id="play-audio-Q4">▶ Play</button>
-        <audio id="audio-Q4" src="https://raw.githubusercontent.com/moguura/my-images/main/6-4oto.wav"></audio>
+        <audio id="audio-Q4" src="https://raw.githubusercontent.com/moguura/my-images/main/6-4.wav"></audio>
     </div>
     <p class="english-text">How were your clothes?</p>
     <p class="japanese-text"><span class="highlight">やすい</span> →  ふくは（ 　　　）</p>
@@ -364,7 +364,7 @@ h1 {
     <p class="question-number">Q5</p>
     <div class="audio-section">
         <button class="play-audio" id="play-audio-Q5">▶ Play</button>
-        <audio id="audio-Q5" src="https://raw.githubusercontent.com/moguura/my-images/main/6-5oto.wav"></audio>
+        <audio id="audio-Q5" src="https://raw.githubusercontent.com/moguura/my-images/main/6-5.wav"></audio>
     </div>
     <p class="english-text">How was your Japanese test yesterday?</p>
     <p class="japanese-text"><span class="highlight">むずかしい</span> → 　<ruby>テスト<rt>てすと</rt></ruby>は（ 　　　）</p>
@@ -536,17 +536,23 @@ function isCorrectAnswer(questionId, userInput) {
 
 function showFeedback(questionId, isCorrect) {
     const feedbackDiv = document.querySelector(`#${questionId} .feedback`);
-    
     if (!feedbackDiv) return;
 
     const correctImage = feedbackDiv.querySelector('.correctImage');
     const wrongImage = feedbackDiv.querySelector('.wrongImage');
-    
+
+    // まず両方の画像を非表示にする
+    if (correctImage) correctImage.style.display = 'none';
+    if (wrongImage) wrongImage.style.display = 'none';
+
+    // フィードバック全体を表示
     feedbackDiv.style.display = 'block';
     
-    if (correctImage && wrongImage) {
-        correctImage.style.display = isCorrect ? 'block' : 'none';
-        wrongImage.style.display = isCorrect ? 'none' : 'block';
+    // 正誤に応じた画像のみ表示
+    if (isCorrect && correctImage) {
+        correctImage.style.display = 'block';
+    } else if (!isCorrect && wrongImage) {
+        wrongImage.style.display = 'block';
     }
 
     const feedbackAudio = isCorrect 
