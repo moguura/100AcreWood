@@ -383,7 +383,9 @@ const answers = {
     Q10: ["たのしかった", "楽しかった"]
 };
 
-// 「です」を追加したバージョンも正解にする
+// ★ buttonsPressedを初期化
+const buttonsPressed = {};
+
 Object.keys(answers).forEach(key => {
     answers[key] = [...answers[key], ...answers[key].map(ans => ans + "です")];
 });
@@ -405,7 +407,7 @@ function finalizeRecognition(questionId, transcript, micButton) {
     micButton.disabled = true; // ★ ボタンを無効化
     checkAllAnswered();
 }
-    
+
 function checkAllAnswered() {
     const allAnswered = Object.values(buttonsPressed).every(value => value);
     const nextPageLink = document.getElementById("nextPageLink");
@@ -430,46 +432,34 @@ function startRecognition(questionId) {
     const recognition = new webkitSpeechRecognition();
     recognition.lang = 'ja-JP';
     recognition.interimResults = true;
-    recognition.continuous = true; // ★ 途中で止まらないようにする
+    recognition.continuous = false; // ★ 音声認識を一度の発話で終了させる
     recognition.maxAlternatives = 1;
 
     let finalTranscript = "";
-    let lastResultTime = Date.now();
-    const maxWaitTime = 2000;
-    let recognitionFinalized = false;
     let timeoutId = null;
+    const maxWaitTime = 2000;
 
     const micButton = document.getElementById(`startButton${questionId}`);
     micButton.classList.add("recording");
 
     recognition.onresult = function(event) {
-        let currentTime = Date.now();
         let newTranscript = event.results[event.results.length - 1][0].transcript.trim();
         finalTranscript = newTranscript;
-        lastResultTime = currentTime;
         console.log(`認識結果 (${questionId}):`, finalTranscript);
-
-        if (recognitionFinalized) return;
 
         if (timeoutId) clearTimeout(timeoutId);
 
         // ★「です。」まで言ったら即時判定
         if (finalTranscript.endsWith("です") || finalTranscript.endsWith("です。")) {
-            console.log(`即時判定 (${questionId}):`, finalTranscript);
             finalizeRecognition(questionId, finalTranscript, micButton);
-            recognitionFinalized = true;
             recognition.stop();
             return;
         }
 
         // ★ 発話が途切れても、最大2秒待つ
         timeoutId = setTimeout(() => {
-            if (!recognitionFinalized) {
-                console.log(`最終判定 (${questionId}):`, finalTranscript);
-                finalizeRecognition(questionId, finalTranscript, micButton);
-                recognitionFinalized = true;
-                recognition.stop();
-            }
+            finalizeRecognition(questionId, finalTranscript, micButton);
+            recognition.stop();
         }, maxWaitTime);
     };
 
@@ -480,16 +470,6 @@ function startRecognition(questionId) {
 
     recognition.onend = function() {
         micButton.classList.remove("recording");
-
-        if (!recognitionFinalized) {
-            setTimeout(() => {
-                if (!recognitionFinalized) {
-                    console.log(`最終判定 (${questionId}):`, finalTranscript);
-                    finalizeRecognition(questionId, finalTranscript, micButton);
-                    recognitionFinalized = true;
-                }
-            }, maxWaitTime);
-        }
     };
 
     recognition.start();
@@ -507,6 +487,7 @@ function showFeedback(questionId, isCorrect) {
     const wrongAudio = document.getElementById(`wrongAudio${questionId}`);
 
     feedbackDiv.style.display = 'block';
+    
     if (correctImage && wrongImage) {
         correctImage.style.display = isCorrect ? 'block' : 'none';
         wrongImage.style.display = isCorrect ? 'none' : 'block';
@@ -514,6 +495,8 @@ function showFeedback(questionId, isCorrect) {
     
     if (isCorrect && correctAudio) correctAudio.play();
     if (!isCorrect && wrongAudio) wrongAudio.play();
+}
+
 
     // すべてのフィードバックが表示されたかチェック
     checkAllFeedbackDisplayed();
@@ -528,3 +511,4 @@ function checkAllFeedbackDisplayed() {
     }
 }
 </script>
+</html>
