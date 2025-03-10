@@ -258,6 +258,21 @@ a:hover {
     color: #0056b3;
     transform: scale(1.05);
 }
+    
+/* 既存のCSSに追加 */
+#nextLink {
+    display: none; /* 初期状態 */
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.5s ease-in-out;
+}
+
+#nextLink.show {
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
 </style>
 </head>
 <body>
@@ -548,31 +563,58 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    function checkCompletion() {
-        if (completedQuestions.size === 8) { // E1-E8を明示的に指定
-            const elements = {
-                instructions: document.getElementById("finalInstructions"),
-                link: document.getElementById("nextLink"),
-                music: document.getElementById("finalMusic")
-            };
+    // checkCompletion関数を以下のコードで完全に置き換えてください
+function checkCompletion() {
+    if (completedQuestions.size === 8) {
+        // 変更開始 >>>>>>>>>>>>>>>>>>>>>>
+        const elements = {
+            instructions: document.getElementById("finalInstructions"),
+            link: document.getElementById("nextLink"),
+            music: document.getElementById("finalMusic")
+        };
 
-            // 要素表示
-            elements.instructions?.classList.add('show');
-            elements.link?.classList.add('show');
+        // デバッグ用ログ（確認後削除可）
+        console.log('[デバッグ] 最終要素検出:', {
+            instructions: elements.instructions !== null,
+            link: elements.link !== null,
+            music: elements.music !== null
+        });
 
-            // 音楽再生
-            if (elements.music) {
-                const playWithUserGesture = () => {
-                    elements.music.play()
-                        .catch(error => console.error("最終音楽エラー:", error));
-                };
-                
-                // ユーザー操作連鎖を確保
-                document.querySelector('.mic-button')
-                    .addEventListener('click', playWithUserGesture, { once: true });
-            }
+        // インストラクション表示
+        if (elements.instructions) {
+            elements.instructions.style.display = 'block';
+            elements.instructions.classList.add('show');
         }
+
+        // リンク表示（最も重要な修正部分）
+        if (elements.link) {
+            elements.link.style.display = 'block'; // ← この行を追加
+            elements.link.classList.add('show');
+            console.log('[デバッグ] リンクに適用されたクラス:', elements.link.classList);
+        } else {
+            console.error('[エラー] nextLink要素が見つかりません');
+        }
+
+        // 音楽再生処理
+        const handleMusicPlay = () => {
+            elements.music?.play()
+                .catch(error => {
+                    console.error('[音楽再生エラー]', error);
+                    elements.link?.classList.add('show'); // エラー時も表示保証
+                });
+        };
+
+        // ユーザー操作連鎖の確保
+        const micButton = document.querySelector('.mic-button');
+        if (micButton) {
+            micButton.addEventListener('click', handleMusicPlay, { once: true });
+        } else {
+            setTimeout(handleMusicPlay, 500);
+        }
+        // 変更終了 <<<<<<<<<<<<<<<<<<<<<<
     }
+}
+
 
     function getFeedbackText(questionId) {
         return {
