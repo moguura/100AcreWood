@@ -441,12 +441,14 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-function finalizeRecognition(questionId, transcript, micButton) {
-    const isCorrect = isCorrectAnswer(questionId, transcript);
-    showFeedback(questionId, isCorrect);
-    buttonsPressed[questionId] = true; // ★ マイク入力を1回に制限
-    micButton.disabled = true; // ★ ボタンを無効化
-    checkAllAnswered();
+function finalize() {
+    if (recognitionFinalized) return;
+    recognitionFinalized = true;
+    if (timeoutId) clearTimeout(timeoutId);
+    // recognition.abort() を使って認識を即座に停止・キャンセル
+    recognition.abort();
+    micButton.classList.remove("recording");
+    finalizeRecognition(questionId, finalTranscript, micButton);
 }
 
 function startRecognition(questionId) {
