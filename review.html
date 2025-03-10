@@ -451,9 +451,12 @@ a:hover {
       　 <!-- リンク -->
       　<a href="./Activity7.html" id="nextLink" style="display: none;">Go to Activity7</a>
     </div>
-<!-- 音楽再生用 -->
-    <audio id="finalMusic" src="https://raw.githubusercontent.com/moguura/my-images/main/taskend1.mp3"></audio>
-
+　　<audio id="finalMusic" 
+       src="https://raw.githubusercontent.com/moguura/my-images/main/taskend1.mp3"
+       crossorigin="anonymous"
+       preload="auto">
+　　</audio>
+    
 <script>
 document.addEventListener("DOMContentLoaded", () => {
     const answers = {
@@ -571,11 +574,10 @@ function checkCompletion() {
             music: document.getElementById("finalMusic")
         };
 
-        // デバッグ用ログ（確認後削除可）
         console.log('[デバッグ] 最終要素検出:', {
-            instructions: elements.instructions !== null,
-            link: elements.link !== null,
-            music: elements.music !== null
+            instructions: !!elements.instructions,
+            link: !!elements.link,
+            music: !!elements.music
         });
 
         // インストラクション表示
@@ -584,28 +586,45 @@ function checkCompletion() {
             elements.instructions.classList.add('show');
         }
 
-        // リンク表示（最も重要な修正部分）
+        // リンク表示
         if (elements.link) {
-            elements.link.style.display = 'block'; // 非表示を解除
+            elements.link.style.display = 'block';
             elements.link.classList.add('show');
-            console.log('[デバッグ] リンク要素にクラス追加:', elements.link.classList);
-        } else {
-            console.error('[エラー] nextLink要素が見つかりません');
+            console.log('[デバッグ] リンク要素の状態:', {
+                display: elements.link.style.display,
+                classList: elements.link.classList.toString()
+            });
         }
 
-        // 音楽再生処理
+        // 音楽再生処理（主要な修正部分）▼▼▼
         if (elements.music) {
-            const handleMusicPlay = () => {
-                elements.music.play()
-                    .catch(error => console.error('[音楽再生エラー]', error));
+            const playMusic = () => {
+                // iOS/Chrome自動再生制約対策
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                audioContext.resume().then(() => {
+                    elements.music.play()
+                        .catch(error => {
+                            console.error('[音楽再生エラー詳細]', {
+                                name: error.name,
+                                message: error.message,
+                                src: elements.music.src,
+                                time: new Date().toISOString()
+                            });
+                        });
+                });
             };
 
-            const micButton = document.querySelector('.mic-button');
-            if (micButton) {
-                micButton.addEventListener('click', handleMusicPlay, { once: true });
-            } else {
-                setTimeout(handleMusicPlay, 500);
+            // ユーザージェスチャー連鎖（マイクボタン再利用）
+            const micButtons = document.querySelectorAll('.mic-button');
+            if (micButtons.length > 0) {
+                micButtons[0].addEventListener('click', playMusic, { 
+                    once: true,
+                    passive: true // iOS Safari用
+                });
             }
+            
+            // フェイルセーフ（3秒後に強制再生）
+            setTimeout(playMusic, 3000); // 時間を500→3000に変更
         }
     }
 }
