@@ -456,13 +456,17 @@ function finalizeRecognition(questionId, transcript, micButton) {
 
 let finalMusicPlayed = false;
 function checkAllAnswered() {
-    const allAnswered = Object.keys(answers).every(key => buttonsPressed[key] === true);
+    // ページ上にあるマイクボタンから、実際の問題IDを取得してチェック
+    const micButtons = document.querySelectorAll(".mic-button");
+    const questionIds = Array.from(micButtons).map(button => button.id.replace('startButton', ''));
+    const allAnswered = questionIds.every(id => buttonsPressed[id] === true);
+    
     if (allAnswered) {
         const nextPageLink = document.getElementById("nextLink");
         if (nextPageLink) {
             nextPageLink.style.display = "block";
         }
-        // 最後の説明ボックスを表示する処理を追加
+        // 最後の説明ボックスの表示
         const finalInstructions = document.getElementById("finalInstructions");
         if (finalInstructions) {
             finalInstructions.style.display = "block";
@@ -565,9 +569,8 @@ function showFeedback(questionId, isCorrect) {
     const feedbackTextElem = document.getElementById(`feedbackText${questionId}`);
     if (feedbackTextElem) {
         const messages = getFeedbackText(questionId);
-        if (messages) {
-            feedbackTextElem.textContent = isCorrect ? messages.correct : messages.incorrect;
-        }
+        // 万が一テキストが未定義の場合はフォールバックとして空文字を設定
+        feedbackTextElem.textContent = messages ? (isCorrect ? messages.correct : messages.incorrect) : "";
     }
 
     // feedback 領域自体を表示
@@ -591,6 +594,7 @@ function showFeedback(questionId, isCorrect) {
 }
 
 function getFeedbackText(questionId) {
+    // ※ HTML上に存在する問題のみテキストを返すように（E1～Q5の場合）
     const feedbackMessages = {
         E1: {
             correct: "Your answer： きのうは さむかったです。（Yesterday was cold.）",
