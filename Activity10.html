@@ -265,232 +265,310 @@ a:hover {
     <audio id="wrongAudioE1" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E4%B8%8D%E6%AD%A3%E8%A7%A31.mp3"></audio>
   </div>
       
-   　　 <div class="instructions">
-            <p>
-                You'll hear the question, <strong><ruby>テスト<rt>てすと</rt></ruby>は むずかしいですか。</strong>"Is the test difficult?"<br>  
-                The correct response is <strong>はい、むずかしいです。</strong> "Yes, it's difficult."<br><br>
-                Now, let's try <span class="blue-bold">Example 2</span>.
-            </p>
-        </div>
+   　　 <!-- Example 2 -->
+  <div class="instructions">
+    <p>
+        You'll hear the question, <strong><ruby>テスト<rt>てすと</rt></ruby>は むずかしいですか。</strong>"Is the test difficult?"<br>  
+        The correct response is <strong>はい、むずかしいです。</strong> "Yes, it's difficult."<br><br>
+        Now, let's try <span class="blue-bold">Example 2</span>.
+    </p>
+  </div>
 
-　<div class="question" id="E2">
-  <p class="question-number">e.g.2</p>
-  <div class="media-container">
-    <img src="https://raw.githubusercontent.com/moguura/my-images/main/10-2.e.g.2.png" alt="説明用のイラスト" class="illustration">
-    <div class="audio-section">
-      <button class="play-audio" id="play-audio-E2">▶ Play</button>
-      <audio id="audio-E2" src="https://raw.githubusercontent.com/moguura/my-images/main/10-e.g.2.wav"></audio>
+  <!-- E2の例題 -->
+  <div class="question" id="E2">
+    <p class="question-number">e.g.2</p>
+    <div class="media-container">
+      <img src="https://raw.githubusercontent.com/moguura/my-images/main/10-2.e.g.2.png" alt="説明用のイラスト" class="illustration">
+      <div class="audio-section">
+        <button class="play-audio" id="play-audio-E2">▶ Play</button>
+        <audio id="audio-E2" src="https://raw.githubusercontent.com/moguura/my-images/main/10-e.g.2.wav"></audio>
+      </div>
     </div>
+    <button id="startButtonE2" class="mic-button" aria-label="音声認識を開始"></button>
+    <div class="feedback" id="feedbackE2">
+      <img id="correctImageE2" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%BE%E3%82%8B.png" alt="正しい答え" class="feedback-icon">
+      <img id="wrongImageE2" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%B0%E3%81%A4.png" alt="間違った答え" class="feedback-icon">
+      <div id="feedbackTextE2" class="feedback-text"></div>
+    </div>
+    <audio id="correctAudioE2" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E6%AD%A3%E8%A7%A32.mp3"></audio>
+    <audio id="wrongAudioE2" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E4%B8%8D%E6%AD%A3%E8%A7%A31.mp3"></audio>
   </div>
-  <button id="startButtonE2" class="mic-button" aria-label="音声認識を開始"></button>
-  <div class="feedback" id="feedbackE2">
-    <img id="correctImageE2" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%BE%E3%82%8B.png" alt="正しい答え" class="feedback-icon">
-    <img id="wrongImageE2" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%B0%E3%81%A4.png" alt="間違った答え" class="feedback-icon">
-    <div id="feedbackTextE2" class="feedback-text"></div>
-  </div>
-  <audio id="correctAudioE2" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E6%AD%A3%E8%A7%A32.mp3"></audio>
-  <audio id="wrongAudioE2" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E4%B8%8D%E6%AD%A3%E8%A7%A31.mp3"></audio>
-</div>
 
     <div class="instructions">
-            <p>
-                The question is <strong><ruby>テスト<rt>てすと</rt></ruby>は むずかしかったですか。</strong> "Was the test difficult?"<br>
-                This time, answer <strong>いいえ、むずかしくなかったです。</strong> "No, it wasn't difficult." <br><br>
-                Now it's your turn! Answer questions 1 through 10 following the same pattern as in the examples. Do your best!<br><br>
-                You can speak into the microphone <span class="red-bold">just once</span>.
-            </p>
-　　 </div>
-        
+    <p>
+        The question is <strong><ruby>テスト<rt>てすと</rt></ruby>は むずかしかったですか。</strong> "Was the test difficult?"<br>
+        This time, answer <strong>いいえ、むずかしくなかったです。</strong> "No, it wasn't difficult." <br><br>
+        Now it's your turn! Answer questions 1 through 10 following the same pattern as in the examples. Do your best!<br><br>
+        You can speak into the microphone <span class="red-bold">just once</span>.
+    </p>
+</div>
+
 <div class="question" id="Q1">
-  <p class="question-number">Q1</p>
-  <div class="media-container">
-    <img src="https://raw.githubusercontent.com/moguura/my-images/main/10-1.png" alt="説明用のイラスト" class="illustration">
-    <div class="audio-section">
-      <button class="play-audio" id="play-audio-Q1">▶ Play</button>
-      <audio id="audio-Q1" src="https://raw.githubusercontent.com/moguura/my-images/main/10-1.wav"></audio>
+    <p class="question-number">Q1</p>
+    <div class="media-container">
+        <img src="https://raw.githubusercontent.com/moguura/my-images/main/10-1.png" alt="説明用のイラスト" class="illustration">
+        <div class="audio-section">
+            <button class="play-audio" id="play-audio-Q1">▶ Play</button>
+            <audio id="audio-Q1" src="https://raw.githubusercontent.com/moguura/my-images/main/10-1.wav"></audio>
+        </div>
     </div>
-  </div>
-  <button id="startButtonQ1" class="mic-button" aria-label="音声認識を開始"></button>
-  <div class="feedback" id="feedbackQ1">
-    <img id="correctImageQ1" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%BE%E3%82%8B.png" alt="正しい答え" class="feedback-icon">
-    <img id="wrongImageQ1" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%B0%E3%81%A4.png" alt="間違った答え" class="feedback-icon">
-    <div id="feedbackTextQ1" class="feedback-text"></div>
-  </div>
-  <audio id="correctAudioQ1" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E6%AD%A3%E8%A7%A32.mp3"></audio>
-  <audio id="wrongAudioQ1" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E4%B8%8D%E6%AD%A3%E8%A7%A31.mp3"></audio>
+    <button id="startButtonQ1" class="mic-button" aria-label="音声認識を開始"></button>
+    <div class="feedback" id="feedbackQ1">
+        <img id="correctImageQ1" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%BE%E3%82%8B.png" alt="正しい答え" class="feedback-icon">
+        <img id="wrongImageQ1" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%B0%E3%81%A4.png" alt="間違った答え" class="feedback-icon">
+        <div id="feedbackTextQ1" class="feedback-text"></div>
+    </div>
+    <audio id="correctAudioQ1" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E6%AD%A3%E8%A7%A32.mp3"></audio>
+    <audio id="wrongAudioQ1" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E4%B8%8D%E6%AD%A3%E8%A7%A31.mp3"></audio>
 </div>
 
 <div class="question" id="Q2">
-  <p class="question-number">Q2</p>
-  <div class="media-container">
-    <img src="https://raw.githubusercontent.com/moguura/my-images/main/10-2.png" alt="説明用のイラスト" class="illustration">
-    <div class="audio-section">
-      <button class="play-audio" id="play-audio-Q2">▶ Play</button>
-      <audio id="audio-Q2" src="https://raw.githubusercontent.com/moguura/my-images/main/10-2.wav"></audio>
+    <p class="question-number">Q2</p>
+    <div class="media-container">
+        <img src="https://raw.githubusercontent.com/moguura/my-images/main/10-2.png" alt="説明用のイラスト" class="illustration">
+        <div class="audio-section">
+            <button class="play-audio" id="play-audio-Q2">▶ Play</button>
+            <audio id="audio-Q2" src="https://raw.githubusercontent.com/moguura/my-images/main/10-2.wav"></audio>
+        </div>
     </div>
-  </div>
-  <button id="startButtonQ2" class="mic-button" aria-label="音声認識を開始"></button>
-  <div class="feedback" id="feedbackQ2">
-    <img id="correctImageQ2" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%BE%E3%82%8B.png" alt="正しい答え" class="feedback-icon">
-    <img id="wrongImageQ2" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%B0%E3%81%A4.png" alt="間違った答え" class="feedback-icon">
-    <div id="feedbackTextQ2" class="feedback-text"></div>
-  </div>
-  <audio id="correctAudioQ2" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E6%AD%A3%E8%A7%A32.mp3"></audio>
-  <audio id="wrongAudioQ2" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E4%B8%8D%E6%AD%A3%E8%A7%A31.mp3"></audio>
+    <button id="startButtonQ2" class="mic-button" aria-label="音声認識を開始"></button>
+    <div class="feedback" id="feedbackQ2">
+        <img id="correctImageQ2" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%BE%E3%82%8B.png" alt="正しい答え" class="feedback-icon">
+        <img id="wrongImageQ2" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%B0%E3%81%A4.png" alt="間違った答え" class="feedback-icon">
+        <div id="feedbackTextQ2" class="feedback-text"></div>
+    </div>
+    <audio id="correctAudioQ2" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E6%AD%A3%E8%A7%A32.mp3"></audio>
+    <audio id="wrongAudioQ2" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E4%B8%8D%E6%AD%A3%E8%A7%A31.mp3"></audio>
 </div>
 
 <div class="question" id="Q3">
-  <p class="question-number">Q3</p>
-  <div class="media-container">
-    <img src="https://raw.githubusercontent.com/moguura/my-images/main/10-3.png" alt="説明用のイラスト" class="illustration">
-    <div class="audio-section">
-      <button class="play-audio" id="play-audio-Q3">▶ Play</button>
-      <audio id="audio-Q3" src="https://raw.githubusercontent.com/moguura/my-images/main/10-3.wav"></audio>
+    <p class="question-number">Q3</p>
+    <div class="media-container">
+        <img src="https://raw.githubusercontent.com/moguura/my-images/main/10-3.png" alt="説明用のイラスト" class="illustration">
+        <div class="audio-section">
+            <button class="play-audio" id="play-audio-Q3">▶ Play</button>
+            <audio id="audio-Q3" src="https://raw.githubusercontent.com/moguura/my-images/main/10-3.wav"></audio>
+        </div>
     </div>
-  </div>
-  <button id="startButtonQ3" class="mic-button" aria-label="音声認識を開始"></button>
-  <div class="feedback" id="feedbackQ3">
-    <img id="correctImageQ3" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%BE%E3%82%8B.png" alt="正しい答え" class="feedback-icon">
-    <img id="wrongImageQ3" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%B0%E3%81%A4.png" alt="間違った答え" class="feedback-icon">
-    <div id="feedbackTextQ3" class="feedback-text"></div>
-  </div>
-  <audio id="correctAudioQ3" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E6%AD%A3%E8%A7%A32.mp3"></audio>
-  <audio id="wrongAudioQ3" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E4%B8%8D%E6%AD%A3%E8%A7%A31.mp3"></audio>
+    <button id="startButtonQ3" class="mic-button" aria-label="音声認識を開始"></button>
+    <div class="feedback" id="feedbackQ3">
+        <img id="correctImageQ3" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%BE%E3%82%8B.png" alt="正しい答え" class="feedback-icon">
+        <img id="wrongImageQ3" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%B0%E3%81%A4.png" alt="間違った答え" class="feedback-icon">
+        <div id="feedbackTextQ3" class="feedback-text"></div>
+    </div>
+    <audio id="correctAudioQ3" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E6%AD%A3%E8%A7%A32.mp3"></audio>
+    <audio id="wrongAudioQ3" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E4%B8%8D%E6%AD%A3%E8%A7%A31.mp3"></audio>
 </div>
 
+<!-- Q4 -->
 <div class="question" id="Q4">
-  <p class="question-number">Q4</p>
-  <div class="media-container">
-    <img src="https://raw.githubusercontent.com/moguura/my-images/main/10-4.jpg" alt="説明用のイラスト" class="illustration">
-    <div class="audio-section">
-      <button class="play-audio" id="play-audio-Q4">▶ Play</button>
-      <audio id="audio-Q4" src="https://raw.githubusercontent.com/moguura/my-images/main/10-4.wav"></audio>
+    <p class="question-number">Q4</p>
+    <div class="media-container">
+        <img src="https://raw.githubusercontent.com/moguura/my-images/main/10-4.jpg" alt="説明用のイラスト" class="illustration">
+        <div class="audio-section">
+            <button class="play-audio" id="play-audio-Q4">▶ Play</button>
+            <audio id="audio-Q4" 
+                   src="https://raw.githubusercontent.com/moguura/my-images/main/10-4.wav"
+                   crossorigin="anonymous"
+                   preload="auto">
+            </audio>
+        </div>
     </div>
-  </div>
-  <button id="startButtonQ4" class="mic-button" aria-label="音声認識を開始"></button>
-  <div class="feedback" id="feedbackQ4">
-    <img id="correctImageQ4" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%BE%E3%82%8B.png" alt="正しい答え" class="feedback-icon">
-    <img id="wrongImageQ4" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%B0%E3%81%A4.png" alt="間違った答え" class="feedback-icon">
-    <div id="feedbackTextQ4" class="feedback-text"></div>
-  </div>
-  <audio id="correctAudioQ4" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E6%AD%A3%E8%A7%A32.mp3"></audio>
-  <audio id="wrongAudioQ4" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E4%B8%8D%E6%AD%A3%E8%A7%A31.mp3"></audio>
+    <button id="startButtonQ4" class="mic-button" aria-label="音声認識を開始"></button>
+    <div class="feedback" id="feedbackQ4">
+        <img id="correctImageQ4" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%BE%E3%82%8B.png" alt="正しい答え" class="feedback-icon">
+        <img id="wrongImageQ4" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%B0%E3%81%A4.png" alt="間違った答え" class="feedback-icon">
+        <div id="feedbackTextQ4" class="feedback-text"></div>
+    </div>
+    <audio id="correctAudioQ4" 
+           src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E6%AD%A3%E8%A7%A32.mp3"
+           crossorigin="anonymous">
+    </audio>
+    <audio id="wrongAudioQ4" 
+           src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E4%B8%8D%E6%AD%A3%E8%A7%A31.mp3"
+           crossorigin="anonymous">
+    </audio>
 </div>
 
+<!-- Q5 -->
 <div class="question" id="Q5">
-  <p class="question-number">Q5</p>
-  <div class="media-container">
-    <img src="https://raw.githubusercontent.com/moguura/my-images/main/10-5.jpg" alt="説明用のイラスト" class="illustration">
-    <div class="audio-section">
-      <button class="play-audio" id="play-audio-Q5">▶ Play</button>
-      <audio id="audio-Q5" src="https://raw.githubusercontent.com/moguura/my-images/main/10-5.wav"></audio>
+    <p class="question-number">Q5</p>
+    <div class="media-container">
+        <img src="https://raw.githubusercontent.com/moguura/my-images/main/10-5.jpg" alt="説明用のイラスト" class="illustration">
+        <div class="audio-section">
+            <button class="play-audio" id="play-audio-Q5">▶ Play</button>
+            <audio id="audio-Q5" 
+                   src="https://raw.githubusercontent.com/moguura/my-images/main/10-5.wav"
+                   crossorigin="anonymous"
+                   preload="auto">
+            </audio>
+        </div>
     </div>
-  </div>
-  <button id="startButtonQ5" class="mic-button" aria-label="音声認識を開始"></button>
-  <div class="feedback" id="feedbackQ5">
-    <img id="correctImageQ5" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%BE%E3%82%8B.png" alt="正しい答え" class="feedback-icon">
-    <img id="wrongImageQ5" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%B0%E3%81%A4.png" alt="間違った答え" class="feedback-icon">
-    <div id="feedbackTextQ5" class="feedback-text"></div>
-  </div>
-  <audio id="correctAudioQ5" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E6%AD%A3%E8%A7%A32.mp3"></audio>
-  <audio id="wrongAudioQ5" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E4%B8%8D%E6%AD%A3%E8%A7%A31.mp3"></audio>
+    <button id="startButtonQ5" class="mic-button" aria-label="音声認識を開始"></button>
+    <div class="feedback" id="feedbackQ5">
+        <img id="correctImageQ5" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%BE%E3%82%8B.png" alt="正しい答え" class="feedback-icon">
+        <img id="wrongImageQ5" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%B0%E3%81%A4.png" alt="間違った答え" class="feedback-icon">
+        <div id="feedbackTextQ5" class="feedback-text"></div>
+    </div>
+    <audio id="correctAudioQ5" 
+           src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E6%AD%A3%E8%A7%A32.mp3"
+           crossorigin="anonymous">
+    </audio>
+    <audio id="wrongAudioQ5" 
+           src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E4%B8%8D%E6%AD%A3%E8%A7%A31.mp3"
+           crossorigin="anonymous">
+    </audio>
 </div>
 
+<!-- Q6 -->
 <div class="question" id="Q6">
-  <p class="question-number">Q6</p>
-  <div class="media-container">
-    <img src="https://raw.githubusercontent.com/moguura/my-images/main/10-6.png" alt="説明用のイラスト" class="illustration">
-    <div class="audio-section">
-      <button class="play-audio" id="play-audio-Q6">▶ Play</button>
-      <audio id="audio-Q6" src="https://raw.githubusercontent.com/moguura/my-images/main/10-6.wav"></audio>
+    <p class="question-number">Q6</p>
+    <div class="media-container">
+        <img src="https://raw.githubusercontent.com/moguura/my-images/main/10-6.png" alt="説明用のイラスト" class="illustration">
+        <div class="audio-section">
+            <button class="play-audio" id="play-audio-Q6">▶ Play</button>
+            <audio id="audio-Q6" 
+                   src="https://raw.githubusercontent.com/moguura/my-images/main/10-6.wav"
+                   crossorigin="anonymous"
+                   preload="auto">
+            </audio>
+        </div>
     </div>
-  </div>
-  <button id="startButtonQ6" class="mic-button" aria-label="音声認識を開始"></button>
-  <div class="feedback" id="feedbackQ6">
-    <img id="correctImageQ6" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%BE%E3%82%8B.png" alt="正しい答え" class="feedback-icon">
-    <img id="wrongImageQ6" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%B0%E3%81%A4.png" alt="間違った答え" class="feedback-icon">
-    <div id="feedbackTextQ6" class="feedback-text"></div>
-  </div>
-  <audio id="correctAudioQ6" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E6%AD%A3%E8%A7%A32.mp3"></audio>
-  <audio id="wrongAudioQ6" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E4%B8%8D%E6%AD%A3%E8%A7%A31.mp3"></audio>
+    <button id="startButtonQ6" class="mic-button" aria-label="音声認識を開始"></button>
+    <div class="feedback" id="feedbackQ6">
+        <img id="correctImageQ6" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%BE%E3%82%8B.png" alt="正しい答え" class="feedback-icon">
+        <img id="wrongImageQ6" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%B0%E3%81%A4.png" alt="間違った答え" class="feedback-icon">
+        <div id="feedbackTextQ6" class="feedback-text"></div>
+    </div>
+    <audio id="correctAudioQ6" 
+           src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E6%AD%A3%E8%A7%A32.mp3"
+           crossorigin="anonymous">
+    </audio>
+    <audio id="wrongAudioQ6" 
+           src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E4%B8%8D%E6%AD%A3%E8%A7%A31.mp3"
+           crossorigin="anonymous">
+    </audio>
 </div>
       
+<!-- Q7 -->
 <div class="question" id="Q7">
-  <p class="question-number">Q7</p>
-  <div class="media-container">
-    <img src="https://raw.githubusercontent.com/moguura/my-images/main/10-7.png" alt="説明用のイラスト" class="illustration">
-    <div class="audio-section">
-      <button class="play-audio" id="play-audio-Q7">▶ Play</button>
-      <audio id="audio-Q7" src="https://raw.githubusercontent.com/moguura/my-images/main/10-7.wav"></audio>
+    <p class="question-number">Q7</p>
+    <div class="media-container">
+        <img src="https://raw.githubusercontent.com/moguura/my-images/main/10-7.png" alt="説明用のイラスト" class="illustration">
+        <div class="audio-section">
+            <button class="play-audio" id="play-audio-Q7">▶ Play</button>
+            <audio id="audio-Q7" 
+                   src="https://raw.githubusercontent.com/moguura/my-images/main/10-7.wav"
+                   crossorigin="anonymous"
+                   preload="auto">
+            </audio>
+        </div>
     </div>
-  </div>
-  <button id="startButtonQ7" class="mic-button" aria-label="音声認識を開始"></button>
-  <div class="feedback" id="feedbackQ7">
-    <img id="correctImageQ7" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%BE%E3%82%8B.png" alt="正しい答え" class="feedback-icon">
-    <img id="wrongImageQ7" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%B0%E3%81%A4.png" alt="間違った答え" class="feedback-icon">
-    <div id="feedbackTextQ7" class="feedback-text"></div>
-  </div>
-  <audio id="correctAudioQ7" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E6%AD%A3%E8%A7%A32.mp3"></audio>
-  <audio id="wrongAudioQ7" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E4%B8%8D%E6%AD%A3%E8%A7%A31.mp3"></audio>
+    <button id="startButtonQ7" class="mic-button" aria-label="音声認識を開始"></button>
+    <div class="feedback" id="feedbackQ7">
+        <img id="correctImageQ7" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%BE%E3%82%8B.png" alt="正しい答え" class="feedback-icon">
+        <img id="wrongImageQ7" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%B0%E3%81%A4.png" alt="間違った答え" class="feedback-icon">
+        <div id="feedbackTextQ7" class="feedback-text"></div>
+    </div>
+    <audio id="correctAudioQ7" 
+           src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E6%AD%A3%E8%A7%A32.mp3"
+           crossorigin="anonymous">
+    </audio>
+    <audio id="wrongAudioQ7" 
+           src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E4%B8%8D%E6%AD%A3%E8%A7%A31.mp3"
+           crossorigin="anonymous">
+    </audio>
 </div>
 
+<!-- Q8 -->
 <div class="question" id="Q8">
-  <p class="question-number">Q8</p>
-  <div class="media-container">
-    <img src="https://raw.githubusercontent.com/moguura/my-images/main/10-8.png" alt="説明用のイラスト" class="illustration">
-    <div class="audio-section">
-      <button class="play-audio" id="play-audio-Q8">▶ Play</button>
-      <audio id="audio-Q8" src="https://raw.githubusercontent.com/moguura/my-images/main/10-8.wav"></audio>
+    <p class="question-number">Q8</p>
+    <div class="media-container">
+        <img src="https://raw.githubusercontent.com/moguura/my-images/main/10-8.png" alt="説明用のイラスト" class="illustration">
+        <div class="audio-section">
+            <button class="play-audio" id="play-audio-Q8">▶ Play</button>
+            <audio id="audio-Q8" 
+                   src="https://raw.githubusercontent.com/moguura/my-images/main/10-8.wav"
+                   crossorigin="anonymous"
+                   preload="auto">
+            </audio>
+        </div>
     </div>
-  </div>
-  <button id="startButtonQ8" class="mic-button" aria-label="音声認識を開始"></button>
-  <div class="feedback" id="feedbackQ8">
-    <img id="correctImageQ8" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%BE%E3%82%8B.png" alt="正しい答え" class="feedback-icon">
-    <img id="wrongImageQ8" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%B0%E3%81%A4.png" alt="間違った答え" class="feedback-icon">
-    <div id="feedbackTextQ8" class="feedback-text"></div>
-  </div>
-  <audio id="correctAudioQ8" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E6%AD%A3%E8%A7%A32.mp3"></audio>
-  <audio id="wrongAudioQ8" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E4%B8%8D%E6%AD%A3%E8%A7%A31.mp3"></audio>
+    <button id="startButtonQ8" class="mic-button" aria-label="音声認識を開始"></button>
+    <div class="feedback" id="feedbackQ8">
+        <img id="correctImageQ8" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%BE%E3%82%8B.png" alt="正しい答え" class="feedback-icon">
+        <img id="wrongImageQ8" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%B0%E3%81%A4.png" alt="間違った答え" class="feedback-icon">
+        <div id="feedbackTextQ8" class="feedback-text"></div>
+    </div>
+    <audio id="correctAudioQ8" 
+           src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E6%AD%A3%E8%A7%A32.mp3"
+           crossorigin="anonymous">
+    </audio>
+    <audio id="wrongAudioQ8" 
+           src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E4%B8%8D%E6%AD%A3%E8%A7%A31.mp3"
+           crossorigin="anonymous">
+    </audio>
 </div>
 
+<!-- Q9 -->
 <div class="question" id="Q9">
-  <p class="question-number">Q9</p>
-  <div class="media-container">
-    <img src="https://raw.githubusercontent.com/moguura/my-images/main/10-9.jpg" alt="説明用のイラスト" class="illustration">
-    <div class="audio-section">
-      <button class="play-audio" id="play-audio-Q9">▶ Play</button>
-      <audio id="audio-Q9" src="https://raw.githubusercontent.com/moguura/my-images/main/10-9.wav"></audio>
+    <p class="question-number">Q9</p>
+    <div class="media-container">
+        <img src="https://raw.githubusercontent.com/moguura/my-images/main/10-9.jpg" alt="説明用のイラスト" class="illustration">
+        <div class="audio-section">
+            <button class="play-audio" id="play-audio-Q9">▶ Play</button>
+            <audio id="audio-Q9" 
+                   src="https://raw.githubusercontent.com/moguura/my-images/main/10-9.wav"
+                   crossorigin="anonymous"
+                   preload="auto">
+            </audio>
+        </div>
     </div>
-  </div>
-  <button id="startButtonQ9" class="mic-button" aria-label="音声認識を開始"></button>
-  <div class="feedback" id="feedbackQ9">
-    <img id="correctImageQ9" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%BE%E3%82%8B.png" alt="正しい答え" class="feedback-icon">
-    <img id="wrongImageQ9" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%B0%E3%81%A4.png" alt="間違った答え" class="feedback-icon">
-    <div id="feedbackTextQ9" class="feedback-text"></div>
-  </div>
-  <audio id="correctAudioQ9" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E6%AD%A3%E8%A7%A32.mp3"></audio>
-  <audio id="wrongAudioQ9" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E4%B8%8D%E6%AD%A3%E8%A7%A31.mp3"></audio>
+    <button id="startButtonQ9" class="mic-button" aria-label="音声認識を開始"></button>
+    <div class="feedback" id="feedbackQ9">
+        <img id="correctImageQ9" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%BE%E3%82%8B.png" alt="正しい答え" class="feedback-icon">
+        <img id="wrongImageQ9" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%B0%E3%81%A4.png" alt="間違った答え" class="feedback-icon">
+        <div id="feedbackTextQ9" class="feedback-text"></div>
+    </div>
+    <audio id="correctAudioQ9" 
+           src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E6%AD%A3%E8%A7%A32.mp3"
+           crossorigin="anonymous">
+    </audio>
+    <audio id="wrongAudioQ9" 
+           src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E4%B8%8D%E6%AD%A3%E8%A7%A31.mp3"
+           crossorigin="anonymous">
+    </audio>
 </div>
 
+<!-- Q10 -->
 <div class="question" id="Q10">
-  <p class="question-number">Q10</p>
-  <div class="media-container">
-    <img src="https://raw.githubusercontent.com/moguura/my-images/main/10-10.png" alt="説明用のイラスト" class="illustration">
-    <div class="audio-section">
-      <button class="play-audio" id="play-audio-Q10">▶ Play</button>
-      <audio id="audio-Q10" src="https://raw.githubusercontent.com/moguura/my-images/main/10-10.wav"></audio>
+    <p class="question-number">Q10</p>
+    <div class="media-container">
+        <img src="https://raw.githubusercontent.com/moguura/my-images/main/10-10.png" alt="説明用のイラスト" class="illustration">
+        <div class="audio-section">
+            <button class="play-audio" id="play-audio-Q10">▶ Play</button>
+            <audio id="audio-Q10" 
+                   src="https://raw.githubusercontent.com/moguura/my-images/main/10-10.wav"
+                   crossorigin="anonymous"
+                   preload="auto">
+            </audio>
+        </div>
     </div>
-  </div>
-  <button id="startButtonQ10" class="mic-button" aria-label="音声認識を開始"></button>
-  <div class="feedback" id="feedbackQ10">
-    <img id="correctImageQ10" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%BE%E3%82%8B.png" alt="正しい答え" class="feedback-icon">
-    <img id="wrongImageQ10" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%B0%E3%81%A4.png" alt="間違った答え" class="feedback-icon">
-    <div id="feedbackTextQ10" class="feedback-text"></div>
-  </div>
-  <audio id="correctAudioQ10" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E6%AD%A3%E8%A7%A32.mp3"></audio>
-  <audio id="wrongAudioQ10" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E4%B8%8D%E6%AD%A3%E8%A7%A31.mp3"></audio>
+    <button id="startButtonQ10" class="mic-button" aria-label="音声認識を開始"></button>
+    <div class="feedback" id="feedbackQ10">
+        <img id="correctImageQ10" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%BE%E3%82%8B.png" alt="正しい答え" class="feedback-icon">
+        <img id="wrongImageQ10" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%B0%E3%81%A4.png" alt="間違った答え" class="feedback-icon">
+        <div id="feedbackTextQ10" class="feedback-text"></div>
+    </div>
+    <audio id="correctAudioQ10" 
+           src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E6%AD%A3%E8%A7%A32.mp3"
+           crossorigin="anonymous">
+    </audio>
+    <audio id="wrongAudioQ10" 
+           src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E4%B8%8D%E6%AD%A3%E8%A7%A31.mp3"
+           crossorigin="anonymous">
+    </audio>
 </div>
-
         <!-- リンク -->
         <a href="./Activity11.html" id="nextLink" style="display: none;">Go to Activity11</a>
     </div>
