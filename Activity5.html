@@ -55,7 +55,7 @@ h1 {
     max-width: 600px;
     height: auto;
     display: none;
-    margin-top: -10px;  /* 画像を10px上に移動 */
+    margin-top: -20px;  /* 画像を10px上に移動 */
 }
 
 .feedback {
@@ -414,6 +414,9 @@ function finalizeRecognition(questionId, transcript, micButton) {
     checkAllAnswered();
 }
 
+// グローバルに再生済みかどうかを管理するフラグを定義
+let finalMusicPlayed = false;
+
 function checkAllAnswered() {
     const allAnswered = Object.values(buttonsPressed).every(value => value);
     const nextPageLink = document.getElementById("nextLink");
@@ -423,8 +426,12 @@ function checkAllAnswered() {
         if (nextPageLink) {
             nextPageLink.style.display = "block";
         }
-        if (finalMusic && !finalMusic.playing) { // タスク終了音がすでに再生中でない場合のみ再生
-            finalMusic.play().catch(e => console.error("タスク終了音の再生エラー:", e));
+        // まだ再生していない場合のみ、1秒遅延して再生
+        if (finalMusic && !finalMusicPlayed) {
+            finalMusicPlayed = true;
+            setTimeout(() => {
+                finalMusic.play().catch(e => console.error("タスク終了音の再生エラー:", e));
+            }, 1000); // 適宜調整してください
         }
     }
 }
