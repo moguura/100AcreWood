@@ -418,7 +418,8 @@ function finalizeRecognition(questionId, transcript, micButton) {
 let finalMusicPlayed = false;
 
 function checkAllAnswered() {
-    const allAnswered = Object.values(buttonsPressed).every(value => value);
+    // answers オブジェクトのキーを使って、すべての問題が回答済みかチェック
+    const allAnswered = Object.keys(answers).every(key => buttonsPressed[key] === true);
     const nextPageLink = document.getElementById("nextLink");
     const finalMusic = document.getElementById("finalMusic");
 
@@ -426,12 +427,11 @@ function checkAllAnswered() {
         if (nextPageLink) {
             nextPageLink.style.display = "block";
         }
-        // まだ再生していない場合のみ、1秒遅延して再生
         if (finalMusic && !finalMusicPlayed) {
             finalMusicPlayed = true;
             setTimeout(() => {
                 finalMusic.play().catch(e => console.error("タスク終了音の再生エラー:", e));
-            }, 1000); // 適宜調整してください
+            }, 1000); // 1秒遅延
         }
     }
 }
