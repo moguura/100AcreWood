@@ -455,19 +455,24 @@ function startRecognition(questionId) {
     const micButton = document.getElementById(`startButton${questionId}`);
     micButton.classList.add("recording");
 
-    // 最終判定用の関数
+    let recognitionFinalized = false;
+
+    // 最終判定用の共通処理
     function finalize() {
+        if (recognitionFinalized) return;
+        recognitionFinalized = true;
+        // ここで即座にマイクボタンの「recording」クラスを削除
+        micButton.classList.remove("recording");
+        if (timeoutId) clearTimeout(timeoutId);
         finalizeRecognition(questionId, finalTranscript, micButton);
         recognition.stop();
     }
 
     recognition.onresult = function(event) {
-        // 最新の結果を取得
         let newTranscript = event.results[event.results.length - 1][0].transcript.trim();
         finalTranscript = newTranscript;
         console.log(`認識結果 (${questionId}):`, finalTranscript);
 
-        // 既存のタイマーがあればクリア
         if (timeoutId) clearTimeout(timeoutId);
 
         // 「です」または「です。」で終わったら即時判定
@@ -483,6 +488,7 @@ function startRecognition(questionId) {
     recognition.onerror = function(event) {
         alert("Speech recognition failed. Please try again.");
         console.error("Speech Recognition Error:", event.error);
+        finalize();
     };
 
     recognition.onend = function() {
