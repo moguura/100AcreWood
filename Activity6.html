@@ -553,9 +553,18 @@ function showFeedback(questionId, isCorrect) {
     const correctImage = document.getElementById(`correctImage${questionId}`);
     const wrongImage = document.getElementById(`wrongImage${questionId}`);
 
-    // 両方を一旦非表示にする
+    // 両方の画像を一旦非表示にする
     if (correctImage) correctImage.style.display = 'none';
     if (wrongImage) wrongImage.style.display = 'none';
+
+    // フィードバックテキストの要素を取得して更新
+    const feedbackTextElem = document.getElementById(`feedbackText${questionId}`);
+    if (feedbackTextElem) {
+        const messages = getFeedbackText(questionId);
+        if (messages) {
+            feedbackTextElem.textContent = isCorrect ? messages.correct : messages.incorrect;
+        }
+    }
 
     // feedback 領域自体を表示
     feedbackDiv.style.display = 'block';
