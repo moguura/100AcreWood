@@ -435,15 +435,16 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function finalizeRecognition(questionId, transcript, micButton) {
-    // 既に処理済みなら何もしない
     if (buttonsPressed[questionId]) return;
     
     const isCorrect = isCorrectAnswer(questionId, transcript);
     showFeedback(questionId, isCorrect);
-    buttonsPressed[questionId] = true; // マイク入力を1回に制限
-    micButton.disabled = true; // ボタンを無効化
-    checkAllAnswered();  // ここも、重複呼び出しの影響を受けにくくするために必要ならガードを入れる
+    buttonsPressed[questionId] = true; 
+    micButton.disabled = true;
+
+    checkAllButtonsPressed(); // ✅ 修正: `checkAllAnswered();` → `checkAllButtonsPressed();`
 }
+
 
 
 function startRecognition(questionId) {
@@ -521,7 +522,9 @@ function startRecognition(questionId) {
 }
 
 function checkAllButtonsPressed() {
+    console.log(buttonsPressed); // 追加して確認
     if (Object.values(buttonsPressed).every(value => value)) {
+        console.log("すべての問題が回答されました！"); // デバッグ
         showFinalInstructions();
     }
 }
@@ -538,10 +541,12 @@ function showFinalInstructions() {
         if (finalMusic) {
             finalMusic.play().catch((error) => {
                 console.error('音楽の再生に失敗しました:', error);
+                alert("音楽を手動で再生してください。");
             });
         }
     }, 1500);
 }
+
 
 function isCorrectAnswer(questionId, userInput) {
     const normalizedInput = normalizeText(userInput);
