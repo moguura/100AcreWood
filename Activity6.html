@@ -402,53 +402,63 @@ h1 {
 const answers = {
     E1: ["さむかった", "寒かった", "さむい", "寒い"],
     Q1: ["いそがしかった", "忙しかった", "いそがしい", "忙しい"],
-    Q2: ["ちかかった", "近かった", "ちかい", "近い"],
-    Q3: ["おもかった", "重かった", "おもい", "重い"],
-    Q4: ["やすかった", "安かった", "やすい", "安い"],
-    Q5: ["むずかしかった", "難しかった", "むずかしい", "難しい"]
+    Q2: ["つめたかった", "冷たかった"],
+    Q3: ["むずかしかった", "難しかった"],
+    Q4: ["よくなかった", "良くなかった"],
+    Q5: ["おもくなかった", "重くなかった"],
+    Q6: ["すずしかかった", "涼しかった"],
+    Q7: ["おもしろくなかった", "面白くなかった"],
+    Q8: ["すくなかった", "少なかった"],
+    Q9: ["からくなかった", "辛くなかった"],
+    Q10: ["たのしかった", "楽しかった"]
 };
 
-const buttonsPressed = {
-    E1: false, Q1: false, Q2: false, Q3: false, Q4: false, Q5: false
-};
+// ★ buttonsPressed を初期化
+const buttonsPressed = {};
+Object.keys(answers).forEach(key => {
+    buttonsPressed[key] = false;
+    // 各正答候補に「です」を付けたものも追加
+    answers[key] = [...answers[key], ...answers[key].map(ans => ans + "です")];
+});
 
-document.addEventListener('DOMContentLoaded', () => {
-    const finalInstructions = document.getElementById('finalInstructions');
-    const noticeBoard = document.querySelector('.notice-board');
-
-    finalInstructions.style.display = 'none';
-    noticeBoard.style.display = 'none';
-
-    document.getElementById('startButtonE1').addEventListener('click', () => startRecognition('E1'));
-    document.getElementById('startButtonQ1').addEventListener('click', () => startRecognition('Q1'));
-    document.getElementById('startButtonQ2').addEventListener('click', () => startRecognition('Q2'));
-    document.getElementById('startButtonQ3').addEventListener('click', () => startRecognition('Q3'));
-    document.getElementById('startButtonQ4').addEventListener('click', () => startRecognition('Q4'));
-    document.getElementById('startButtonQ5').addEventListener('click', () => startRecognition('Q5'));
-
-    // 音声再生処理の追加
-    const questions = ["E1", "Q1", "Q2", "Q3", "Q4", "Q5"];
-    
-    questions.forEach(id => {
-        const playButton = document.getElementById(`play-audio-${id}`);
-        const audio = document.getElementById(`audio-${id}`);
-
-        if (playButton && audio) {
-            playButton.addEventListener("click", function () {
-                audio.play();
-            });
-        }
+document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll(".mic-button").forEach((button) => {
+        button.addEventListener('click', () => {
+            const questionId = button.id.replace('startButton', '');
+            console.log("ボタンが押された:", questionId);
+            startRecognition(questionId);
+        });
     });
 });
 
-function finalize() {
-    if (recognitionFinalized) return;
-    recognitionFinalized = true;
-    if (timeoutId) clearTimeout(timeoutId);
-    // recognition.abort() を使って認識を即座に停止・キャンセル
-    recognition.abort();
-    micButton.classList.remove("recording");
-    finalizeRecognition(questionId, finalTranscript, micButton);
+function finalizeRecognition(questionId, transcript, micButton) {
+    const isCorrect = isCorrectAnswer(questionId, transcript);
+    showFeedback(questionId, isCorrect);
+    buttonsPressed[questionId] = true; // マイク入力を1回に制限
+    micButton.disabled = true; // ボタンを無効化
+    checkAllAnswered();
+}
+
+// グローバルに再生済みかどうかを管理するフラグ
+let finalMusicPlayed = false;
+
+function checkAllAnswered() {
+    // answers のキーで全問題の回答済みかチェック
+    const allAnswered = Object.keys(answers).every(key => buttonsPressed[key] === true);
+    const nextPageLink = document.getElementById("nextLink");
+    const finalMusic = document.getElementById("finalMusic");
+
+    if (allAnswered) {
+        if (nextPageLink) {
+            nextPageLink.style.display = "block";
+        }
+        if (finalMusic && !finalMusicPlayed) {
+            finalMusicPlayed = true;
+            setTimeout(() => {
+                finalMusic.play().catch(e => console.error("タスク終了音の再生エラー:", e));
+            }, 1000);
+        }
+    }
 }
 
 function startRecognition(questionId) {
@@ -460,19 +470,18 @@ function startRecognition(questionId) {
     const recognition = new webkitSpeechRecognition();
     recognition.lang = 'ja-JP';
     recognition.interimResults = true;
-    recognition.continuous = true; // 連続認識
+    recognition.continuous = true; // 連続認識に設定
     recognition.maxAlternatives = 1;
 
     let finalTranscript = "";
-    const maxWaitTime = 2000;
+    const maxWaitTime = 2000; // 2秒待機
     let recognitionFinalized = false;
     let timeoutId = null;
 
     const micButton = document.getElementById(`startButton${questionId}`);
-    // （※必要であれば、ここでボタンの多重クリック防止のため即時 disabled してもよい）
     micButton.classList.add("recording");
 
-    // 最終判定を1回だけ行うための共通処理
+    // この finalize() は startRecognition 内でのみ利用
     function finalize() {
         if (!recognitionFinalized) {
             recognitionFinalized = true;
@@ -496,7 +505,7 @@ function startRecognition(questionId) {
             return;
         }
 
-        // 発話が途切れた場合、2秒待ってから最終判定
+        // 発話が途切れた場合、2秒後に最終判定
         timeoutId = setTimeout(() => {
             console.log(`最終判定 (${questionId}):`, finalTranscript);
             finalize();
@@ -510,7 +519,7 @@ function startRecognition(questionId) {
 
     recognition.onend = function() {
         micButton.classList.remove("recording");
-        // onend 時にも、まだ最終判定が済んでいなければ行う
+        // onend 時、まだ最終判定が済んでいなければ実行
         if (!recognitionFinalized) {
             clearTimeout(timeoutId);
             console.log(`onend 最終判定 (${questionId}):`, finalTranscript);
@@ -521,87 +530,33 @@ function startRecognition(questionId) {
     recognition.start();
 }
 
-
-function checkAllButtonsPressed() {
-    if (Object.values(buttonsPressed).every(value => value)) {
-        showFinalInstructions();
-    }
-}
-
-function showFinalInstructions() {
-    const finalInstructions = document.getElementById('finalInstructions');
-    const noticeBoard = document.querySelector('.notice-board');
-    const finalMusic = document.getElementById('finalMusic');
-
-    finalInstructions.style.display = 'block';
-    noticeBoard.style.display = 'block';
-
-    setTimeout(() => {
-        if (finalMusic) {
-            finalMusic.play().catch((error) => {
-                console.error('音楽の再生に失敗しました:', error);
-            });
-        }
-    }, 1500);
-}
-
 function isCorrectAnswer(questionId, userInput) {
-    const normalizedInput = normalizeText(userInput);
-    const correctAnswers = answers[questionId].map(ans => normalizeText(ans));
-
-    // ユーザーの発話に正解のフレーズが含まれていればOK
-    return correctAnswers.some(correct => normalizedInput.includes(correct));
-}
-
-function normalizeText(text) {
-    let normalized = text.toLowerCase().replace(/\s+/g, '');
-    normalized = normalized.replace(/です$/, '');  // 文末の「です」を削除
-    return normalized;
+    return answers[questionId]?.some(answer => userInput.includes(answer)) || false;
 }
 
 function showFeedback(questionId, isCorrect) {
-    const correctImage = document.getElementById(`correctImage${questionId}`);
-    const wrongImage = document.getElementById(`wrongImage${questionId}`);
-    const feedback = document.getElementById(`feedback${questionId}`);
-    const feedbackText = document.getElementById(`feedbackText${questionId}`);
+    const feedbackDiv = document.querySelector(`#${questionId} .feedback`);
+    
+    if (!feedbackDiv) return;
 
-    const correctAudio = document.getElementById(`correctAudio${questionId}`);
-    const wrongAudio = document.getElementById(`wrongAudio${questionId}`);
-
-    // **フィードバックメッセージを設定**
-    const feedbackMessages = getFeedbackText(questionId);
-    if (feedbackText) {
-        feedbackText.textContent = isCorrect ? feedbackMessages.correct : feedbackMessages.incorrect;
-        feedbackText.style.display = 'block';
-    }
-
-    // **画像を表示**
+    const correctImage = feedbackDiv.querySelector('.correctImage');
+    const wrongImage = feedbackDiv.querySelector('.wrongImage');
+    
+    feedbackDiv.style.display = 'block';
+    
     if (correctImage && wrongImage) {
         correctImage.style.display = isCorrect ? 'block' : 'none';
         wrongImage.style.display = isCorrect ? 'none' : 'block';
     }
 
-    // **フィードバック全体を表示**
-    if (feedback) {
-        feedback.style.display = 'block';
-    }
-
-    // **音を鳴らす（`null` チェック付き）**
-    if (isCorrect) {
-        if (correctAudio) {
-            correctAudio.play().catch(e => console.error("正解音の再生エラー:", e));
-        } else {
-            console.warn(`正解音が見つかりません: correctAudio${questionId}`);
-        }
-    } else {
-        if (wrongAudio) {
-            wrongAudio.play().catch(e => console.error("不正解音の再生エラー:", e));
-        } else {
-            console.warn(`不正解音が見つかりません: wrongAudio${questionId}`);
-        }
+    const feedbackAudio = isCorrect 
+        ? document.getElementById(`correctAudio${questionId}`) 
+        : document.getElementById(`wrongAudio${questionId}`);
+    
+    if (feedbackAudio) {
+        feedbackAudio.play().catch(e => console.error("フィードバック音の再生エラー:", e));
     }
 }
-
 
 function getFeedbackText(questionId) {
     const feedbackMessages = {
@@ -611,15 +566,15 @@ function getFeedbackText(questionId) {
         },
         Q1: {
             correct: "Your answer： せんしゅうは いそがしかったです。（Last week was busy.）",
-            incorrect: "Your answer：せんしゅうは いそがしくなかったです。（Last week was not busy.）"
+            incorrect: "Your answer： せんしゅうは いそがしくなかったです。（Last week was not busy.）"
         },
         Q2: {
             correct: "Your answer： にほんは ちかかったです。（Japan was close.）",
             incorrect: "Your answer： にほんは ちかくなかったです。（Japan was not close.）"
         },
         Q3: {
-            correct: "Your answer：かばんは おもかったです。（The bag was heavy.）",
-            incorrect: "Your answer：かばんは おもくなかったです。（The bag was not heavy.）"
+            correct: "Your answer： かばんは おもかったです。（The bag was heavy.）",
+            incorrect: "Your answer： かばんは おもくなかったです。（The bag was not heavy.）"
         },
         Q4: {
             correct: "Your answer： ふくは やすかったです。（The clothes were cheap.）",
