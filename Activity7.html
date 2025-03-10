@@ -500,10 +500,10 @@ a:hover {
     <audio id="audio-3" src="https://raw.githubusercontent.com/moguura/my-images/main/7-3oto2.mp3"></audio>
   </div>
 
-
+　<audio id="taskEndAudio" src="https://raw.githubusercontent.com/moguura/my-images/main/taskend2.mp3"></audio>
 
         <!-- リンク -->
-        <a href="./Activity8.html" id="nextLink" style="display: none;">Go to Activity8</a>
+        <a href="./Activity8.html" id="nextPageLink" style="display: none;">Go to Activity8</a>
     </div>
 </body>
 </html>
@@ -562,16 +562,19 @@ function finalizeRecognition(questionId, transcript, micButton) {
 }
 function checkAllAnswered() {
     const allAnswered = Object.values(buttonsPressed).every(value => value);
-    const nextPageLink = document.getElementById("nextPageLink");
+    const nextPageLink = document.getElementById("nextLink");
 
     if (allAnswered) {
         if (nextPageLink) {
             nextPageLink.style.display = "block";
         }
 
-        // ★ タスク終了の音楽を流す
-        const taskEndAudio = new Audio("https://raw.githubusercontent.com/moguura/my-images/main/taskend2.mp3");
-        taskEndAudio.play().catch(e => console.error("タスク終了音の再生エラー:", e));
+        // 既存の <audio> タグを再生
+        const taskEndAudio = document.getElementById("taskEndAudio");
+        if (taskEndAudio) {
+            taskEndAudio.currentTime = 0; // 再生開始位置をリセット
+            taskEndAudio.play().catch(e => console.error("タスク終了音の再生エラー:", e));
+        }
     }
 }
 
