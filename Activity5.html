@@ -160,9 +160,11 @@ a:hover {
    color:#007bff;  
    font-weight:bold;  
 }
+#finalMusic {
+    display: none; /* 音声ファイルは非表示で再生 */
+}
 
 </style>
-
 </head>
 <body>
     <h1>Activity 5</h1>
@@ -370,6 +372,9 @@ a:hover {
 
         <!-- リンク -->
         <a href="./Activity6.html" id="nextLink" style="display: none;">Go to Activity6</a>
+        
+<!-- タスク終了音をHTMLに直接記述 -->
+<audio id="finalMusic" src="https://raw.githubusercontent.com/moguura/my-images/main/taskend2.mp3" autoplay></audio>
     </div>
 </body>
 </html>
@@ -416,15 +421,15 @@ function finalizeRecognition(questionId, transcript, micButton) {
 function checkAllAnswered() {
     const allAnswered = Object.values(buttonsPressed).every(value => value);
     const nextPageLink = document.getElementById("nextLink");
+    const finalMusic = document.getElementById("finalMusic");
 
     if (allAnswered) {
         if (nextPageLink) {
             nextPageLink.style.display = "block";
         }
-
-        // タスク終了の音楽を流す
-        const taskEndAudio = new Audio("https://raw.githubusercontent.com/moguura/my-images/main/taskend2.mp3");
-        taskEndAudio.play().catch(e => console.error("タスク終了音の再生エラー:", e));
+        if (finalMusic) {
+            finalMusic.play().catch(e => console.error("タスク終了音の再生エラー:", e));
+        }
     }
 }
 
