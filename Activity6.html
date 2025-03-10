@@ -534,27 +534,32 @@ function isCorrectAnswer(questionId, userInput) {
     return answers[questionId]?.some(answer => userInput.includes(answer)) || false;
 }
 
+// --- 修正した showFeedback 関数 ---
 function showFeedback(questionId, isCorrect) {
+    // フィードバック領域（例： <div class="feedback"> ）内の全てのフィードバック画像を取得して非表示にする
     const feedbackDiv = document.querySelector(`#${questionId} .feedback`);
     if (!feedbackDiv) return;
 
-    const correctImage = feedbackDiv.querySelector('.correctImage');
-    const wrongImage = feedbackDiv.querySelector('.wrongImage');
-
-    // まず両方の画像を非表示にする
-    if (correctImage) correctImage.style.display = 'none';
-    if (wrongImage) wrongImage.style.display = 'none';
+    // 「.correctImage」と「.wrongImage」をすべて非表示にする
+    feedbackDiv.querySelectorAll('.correctImage, .wrongImage').forEach(img => {
+        img.style.display = 'none';
+    });
 
     // フィードバック全体を表示
     feedbackDiv.style.display = 'block';
     
     // 正誤に応じた画像のみ表示
-    if (isCorrect && correctImage) {
-        correctImage.style.display = 'block';
-    } else if (!isCorrect && wrongImage) {
-        wrongImage.style.display = 'block';
+    if (isCorrect) {
+        feedbackDiv.querySelectorAll('.correctImage').forEach(img => {
+            img.style.display = 'block';
+        });
+    } else {
+        feedbackDiv.querySelectorAll('.wrongImage').forEach(img => {
+            img.style.display = 'block';
+        });
     }
 
+    // フィードバック音の再生
     const feedbackAudio = isCorrect 
         ? document.getElementById(`correctAudio${questionId}`) 
         : document.getElementById(`wrongAudio${questionId}`);
@@ -593,6 +598,6 @@ function getFeedbackText(questionId) {
     };
     return feedbackMessages[questionId];
 }
-    </script>
+</script>
 </body>
 </html>
