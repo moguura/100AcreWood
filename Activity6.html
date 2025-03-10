@@ -572,9 +572,15 @@ function showFeedback(questionId, isCorrect) {
 
     // フィードバックテキストの要素を取得して更新
     const feedbackTextElem = document.getElementById(`feedbackText${questionId}`);
+    const messages = getFeedbackText(questionId);
+    console.log("Feedback messages for " + questionId, messages);
     if (feedbackTextElem) {
-        const messages = getFeedbackText(questionId);
-        feedbackTextElem.textContent = messages ? (isCorrect ? messages.correct : messages.incorrect) : "";
+        // メッセージが取得できなかった場合のフォールバックを設定
+        const text = messages ? (isCorrect ? messages.correct : messages.incorrect) : "No feedback text found";
+        // innerHTML に変更することで、もしHTMLタグが含まれても問題なく表示されます
+        feedbackTextElem.innerHTML = text;
+        // 念のため、スタイルを明示的に表示に設定
+        feedbackTextElem.style.display = "block";
     }
 
     // feedback 領域自体を表示
