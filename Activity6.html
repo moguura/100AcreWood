@@ -399,6 +399,7 @@ h1 {
     <audio id="finalMusic" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%83%AC%E3%83%99%E3%83%AB%E3%82%A2%E3%83%83%E3%83%97.mp3"></audio>
 
 <script>
+<script>
 const answers = {
     E1: ["さむかった", "寒かった", "さむい", "寒い"],
     Q1: ["いそがしかった", "忙しかった", "いそがしい", "忙しい"],
@@ -413,20 +414,35 @@ const answers = {
     Q10: ["たのしかった", "楽しかった"]
 };
 
-// ★ buttonsPressed を初期化
+// ★ 各問題のボタン押下状況を管理
 const buttonsPressed = {};
 Object.keys(answers).forEach(key => {
     buttonsPressed[key] = false;
-    // 各正答候補に「です」を付けたものも追加
+    // 「です」を付けた候補も追加
     answers[key] = [...answers[key], ...answers[key].map(ans => ans + "です")];
 });
 
 document.addEventListener("DOMContentLoaded", function () {
+    // マイクボタンのイベントリスナー登録
     document.querySelectorAll(".mic-button").forEach((button) => {
         button.addEventListener('click', () => {
             const questionId = button.id.replace('startButton', '');
-            console.log("ボタンが押された:", questionId);
+            console.log("マイクボタンが押された:", questionId);
             startRecognition(questionId);
+        });
+    });
+
+    // 再生ボタンのイベントリスナー登録（▶ Play ボタン）
+    document.querySelectorAll(".play-audio").forEach((button) => {
+        button.addEventListener('click', () => {
+            // ボタンのID例："play-audio-E1" → 対応する audio 要素は "audio-E1"
+            const parts = button.id.split('-');
+            const questionId = parts[parts.length - 1];
+            const audioId = "audio-" + questionId;
+            const audioElem = document.getElementById(audioId);
+            if (audioElem) {
+                audioElem.play().catch(e => console.error("オーディオ再生エラー:", e));
+            }
         });
     });
 });
@@ -434,16 +450,13 @@ document.addEventListener("DOMContentLoaded", function () {
 function finalizeRecognition(questionId, transcript, micButton) {
     const isCorrect = isCorrectAnswer(questionId, transcript);
     showFeedback(questionId, isCorrect);
-    buttonsPressed[questionId] = true; // マイク入力を1回に制限
-    micButton.disabled = true; // ボタンを無効化
+    buttonsPressed[questionId] = true;
+    micButton.disabled = true;
     checkAllAnswered();
 }
 
-// グローバルに再生済みかどうかを管理するフラグ
 let finalMusicPlayed = false;
-
 function checkAllAnswered() {
-    // answers のキーで全問題の回答済みかチェック
     const allAnswered = Object.keys(answers).every(key => buttonsPressed[key] === true);
     const nextPageLink = document.getElementById("nextLink");
     const finalMusic = document.getElementById("finalMusic");
@@ -455,7 +468,7 @@ function checkAllAnswered() {
         if (finalMusic && !finalMusicPlayed) {
             finalMusicPlayed = true;
             setTimeout(() => {
-                finalMusic.play().catch(e => console.error("タスク終了音の再生エラー:", e));
+                finalMusic.play().catch(e => console.error("タスク終了音再生エラー:", e));
             }, 1000);
         }
     }
@@ -463,25 +476,24 @@ function checkAllAnswered() {
 
 function startRecognition(questionId) {
     if (!('webkitSpeechRecognition' in window)) {
-        alert("Speech recognition is not available in this browser. Please use Google Chrome.");
+        alert("このブラウザでは音声認識は利用できません。Google Chrome をご利用ください。");
         return;
     }
 
     const recognition = new webkitSpeechRecognition();
     recognition.lang = 'ja-JP';
     recognition.interimResults = true;
-    recognition.continuous = true; // 連続認識に設定
+    recognition.continuous = true;
     recognition.maxAlternatives = 1;
 
     let finalTranscript = "";
-    const maxWaitTime = 2000; // 2秒待機
+    const maxWaitTime = 2000;
     let recognitionFinalized = false;
     let timeoutId = null;
 
     const micButton = document.getElementById(`startButton${questionId}`);
     micButton.classList.add("recording");
 
-    // この finalize() は startRecognition 内でのみ利用
     function finalize() {
         if (!recognitionFinalized) {
             recognitionFinalized = true;
@@ -498,14 +510,14 @@ function startRecognition(questionId) {
         if (recognitionFinalized) return;
         if (timeoutId) clearTimeout(timeoutId);
 
-        // 「です」または「です。」で終わったら即時判定
+        // 「です」または「です。」で終わっていれば即時判定
         if (finalTranscript.endsWith("です") || finalTranscript.endsWith("です。")) {
             console.log(`即時判定 (${questionId}):`, finalTranscript);
             finalize();
             return;
         }
 
-        // 発話が途切れた場合、2秒後に最終判定
+        // 発話途切れの場合は 2 秒後に判定
         timeoutId = setTimeout(() => {
             console.log(`最終判定 (${questionId}):`, finalTranscript);
             finalize();
@@ -513,13 +525,12 @@ function startRecognition(questionId) {
     };
 
     recognition.onerror = function(event) {
-        alert("Speech recognition failed. Please try again.");
-        console.error("Speech Recognition Error:", event.error);
+        alert("音声認識に失敗しました。もう一度お試しください。");
+        console.error("音声認識エラー:", event.error);
     };
 
     recognition.onend = function() {
         micButton.classList.remove("recording");
-        // onend 時、まだ最終判定が済んでいなければ実行
         if (!recognitionFinalized) {
             clearTimeout(timeoutId);
             console.log(`onend 最終判定 (${questionId}):`, finalTranscript);
@@ -534,38 +545,36 @@ function isCorrectAnswer(questionId, userInput) {
     return answers[questionId]?.some(answer => userInput.includes(answer)) || false;
 }
 
-// --- 修正した showFeedback 関数 ---
 function showFeedback(questionId, isCorrect) {
-    // フィードバック領域（例： <div class="feedback"> ）内の全てのフィードバック画像を取得して非表示にする
-    const feedbackDiv = document.querySelector(`#${questionId} .feedback`);
+    // feedback 領域は id="feedback{questionId}" としている
+    const feedbackDiv = document.getElementById(`feedback${questionId}`);
     if (!feedbackDiv) return;
 
-    // 「.correctImage」と「.wrongImage」をすべて非表示にする
-    feedbackDiv.querySelectorAll('.correctImage, .wrongImage').forEach(img => {
-        img.style.display = 'none';
-    });
+    // 正解・不正解の画像はそれぞれ id="correctImage{questionId}" と "wrongImage{questionId}"
+    const correctImage = document.getElementById(`correctImage${questionId}`);
+    const wrongImage = document.getElementById(`wrongImage${questionId}`);
 
-    // フィードバック全体を表示
+    // 両方を一旦非表示にする
+    if (correctImage) correctImage.style.display = 'none';
+    if (wrongImage) wrongImage.style.display = 'none';
+
+    // feedback 領域自体を表示
     feedbackDiv.style.display = 'block';
-    
-    // 正誤に応じた画像のみ表示
-    if (isCorrect) {
-        feedbackDiv.querySelectorAll('.correctImage').forEach(img => {
-            img.style.display = 'block';
-        });
-    } else {
-        feedbackDiv.querySelectorAll('.wrongImage').forEach(img => {
-            img.style.display = 'block';
-        });
+
+    // 判定に応じた画像のみ表示する
+    if (isCorrect && correctImage) {
+        correctImage.style.display = 'block';
+    } else if (!isCorrect && wrongImage) {
+        wrongImage.style.display = 'block';
     }
 
-    // フィードバック音の再生
+    // フィードバック音も再生
     const feedbackAudio = isCorrect 
         ? document.getElementById(`correctAudio${questionId}`) 
         : document.getElementById(`wrongAudio${questionId}`);
     
     if (feedbackAudio) {
-        feedbackAudio.play().catch(e => console.error("フィードバック音の再生エラー:", e));
+        feedbackAudio.play().catch(e => console.error("フィードバック音再生エラー:", e));
     }
 }
 
