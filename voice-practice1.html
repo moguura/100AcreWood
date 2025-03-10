@@ -525,36 +525,50 @@ document.addEventListener("DOMContentLoaded", function () {
         micButton.disabled = true;
     }
 
-    function showFeedback(questionId, isCorrect, callback) {
-        const correctImage = document.getElementById(`correctImage${questionId}`);
-        const wrongImage = document.getElementById(`wrongImage${questionId}`);
-        const feedbackText = document.getElementById(`feedbackText${questionId}`);
-        const feedbackContainer = document.getElementById(`feedback${questionId}`);
+   function showFeedback(questionId, isCorrect, callback) {
+    const correctImage = document.getElementById(`correctImage${questionId}`);
+    const wrongImage = document.getElementById(`wrongImage${questionId}`);
+    const feedbackText = document.getElementById(`feedbackText${questionId}`);
+    const feedbackContainer = document.getElementById(`feedback${questionId}`);
 
-        if (feedbackContainer) {
-            feedbackContainer.classList.add('show');
-        }
-
-        if (feedbackText) {
-   　　　　 feedbackText.textContent = getFeedbackText(questionId);
-    　　　　feedbackText.style.display = 'block';
-　　　　}
-
-        if (correctImage && wrongImage) {
-            correctImage.style.display = isCorrect ? 'block' : 'none';
-            wrongImage.style.display = isCorrect ? 'none' : 'block';
-        }
-
-        const feedbackAudio = isCorrect ? document.getElementById(`correctAudio${questionId}`) : document.getElementById(`wrongAudio${questionId}`);
-        if (feedbackAudio) {
-            feedbackAudio.play().catch(e => console.error("フィードバック音の再生エラー:", e));
-            feedbackAudio.onended = () => {
-                if (callback) callback();
-            };
-        } else {
-            if (callback) callback();
-        }
+    // フィードバックコンテナを表示
+    if (feedbackContainer) {
+        feedbackContainer.classList.add('show');
+        feedbackContainer.style.display = 'block';
     }
+
+    // フィードバックテキストを設定
+    if (feedbackText) {
+        feedbackText.textContent = getFeedbackText(questionId);
+        feedbackText.style.display = 'block';
+    }
+
+    // 正解/不正解画像の表示制御
+    if (correctImage && wrongImage) {
+        correctImage.style.display = isCorrect ? 'block' : 'none'; // 正解時に表示
+        wrongImage.style.display = isCorrect ? 'none' : 'block';  // 不正解時に表示
+    }
+
+    // フィードバック音声の再生
+    const feedbackAudio = isCorrect 
+        ? document.getElementById(`correctAudio${questionId}`) 
+        : document.getElementById(`wrongAudio${questionId}`);
+    
+    if (feedbackAudio) {
+        feedbackAudio.play()
+            .then(() => {
+                feedbackAudio.onended = () => {
+                    if (callback) callback(); // 音声再生後にコールバックを実行
+                };
+            })
+            .catch(e => {
+                console.error("フィードバック音の再生エラー:", e);
+                if (callback) callback(); // 再生失敗時もコールバックを実行
+            });
+    } else {
+        if (callback) callback(); // 音声がない場合もコールバックを実行
+    }
+}
 
     function checkCompletion() {
         if (completedQuestions.size === Object.keys(answers).length) {
