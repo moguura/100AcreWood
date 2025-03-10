@@ -492,48 +492,89 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     let completedQuestions = new Set();
-    function startRecognition(questionId) {
-        // 自動再生制約対策
-        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        audioContext.resume().then(() => {
-            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-            if (!SpeechRecognition) {
-                alert("このブラウザは音声認識をサポートしていません。Google Chromeを使用してください。");
-                return;
-            }
 
-            const recognition = new SpeechRecognition();
-            recognition.lang = 'ja-JP';
-            recognition.continuous = false;
-            recognition.interimResults = false;
+function startRecognition(questionId) {
+    // 既に回答済みの場合は処理を中断
+    const micButton = document.getElementById(`startButton${questionId}`);
+    if (completedQuestions.has(questionId) || micButton.disabled) return;
 
-            const micButton = document.getElementById(`startButton${questionId}`);
-            micButton?.classList.add("recording");
+    // 自動再生制約対策
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    audioContext.resume().then(() => {
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (!SpeechRecognition) {
+            alert("このブラウザは音声認識をサポートしていません。Google Chromeを使用してください。");
+            return;
+        }
+
+        const recognition = new SpeechRecognition();
+        recognition.lang = 'ja-JP';
+        recognition.continuous = false;
+        recognition.interimResults = false;
+
+        // ボタンの無効化と視覚的フィードバック
+        micButton.disabled = true;
+        micButton.style.opacity = "0.5";
+        micButton.classList.add("recording");
+
+        recognition.onresult = (event) => {
+            const transcript = event.results[0][0].transcript.trim();
+            const isCorrect = answers[questionId].some(answer => transcript.includes(answer));
+            showFeedback(questionId, isCorrect, () => {
+                completedQuestions.add(questionId);
+                checkCompletion();
+                // 回答後もボタンを無効状態に維持
+                micButton.disabled = true;
+            });
+        };
+
+        recognition.onerror = (event) => {
+            console.error("音声認識エラー:", event.error);
+            micButton.classList.remove("recording");
+            // エラー時もボタンを無効化したまま
             micButton.disabled = true;
+        };
 
-            recognition.onresult = (event) => {
-                const transcript = event.results[0][0].transcript.trim();
-                const isCorrect = answers[questionId].some(answer => transcript.includes(answer));
-                showFeedback(questionId, isCorrect, () => {
-                    completedQuestions.add(questionId);
-                    checkCompletion();
-                });
-            };
+        recognition.onend = () => {
+            micButton.classList.remove("recording");
+            // 認識終了時もボタンを無効化したまま
+            micButton.disabled = true;
+        };
 
-            recognition.onerror = (event) => {
-                console.error("音声認識エラー:", event.error);
-                micButton?.classList.remove("recording");
-                micButton.disabled = false;
-            };
+        recognition.start();
+    });
+}
 
-            recognition.onend = () => {
-                micButton?.classList.remove("recording");
-                micButton.disabled = false;
-            };
+function showFeedback(questionId, isCorrect, callback) {
+    const elements = {
+        feedbackContainer: document.getElementById(`feedback${questionId}`),
+        correctImage: document.getElementById(`correctImage${questionId}`),
+        wrongImage: document.getElementById(`wrongImage${questionId}`),
+        feedbackText: document.getElementById(`feedbackText${questionId}`),
+        audio: isCorrect ? document.getElementById(`correctAudio${questionId}`) 
+                        : document.getElementById(`wrongAudio${questionId}`)
+    };
 
-            recognition.start();
-        });
+    // フィードバック表示
+    elements.feedbackContainer?.classList.add('show');
+    elements.correctImage.style.display = isCorrect ? 'block' : 'none';
+    elements.wrongImage.style.display = isCorrect ? 'none' : 'block';
+    elements.feedbackText && (elements.feedbackText.textContent = getFeedbackText(questionId));
+
+    // 音声再生
+    if (elements.audio) {
+        elements.audio.pause();
+        elements.audio.currentTime = 0;
+        elements.audio.play()
+            .then(() => elements.audio.onended = callback)
+            .catch(error => {
+                console.error(`音声再生エラー (${questionId}):`, error);
+                callback();
+            });
+    } else {
+        callback();
     }
+}
 
     function showFeedback(questionId, isCorrect, callback) {
         const elements = {
