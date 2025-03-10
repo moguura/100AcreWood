@@ -609,21 +609,15 @@ function showFeedback(questionId, isCorrect) {
         elements.wrongImage.style.display = isCorrect ? 'none' : 'block';
     }
 
-    // 音声再生してからフィードバックを表示
+    // 音声再生と同時にフィードバックを表示
     const playAudio = (audioElement) => {
         audioElement.play()
-            .then(() => {
-                audioElement.onended = () => {
-                    if (elements.feedback) elements.feedback.style.display = 'block';
-                    if (elements.feedbackText) elements.feedbackText.style.display = 'block';
-                };
-            })
             .catch(e => {
                 console.error(`音声再生エラー (${questionId}):`, e);
-                // 再生失敗時でもフィードバックを表示
-                if (elements.feedback) elements.feedback.style.display = 'block';
-                if (elements.feedbackText) elements.feedbackText.style.display = 'block';
             });
+        // 再生と同時にフィードバックを表示
+        if (elements.feedback) elements.feedback.style.display = 'block';
+        if (elements.feedbackText) elements.feedbackText.style.display = 'block';
     };
 
     // 正解 or 不正解で音声を変える
