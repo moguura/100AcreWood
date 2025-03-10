@@ -457,13 +457,17 @@ function finalizeRecognition(questionId, transcript, micButton) {
 let finalMusicPlayed = false;
 function checkAllAnswered() {
     const allAnswered = Object.keys(answers).every(key => buttonsPressed[key] === true);
-    const nextPageLink = document.getElementById("nextLink");
-    const finalMusic = document.getElementById("finalMusic");
-
     if (allAnswered) {
+        const nextPageLink = document.getElementById("nextLink");
         if (nextPageLink) {
             nextPageLink.style.display = "block";
         }
+        // 最後の説明ボックスを表示する処理を追加
+        const finalInstructions = document.getElementById("finalInstructions");
+        if (finalInstructions) {
+            finalInstructions.style.display = "block";
+        }
+        const finalMusic = document.getElementById("finalMusic");
         if (finalMusic && !finalMusicPlayed) {
             finalMusicPlayed = true;
             setTimeout(() => {
