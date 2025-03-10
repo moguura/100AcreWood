@@ -347,7 +347,7 @@ a:hover {
     
     <div class="feedback">
         <img id="correctImageQ9" class="correctImage" src="https://raw.githubusercontent.com/moguura/my-images/main/5_9maru.JPG" alt="正しい答え">
-        <img id="wrongImageQ9" class="wrongImage" src="https://raw.githubusercontent.com/moguura/my-images/main/5_9batsu.JPG" alt="間違った答え">
+        <img id="wrongImageQ9" class="wrongImage" src="https://raw.githubusercontent.com/moguura/my-images/main/5_9batsu.jpg" alt="間違った答え">
     </div>
     
     <audio id="correctAudioQ9" class="correctAudio" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E6%AD%A3%E8%A7%A32.mp3"></audio>
@@ -421,14 +421,10 @@ function finalizeRecognition(questionId, transcript, micButton) {
 function checkAllAnswered() {
     const allAnswered = Object.values(buttonsPressed).every(value => value);
     const nextPageLink = document.getElementById("nextLink");
-    const finalMusic = document.getElementById("finalMusic");
 
     if (allAnswered) {
         if (nextPageLink) {
             nextPageLink.style.display = "block";
-        }
-        if (finalMusic && !finalMusic.playing) { // タスク終了音がすでに再生中でない場合のみ再生
-            finalMusic.play().catch(e => console.error("タスク終了音の再生エラー:", e));
         }
     }
 }
