@@ -570,53 +570,63 @@ function isCorrectAnswer(questionId, userInput) {
 
 function normalizeText(text) {
     let normalized = text.toLowerCase().replace(/\s+/g, '');
-    normalized = normalized.replace(/です$/, ''); // "です"を取り除いて一致しやすくする
+    normalized = normalized.replace(/です。?$/, ''); // 句点も削除するよう修正
     return normalized;
 }
 
 function showFeedback(questionId, isCorrect) {
-    const correctImage = document.getElementById(`correctImage${questionId}`);
-    const wrongImage = document.getElementById(`wrongImage${questionId}`);
-    const feedback = document.getElementById(`feedback${questionId}`);
-    const feedbackText = document.getElementById(`feedbackText${questionId}`);
+    const elements = {
+        correctImage: document.getElementById(`correctImage${questionId}`),
+        wrongImage: document.getElementById(`wrongImage${questionId}`),
+        feedback: document.getElementById(`feedback${questionId}`),
+        feedbackText: document.getElementById(`feedbackText${questionId}`),
+        correctAudio: document.getElementById(`correctAudio${questionId}`),
+        wrongAudio: document.getElementById(`wrongAudio${questionId}`)
+    };
 
-    const correctAudio = document.getElementById(`correctAudio${questionId}`);
-    const wrongAudio = document.getElementById(`wrongAudio${questionId}`);
+    // 初期状態で全て非表示
+    elements.feedback.style.display = 'none';
+    elements.feedbackText.style.display = 'none';
 
-    // **フィードバックメッセージを設定**
+    // フィードバックメッセージ設定
     const feedbackMessages = getFeedbackText(questionId);
-    if (feedbackText) {
-        feedbackText.textContent = isCorrect ? feedbackMessages.correct : feedbackMessages.incorrect;
-        feedbackText.style.display = 'block';
+    if (elements.feedbackText) {
+        elements.feedbackText.textContent = isCorrect ? feedbackMessages.correct : feedbackMessages.incorrect;
     }
 
-    // **画像を表示**
-    if (correctImage && wrongImage) {
-        correctImage.style.display = isCorrect ? 'block' : 'none';
-        wrongImage.style.display = isCorrect ? 'none' : 'block';
+    // 画像表示制御
+    if (elements.correctImage && elements.wrongImage) {
+        elements.correctImage.style.display = isCorrect ? 'block' : 'none';
+        elements.wrongImage.style.display = isCorrect ? 'none' : 'block';
     }
 
-    // **フィードバック全体を表示**
-    if (feedback) {
-        feedback.style.display = 'block';
-    }
+    // 音声再生処理
+    const playAudio = (audioElement) => {
+        audioElement.play()
+            .then(() => {
+                audioElement.onended = () => {
+                    elements.feedback.style.display = 'block';
+                    elements.feedbackText.style.display = 'block';
+                };
+            })
+            .catch(e => {
+                console.error(`音声再生エラー (${questionId}):`, e);
+                elements.feedback.style.display = 'block';
+                elements.feedbackText.style.display = 'block';
+            });
+    };
 
-    // **音を鳴らす（`null` チェック付き）**
+    // 正解/不正解判定
     if (isCorrect) {
-        if (correctAudio) {
-            correctAudio.play().catch(e => console.error("正解音の再生エラー:", e));
-        } else {
-            console.warn(`正解音が見つかりません: correctAudio${questionId}`);
+        if (elements.correctAudio) {
+            playAudio(elements.correctAudio);
         }
     } else {
-        if (wrongAudio) {
-            wrongAudio.play().catch(e => console.error("不正解音の再生エラー:", e));
-        } else {
-            console.warn(`不正解音が見つかりません: wrongAudio${questionId}`);
+        if (elements.wrongAudio) {
+            playAudio(elements.wrongAudio);
         }
     }
 }
-
 
 function getFeedbackText(questionId) {
     const feedbackMessages = {
