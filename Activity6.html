@@ -471,6 +471,11 @@ function checkAllAnswered() {
         if (finalInstructions) {
             finalInstructions.style.display = "block";
         }
+        // Notice ボードの表示（クラス名 "notice-board" の要素）
+        const noticeBoard = document.querySelector(".notice-board");
+        if (noticeBoard) {
+            noticeBoard.style.display = "block";
+        }
         const finalMusic = document.getElementById("finalMusic");
         if (finalMusic && !finalMusicPlayed) {
             finalMusicPlayed = true;
@@ -569,7 +574,6 @@ function showFeedback(questionId, isCorrect) {
     const feedbackTextElem = document.getElementById(`feedbackText${questionId}`);
     if (feedbackTextElem) {
         const messages = getFeedbackText(questionId);
-        // 万が一テキストが未定義の場合はフォールバックとして空文字を設定
         feedbackTextElem.textContent = messages ? (isCorrect ? messages.correct : messages.incorrect) : "";
     }
 
@@ -594,7 +598,7 @@ function showFeedback(questionId, isCorrect) {
 }
 
 function getFeedbackText(questionId) {
-    // ※ HTML上に存在する問題のみテキストを返すように（E1～Q5の場合）
+    // ※ HTML上に存在する問題（E1～Q5）のみテキストを返す
     const feedbackMessages = {
         E1: {
             correct: "Your answer： きのうは さむかったです。（Yesterday was cold.）",
