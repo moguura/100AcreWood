@@ -51,10 +51,11 @@ h1 {
 }
 
 .feedback img {
-    width: 100%;  /* 親要素の幅いっぱいにする */
-    max-width: 600px;  /* 問題画像と同じ最大幅にする */
-    height: auto;  /* 縦横比を維持 */
-    display: none;  /* デフォルトでは非表示 */
+    width: 100%;
+    max-width: 600px;
+    height: auto;
+    display: none;
+    margin-top: -10px;  /* 画像を10px上に移動 */
 }
 
 .feedback {
@@ -421,10 +422,14 @@ function finalizeRecognition(questionId, transcript, micButton) {
 function checkAllAnswered() {
     const allAnswered = Object.values(buttonsPressed).every(value => value);
     const nextPageLink = document.getElementById("nextLink");
+    const finalMusic = document.getElementById("finalMusic");
 
     if (allAnswered) {
         if (nextPageLink) {
             nextPageLink.style.display = "block";
+        }
+        if (finalMusic && !finalMusic.playing) { // タスク終了音がすでに再生中でない場合のみ再生
+            finalMusic.play().catch(e => console.error("タスク終了音の再生エラー:", e));
         }
     }
 }
