@@ -460,14 +460,14 @@ a:hover {
 <script>
 document.addEventListener("DOMContentLoaded", () => {
     const answers = {
-        E1: ["あつい"],
-        E2: ["あつくない"],
-        E3: ["あつかった"],
-        E4: ["あつくなかった"],
+        E1: ["つい"],
+        E2: ["くない"],
+        E3: ["つかった"],
+        E4: ["くなかった"],
         E5: ["いい"],
         E6: ["よくない"],
         E7: ["よかった"],
-        E8: ["よくなかった"],
+        E8: ["くなかった"],
     };
 
     function setupEventListeners() {
@@ -624,7 +624,7 @@ function checkCompletion() {
             }
             
             // フェイルセーフ（3秒後に強制再生）
-            setTimeout(playMusic, 1000); // 時間を500→3000に変更
+            setTimeout(playMusic, 2000); // 時間を500→3000に変更
         }
     }
 }
