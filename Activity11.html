@@ -572,11 +572,11 @@ function finalizeRecognition(questionId, transcript, micButton) {
 }
 function checkAllAnswered() {
     const allAnswered = Object.values(buttonsPressed).every(value => value);
-    const nextPageLink = document.getElementById("nextPageLink");
+    const nextPageLink = document.getElementById("nextLink");
 
     if (allAnswered) {
-        if (nextPageLink) {
-            nextPageLink.style.display = "block";
+        if (nextLink) {
+            nextLink.style.display = "block";
         }
 
         // ★ タスク終了の音楽を流す
