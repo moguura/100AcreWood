@@ -756,9 +756,6 @@ function showFeedback(questionId, isCorrect, transcript) {
     const correctAudio = document.getElementById(`correctAudio${questionId}`);
     const wrongAudio = document.getElementById(`wrongAudio${questionId}`);
     const feedbackText = document.getElementById(`feedbackText${questionId}`);
-
-
-    // フィードバックメッセージを取得
     const feedbackMessage = getFeedbackText(questionId);
 
     if (isCorrect) {
@@ -773,13 +770,13 @@ function showFeedback(questionId, isCorrect, transcript) {
 
     // フィードバックメッセージを表示
     if (feedbackText) {
-        feedbackText.innerHTML = feedbackMessage.replace(/\n/g, "<br>"); // ← <br> に変換
+        feedbackText.innerHTML = feedbackMessage.replace(/\n/g, "<br>");
     }
 
     if (feedback) feedback.style.display = 'block';
     if (feedbackText) feedbackText.style.display = 'block';
 }
-
+    
 // 各問題のフィードバックメッセージを返す関数
 function getFeedbackText(questionId) {
     const feedbackMessages = {
@@ -806,6 +803,7 @@ function displayFeedback(questionId) {
         feedbackElement.innerHTML = feedback.replace(/\n/g, "<br>");
     }
 }
+}); 
 </script>
 </body>
 </html>
