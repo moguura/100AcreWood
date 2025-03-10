@@ -562,7 +562,7 @@ function finalizeRecognition(questionId, transcript, micButton) {
 }
 function checkAllAnswered() {
     const allAnswered = Object.values(buttonsPressed).every(value => value);
-    const nextPageLink = document.getElementById("nextLink");
+    const nextPageLink = document.getElementById("nextPageLink");
 
     if (allAnswered) {
         if (nextPageLink) {
