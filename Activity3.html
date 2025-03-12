@@ -449,15 +449,20 @@ function showFinalInstructions() {
 
 function isCorrectAnswer(questionId, userInput) {
     const normalizedInput = normalizeText(userInput);
-    const correctEnding = answers[questionId][0];
 
-    if (correctEnding === "くない" && normalizedInput.endsWith("くない")) {
-        return true;
-    } else if (correctEnding === "い" && normalizedInput.endsWith("い") && !normalizedInput.endsWith("くない")) {
-        return true;
+    if (questionId === "Q4") {
+        return normalizedInput.endsWith("い");  // 「寒いです」を正解とする
+    }
+
+    const correctEnding = "い"; // 形容詞の基本形の判定
+    if (normalizedInput.endsWith("くない")) {
+        return false; // 誤答
+    } else if (normalizedInput.endsWith(correctEnding)) {
+        return true; // 正解
     }
     return false;
 }
+
 
 function normalizeText(text) {
     return text.toLowerCase().replace(/\s+/g, '').replace(/です$/, '');
