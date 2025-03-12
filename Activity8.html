@@ -63,20 +63,22 @@ h1 {
   border-radius: 8px;        /* 角丸 */
   padding: 16px;             /* 内側の余白 */
   margin-bottom: 24px;       /* 下の余白 */
-  background-color: #f9f9f9; /* 背景色 */
+  background-color: #e7f3ff; /* 薄い青色の背景 */
 }
 
 /* 各問題に軽く枠をつける */
 .question {
   padding: 12px;
   border-bottom: 1px dashed #ccc; /* 区切り線 */
+  background-color: #ffffff; /* 各質問の背景を白に */
 }
 
 /* 最後の問題の下線を消す */
 .question:last-of-type {
   border-bottom: none;
-　margin-bottom: 80px;
+  margin-bottom: 80px;
 }
+
 
 /* 画像とボタンを縦に中央揃え */
 .media-container {
@@ -389,45 +391,47 @@ a:hover {
         </div>
       </div>
 
-<!-- 問題4 -->
+<!-- 問題4 と 問題5 を同じ question-group にまとめる -->
 <div class="question-group">
-<div class="question" id="Q4">
-     <p class="question-number">Q4</p>
-     <div class="media-container">
-      <img src="https://raw.githubusercontent.com/moguura/my-images/main/8-5.JPG" alt="説明用のイラスト" class="illustration">
-     <div class="audio-section">
-  　   <button class="play-audio" id="play-audio-5">▶ Play</button>
-       <audio id="audio-5" src="https://raw.githubusercontent.com/moguura/my-images/main/8-5koe.wav"></audio>
-      </div> 
-     </div>
-     <p class="english-text">The hot spring was not warm.😢💔</p>    
-     <p class="japanese-text"><span class="highlight">あたたかい</span> →  おんせんは（ 　　　）</p>
-     <button id="startButtonQ4" class="mic-button"></button>
-     <div class="feedback" id="feedbackQ4">
-        <img id="correctImageQ4" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%BE%E3%82%8B.png" alt="正しい答え" class="feedback-icon">
-        <img id="wrongImageQ4" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%B0%E3%81%A4.png" alt="間違った答え" class="feedback-icon">
-        <div id="feedbackTextQ4" class="feedback-text"></div>
-    </div>
-    <audio id="correctAudioQ4" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E6%AD%A3%E8%A7%A32.mp3"></audio>
-    <audio id="wrongAudioQ4" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E4%B8%8D%E6%AD%A3%E8%A7%A31.mp3"></audio>
-    </div>
-</div>
 
-<!-- 問題5 -->
- <div class="question" id="Q5">
-    <p class="question-number">Q5</p>
-    <p class="english-text">There were too many people.😔💧</p>    
-    <p class="japanese-text"><span class="highlight">おおい</span> →  ひとは（ 　　　）</p>
-    <button id="startButtonQ5" class="mic-button"></button>
-     <div class="feedback" id="feedbackQ5">
-        <img id="correctImageQ5" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%BE%E3%82%8B.png" alt="正しい答え" class="feedback-icon">
-        <img id="wrongImageQ5" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%B0%E3%81%A4.png" alt="間違った答え" class="feedback-icon">
-        <div id="feedbackTextQ5" class="feedback-text"></div>
+    <!-- 問題4 -->
+    <div class="question" id="Q4">
+        <p class="question-number">Q4</p>
+        <div class="media-container">
+            <img src="https://raw.githubusercontent.com/moguura/my-images/main/8-5.JPG" alt="説明用のイラスト" class="illustration">
+            <div class="audio-section">
+                <button class="play-audio" id="play-audio-5">▶ Play</button>
+                <audio id="audio-5" src="https://raw.githubusercontent.com/moguura/my-images/main/8-5koe.wav"></audio>
+            </div>
+        </div>
+        <p class="english-text">The hot spring was not warm.😢💔</p>    
+        <p class="japanese-text"><span class="highlight">あたたかい</span> →  おんせんは（ 　　　）</p>
+        <button id="startButtonQ4" class="mic-button"></button>
+        <div class="feedback" id="feedbackQ4">
+            <img id="correctImageQ4" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%BE%E3%82%8B.png" alt="正しい答え" class="feedback-icon">
+            <img id="wrongImageQ4" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%B0%E3%81%A4.png" alt="間違った答え" class="feedback-icon">
+            <div id="feedbackTextQ4" class="feedback-text"></div>
+        </div>
+        <audio id="correctAudioQ4" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E6%AD%A3%E8%A7%A32.mp3"></audio>
+        <audio id="wrongAudioQ4" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E4%B8%8D%E6%AD%A3%E8%A7%A31.mp3"></audio>
     </div>
-    <audio id="correctAudioQ5" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E6%AD%A3%E8%A7%A32.mp3"></audio>
-    <audio id="wrongAudioQ5" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E4%B8%8D%E6%AD%A3%E8%A7%A31.mp3"></audio>
-</div>
-</div>
+
+    <!-- 問題5 (Q5) も同じ question-group に含める -->
+    <div class="question" id="Q5">
+        <p class="question-number">Q5</p>
+        <p class="english-text">There were too many people.😔💧</p>    
+        <p class="japanese-text"><span class="highlight">おおい</span> →  ひとは（ 　　　）</p>
+        <button id="startButtonQ5" class="mic-button"></button>
+        <div class="feedback" id="feedbackQ5">
+            <img id="correctImageQ5" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%BE%E3%82%8B.png" alt="正しい答え" class="feedback-icon">
+            <img id="wrongImageQ5" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%B0%E3%81%A4.png" alt="間違った答え" class="feedback-icon">
+            <div id="feedbackTextQ5" class="feedback-text"></div>
+        </div>
+        <audio id="correctAudioQ5" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E6%AD%A3%E8%A7%A32.mp3"></audio>
+        <audio id="wrongAudioQ5" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E4%B8%8D%E6%AD%A3%E8%A7%A31.mp3"></audio>
+    </div>
+
+</div> <!-- ここで question-group を閉じる -->
 
 <!-- 問題6 -->
 <div class="question-group">     
