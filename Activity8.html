@@ -57,19 +57,20 @@ h1 {
     color: #007bff;
 }
     
-/* 問題グループ全体を囲むボックス */
+/* 問題グループ全体を囲むボックス（クレヨン風） */
 .question-group {
-  border: 2px solid #007bff; /* 青色の枠線 */
-  border-radius: 8px;        /* 角丸 */
+  border: 6px solid #e7f3ff; /* 太めの淡い青色の枠線 */
+  border-radius: 12px;       /* 角を少し丸くする */
   padding: 16px;             /* 内側の余白 */
   margin-bottom: 24px;       /* 下の余白 */
-  background-color: #e7f3ff; /* 薄い青色の背景 */
+  background-color: #ffffff; /* 背景を白に統一 */
+  box-shadow: 0 0 10px #e7f3ff; /* ふんわりした枠のぼかし */
 }
 
-/* 各問題に軽く枠をつける */
+/* 各問題のデザイン */
 .question {
   padding: 12px;
-  background-color: #ffffff; /* 各質問の背景を白に */
+  background-color: #ffffff; /* 各質問の背景も白に */
   border-bottom: none; /* 破線を削除 */
 }
 
@@ -78,7 +79,6 @@ h1 {
   border-bottom: none;
   margin-bottom: 80px;
 }
-
 
 /* 画像とボタンを縦に中央揃え */
 .media-container {
