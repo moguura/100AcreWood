@@ -450,9 +450,11 @@ document.addEventListener("DOMContentLoaded", function () {
             startRecognition(questionId);
         });
     });
-    
+
     let completedQuestions = new Set();
-    let buttonsPressed = {}; // 追加: マイクボタンの管理
+    let buttonsPressed = {};
+    let completedAudioCount = 0;  // フィードバック音の完了数をカウント
+    const totalQuestions = Object.keys(answers).length;  // 全問題数
 
     function startRecognition(questionId) {
         if (!('webkitSpeechRecognition' in window)) {
@@ -525,68 +527,69 @@ document.addEventListener("DOMContentLoaded", function () {
         micButton.disabled = true;
     }
 
-   function showFeedback(questionId, isCorrect, callback) {
-    const correctImage = document.getElementById(`correctImage${questionId}`);
-    const wrongImage = document.getElementById(`wrongImage${questionId}`);
-    const feedbackText = document.getElementById(`feedbackText${questionId}`);
-    const feedbackContainer = document.getElementById(`feedback${questionId}`);
+    function showFeedback(questionId, isCorrect, callback) {
+        const correctImage = document.getElementById(`correctImage${questionId}`);
+        const wrongImage = document.getElementById(`wrongImage${questionId}`);
+        const feedbackText = document.getElementById(`feedbackText${questionId}`);
+        const feedbackContainer = document.getElementById(`feedback${questionId}`);
 
-    // フィードバックコンテナを表示
-    if (feedbackContainer) {
-        feedbackContainer.classList.add('show');
-        feedbackContainer.style.display = 'block';
-    }
+        if (feedbackContainer) {
+            feedbackContainer.classList.add('show');
+            feedbackContainer.style.display = 'block';
+        }
 
-    // フィードバックテキストを設定
-    if (feedbackText) {
-        feedbackText.textContent = getFeedbackText(questionId);
-        feedbackText.style.display = 'block';
-    }
+        if (feedbackText) {
+            feedbackText.textContent = getFeedbackText(questionId);
+            feedbackText.style.display = 'block';
+        }
 
-    // 正解/不正解画像の表示制御
-    if (correctImage && wrongImage) {
-        correctImage.style.display = isCorrect ? 'block' : 'none'; // 正解時に表示
-        wrongImage.style.display = isCorrect ? 'none' : 'block';  // 不正解時に表示
-    }
+        if (correctImage && wrongImage) {
+            correctImage.style.display = isCorrect ? 'block' : 'none';
+            wrongImage.style.display = isCorrect ? 'none' : 'block';
+        }
 
-    // フィードバック音声の再生
-    const feedbackAudio = isCorrect 
-        ? document.getElementById(`correctAudio${questionId}`) 
-        : document.getElementById(`wrongAudio${questionId}`);
-    
-    if (feedbackAudio) {
-        feedbackAudio.play()
-            .then(() => {
-                feedbackAudio.onended = () => {
-                    if (callback) callback(); // 音声再生後にコールバックを実行
-                };
-            })
-            .catch(e => {
-                console.error("フィードバック音の再生エラー:", e);
-                if (callback) callback(); // 再生失敗時もコールバックを実行
-            });
-    } else {
-        if (callback) callback(); // 音声がない場合もコールバックを実行
+        const feedbackAudio = isCorrect 
+            ? document.getElementById(`correctAudio${questionId}`) 
+            : document.getElementById(`wrongAudio${questionId}`);
+        
+        if (feedbackAudio) {
+            feedbackAudio.play()
+                .then(() => {
+                    feedbackAudio.onended = () => {
+                        completedAudioCount++;  // 音声が終了したらカウント
+                        checkCompletion();  // 音声がすべて終わったか確認
+                        if (callback) callback();
+                    };
+                })
+                .catch(e => {
+                    console.error("フィードバック音の再生エラー:", e);
+                    completedAudioCount++;  // 再生失敗時もカウント
+                    checkCompletion();
+                    if (callback) callback();
+                });
+        } else {
+            completedAudioCount++;  // 音声がない場合もカウント
+            checkCompletion();
+            if (callback) callback();
+        }
     }
-}
 
     function checkCompletion() {
-        if (completedQuestions.size === Object.keys(answers).length) {
-            setTimeout(() => {
-                const finalInstructions = document.getElementById("finalInstructions");
-                const nextLink = document.getElementById("nextLink");
-                const finalMusic = document.getElementById("finalMusic");
-                
-                if (finalInstructions) {
-                    finalInstructions.style.display = "block";
-                }
-                if (nextLink) {
-                    nextLink.style.display = "block";
-                }
-                if (finalMusic) {
-                    finalMusic.play().catch(e => console.error("Final music playback error:", e));
-                }
-            }, 500);
+        if (completedQuestions.size === totalQuestions && completedAudioCount === totalQuestions) {
+            // すべての音声が再生され、全問題が完了したら表示
+            const finalInstructions = document.getElementById("finalInstructions");
+            const nextLink = document.getElementById("nextLink");
+            const finalMusic = document.getElementById("finalMusic");
+            
+            if (finalInstructions) {
+                finalInstructions.style.display = "block";
+            }
+            if (nextLink) {
+                nextLink.style.display = "block";
+            }
+            if (finalMusic) {
+                finalMusic.play().catch(e => console.error("Final music playback error:", e));
+            }
         }
     }
 
