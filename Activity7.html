@@ -267,6 +267,13 @@ a:hover {
    color:#0056b3;  
    transform : scale(1.05);  
 }
+/* 赤い説明テキスト */
+.instruction-red {
+    color: red;
+    font-weight: bold;
+    font-size: 24px;
+    margin-top: 10px;
+}
 </style>
 </head>
 <body>
@@ -314,6 +321,10 @@ a:hover {
     <!-- 共通のイラストクラスを適用 -->
     <img src="https://raw.githubusercontent.com/moguura/my-images/main/7-e.g..png" alt="E1 Image" class="illustration">
     <button id="startButtonE1" class="mic-button" aria-label="音声認識を開始"></button>
+     <!-- ここに赤いテキストを追加 -->
+    <p class="instruction-red">
+        Press the microphone button and say: ‘せんせいは いいです。’
+    </p>
     <div class="feedback" id="feedbackE1">
         <img id="correctImageE1" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%BE%E3%82%8B.png" alt="正しい答え" class="feedback-icon">
         <img id="wrongImageE1" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%B0%E3%81%A4.png" alt="間違った答え" class="feedback-icon">
