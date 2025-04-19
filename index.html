@@ -22,14 +22,14 @@ body {
 
 h1 {
     text-align: center;
-    margin: 40px 0; /* 上下の余白を設定 */
-    margin-bottom: 60px; /* 下の余白を増やして間隔を広げる */
-    font-size: 40px; /* 見出しを大きくする */
+    margin: 40px 0;
+    margin-bottom: 60px;
+    font-size: 40px;
 }
 
 /* 質問エリアのスタイル */
 .question {
-    margin-bottom: 100px; 
+    margin-bottom: 100px;
     text-align: center;
     font-size: 24px;
 }
@@ -39,12 +39,12 @@ h1 {
     object-fit: cover;
     display: block;
     margin: 0 auto 10px;
-    max-width: 100%; 
+    max-width: 100%;
 }
 .question p:first-child {
     font-weight: bold;
-    font-size: 28px; /* 問題番号の文字サイズを大きく */
-    color: #007bff; /* 青色 */
+    font-size: 28px;
+    color: #007bff;
 }
 
 /* キューのスタイル（緑色と太字） */
@@ -59,22 +59,16 @@ h1 {
     background-size: cover;
     background-repeat: no-repeat;
     border: none;
-    width: 70px; 
-    height: 70px; 
+    width: 70px;
+    height: 70px;
     border-radius: 50%;
-    cursor: pointer; 
-    margin: 10px auto; 
-    transition: box-shadow 0.3s ease-in-out; /* 光るエフェクトのアニメーション */
+    cursor: pointer;
+    margin: 10px auto;
+    transition: box-shadow 0.3s ease-in-out;
 }
-
-/* 押している間に光る */
-.mic-button:active {
-    box-shadow: 0 0 15px rgba(255, 0, 0, 0.8); /* 赤く光る */
-}
-
-/* 録音中に光る */
+.mic-button:active,
 .mic-button.recording {
-    box-shadow: 0 0 15px rgba(255, 0, 0, 0.8); /* 赤く光る */
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.8);
 }
 .mic-button:disabled {
     background-color: gray;
@@ -91,10 +85,23 @@ h1 {
     font-size: 24px;
     line-height: 1.6;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    max-width: 900px; /* 幅の最大値を設定 */
-    width: 100%; /* 親要素に合わせる */
-    text-align: center; /* 文字を中央揃え */
-    margin: 0 auto; /* 中央揃え */
+    max-width: 900px;
+    width: 100%;
+    text-align: center;
+    margin: 0 auto;
+}
+
+/* ビデオコンテナ */
+.video-container {
+    text-align: center;
+    margin-bottom: 20px;
+}
+.video-container video {
+    max-width: 100%;
+    height: auto;
+    border: 1px solid #d1d5db;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 }
 
 /* フィードバックのスタイル */
@@ -167,13 +174,12 @@ a:hover {
 <body>
     <h1>Activity 1</h1>
     <div id="content">
-        <!-- 初めの説明文 -->
-        <div class="instructions">
-            <p>
-                Please talk about the image using い-adjectives. Look at <span class="blue-bold">Example 1</span>.<br>
-                Please press the microphone button and say<br>
-                <strong>てんきは いいです。</strong> or   <strong>いいです。</strong>
-            </p>
+        <!-- 説明ビデオ1 -->
+        <div class="video-container">
+            <video controls>
+                <source src="https://raw.githubusercontent.com/moguura/my-images/main/Acticity1-1.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
         </div>
 
         <!-- E1の例題 -->
@@ -190,25 +196,16 @@ a:hover {
             <audio id="correctAudioE1" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E6%AD%A3%E8%A7%A32.mp3"></audio>
             <audio id="wrongAudioE1" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E4%B8%8D%E6%AD%A3%E8%A7%A31.mp3"></audio>
         </div>
-        
-        <!-- E1とE2の間の説明文 -->
-        <div class="instructions" style="text-align: center; margin: 20px;">
-            <p>
-                <span class="blue-bold">In Example 1</span>, the weather in the image is nice, so the correct answer is<br> 
-                てんきは <span class="red-bold">いいです</span>。 (The weather <span class="red-bold">is good</span>).
-            </p>
+
+        <!-- 説明ビデオ2 -->
+        <div class="video-container">
+            <video controls>
+                <source src="https://raw.githubusercontent.com/moguura/my-images/main/Acticity1-2.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
         </div>
 
-         <!-- E1とE2の間の説明文 -->
-        <div class="instructions" style="text-align: center; margin: 20px;">
-            <p>
-                Now, let's try <span class="blue-bold">Example 2</span>.<br> 
-                Press the microphone button and say<br>
-                <strong>てんきは よくないです。</strong> or   <strong>よくないです。</strong>
-            </p>
-        </div>
-
-        <!-- E2 -->
+        <!-- E2の例題 -->
         <div class="question" id="E2">
             <p>e.g.2</p>
             <img src="https://raw.githubusercontent.com/moguura/my-images/main/%E4%BE%8B2.jpg" alt="E2 Image">
@@ -221,6 +218,16 @@ a:hover {
             </div>
             <audio id="correctAudioE2" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E6%AD%A3%E8%A7%A32.mp3"></audio>
             <audio id="wrongAudioE2" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E4%B8%8D%E6%AD%A3%E8%A7%A31.mp3"></audio>
+        </div>
+
+        <!-- E2の後の説明文 -->
+        <div class="instructions">
+            <p>
+                <span class="blue-bold">In Example 2</span>, the weather in the image is not good, so the correct answer is <br>
+                <strong>てんきは</strong> <span class="red-bold">よくないです</span>。<br>
+                Please speak in the same way for the following questions as well.<br>
+                You can speak into the microphone <span class="red-bold">just once</span>.
+            </p>
         </div>
 
         <!-- E2の後の説明文 -->
