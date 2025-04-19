@@ -97,8 +97,9 @@ h1 {
     margin-bottom: 20px;
 }
 .video-container video {
-    max-width: 100%;
-    height: auto;
+    width: 50%;      /* 親要素（.video-container）の幅の50% */
+    max-width: 400px;/* 親要素が大きくても最大400pxまで */
+    height: auto;    /* アスペクト比を維持 */
     border: 1px solid #d1d5db;
     border-radius: 5px;
     box-shadow: 0 1px 3px rgba(0,0,0,0.1);
