@@ -169,8 +169,11 @@ a:hover {
             color: #007bff;      /* 文字色を青に設定 */
             font-weight: bold;   /* 文字を太字に設定 */
         }
-</style>
-
+.blue-text {
+  color: #007bff;
+  font-weight: normal;
+}
+</style>    
 </head>
 <body>
     <h1>Activity 1</h1>
@@ -234,7 +237,8 @@ a:hover {
 <div class="question" id="Q1">
     <p>Q1</p>
     <img src="https://raw.githubusercontent.com/moguura/my-images/main/%E5%9B%B31.png" alt="Q1 Image">
-    <p><span class="highlight">たかい</span> → <ruby>エベレスト<rt>えべれすと</rt></ruby>（Mt. Everest）は（ 　　　）</p>
+    <p class="blue-text"><ruby>エベレスト<rt>えべれすと</rt></ruby>：Mt.Everest</p>
+    <p><span class="highlight">たかい</span> → <ruby>エベレスト<rt>えべれすと</rt></ruby>）は（ 　　　）</p>
     <button id="startButtonQ1" class="mic-button" aria-label="音声認識を開始"></button>
     <div class="feedback" id="feedbackQ1">
         <img id="correctImageQ1" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%BE%E3%82%8B.png" alt="正しい答え">
