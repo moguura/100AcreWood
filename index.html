@@ -482,6 +482,7 @@ a:hover {
 // script.js
 // スライド切り替え＋自動再生＋マイク表示（Nextボタンのみ／フィードバック後にNext表示）
 
+// script.js
 document.addEventListener('DOMContentLoaded', function() {
   const slides = Array.from(document.querySelectorAll('#slides .slide'));
   const nextBtn = createNavButton('nextBtn', 'Next');
@@ -513,6 +514,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const cueUrl = slide.dataset.audio;
     slide.querySelectorAll('.mic-button').forEach(btn => btn.style.display = 'none');
 
+    setupMicButtons(slide); // ← ★ ここでマイクボタンセット！
+
     if (cueUrl) {
       // キュー再生後2秒でマイク表示
       audioTimeout = setTimeout(() => {
@@ -532,18 +535,19 @@ document.addEventListener('DOMContentLoaded', function() {
     btn.textContent = text;
     btn.style.position = 'fixed';
     btn.style.bottom = '20px';
-    btn.style.right = '200px';
+    btn.style.right = '20px';
     btn.style.padding = '10px 20px';
     btn.style.fontSize = '18px';
     btn.style.cursor = 'pointer';
     return btn;
   }
 
-  // マイクボタン初期設定
-  document.querySelectorAll('.mic-button').forEach(button => {
-    const id = button.id.replace('startButton', '');
-    button.addEventListener('click', () => startRecognition(id));
-  });
+  function setupMicButtons(slide) {
+    slide.querySelectorAll('.mic-button').forEach(button => {
+      const id = button.id.replace('startButton', '');
+      button.onclick = () => startRecognition(id);
+    });
+  }
 });
 
 // 音声認識以降の処理
@@ -566,16 +570,13 @@ function startRecognition(questionId) {
   let timeoutId;
   const maxWait = 2000;
   const micBtn = document.getElementById(`startButton${questionId}`);
-
-  recognition.onspeechstart = () => {
-    micBtn.classList.add('recording'); // 音声を検知したら光らせる！
-  };
+  micBtn.classList.add('recording');
 
   recognition.onresult = e => {
     const result = e.results[e.results.length - 1][0].transcript.trim();
     finalTranscript = result;
     if (timeoutId) clearTimeout(timeoutId);
-    if (/です[。.]?$/.test(finalTranscript)) {
+    if (/です。?$/.test(finalTranscript)) {
       finalizeRecognition(questionId, finalTranscript, micBtn);
       finalized = true;
       recognition.stop();
@@ -590,16 +591,8 @@ function startRecognition(questionId) {
     }
   };
 
-  recognition.onerror = e => { 
-    console.error(e); 
-    alert("Recognition error"); 
-    micBtn.classList.remove('recording');
-  };
-
-  recognition.onend = () => { 
-    micBtn.classList.remove('recording');
-  };
-
+  recognition.onerror = e => { console.error(e); alert("Recognition error"); };
+  recognition.onend = () => { micBtn.classList.remove('recording'); };
   recognition.start();
 }
 
@@ -610,7 +603,6 @@ function finalizeRecognition(id, transcript, micBtn) {
   micBtn.disabled = true;
   checkAllAnswered();
 
-  // フィードバック完了後に Next ボタンを表示
   const nextBtn = document.getElementById('nextBtn');
   if (nextBtn) nextBtn.style.display = 'block';
 }
@@ -669,10 +661,4 @@ function getFeedbackText(id) {
   };
   return msgs[id] || '';
 }
-document.addEventListener('DOMContentLoaded', () => {
-    document.querySelectorAll('.mic-button').forEach(button => {
-        const questionId = button.id.replace('startButton', '');
-        button.addEventListener('click', () => startRecognition(questionId));
-    });
-});
 </script>
