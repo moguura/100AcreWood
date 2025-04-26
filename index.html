@@ -180,7 +180,7 @@ a:hover {
     display: none;
     width: 100%;
     box-sizing: border-box;
-    min-height: 80vh; /* スライド高さを画面の80%に設定 */
+    min-height: 60vh; /* スライド高さを画面の80%に設定 */
 }
 
 /* アクティブ時は縦横中央配置 */
@@ -189,7 +189,7 @@ a:hover {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    min-height: 80vh; /* 縦中央揃えのため高さ指定 */
+    min-height: 60vh; /* 縦中央揃えのため高さ指定 */
 }
 
 /* 初期状態でマイクボタンを非表示 */
@@ -566,31 +566,43 @@ function startRecognition(questionId) {
   let timeoutId;
   const maxWait = 2000;
   const micBtn = document.getElementById(`startButton${questionId}`);
-  micBtn.classList.add('recording');
+  
+  micBtn.classList.add('recording'); // 録音開始 → 光る！
 
   recognition.onresult = e => {
     const result = e.results[e.results.length - 1][0].transcript.trim();
     finalTranscript = result;
-    if (timeoutId) clearTimeout(timeoutId);
-    if (/です。?$/.test(finalTranscript)) {
-      finalizeRecognition(questionId, finalTranscript, micBtn);
+
+    if (timeoutId) clearTimeout(timeoutId); // 直前のタイマーキャンセル
+
+    if (/です[。.]?$/.test(finalTranscript)) {
       finalized = true;
-      recognition.stop();
+      recognition.stop(); // すぐ録音終了
+      finalizeRecognition(questionId, finalTranscript, micBtn);
     } else {
       timeoutId = setTimeout(() => {
         if (!finalized) {
-          finalizeRecognition(questionId, finalTranscript, micBtn);
           finalized = true;
-          recognition.stop();
+          recognition.stop(); // 時間切れで録音終了
+          finalizeRecognition(questionId, finalTranscript, micBtn);
         }
       }, maxWait);
     }
   };
 
-  recognition.onerror = e => { console.error(e); alert("Recognition error"); };
-  recognition.onend = () => { micBtn.classList.remove('recording'); };
+  recognition.onerror = e => { 
+    console.error(e); 
+    alert("Recognition error"); 
+    micBtn.classList.remove('recording'); // エラー時も光を消す
+  };
+
+  recognition.onend = () => { 
+    micBtn.classList.remove('recording'); // 録音終了で光を消す
+  };
+
   recognition.start();
 }
+
 
 function finalizeRecognition(id, transcript, micBtn) {
   const correct = isCorrectAnswer(id, transcript);
