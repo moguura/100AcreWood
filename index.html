@@ -178,14 +178,29 @@ a:hover {
     margin: 0 auto;
     box-sizing: border-box;
 }
+
+/* 初期状態で非表示し、高さを画面の80%に */
 .slide {
     display: none;
     width: 100%;
     box-sizing: border-box;
+    min-height: 80vh; /* スライド高さを画面の80%に設定 */
 }
+
+/* アクティブ時は縦横中央配置 */
 .slide.active {
-    display: block;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh; /* 縦中央揃えのため高さ指定 */
 }
+
+/* 初期状態でマイクボタンを非表示 */
+.slide .mic-button {
+    display: none;
+}
+
 /* ナビゲーションボタン */
 .nav-buttons {
     display: flex;
@@ -208,10 +223,6 @@ a:hover {
 .nav-buttons button:disabled {
     background: #ccc;
     cursor: not-allowed;
-}
-/* 初期状態でマイクボタンを非表示 */
-.slide .mic-button {
-    display: none;
 }
 </style> 
 </head>
