@@ -152,10 +152,6 @@ a:hover {
     text-align: center;
 }
 
-/* Q1の上に十分な間隔を追加 */
-#Q1 {
-    margin-top: 100px;
-}
 .red-bold {
     color: red;
     font-weight: bold;
@@ -484,7 +480,7 @@ a:hover {
 </html>
 <script>
 // script.js
-// スライド切り替え＋自動再生＋マイク表示（Nextボタンのみ）
+// スライド切り替え＋自動再生＋マイク表示（Nextボタンのみ／フィードバック後にNext表示）
 
 document.addEventListener('DOMContentLoaded', function() {
   const slides = Array.from(document.querySelectorAll('#slides .slide'));
@@ -501,7 +497,7 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   function showSlide(index) {
-    // 現在のスライドを非表示
+    // 前のスライドを非表示
     slides[currentIndex].classList.remove('active');
     clearTimeout(audioTimeout);
 
@@ -509,24 +505,24 @@ document.addEventListener('DOMContentLoaded', function() {
     currentIndex = index;
     slides[currentIndex].classList.add('active');
 
-    // Nextボタンの表示制御
-    if (currentIndex === slides.length - 1) {
-      nextBtn.style.display = 'none';
-    } else {
-      nextBtn.style.display = 'block';
-    }
+    // Next ボタンは一旦隠す
+    nextBtn.style.display = 'none';
 
-    // オーディオ再生＆マイクボタン表示制御
+    // 現スライドの音声キュー再生＆マイク非表示
     const slide = slides[currentIndex];
     const cueUrl = slide.dataset.audio;
     slide.querySelectorAll('.mic-button').forEach(btn => btn.style.display = 'none');
 
     if (cueUrl) {
+      // キュー再生後2秒でマイク表示
       audioTimeout = setTimeout(() => {
         const cue = new Audio(cueUrl);
         cue.play().catch(e => console.error('キュー音再生エラー:', e));
         slide.querySelectorAll('.mic-button').forEach(btn => btn.style.display = 'inline-block');
       }, 2000);
+    } else {
+      // キュー無しのスライドは即Next表示
+      nextBtn.style.display = 'block';
     }
   }
 
@@ -550,7 +546,7 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 });
 
-// 音声認識以降の処理は既存のコードをそのまま移植
+// 音声認識以降の処理
 const answers = { E1: ["い"], E2: ["くない"], Q1: ["い"], Q2: ["くない"], Q3: ["い"], Q4: ["い"], Q5: ["い"], Q6: ["くない"], Q7: ["くない"], Q8: ["くない"], Q9: ["い"], Q10: ["くない"] };
 const buttonsPressed = { E1: false, E2: false, Q1: false, Q2: false, Q3: false, Q4: false, Q5: false, Q6: false, Q7: false, Q8: false, Q9: false, Q10: false };
 
@@ -576,7 +572,7 @@ function startRecognition(questionId) {
     const result = e.results[e.results.length - 1][0].transcript.trim();
     finalTranscript = result;
     if (timeoutId) clearTimeout(timeoutId);
-    if (finalTranscript.match(/です。?$/)) {
+    if (/です。?$/.test(finalTranscript)) {
       finalizeRecognition(questionId, finalTranscript, micBtn);
       finalized = true;
       recognition.stop();
@@ -590,6 +586,7 @@ function startRecognition(questionId) {
       }, maxWait);
     }
   };
+
   recognition.onerror = e => { console.error(e); alert("Recognition error"); };
   recognition.onend = () => { micBtn.classList.remove('recording'); };
   recognition.start();
@@ -601,12 +598,18 @@ function finalizeRecognition(id, transcript, micBtn) {
   buttonsPressed[id] = true;
   micBtn.disabled = true;
   checkAllAnswered();
+
+  // フィードバック完了後に Next ボタンを表示
+  const nextBtn = document.getElementById('nextBtn');
+  if (nextBtn) nextBtn.style.display = 'block';
 }
 
 function isCorrectAnswer(id, text) {
   const norm = text.replace(/です$/, '').replace(/\s+/g, '');
   const ans = answers[id][0];
-  return ans === 'くない' ? norm.endsWith('くない') : norm.endsWith('い') && !norm.endsWith('くない');
+  return ans === 'くない'
+    ? norm.endsWith('くない')
+    : norm.endsWith('い') && !norm.endsWith('くない');
 }
 
 function showFeedback(id, correct) {
@@ -617,15 +620,23 @@ function showFeedback(id, correct) {
   const aOk = document.getElementById(`correctAudio${id}`);
   const aNg = document.getElementById(`wrongAudio${id}`);
   fb.style.display = 'block';
-  if (correct) { ok.style.display = 'block'; ng.style.display = 'none'; aOk.play(); }
-  else { ok.style.display = 'none'; ng.style.display = 'block'; aNg.play(); }
+  if (correct) {
+    ok.style.display = 'block';
+    ng.style.display = 'none';
+    aOk.play();
+  } else {
+    ok.style.display = 'none';
+    ng.style.display = 'block';
+    aNg.play();
+  }
   txt.textContent = getFeedbackText(id);
   txt.style.display = 'block';
 }
 
 function checkAllAnswered() {
   if (Object.values(buttonsPressed).every(v => v)) {
-    document.getElementById('nextPageLink').style.display = 'block';
+    const link = document.getElementById('nextPageLink');
+    if (link) link.style.display = 'block';
     new Audio('https://raw.githubusercontent.com/moguura/my-images/main/taskend2.mp3').play();
   }
 }
