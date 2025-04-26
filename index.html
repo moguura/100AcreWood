@@ -566,25 +566,25 @@ function startRecognition(questionId) {
   let timeoutId;
   const maxWait = 2000;
   const micBtn = document.getElementById(`startButton${questionId}`);
-  
-  micBtn.classList.add('recording'); // 録音開始 → 光る！
+
+  recognition.onspeechstart = () => {
+    micBtn.classList.add('recording'); // 音声を検知したら光らせる！
+  };
 
   recognition.onresult = e => {
     const result = e.results[e.results.length - 1][0].transcript.trim();
     finalTranscript = result;
-
-    if (timeoutId) clearTimeout(timeoutId); // 直前のタイマーキャンセル
-
+    if (timeoutId) clearTimeout(timeoutId);
     if (/です[。.]?$/.test(finalTranscript)) {
-      finalized = true;
-      recognition.stop(); // すぐ録音終了
       finalizeRecognition(questionId, finalTranscript, micBtn);
+      finalized = true;
+      recognition.stop();
     } else {
       timeoutId = setTimeout(() => {
         if (!finalized) {
-          finalized = true;
-          recognition.stop(); // 時間切れで録音終了
           finalizeRecognition(questionId, finalTranscript, micBtn);
+          finalized = true;
+          recognition.stop();
         }
       }, maxWait);
     }
@@ -593,16 +593,15 @@ function startRecognition(questionId) {
   recognition.onerror = e => { 
     console.error(e); 
     alert("Recognition error"); 
-    micBtn.classList.remove('recording'); // エラー時も光を消す
+    micBtn.classList.remove('recording');
   };
 
   recognition.onend = () => { 
-    micBtn.classList.remove('recording'); // 録音終了で光を消す
+    micBtn.classList.remove('recording');
   };
 
   recognition.start();
 }
-
 
 function finalizeRecognition(id, transcript, micBtn) {
   const correct = isCorrectAnswer(id, transcript);
