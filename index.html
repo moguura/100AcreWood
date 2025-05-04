@@ -228,7 +228,7 @@ a:hover {
 <body>
 <div id="slides">
   <!-- ① 説明ビデオ1 -->
-  <div class="slide">
+  <div class="slide active">
     <div class="video-container">
       <video id="video1" controls>
         <source src="https://raw.githubusercontent.com/moguura/my-images/main/Acticity1-1.mp4" type="video/mp4">
@@ -474,96 +474,56 @@ a:hover {
   <a href="./Activity2.html" id="nextPageLink" style="display: none;">Go to Activity2</a>
 
 <script>
-<script>
-// 各スライド要素
-const slides = [...document.querySelectorAll('#slides .slide')];
-let current = 0;
-
 document.addEventListener('DOMContentLoaded', () => {
+  // スライド要素を取得
+  const slides = Array.from(document.querySelectorAll('#slides .slide'));
+  let current = 0;
+
+  // 初期表示
   showSlide(0);
 
-  // video1 再生終了で Next 有効化
-  document.getElementById('video1').onended = () => document.getElementById('nextVideo1').disabled = false;
+  // 動画１終了 → Next有効化
+  const video1 = document.getElementById('video1');
+  video1.onended = () => document.getElementById('nextVideo1').disabled = false;
   document.getElementById('nextVideo1').onclick = () => showSlide(1);
 
-  // video2
-  document.getElementById('video2').onended = () => document.getElementById('nextVideo2').disabled = false;
+  // 動画２終了 → Next有効化
+  const video2 = document.getElementById('video2');
+  video2.onended = () => document.getElementById('nextVideo2').disabled = false;
   document.getElementById('nextVideo2').onclick = () => showSlide(3);
 
-  // 説明Box Next
+  // 説明Box → Q1へ
   document.getElementById('nextToQ').onclick = () => showSlide(5);
+
+  // スライド切り替え本体
+  function showSlide(i) {
+    slides.forEach((s, idx) => s.classList.toggle('active', idx === i));
+    current = i;
+    // 例1 → 説明ビデオ2
+    if (i === 1) setupExample('E1', () => showSlide(2));
+    // 例2 → 説明Box
+    if (i === 3) setupExample('E2', () => showSlide(4));
+    // 説明Box到達時は即 Next 有効化
+    if (i === 4) document.getElementById('nextToQ').disabled = false;
+  }
 });
 
-function showSlide(i) {
-  // 切り替え
-  slides.forEach((s, idx) => s.classList.toggle('active', idx === i));
-  current = i;
-
-  // 例1
-  if (i === 1) setupExample('E1', () => { showSlide(2); });
-  // 例2
-  if (i === 3) setupExample('E2', () => { showSlide(4); });
-  // 説明Box は常に Next を即時有効化
-  if (i === 4) document.getElementById('nextToQ').disabled = false;
-}
-
-function setupExample(id, callback) {
-  const slide = slides[current];
-  const btn = slide.querySelector(`#startButton${id}`);
-  const ins = slide.querySelector('.instruction');
-  const fb = slide.querySelector('.feedback');
-
-  // 初期状態
-  btn.style.display = 'none'; ins.style.display = 'none'; fb.style.display = 'none';
-
-  // 音声キューが data-audio にあるか確認
-  const audioSrc = slide.dataset.audio;
-  if (audioSrc) {
-    // 再生 → 2秒後にマイク＋指示文表示
-    const cue = new Audio(audioSrc);
-    cue.play();
-    cue.onplay = () => {
-      setTimeout(() => { btn.style.display = 'inline-block'; ins.style.display = 'block'; }, 2000);
-    };
-  }
-
-  // マイクボタン
-  btn.onclick = () => {
-    startRecognition(id, transcript => {
-      // フィードバック表示
-      showFeedback(id, isCorrectAnswer(id, transcript));
-      // 次へ
-      callback();
-    });
-  };
-}
-
-<script>
-// --- 正答定義 ---
+// ─── 正答定義 ─────────────────────────────────
 const answers = {
-  E1: ["い"],
-  E2: ["くない"],
-  Q1: ["い"],
-  Q2: ["くない"],
-  Q3: ["い"],
-  Q4: ["い"],
-  Q5: ["い"],
-  Q6: ["くない"],
-  Q7: ["くない"],
-  Q8: ["くない"],
-  Q9: ["い"],
-  Q10: ["くない"]
+  E1: ["い"],  E2: ["くない"],
+  Q1: ["い"],  Q2: ["くない"],
+  Q3: ["い"],  Q4: ["い"],
+  Q5: ["い"],  Q6: ["くない"],
+  Q7: ["くない"], Q8: ["くない"],
+  Q9: ["い"],  Q10: ["くない"]
 };
 
-// --- 音声認識開始関数 ---
-// id: 質問ID（例: "E1", "Q3" など）
-// cb: 認識完了時に transcript を引数に呼び出されるコールバック
+// ─── 音声認識開始関数 ────────────────────────────
 function startRecognition(id, cb) {
   if (!('webkitSpeechRecognition' in window)) {
     alert("Speech recognition is not available. Please use Chrome.");
     return;
   }
-
   const micBtn = document.getElementById(`startButton${id}`);
   micBtn.classList.add('recording');
   micBtn.disabled = true;
@@ -581,16 +541,13 @@ function startRecognition(id, cb) {
   recognition.onresult = e => {
     const text = e.results[e.results.length - 1][0].transcript.trim();
     finalTranscript = text;
-
     if (timeoutId) clearTimeout(timeoutId);
 
-    // 「です」で終わったら即確定
     if (/です。?$/.test(finalTranscript)) {
       finalized = true;
       recognition.stop();
       cb(finalTranscript);
     } else {
-      // maxWait ms 無音が続いたら確定
       timeoutId = setTimeout(() => {
         if (!finalized) {
           finalized = true;
@@ -601,33 +558,27 @@ function startRecognition(id, cb) {
     }
   };
 
-  recognition.onerror = e => {
-    console.error("Recognition error:", e);
+  recognition.onerror = () => {
     recognition.stop();
     cb(finalTranscript);
   };
-
   recognition.onend = () => {
     micBtn.classList.remove('recording');
   };
-
   recognition.start();
 }
 
-// --- 正誤判定関数 ---
+// ─── 正誤判定 ───────────────────────────────────
 function isCorrectAnswer(id, text) {
   const norm = text.replace(/です$/, '').replace(/\s+/g, '');
   const ans = answers[id][0];
-  if (ans === 'くない') {
-    return norm.endsWith('くない');
-  } else {
-    return norm.endsWith('い') && !norm.endsWith('くない');
-  }
+  if (ans === 'くない') return norm.endsWith('くない');
+  return norm.endsWith('い') && !norm.endsWith('くない');
 }
 
-// --- フィードバック表示関数 ---
+// ─── フィードバック表示 ───────────────────────────
 function showFeedback(id, correct) {
-  const slide = document.querySelector(`.slide.active`);
+  const slide = document.querySelector('.slide.active');
   const fb    = slide.querySelector(`#feedback${id}`);
   const ok    = slide.querySelector(`#correctImage${id}`);
   const ng    = slide.querySelector(`#wrongImage${id}`);
@@ -645,22 +596,21 @@ function showFeedback(id, correct) {
   txt.style.display = 'block';
 }
 
-// --- 全回答後リンク表示／効果音 ---
+// ─── 全回答後 Nextページリンク表示 ─────────────────
 function checkAllAnswered() {
-  // 例題含む全スライドのボタン状態を判定する場合は、
-  // ここで適宜 buttonsPressed を管理してください。
-  // Q1～Q10 だけの場合は、その部分を判定します。
   const allDone = Object.keys(answers)
     .filter(k => k.startsWith('Q'))
     .every(k => document.getElementById(`startButton${k}`).disabled);
   if (allDone) {
     const link = document.getElementById('nextPageLink');
-    if (link) link.style.display = 'block';
-    new Audio('https://raw.githubusercontent.com/moguura/my-images/main/taskend2.mp3').play();
+    if (link) {
+      link.style.display = 'block';
+      new Audio('https://raw.githubusercontent.com/moguura/my-images/main/taskend2.mp3').play();
+    }
   }
 }
 
-// --- フィードバック文取得 ---
+// ─── フィードバック文取得 ─────────────────────────
 function getFeedbackText(id) {
   const msgs = {
     E1: "てんきは いいです。（The weather is good.）",
@@ -674,24 +624,22 @@ function getFeedbackText(id) {
     Q7: "くすりは おいしくないです。（Medicines are not tasty.）",
     Q8: "いま ひとは おおくないです。（There are not many people now.）",
     Q9: "このかばんは おおきいです。（This bag is big.）",
-    Q10: "にほんとブラジルは ちかくないです。（Japan and Brazil are not close.）"
+    Q10:"にほんとブラジルは ちかくないです。（Japan and Brazil are not close.）"
   };
   return msgs[id] || '';
 }
 
-// --- 例題／問題に割り当てるサンプル ---
-// 例: setupExample('E1', () => showSlide(2));
-// setupExample 内から startRecognition を呼び出してください。
+// ─── 例題／問題用セットアップ ───────────────────────
 function setupExample(id, onDone) {
-  const slide = document.querySelector(`.slide.active`);
+  const slide = document.querySelector('.slide.active');
   const btn   = slide.querySelector(`#startButton${id}`);
-  const ins   = slide.querySelector(`.instruction`);
+  const ins   = slide.querySelector('.instruction');
   const fb    = slide.querySelector(`#feedback${id}`);
 
-  // 初期化
-  btn.style.display = 'none'; ins.style.display = 'none'; fb.style.display = 'none';
+  btn.style.display = 'none';
+  ins.style.display = 'none';
+  fb.style.display = 'none';
 
-  // 音声キュー（data-audio）再生後に表示
   const audioSrc = slide.dataset.audio;
   if (audioSrc) {
     const cue = new Audio(audioSrc);
@@ -704,16 +652,15 @@ function setupExample(id, onDone) {
     };
   }
 
-  // ボタン押下で認識 → フィードバック → 完了時 onDone
   btn.onclick = () => {
     startRecognition(id, transcript => {
       const correct = isCorrectAnswer(id, transcript);
       showFeedback(id, correct);
       checkAllAnswered();
-      // 少し待って次へ
       setTimeout(onDone, 1000);
     });
   };
 }
 </script>
+
 
