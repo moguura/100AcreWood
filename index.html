@@ -269,6 +269,9 @@ a:hover {
       Press the microphone button and say,<br>
       てんきは いいです（tenki wa ii desu）
     </p>
+      <div class="nav-next">
+      <button id="nextE1" disabled>Next</button>
+    </div>
   </div>
 </div>
 
@@ -300,6 +303,9 @@ a:hover {
       Press the microphone button and say,<br>
       てんきは よくないです（tenki wa yokunai desu）
     </p>
+  <div class="nav-next">
+      <button id="nextE2" disabled>Next</button>
+    </div>
   </div>
 </div>
 
@@ -736,73 +742,104 @@ a:hover {
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-  const slides     = Array.from(document.querySelectorAll('#slides .slide'));
-  const video1     = document.getElementById('video1');
-  const nextVideo1 = document.getElementById('nextVideo1');
-  const video2     = document.getElementById('video2');
-  const nextVideo2 = document.getElementById('nextVideo2');
-  const nextToQ    = document.getElementById('nextToQ');
+  const slides       = Array.from(document.querySelectorAll('#slides .slide'));
+  const video1       = document.getElementById('video1');
+  const nextVideo1   = document.getElementById('nextVideo1');
+  const video2       = document.getElementById('video2');
+  const nextVideo2   = document.getElementById('nextVideo2');
+  const nextToQ      = document.getElementById('nextToQ');
   let current = 0;
 
-  // ── クリック音の準備 ───────────────────────────
+  // クリック音の準備
   const clickSound = new Audio('https://raw.githubusercontent.com/moguura/my-images/main/click.mp3');
   function playClickSound() {
     clickSound.currentTime = 0;
     clickSound.play().catch(() => {});
   }
 
-<!-- ② 例1 (E1) -->
-<div class="slide" data-audio="https://raw.githubusercontent.com/moguura/my-images/main/1-rei.wav">
-  <div class="question" id="E1">
-    <!-- ...（既存の例1内容）... -->
-    <div class="nav-next">
-      <button id="nextE1" disabled>Next</button>
-    </div>
-  </div>
-</div>
+  // 説明ビデオ①
+  nextVideo1.disabled = true;
+  video1.addEventListener('ended', () => {
+    nextVideo1.disabled = false;
+  });
+  nextVideo1.addEventListener('click', () => {
+    playClickSound();
+    showSlide(1);
+  });
 
-<!-- ④ 例2 (E2) -->
-<div class="slide" data-audio="https://raw.githubusercontent.com/moguura/my-images/main/1-rei.wav">
-  <div class="question" id="E2">
-    <!-- ...（既存の例2内容）... -->
-    <div class="nav-next">
-      <button id="nextE2" disabled>Next</button>
-    </div>
-  </div>
-</div>
+  // 説明ビデオ②
+  nextVideo2.disabled = true;
+  video2.addEventListener('ended', () => {
+    nextVideo2.disabled = false;
+  });
+  nextVideo2.addEventListener('click', () => {
+    playClickSound();
+    showSlide(3);
+  });
 
-<script>
-// ...DOMContentLoaded内...
-function showSlide(i) {
-  slides.forEach((s, idx) => s.classList.toggle('active', idx === i));
-  current = i;
+  // 説明Box
+  nextToQ.disabled = true;
 
-  if (i === 1) {
-    // 例1
-    const nextBtn = document.getElementById('nextE1');
-    nextBtn.disabled = true;
-    setupExample('E1', () => {
-      nextBtn.disabled = false;
-      nextBtn.onclick = () => {
+  // nav-next クリック音
+  document.querySelectorAll('.nav-next button').forEach(btn =>
+    btn.addEventListener('click', playClickSound)
+  );
+
+  // 初期表示
+  showSlide(0);
+
+  function showSlide(i) {
+    slides.forEach((s, idx) => s.classList.toggle('active', idx === i));
+    current = i;
+
+    if (i === 1) {
+      // 例1
+      const nextBtn = document.getElementById('nextE1');
+      nextBtn.disabled = true;
+      setupExample('E1', () => {
+        nextBtn.disabled = false;
+        nextBtn.onclick = () => {
+          playClickSound();
+          showSlide(2);
+        };
+      });
+    }
+    else if (i === 3) {
+      // 例2
+      const nextBtn = document.getElementById('nextE2');
+      nextBtn.disabled = true;
+      setupExample('E2', () => {
+        nextBtn.disabled = false;
+        nextBtn.onclick = () => {
+          playClickSound();
+          showSlide(4);
+        };
+      });
+    }
+    else if (i === 4) {
+      // 説明Box
+      nextToQ.disabled = false;
+      nextToQ.onclick = () => {
         playClickSound();
-        showSlide(2);
+        showSlide(5);
       };
-    });
-  }
-  else if (i === 3) {
-    // 例2
-    const nextBtn = document.getElementById('nextE2');
-    nextBtn.disabled = true;
-    setupExample('E2', () => {
-      nextBtn.disabled = false;
-      nextBtn.onclick = () => {
-        playClickSound();
-        showSlide(4);
-      };
-    });
+    }
+    else if (i >= 5 && i <= 14) {
+      // Q1～Q10
+      const qnum = i - 4;
+      const nextBtn = document.getElementById(`nextQ${qnum}`);
+      nextBtn.disabled = true;
+      setupQuestion(`Q${qnum}`, () => {
+        nextBtn.disabled = false;
+        nextBtn.onclick = () => {
+          playClickSound();
+          showSlide(i + 1);
+        };
+      });
+    }
   }
 
-  // ———— 例題セットアップ —————————————————————
+  // 例題セットアップ
   function setupExample(id, onDone) {
     const slide   = document.querySelector('.slide.active');
     const btn     = slide.querySelector(`#startButton${id}`);
@@ -811,14 +848,12 @@ function showSlide(i) {
     const fbText  = slide.querySelector(`#feedbackText${id}`);
     const audioSrc= slide.dataset.audio;
 
-    // 初期非表示
     btn.style.display     = 'none';
     btn.disabled          = true;
     ins.style.display     = 'none';
     fbIcons.style.display = 'none';
     fbText.style.display  = 'none';
 
-    // 例題音声を流してからボタン出現
     if (audioSrc) {
       const cue = new Audio(audioSrc);
       cue.play();
@@ -845,7 +880,7 @@ function showSlide(i) {
     };
   }
 
-  // ———— 問題セットアップ —————————————————————
+  // 問題セットアップ
   function setupQuestion(id, onDone) {
     const slide    = document.querySelector('.slide.active');
     const btn      = slide.querySelector(`#startButton${id}`);
@@ -853,13 +888,11 @@ function showSlide(i) {
     const fbText   = slide.querySelector(`#feedbackText${id}`);
     const audioSrc = slide.dataset.audio;
 
-    // 初期非表示
     btn.style.display     = 'none';
     btn.disabled          = true;
     fbIcons.style.display = 'none';
     fbText.style.display  = 'none';
 
-    // 問題音声の再生 → 終了後にマイクボタンを有効化
     if (audioSrc) {
       const audio = new Audio(audioSrc);
       audio.play();
