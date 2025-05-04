@@ -736,81 +736,144 @@ a:hover {
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-  const slides       = Array.from(document.querySelectorAll('#slides .slide'));
-  const video1       = document.getElementById('video1');
-  const nextVideo1   = document.getElementById('nextVideo1');
-  const video2       = document.getElementById('video2');
-  const nextVideo2   = document.getElementById('nextVideo2');
-  const nextToQ      = document.getElementById('nextToQ');
+  const slides     = Array.from(document.querySelectorAll('#slides .slide'));
+  const video1     = document.getElementById('video1');
+  const nextVideo1 = document.getElementById('nextVideo1');
+  const video2     = document.getElementById('video2');
+  const nextVideo2 = document.getElementById('nextVideo2');
+  const nextToQ    = document.getElementById('nextToQ');
   let current = 0;
 
-  // ── 説明ビデオ① ───────────────
+  // ── クリック音の準備 ───────────────────────────
+  const clickSound = new Audio('https://raw.githubusercontent.com/moguura/my-images/main/click.mp3');
+  function playClickSound() {
+    clickSound.currentTime = 0;
+    clickSound.play().catch(() => {});
+  }
+
+  // ── 説明ビデオ① ─────────────────────────────
   nextVideo1.disabled = true;
   video1.addEventListener('ended', () => {
     nextVideo1.disabled = false;
   });
   nextVideo1.addEventListener('click', () => {
-    showSlide(1);   // 例1 へ
+    playClickSound();
+    showSlide(1); // e.g.1 へ
   });
 
-  // ── 説明ビデオ② ───────────────
+  // ── 例題１への遷移は setupExample の onDone で自動化 ───
+
+  // ── 説明ビデオ② ─────────────────────────────
   nextVideo2.disabled = true;
   video2.addEventListener('ended', () => {
     nextVideo2.disabled = false;
   });
   nextVideo2.addEventListener('click', () => {
-    showSlide(3);   // 例2 へ
+    playClickSound();
+    showSlide(3); // e.g.2 へ
   });
 
-  // ── 説明Box（例2 のあと） ─────────
-  nextToQ.disabled = true; 
-  // ※onClick は showSlide 内でセットします
+  // ── 説明Box へつなぐ Next ボタンはまず無効化 ─────────
+  nextToQ.disabled = true;
 
-  // ── クリック音をすべての nav-next に ───────
-  document.querySelectorAll('.nav-next button')
-    .forEach(btn => btn.addEventListener('click', playClickSound));
+  // ── nav-next 全体にクリック音を登録 ─────────────────
+  document.querySelectorAll('.nav-next button').forEach(btn =>
+    btn.addEventListener('click', playClickSound)
+  );
 
-  // ── 最初のスライド表示 ───────────────
+  // ── 最初のスライド表示 ───────────────────────────
   showSlide(0);
 
-  // ———— showSlide 関数 ————
+  // ———— スライド切り替え実装 ——————————————————
   function showSlide(i) {
+    // クラス切り替え
     slides.forEach((s, idx) => s.classList.toggle('active', idx === i));
     current = i;
 
-    // video スライドはここでは何もしない（video.onended が制御）
-    // 例題スライド（E1/E2）は既存の setupExample／setupQuestion が動く
-
-    // 説明Box（スライド index=4）のときだけ Next を有効化
-    if (i === 4) {
+    if (i === 1) {
+      // 例１
+      setupExample('E1', () => showSlide(2));
+    }
+    else if (i === 3) {
+      // 例２
+      setupExample('E2', () => showSlide(4));
+    }
+    else if (i === 4) {
+      // 説明Box
       nextToQ.disabled = false;
       nextToQ.onclick = () => {
         playClickSound();
-        showSlide(5);  // Q1 へ
+        showSlide(5); // Q1 へ
       };
     }
-    // Q1〜Q10 のセットアップは既存ロジックで動かしてください
-    if (i >= 5 && i <= 14) {
+    else if (i >= 5 && i <= 14) {
+      // Q1～Q10
       const qnum = i - 4;
+      const nextBtn = document.getElementById(`nextQ${qnum}`);
+      nextBtn.disabled = true;
       setupQuestion(`Q${qnum}`, () => {
-        const btn = document.getElementById(`nextQ${qnum}`);
-        btn.disabled = false;
-        btn.onclick = () => {
+        nextBtn.disabled = false;
+        nextBtn.onclick = () => {
           playClickSound();
           showSlide(i + 1);
         };
       });
     }
+    // ※動画スライド(0,2)は video.onended ＆ nextVideo?.onclick で制御済み
   }
-  // ———— setupQuestion はそのまま ————
- function setupQuestion(id, onDone) {
+
+  // ———— 例題セットアップ —————————————————————
+  function setupExample(id, onDone) {
+    const slide   = document.querySelector('.slide.active');
+    const btn     = slide.querySelector(`#startButton${id}`);
+    const ins     = slide.querySelector('.instruction');
+    const fbIcons = slide.querySelector(`#feedback${id}-icons`);
+    const fbText  = slide.querySelector(`#feedbackText${id}`);
+    const audioSrc= slide.dataset.audio;
+
+    // 初期非表示
+    btn.style.display     = 'none';
+    btn.disabled          = true;
+    ins.style.display     = 'none';
+    fbIcons.style.display = 'none';
+    fbText.style.display  = 'none';
+
+    // 例題音声を流してからボタン出現
+    if (audioSrc) {
+      const cue = new Audio(audioSrc);
+      cue.play();
+      cue.onplay = () => {
+        setTimeout(() => {
+          btn.style.display = 'inline-block';
+          btn.disabled      = false;
+          ins.style.display = 'block';
+        }, 2000);
+      };
+    } else {
+      btn.style.display = 'inline-block';
+      btn.disabled      = false;
+      ins.style.display = 'block';
+    }
+
+    btn.onclick = () => {
+      startRecognition(id, transcript => {
+        const correct = isCorrectAnswer(id, transcript);
+        showFeedback(id, correct);
+        checkAllAnswered();
+        setTimeout(onDone, 1000);
+      });
+    };
+  }
+
+  // ———— 問題セットアップ —————————————————————
+  function setupQuestion(id, onDone) {
     const slide    = document.querySelector('.slide.active');
     const btn      = slide.querySelector(`#startButton${id}`);
     const fbIcons  = slide.querySelector(`#feedback${id}-icons`);
     const fbText   = slide.querySelector(`#feedbackText${id}`);
     const audioSrc = slide.dataset.audio;
 
-    // ボタンとフィードバックを初期非表示
+    // 初期非表示
     btn.style.display     = 'none';
     btn.disabled          = true;
     fbIcons.style.display = 'none';
@@ -829,7 +892,6 @@ document.addEventListener('DOMContentLoaded', () => {
       btn.disabled      = false;
     }
 
-    // クリックで認識開始
     btn.onclick = () =>
       startRecognition(id, transcript => {
         const correct = isCorrectAnswer(id, transcript);
@@ -839,75 +901,66 @@ document.addEventListener('DOMContentLoaded', () => {
       });
   }
 
-// ─── 正答定義 ─────────────────────────────────
-const answers = {
-  E1: ["い"],  E2: ["くない"],
-  Q1: ["い"],  Q2: ["くない"],
-  Q3: ["い"],  Q4: ["い"],
-  Q5: ["い"],  Q6: ["くない"],
-  Q7: ["くない"], Q8: ["くない"],
-  Q9: ["い"],  Q10: ["くない"]
-};
+  // ———— 以下、認識／判定／フィードバックは変更なし —————————
 
-// ─── 音声認識開始関数 ────────────────────────────
-function startRecognition(id, cb) {
-  if (!('webkitSpeechRecognition' in window)) {
-    alert("Speech recognition is not available. Please use Chrome.");
-    return;
-  }
-  const micBtn = document.getElementById(`startButton${id}`);
-  micBtn.classList.add('recording');
-  micBtn.disabled = true;
+  const answers = {
+    E1: ["い"],  E2: ["くない"],
+    Q1: ["い"],  Q2: ["くない"],
+    Q3: ["い"],  Q4: ["い"],
+    Q5: ["い"],  Q6: ["くない"],
+    Q7: ["くない"], Q8: ["くない"],
+    Q9: ["い"],  Q10:["くない"]
+  };
 
-  const recognition = new webkitSpeechRecognition();
-  recognition.lang = 'ja-JP';
-  recognition.interimResults = true;
-  recognition.continuous = true;
-
-  let finalTranscript = '';
-  let finalized = false;
-  let timeoutId;
-  const maxWait = 2000;
-
-  recognition.onresult = e => {
-    const text = e.results[e.results.length - 1][0].transcript.trim();
-    finalTranscript = text;
-    if (timeoutId) clearTimeout(timeoutId);
-
-    if (/です。?$/.test(finalTranscript)) {
-      finalized = true;
-      recognition.stop();
-      cb(finalTranscript);
-    } else {
-      timeoutId = setTimeout(() => {
-        if (!finalized) {
-          finalized = true;
-          recognition.stop();
-          cb(finalTranscript);
-        }
-      }, maxWait);
+  function startRecognition(id, cb) {
+    if (!('webkitSpeechRecognition' in window)) {
+      alert("Speech recognition is not available. Please use Chrome.");
+      return;
     }
-  };
+    const micBtn = document.getElementById(`startButton${id}`);
+    micBtn.classList.add('recording');
+    micBtn.disabled = true;
 
-  recognition.onerror = () => {
-    recognition.stop();
-    cb(finalTranscript);
-  };
-  recognition.onend = () => {
-    micBtn.classList.remove('recording');
-  };
-  recognition.start();
-}
+    const recognition = new webkitSpeechRecognition();
+    recognition.lang = 'ja-JP';
+    recognition.interimResults = true;
+    recognition.continuous = true;
 
-// ─── 正誤判定 ───────────────────────────────────
-function isCorrectAnswer(id, text) {
-  const norm = text.replace(/です$/, '').replace(/\s+/g, '');
-  const ans = answers[id][0];
-  if (ans === 'くない') return norm.endsWith('くない');
-  return norm.endsWith('い') && !norm.endsWith('くない');
-}
+    let finalTranscript = '';
+    let finalized = false;
+    let timeoutId;
+    const maxWait = 2000;
 
-// --- フィードバック表示関数（改良版）---
+    recognition.onresult = e => {
+      const text = e.results[e.results.length - 1][0].transcript.trim();
+      finalTranscript = text;
+      if (timeoutId) clearTimeout(timeoutId);
+      if (/です。?$/.test(finalTranscript)) {
+        finalized = true;
+        recognition.stop();
+        cb(finalTranscript);
+      } else {
+        timeoutId = setTimeout(() => {
+          if (!finalized) {
+            finalized = true;
+            recognition.stop();
+            cb(finalTranscript);
+          }
+        }, maxWait);
+      }
+    };
+    recognition.onerror = () => { recognition.stop(); cb(finalTranscript); };
+    recognition.onend = () => { micBtn.classList.remove('recording'); };
+    recognition.start();
+  }
+
+  function isCorrectAnswer(id, text) {
+    const norm = text.replace(/です$/, '').replace(/\s+/g, '');
+    const ans  = answers[id][0];
+    if (ans === 'くない') return norm.endsWith('くない');
+    return norm.endsWith('い') && !norm.endsWith('くない');
+  }
+
   function showFeedback(id, correct) {
     const slide   = document.querySelector('.slide.active');
     const fbIcons = slide.querySelector(`#feedback${id}-icons`);
@@ -918,7 +971,6 @@ function isCorrectAnswer(id, text) {
     const CORRECT_URL = 'https://raw.githubusercontent.com/moguura/my-images/main/クイズ正解2.mp3';
     const WRONG_URL   = 'https://raw.githubusercontent.com/moguura/my-images/main/クイズ不正解1.mp3';
 
-    // アイコンとテキストを表示
     fbIcons.style.display = 'flex';
     txt.textContent       = getFeedbackText(id);
     txt.style.display     = 'block';
@@ -934,76 +986,36 @@ function isCorrectAnswer(id, text) {
     }
   }
 
-// --- 全回答後の遷移処理（修正版） ---
-function checkAllAnswered() {
-  // Q1～Q10 がすべてボタン無効になったら
-  const allDone = Object.keys(answers)
-    .filter(k => k.startsWith('Q'))
-    .every(k => document.getElementById(`startButton${k}`).disabled);
+  function checkAllAnswered() {
+    const allDone = Object.keys(answers)
+      .filter(k => k.startsWith('Q'))
+      .every(k => document.getElementById(`startButton${k}`).disabled);
 
-  if (allDone) {
-    // 次ページリンクがあれば取得
-    const link = document.getElementById('nextPageLink');
-    if (link) {
-      // 1秒後に自動遷移
-      setTimeout(() => {
-        window.location.href = link.href;
-      }, 1000);
+    if (allDone) {
+      const link = document.getElementById('nextPageLink');
+      if (link) setTimeout(() => { window.location.href = link.href; }, 1000);
     }
   }
-}
 
-// ─── フィードバック文取得 ─────────────────────────
-function getFeedbackText(id) {
-  const msgs = {
-    E1: "てんきは いいです。（The weather is good.）",
-    E2: "てんきは よくないです。（The weather is not good.）",
-    Q1: "エベレストは たかいです。（Mount Everest is high.）",
-    Q2: "ダイヤモンドは やすくないです。（Diamonds are not cheap.）",
-    Q3: "にほんの８がつは あついです。（August in Japan is hot.）",
-    Q4: "にほんの２がつは さむいです。（February in Japan is cold.）",
-    Q5: "かいしゃいんのあさは いそがしいです。（Mornings of office workers are busy.）",
-    Q6: "このくるまは あたらしくないです。（This car is not new.）",
-    Q7: "くすりは おいしくないです。（Medicines are not tasty.）",
-    Q8: "いま ひとは おおくないです。（There are not many people now.）",
-    Q9: "このかばんは おおきいです。（This bag is big.）",
-    Q10:"にほんとブラジルは ちかくないです。（Japan and Brazil are not close.）"
-  };
-  return msgs[id] || '';
-}
-
-// ─── 例題／問題用セットアップ ───────────────────────
-function setupExample(id, onDone) {
-  const slide = document.querySelector('.slide.active');
-  const btn   = slide.querySelector(`#startButton${id}`);
-  const ins   = slide.querySelector('.instruction');
-  const fb    = slide.querySelector(`#feedback${id}`);
-
-  btn.style.display = 'none';
-  ins.style.display = 'none';
-  fb.style.display = 'none';
-
-  const audioSrc = slide.dataset.audio;
-  if (audioSrc) {
-    const cue = new Audio(audioSrc);
-    cue.play();
-    cue.onplay = () => {
-      setTimeout(() => {
-        btn.style.display = 'inline-block';
-        ins.style.display = 'block';
-      }, 2000);
+  function getFeedbackText(id) {
+    const msgs = {
+      E1: "てんきは いいです。（The weather is good.）",
+      E2: "てんきは よくないです。（The weather is not good.）",
+      Q1: "エベレストは たかいです。（Mount Everest is high.）",
+      Q2: "ダイヤモンドは やすくないです。（Diamonds are not cheap.）",
+      Q3: "にほんの８がつは あついです。（August in Japan is hot.）",
+      Q4: "にほんの２がつは さむいです。（February in Japan is cold.）",
+      Q5: "かいしゃいんのあさは いそがしいです。（Mornings of office workers are busy.）",
+      Q6: "このくるまは あたらしくないです。（This car is not new.）",
+      Q7: "くすりは おいしくないです。（Medicines are not tasty.）",
+      Q8: "いま ひとは おおくないです。（There are not many people now.）",
+      Q9: "このかばんは おおきいです。（This bag is big.）",
+      Q10:"にほんとブラジルは ちかくないです。（Japan and Brazil are not close.）"
     };
+    return msgs[id] || '';
   }
-
-  btn.onclick = () => {
-    startRecognition(id, transcript => {
-      const correct = isCorrectAnswer(id, transcript);
-      showFeedback(id, correct);
-      checkAllAnswered();
-      setTimeout(onDone, 1000);
-    });
-  };
-}
+});
 </script>
+
 
 
