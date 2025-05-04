@@ -736,69 +736,60 @@ a:hover {
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-  const slides     = Array.from(document.querySelectorAll('#slides .slide'));
-  const video1     = document.getElementById('video1');
-  const nextVideo1 = document.getElementById('nextVideo1');
-  const video2     = document.getElementById('video2');
-  const nextVideo2 = document.getElementById('nextVideo2');
-  const nextToQ    = document.getElementById('nextToQ');
+  const slides       = Array.from(document.querySelectorAll('#slides .slide'));
+  const video1       = document.getElementById('video1');
+  const nextVideo1   = document.getElementById('nextVideo1');
+  const video2       = document.getElementById('video2');
+  const nextVideo2   = document.getElementById('nextVideo2');
+  const nextToQ      = document.getElementById('nextToQ');
   let current = 0;
 
-  // ① 正しい URL に修正
-  const clickSound = new Audio('https://raw.githubusercontent.com/moguura/my-images/main/click.mp3');
-  function playClickSound() {
-    clickSound.currentTime = 0;
-    clickSound.play().catch(() => {});
-  }
-
-  // ② 動画①・②の再生終了だけセット
+  // ── 説明ビデオ① ───────────────
   nextVideo1.disabled = true;
-  video1.onended     = () => { nextVideo1.disabled = false; };
-  nextVideo1.onclick = () => { showSlide(1); }; // playClickSound は削除
-
-  nextVideo2.disabled = true;
-  video2.onended     = () => { nextVideo2.disabled = false; };
-  nextVideo2.onclick = () => { showSlide(3); };
-
-  // ③ 説明Box
-  nextToQ.disabled = false;
-  nextToQ.onclick = () => { showSlide(5); };
-
-  // ④ 全 nav-next button にクリック音を登録
-  document.querySelectorAll('.nav-next button').forEach(btn => {
-    btn.addEventListener('click', playClickSound);
+  video1.addEventListener('ended', () => {
+    nextVideo1.disabled = false;
+  });
+  nextVideo1.addEventListener('click', () => {
+    showSlide(1);   // 例1 へ
   });
 
-  // ⑤ 最初の表示
+  // ── 説明ビデオ② ───────────────
+  nextVideo2.disabled = true;
+  video2.addEventListener('ended', () => {
+    nextVideo2.disabled = false;
+  });
+  nextVideo2.addEventListener('click', () => {
+    showSlide(3);   // 例2 へ
+  });
+
+  // ── 説明Box（例2 のあと） ─────────
+  nextToQ.disabled = true; 
+  // ※onClick は showSlide 内でセットします
+
+  // ── クリック音をすべての nav-next に ───────
+  document.querySelectorAll('.nav-next button')
+    .forEach(btn => btn.addEventListener('click', playClickSound));
+
+  // ── 最初のスライド表示 ───────────────
   showSlide(0);
-    
+
   // ———— showSlide 関数 ————
   function showSlide(i) {
     slides.forEach((s, idx) => s.classList.toggle('active', idx === i));
     current = i;
 
-    // 1. 動画スライドなら Next をリセット
-    const slide   = slides[i];
-    const video   = slide.querySelector('video');
-    const nextBtn = slide.querySelector('.nav-next button');
-    if (video && nextBtn) {
-      nextBtn.disabled = true;
-      video.onended = () => {
-        console.log(`Slide ${i} video ended`);
-        nextBtn.disabled = false;
-      };
-    }
+    // video スライドはここでは何もしない（video.onended が制御）
+    // 例題スライド（E1/E2）は既存の setupExample／setupQuestion が動く
 
-    // 2. 例題スライド
-    if (i === 1) setupExample('E1', () => showSlide(2));
-    if (i === 3) setupExample('E2', () => showSlide(4));
-
-    // 3. 説明Box
+    // 説明Box（スライド index=4）のときだけ Next を有効化
     if (i === 4) {
       nextToQ.disabled = false;
+      nextToQ.onclick = () => {
+        playClickSound();
+        showSlide(5);  // Q1 へ
+      };
     }
-
-    // 4. Q1〜Q10
+    // Q1〜Q10 のセットアップは既存ロジックで動かしてください
     if (i >= 5 && i <= 14) {
       const qnum = i - 4;
       setupQuestion(`Q${qnum}`, () => {
@@ -811,7 +802,6 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
   }
-
   // ———— setupQuestion はそのまま ————
  function setupQuestion(id, onDone) {
     const slide    = document.querySelector('.slide.active');
