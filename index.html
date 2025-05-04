@@ -576,36 +576,62 @@ function isCorrectAnswer(id, text) {
   return norm.endsWith('い') && !norm.endsWith('くない');
 }
 
-// ─── フィードバック表示 ───────────────────────────
+// --- フィードバック表示関数（修正版） ---
 function showFeedback(id, correct) {
   const slide = document.querySelector('.slide.active');
-  const fb    = slide.querySelector(`#feedback${id}`);
-  const ok    = slide.querySelector(`#correctImage${id}`);
-  const ng    = slide.querySelector(`#wrongImage${id}`);
-  const txt   = slide.querySelector(`#feedbackText${id}`);
-  const aOk   = slide.querySelector(`#correctAudio${id}`);
-  const aNg   = slide.querySelector(`#wrongAudio${id}`);
 
+  // フィードバックアイコン／テキスト
+  const fb  = slide.querySelector(`#feedback${id}`);
+  const ok  = slide.querySelector(`#correctImage${id}`);
+  const ng  = slide.querySelector(`#wrongImage${id}`);
+  const txt = slide.querySelector(`#feedbackText${id}`);
+
+  // 「正解音」「不正解音」の生データ用 URL
+  const CORRECT_URL = 'https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E6%AD%A3%E8%A7%A32.mp3';
+  const WRONG_URL   = 'https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E4%B8%8D%E6%AD%A3%E8%A7%A31.mp3';
+
+  // 表示切り替え
   fb.style.display = 'block';
   if (correct) {
-    ok.style.display = 'block'; ng.style.display = 'none'; aOk.play();
+    ok.style.display = 'block';
+    ng.style.display = 'none';
+    txt.textContent = getFeedbackText(id);
+    // ① 既存の audio 要素があれば再生、なければ生データを再生
+    const aOk = slide.querySelector(`#correctAudio${id}`);
+    if (aOk) {
+      aOk.play().catch(()=> new Audio(CORRECT_URL).play());
+    } else {
+      new Audio(CORRECT_URL).play();
+    }
   } else {
-    ok.style.display = 'none'; ng.style.display = 'block'; aNg.play();
+    ok.style.display = 'none';
+    ng.style.display = 'block';
+    txt.textContent = getFeedbackText(id);
+    const aNg = slide.querySelector(`#wrongAudio${id}`);
+    if (aNg) {
+      aNg.play().catch(()=> new Audio(WRONG_URL).play());
+    } else {
+      new Audio(WRONG_URL).play();
+    }
   }
-  txt.textContent = getFeedbackText(id);
   txt.style.display = 'block';
 }
 
-// ─── 全回答後 Nextページリンク表示 ─────────────────
+// --- 全回答後の遷移処理（修正版） ---
 function checkAllAnswered() {
+  // Q1～Q10 がすべてボタン無効になったら
   const allDone = Object.keys(answers)
     .filter(k => k.startsWith('Q'))
     .every(k => document.getElementById(`startButton${k}`).disabled);
+
   if (allDone) {
+    // 次ページリンクがあれば取得
     const link = document.getElementById('nextPageLink');
     if (link) {
-      link.style.display = 'block';
-      new Audio('https://raw.githubusercontent.com/moguura/my-images/main/taskend2.mp3').play();
+      // 1秒後に自動遷移
+      setTimeout(() => {
+        window.location.href = link.href;
+      }, 1000);
     }
   }
 }
