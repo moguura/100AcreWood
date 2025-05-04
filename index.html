@@ -139,9 +139,8 @@ h1 {
   margin-top: 10px;
 }
 
-/* 他のスタイルはそのまま */
-a {
-  display: block;
+#nextPageLink {
+  display: none;           /* 初期は非表示 */
   text-align: center;
   margin: 30px auto;
   color: #007bff;
@@ -151,12 +150,13 @@ a {
   padding: 10px 20px;
   transition: all 0.3s ease;
 }
-a:hover {
+
+#nextPageLink:hover {
   text-decoration: underline;
   color: #0056b3;
   transform: scale(1.05);
 }
-
+    
 .notice-board {
   background-color: #ffeeba;
   margin: 20px auto;
@@ -737,9 +737,11 @@ a:hover {
   </div>
 </div>
 
-
-  <!-- 次ページリンク -->
-  <a href="./Activity2.html" id="nextPageLink" style="display: none;">Go to Activity2</a>
+ <a href="./Activity2.html"
+     id="nextPageLink"
+     style="display: none;">
+    Go to Activity2
+  </a>
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
@@ -1000,16 +1002,20 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  function checkAllAnswered() {
-    const allDone = Object.keys(answers)
-      .filter(k => k.startsWith('Q'))
-      .every(k => document.getElementById(`startButton${k}`).disabled);
+    function checkAllAnswered() {
+      // Q1～Q10 がすべて回答済み（ボタン disabled）になっているか
+      const allDone = Object.keys(answers)
+        .filter(k => k.startsWith('Q'))
+        .every(k => document.getElementById(`startButton${k}`).disabled);
 
-    if (allDone) {
-      const link = document.getElementById('nextPageLink');
-      if (link) setTimeout(() => { window.location.href = link.href; }, 1000);
+      if (allDone) {
+        // 自動遷移をやめてリンクを表示
+        const link = document.getElementById('nextPageLink');
+        if (link) {
+          link.style.display = 'block';
+        }
+      }
     }
-  }
 
   function getFeedbackText(id) {
     const msgs = {
