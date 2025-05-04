@@ -203,17 +203,17 @@ a:hover {
     display: none;
 }
 
-/* ナビゲーションボタン */
-.nav-buttons {
+/* Nextボタン */
+ .nav-next {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     width: 100%;
     max-width: 900px;
     margin: 20px auto;
     padding: 0 20px;
     box-sizing: border-box;
-}
-.nav-buttons button {
+  }
+  .nav-next button {
     padding: 10px 20px;
     font-size: 18px;
     cursor: pointer;
@@ -221,81 +221,72 @@ a:hover {
     border-radius: 5px;
     background: #007bff;
     color: #fff;
-}
-.nav-buttons button:disabled {
-    background: #ccc;
-    cursor: not-allowed;
-}
+  }
+  .nav-next button:disabled { background: #ccc; cursor: not-allowed; }
 </style> 
 </head>
 <body>
-  <div id="slides">
-    <!-- ① 説明ビデオ1 -->
-    <div class="slide active">
-      <div class="video-container">
-        <video controls>
-          <source src="https://raw.githubusercontent.com/moguura/my-images/main/Acticity1-1.mp4" type="video/mp4">
-          Your browser does not support video tag.
-        </video>
+<div id="slides">
+  <!-- ① 説明ビデオ1 -->
+  <div class="slide">
+    <div class="video-container">
+      <video id="video1" controls>
+        <source src="https://raw.githubusercontent.com/moguura/my-images/main/Acticity1-1.mp4" type="video/mp4">
+      </video>
+    </div>
+    <div class="nav-next"><button id="nextVideo1" disabled>Next</button></div>
+  </div>
+
+  <!-- ② 例1 (E1) -->
+  <div class="slide" data-audio="https://raw.githubusercontent.com/moguura/my-images/main/1-rei.wav">
+    <div class="question" id="E1">
+      <p>e.g.1</p>
+      <img src="https://raw.githubusercontent.com/moguura/my-images/main/%E4%BE%8B1.jpg" alt="E1 Image">
+      <p><span class="highlight">いい</span> → てんきは（　　　）</p>
+      <button id="startButtonE1" class="mic-button" style="display:none;"></button>
+      <p class="instruction">Press the microphone button and say, てんきは いいです（tenki wa iidesu）</p>
+      <div class="feedback" id="feedbackE1">
+        <img id="correctImageE1" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%BE%E3%82%8B.png" alt="正解">
+        <img id="wrongImageE1" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%B0%E3%81%A4.png" alt="不正解">
+        <div id="feedbackTextE1" class="feedback-text"></div>
       </div>
     </div>
+  </div>
 
-    <!-- ② 例1 (E1) -->
-    <div class="slide" data-audio="https://raw.githubusercontent.com/moguura/my-images/main/1-rei.wav">
-      <div class="question" id="E1">
-        <p>e.g.1</p>
-        <img src="https://raw.githubusercontent.com/moguura/my-images/main/%E4%BE%8B1.jpg" alt="E1 Image">
-        <p><span class="highlight">いい</span> → てんきは（　　　）</p>
-        <button id="startButtonE1" class="mic-button" aria-label="音声認識を開始"></button>
-        <p class="instruction">Press the microphone button and say, てんきは いいです（tenki wa iidesu）</p>
-        <div class="feedback" id="feedbackE1">
-          <img id="correctImageE1" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%BE%E3%82%8B.png" alt="正解">
-          <img id="wrongImageE1" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%B0%E3%81%A4.png" alt="不正解">
-          <div id="feedbackTextE1" class="feedback-text"></div>
-        </div>
-        <audio id="correctAudioE1" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E6%AD%A3%E8%A7%A32.mp3"></audio>
-        <audio id="wrongAudioE1" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E4%B8%8D%E6%AD%A3%E8%A7%A31.mp3"></audio>
+  <!-- ③ 説明ビデオ2 -->
+  <div class="slide">
+    <div class="video-container">
+      <video id="video2" controls>
+        <source src="https://raw.githubusercontent.com/moguura/my-images/main/Acticity1-2.mp4" type="video/mp4">
+      </video>
+    </div>
+    <div class="nav-next"><button id="nextVideo2" disabled>Next</button></div>
+  </div>
+
+  <!-- ④ 例2 (E2) -->
+  <div class="slide" data-audio="https://raw.githubusercontent.com/moguura/my-images/main/2-rei.wav">
+    <div class="question" id="E2">
+      <p>e.g.2</p>
+      <img src="https://raw.githubusercontent.com/moguura/my-images/main/%E4%BE%8B2.jpg" alt="E2 Image">
+      <p><span class="highlight">くない</span> → てんきは（　　　）</p>
+      <button id="startButtonE2" class="mic-button" style="display:none;"></button>
+      <p class="instruction">Press the microphone button and say, てんきは よくないです（tenki wa yokunaidesu）</p>
+      <div class="feedback" id="feedbackE2">
+        <img id="correctImageE2" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%BE%E3%82%8B.png" alt="正解">
+        <img id="wrongImageE2" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%B0%E3%81%A4.png" alt="不正解">
+        <div id="feedbackTextE2" class="feedback-text"></div>
       </div>
     </div>
+  </div>
 
-    <!-- ③ 説明ビデオ2 -->
-    <div class="slide">
-      <div class="video-container">
-        <video controls>
-          <source src="https://raw.githubusercontent.com/moguura/my-images/main/Acticity1-2.mp4" type="video/mp4">
-          Your browser does not support video tag.
-        </video>
-      </div>
+  <!-- ⑤ 説明Box -->
+  <div class="slide">
+    <div class="instructions">
+      <p>Now, please speak in the same way for the following questions as well.<br>You can speak into the microphone <span class="red-bold">just once</span>.</p>
     </div>
-
-    <!-- ④ 例2 (E2) -->
-    <div class="slide" data-audio="https://raw.githubusercontent.com/moguura/my-images/main/1-rei.wav">
-      <div class="question" id="E2">
-        <p>e.g.2</p>
-        <img src="https://raw.githubusercontent.com/moguura/my-images/main/%E4%BE%8B2.jpg" alt="E2 Image">
-        <p><span class="highlight">いい</span> → てんきは（　　　）</p>
-        <button id="startButtonE2" class="mic-button" aria-label="音声認識を開始"></button>
-        <p class="instruction">Press the microphone button and say, てんきは よくないです（tenki wa yokunaidesu）</p>
-        <div class="feedback" id="feedbackE2">
-          <img id="correctImageE2" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%BE%E3%82%8B.png" alt="正解">
-          <img id="wrongImageE2" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%81%B0%E3%81%A4.png" alt="不正解">
-          <div id="feedbackTextE2" class="feedback-text"></div>
-        </div>
-        <audio id="correctAudioE2" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E6%AD%A3%E8%A7%A32.mp3"></audio>
-        <audio id="wrongAudioE2" src="https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E4%B8%8D%E6%AD%A3%E8%A7%A31.mp3"></audio>
-      </div>
-    </div>
-
-    <!-- ⑤ 例2後の説明 -->
-    <div class="slide">
-      <div class="instructions">
-        <p>
-          Now, please speak in the same way for the following questions as well.<br>
-          You can speak into the microphone <span class="red-bold">just once</span>.
-        </p>
-      </div>
-    </div>
-
+    <div class="nav-next"><button id="nextToQ" disabled>Next</button></div>
+  </div>
+    
     <!-- ⑥ 問題セクション Q1〜Q10 -->
     <!-- Q1 -->
     <div class="slide" data-audio="https://raw.githubusercontent.com/moguura/my-images/main/1-1.wav">
@@ -483,171 +474,193 @@ a:hover {
   <a href="./Activity2.html" id="nextPageLink" style="display: none;">Go to Activity2</a>
 
 <script>
-// script.js
-// スライド切り替え＋自動再生＋マイク表示（Nextボタンのみ／フィードバック後にNext表示）
+<script>
+// 各スライド要素
+const slides = [...document.querySelectorAll('#slides .slide')];
+let current = 0;
 
-document.addEventListener('DOMContentLoaded', function() {
-  const slides = Array.from(document.querySelectorAll('#slides .slide'));
-  const nextBtn = createNavButton('nextBtn', 'Next');
-  document.body.appendChild(nextBtn);
-  let currentIndex = 0;
-  let audioTimeout;
-
-  // 初期表示
+document.addEventListener('DOMContentLoaded', () => {
   showSlide(0);
 
-  nextBtn.addEventListener('click', () => {
-    if (currentIndex < slides.length - 1) showSlide(currentIndex + 1);
-  });
+  // video1 再生終了で Next 有効化
+  document.getElementById('video1').onended = () => document.getElementById('nextVideo1').disabled = false;
+  document.getElementById('nextVideo1').onclick = () => showSlide(1);
 
-  function showSlide(index) {
-    // 前のスライドを非表示
-    slides[currentIndex].classList.remove('active');
-    clearTimeout(audioTimeout);
+  // video2
+  document.getElementById('video2').onended = () => document.getElementById('nextVideo2').disabled = false;
+  document.getElementById('nextVideo2').onclick = () => showSlide(3);
 
-    // インデックス更新＆表示
-    currentIndex = index;
-    slides[currentIndex].classList.add('active');
-
-    // Next ボタンは一旦隠す
-    nextBtn.style.display = 'none';
-
-    const slide = slides[currentIndex];
-    const cueUrl = slide.dataset.audio;
-    // マイクボタン・指示文を非表示
-    slide.querySelectorAll('.mic-button').forEach(btn => btn.style.display = 'none');
-    slide.querySelectorAll('.instruction').forEach(ins => ins.style.display = 'none');
-
-    setupMicButtons(slide);
-
-    if (cueUrl) {
-      // キュー再生後2秒でマイク＆指示文表示
-      audioTimeout = setTimeout(() => {
-        const cue = new Audio(cueUrl);
-        cue.play().catch(e => console.error('キュー音再生エラー:', e));
-        slide.querySelectorAll('.mic-button').forEach(btn => btn.style.display = 'inline-block');
-        slide.querySelectorAll('.instruction').forEach(ins => ins.style.display = 'block');
-      }, 2000);
-    } else {
-      nextBtn.style.display = 'block';
-    }
-  }
-
-  function createNavButton(id, text) {
-    const btn = document.createElement('button');
-    btn.id = id;
-    btn.textContent = text;
-    btn.style.position = 'fixed';
-    btn.style.bottom = '20px';
-    btn.style.right = '20px';
-    btn.style.padding = '10px 20px';
-    btn.style.fontSize = '18px';
-    btn.style.cursor = 'pointer';
-    return btn;
-  }
-
-  function setupMicButtons(slide) {
-    slide.querySelectorAll('.mic-button').forEach(button => {
-      const id = button.id.replace('startButton', '');
-      button.onclick = () => startRecognition(id);
-    });
-  }
+  // 説明Box Next
+  document.getElementById('nextToQ').onclick = () => showSlide(5);
 });
 
-// 音声認識以降の処理
-const answers = { E1: ["い"], E2: ["くない"], Q1: ["い"], Q2: ["くない"], Q3: ["い"], Q4: ["い"], Q5: ["い"], Q6: ["くない"], Q7: ["くない"], Q8: ["くない"], Q9: ["い"], Q10: ["くない"] };
-const buttonsPressed = { E1: false, E2: false, Q1: false, Q2: false, Q3: false, Q4: false, Q5: false, Q6: false, Q7: false, Q8: false, Q9: false, Q10: false };
+function showSlide(i) {
+  // 切り替え
+  slides.forEach((s, idx) => s.classList.toggle('active', idx === i));
+  current = i;
 
-function startRecognition(questionId) {
+  // 例1
+  if (i === 1) setupExample('E1', () => { showSlide(2); });
+  // 例2
+  if (i === 3) setupExample('E2', () => { showSlide(4); });
+  // 説明Box は常に Next を即時有効化
+  if (i === 4) document.getElementById('nextToQ').disabled = false;
+}
+
+function setupExample(id, callback) {
+  const slide = slides[current];
+  const btn = slide.querySelector(`#startButton${id}`);
+  const ins = slide.querySelector('.instruction');
+  const fb = slide.querySelector('.feedback');
+
+  // 初期状態
+  btn.style.display = 'none'; ins.style.display = 'none'; fb.style.display = 'none';
+
+  // 音声キューが data-audio にあるか確認
+  const audioSrc = slide.dataset.audio;
+  if (audioSrc) {
+    // 再生 → 2秒後にマイク＋指示文表示
+    const cue = new Audio(audioSrc);
+    cue.play();
+    cue.onplay = () => {
+      setTimeout(() => { btn.style.display = 'inline-block'; ins.style.display = 'block'; }, 2000);
+    };
+  }
+
+  // マイクボタン
+  btn.onclick = () => {
+    startRecognition(id, transcript => {
+      // フィードバック表示
+      showFeedback(id, isCorrectAnswer(id, transcript));
+      // 次へ
+      callback();
+    });
+  };
+}
+
+<script>
+// --- 正答定義 ---
+const answers = {
+  E1: ["い"],
+  E2: ["くない"],
+  Q1: ["い"],
+  Q2: ["くない"],
+  Q3: ["い"],
+  Q4: ["い"],
+  Q5: ["い"],
+  Q6: ["くない"],
+  Q7: ["くない"],
+  Q8: ["くない"],
+  Q9: ["い"],
+  Q10: ["くない"]
+};
+
+// --- 音声認識開始関数 ---
+// id: 質問ID（例: "E1", "Q3" など）
+// cb: 認識完了時に transcript を引数に呼び出されるコールバック
+function startRecognition(id, cb) {
   if (!('webkitSpeechRecognition' in window)) {
-    alert("Speech recognition is not available. Use Chrome.");
+    alert("Speech recognition is not available. Please use Chrome.");
     return;
   }
+
+  const micBtn = document.getElementById(`startButton${id}`);
+  micBtn.classList.add('recording');
+  micBtn.disabled = true;
+
   const recognition = new webkitSpeechRecognition();
   recognition.lang = 'ja-JP';
   recognition.interimResults = true;
   recognition.continuous = true;
-  recognition.maxAlternatives = 1;
 
   let finalTranscript = '';
   let finalized = false;
   let timeoutId;
   const maxWait = 2000;
-  const micBtn = document.getElementById(`startButton${questionId}`);
-  micBtn.classList.add('recording');
 
   recognition.onresult = e => {
-    const result = e.results[e.results.length - 1][0].transcript.trim();
-    finalTranscript = result;
+    const text = e.results[e.results.length - 1][0].transcript.trim();
+    finalTranscript = text;
+
     if (timeoutId) clearTimeout(timeoutId);
+
+    // 「です」で終わったら即確定
     if (/です。?$/.test(finalTranscript)) {
-      finalizeRecognition(questionId, finalTranscript, micBtn);
       finalized = true;
       recognition.stop();
+      cb(finalTranscript);
     } else {
+      // maxWait ms 無音が続いたら確定
       timeoutId = setTimeout(() => {
         if (!finalized) {
-          finalizeRecognition(questionId, finalTranscript, micBtn);
           finalized = true;
           recognition.stop();
+          cb(finalTranscript);
         }
       }, maxWait);
     }
   };
 
-  recognition.onerror = e => { console.error(e); alert("Recognition error"); };
-  recognition.onend = () => { micBtn.classList.remove('recording'); };
+  recognition.onerror = e => {
+    console.error("Recognition error:", e);
+    recognition.stop();
+    cb(finalTranscript);
+  };
+
+  recognition.onend = () => {
+    micBtn.classList.remove('recording');
+  };
+
   recognition.start();
 }
 
-function finalizeRecognition(id, transcript, micBtn) {
-  const correct = isCorrectAnswer(id, transcript);
-  showFeedback(id, correct);
-  buttonsPressed[id] = true;
-  micBtn.disabled = true;
-  checkAllAnswered();
-
-  const nextBtn = document.getElementById('nextBtn');
-  if (nextBtn) nextBtn.style.display = 'block';
-}
-
+// --- 正誤判定関数 ---
 function isCorrectAnswer(id, text) {
   const norm = text.replace(/です$/, '').replace(/\s+/g, '');
   const ans = answers[id][0];
-  return ans === 'くない'
-    ? norm.endsWith('くない')
-    : norm.endsWith('い') && !norm.endsWith('くない');
+  if (ans === 'くない') {
+    return norm.endsWith('くない');
+  } else {
+    return norm.endsWith('い') && !norm.endsWith('くない');
+  }
 }
 
+// --- フィードバック表示関数 ---
 function showFeedback(id, correct) {
-  const fb = document.getElementById(`feedback${id}`);
-  const ok = document.getElementById(`correctImage${id}`);
-  const ng = document.getElementById(`wrongImage${id}`);
-  const txt = document.getElementById(`feedbackText${id}`);
-  const aOk = document.getElementById(`correctAudio${id}`);
-  const aNg = document.getElementById(`wrongAudio${id}`);
+  const slide = document.querySelector(`.slide.active`);
+  const fb    = slide.querySelector(`#feedback${id}`);
+  const ok    = slide.querySelector(`#correctImage${id}`);
+  const ng    = slide.querySelector(`#wrongImage${id}`);
+  const txt   = slide.querySelector(`#feedbackText${id}`);
+  const aOk   = slide.querySelector(`#correctAudio${id}`);
+  const aNg   = slide.querySelector(`#wrongAudio${id}`);
+
   fb.style.display = 'block';
   if (correct) {
-    ok.style.display = 'block';
-    ng.style.display = 'none';
-    aOk.play();
+    ok.style.display = 'block'; ng.style.display = 'none'; aOk.play();
   } else {
-    ok.style.display = 'none';
-    ng.style.display = 'block';
-    aNg.play();
+    ok.style.display = 'none'; ng.style.display = 'block'; aNg.play();
   }
   txt.textContent = getFeedbackText(id);
   txt.style.display = 'block';
 }
 
+// --- 全回答後リンク表示／効果音 ---
 function checkAllAnswered() {
-  if (Object.values(buttonsPressed).every(v => v)) {
+  // 例題含む全スライドのボタン状態を判定する場合は、
+  // ここで適宜 buttonsPressed を管理してください。
+  // Q1～Q10 だけの場合は、その部分を判定します。
+  const allDone = Object.keys(answers)
+    .filter(k => k.startsWith('Q'))
+    .every(k => document.getElementById(`startButton${k}`).disabled);
+  if (allDone) {
     const link = document.getElementById('nextPageLink');
     if (link) link.style.display = 'block';
     new Audio('https://raw.githubusercontent.com/moguura/my-images/main/taskend2.mp3').play();
   }
 }
 
+// --- フィードバック文取得 ---
 function getFeedbackText(id) {
   const msgs = {
     E1: "てんきは いいです。（The weather is good.）",
@@ -665,4 +678,42 @@ function getFeedbackText(id) {
   };
   return msgs[id] || '';
 }
+
+// --- 例題／問題に割り当てるサンプル ---
+// 例: setupExample('E1', () => showSlide(2));
+// setupExample 内から startRecognition を呼び出してください。
+function setupExample(id, onDone) {
+  const slide = document.querySelector(`.slide.active`);
+  const btn   = slide.querySelector(`#startButton${id}`);
+  const ins   = slide.querySelector(`.instruction`);
+  const fb    = slide.querySelector(`#feedback${id}`);
+
+  // 初期化
+  btn.style.display = 'none'; ins.style.display = 'none'; fb.style.display = 'none';
+
+  // 音声キュー（data-audio）再生後に表示
+  const audioSrc = slide.dataset.audio;
+  if (audioSrc) {
+    const cue = new Audio(audioSrc);
+    cue.play();
+    cue.onplay = () => {
+      setTimeout(() => {
+        btn.style.display = 'inline-block';
+        ins.style.display = 'block';
+      }, 2000);
+    };
+  }
+
+  // ボタン押下で認識 → フィードバック → 完了時 onDone
+  btn.onclick = () => {
+    startRecognition(id, transcript => {
+      const correct = isCorrectAnswer(id, transcript);
+      showFeedback(id, correct);
+      checkAllAnswered();
+      // 少し待って次へ
+      setTimeout(onDone, 1000);
+    });
+  };
+}
 </script>
+
