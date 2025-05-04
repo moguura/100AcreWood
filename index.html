@@ -482,15 +482,10 @@ a:hover {
   <!-- 次ページリンク -->
   <a href="./Activity2.html" id="nextPageLink" style="display: none;">Go to Activity2</a>
 
-  <!-- スクリプト読み込み -->
-  <script src="script.js"></script>
-</body>
-</html>
 <script>
 // script.js
 // スライド切り替え＋自動再生＋マイク表示（Nextボタンのみ／フィードバック後にNext表示）
 
-// script.js
 document.addEventListener('DOMContentLoaded', function() {
   const slides = Array.from(document.querySelectorAll('#slides .slide'));
   const nextBtn = createNavButton('nextBtn', 'Next');
@@ -517,22 +512,23 @@ document.addEventListener('DOMContentLoaded', function() {
     // Next ボタンは一旦隠す
     nextBtn.style.display = 'none';
 
-    // 現スライドの音声キュー再生＆マイク非表示
     const slide = slides[currentIndex];
     const cueUrl = slide.dataset.audio;
+    // マイクボタン・指示文を非表示
     slide.querySelectorAll('.mic-button').forEach(btn => btn.style.display = 'none');
+    slide.querySelectorAll('.instruction').forEach(ins => ins.style.display = 'none');
 
-    setupMicButtons(slide); // ← ★ ここでマイクボタンセット！
+    setupMicButtons(slide);
 
     if (cueUrl) {
-      // キュー再生後2秒でマイク表示
+      // キュー再生後2秒でマイク＆指示文表示
       audioTimeout = setTimeout(() => {
         const cue = new Audio(cueUrl);
         cue.play().catch(e => console.error('キュー音再生エラー:', e));
         slide.querySelectorAll('.mic-button').forEach(btn => btn.style.display = 'inline-block');
+        slide.querySelectorAll('.instruction').forEach(ins => ins.style.display = 'block');
       }, 2000);
     } else {
-      // キュー無しのスライドは即Next表示
       nextBtn.style.display = 'block';
     }
   }
