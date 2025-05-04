@@ -104,13 +104,14 @@ h1 {
     box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 }
 
-/* フィードバック全体（アイコン・テキスト）を初期非表示 */
+/* フィードバック全体（アイコン・テキスト・画像）を初期非表示 */
 .feedback,
-.feedback-text {
+.feedback-text,
+.feedback img {
   display: none;
 }
 
-/* フィードバックアイコン */
+/* フィードバックアイコン（〇✖）の配置とサイズ */
 .feedback-icons {
   display: flex;
   align-items: center;
@@ -121,7 +122,7 @@ h1 {
   margin-right: 6px;   /* アイコン同士の間隔 */
 }
 
-/* フィードバックテキスト */
+/* フィードバックテキスト（正解／不正解のメッセージ） */
 .feedback-text {
   text-align: center;
   margin-top: 8px;
@@ -207,9 +208,11 @@ a:hover {
     min-height: 60vh; /* 縦中央揃えのため高さ指定 */
 }
 
-/* 初期状態でマイクボタンを非表示 */
 .slide .mic-button {
     display: none;
+}
+.slide.active .mic-button {
+    display: block;
 }
 
 /* Nextボタン */
