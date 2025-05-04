@@ -520,22 +520,36 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 動画１終了 → Next有効化
   const video1 = document.getElementById('video1');
-  video1.onended = () => document.getElementById('nextVideo1').disabled = false;
-  document.getElementById('nextVideo1').onclick = () => {
+  const nextVideo1 = document.getElementById('nextVideo1');
+  nextVideo1.disabled = true;
+  video1.onended = () => {
+    console.log("Video 1 ended");
+    nextVideo1.disabled = false;
+  };
+  nextVideo1.onclick = () => {
     playClickSound();
+    console.log("NextVideo1 clicked");
     showSlide(1);
   };
 
   // 動画２終了 → Next有効化
   const video2 = document.getElementById('video2');
-  video2.onended = () => document.getElementById('nextVideo2').disabled = false;
-  document.getElementById('nextVideo2').onclick = () => {
+  const nextVideo2 = document.getElementById('nextVideo2');
+  nextVideo2.disabled = true;
+  video2.onended = () => {
+    console.log("Video 2 ended");
+    nextVideo2.disabled = false;
+  };
+  nextVideo2.onclick = () => {
     playClickSound();
+    console.log("NextVideo2 clicked");
     showSlide(3);
   };
 
   // 説明Box → Q1へ
-  document.getElementById('nextToQ').onclick = () => {
+  const nextToQ = document.getElementById('nextToQ');
+  nextToQ.disabled = false;
+  nextToQ.onclick = () => {
     playClickSound();
     showSlide(5);
   };
@@ -552,7 +566,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Q1～Q10 の処理
     if (i >= 5 && i <= 14) {
-      const qnum = i - 4; // i=5→Q1, i=6→Q2, ..., i=14→Q10
+      const qnum = i - 4; // i=5→Q1, ..., i=14→Q10
       setupQuestion(`Q${qnum}`, () => {
         const nextBtn = document.getElementById(`nextQ${qnum}`);
         nextBtn.disabled = false;
@@ -565,7 +579,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 説明Boxに戻ったとき
     if (i === 4) {
-      document.getElementById('nextToQ').disabled = false;
+      nextToQ.disabled = false;
     }
   }
 
@@ -597,6 +611,7 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     };
   }
+});
 
   // 説明Box
   if (i === 4) document.getElementById('nextToQ').disabled = false;
