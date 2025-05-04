@@ -554,28 +554,54 @@ document.addEventListener('DOMContentLoaded', () => {
     showSlide(5);
   };
 
-  function showSlide(i) {
-    slides.forEach((s, idx) => s.classList.toggle('active', idx === i));
-    current = i;
+function showSlide(i) {
+  slides.forEach((s, idx) => s.classList.toggle('active', idx === i));
+  current = i;
 
-    // 例1 → 説明ビデオ2
-    if (i === 1) setupExample('E1', () => showSlide(2));
+  // ① 動画1スライド（index 0）に来たら
+  if (i === 0) {
+    nextVideo1.disabled = true;        // 毎回リセット
+    video1.currentTime = 0;             // 先頭から再生したければ
+    video1.play().catch(() => {});      // 自動再生したければ
+    video1.onended = () => {
+      nextVideo1.disabled = false;
+    };
+  }
 
-    // 説明ビデオ2 → 例2
-    if (i === 3) setupExample('E2', () => showSlide(4));
+  // ② 例1 → 説明ビデオ2
+  if (i === 1) setupExample('E1', () => showSlide(2));
 
-    // Q1～Q10 の処理
-    if (i >= 5 && i <= 14) {
-      const qnum = i - 4; // i=5→Q1, ..., i=14→Q10
-      setupQuestion(`Q${qnum}`, () => {
-        const nextBtn = document.getElementById(`nextQ${qnum}`);
-        nextBtn.disabled = false;
-        nextBtn.onclick = () => {
-          playClickSound();
-          showSlide(i + 1);
-        };
-      });
-    }
+  // ③ 動画2スライド（index 2）に来たら
+  if (i === 2) {
+    nextVideo2.disabled = true;        // 毎回リセット
+    video2.currentTime = 0;
+    video2.play().catch(() => {});
+    video2.onended = () => {
+      nextVideo2.disabled = false;
+    };
+  }
+
+  // ④ 例2
+  if (i === 3) setupExample('E2', () => showSlide(4));
+
+  // ⑤ 説明Box → Q1
+  if (i === 4) {
+    nextToQ.disabled = false;
+  }
+
+  // Q1～Q10 の処理
+  if (i >= 5 && i <= 14) {
+    const qnum = i - 4; // i=5→Q1, ..., i=14→Q10
+    setupQuestion(`Q${qnum}`, () => {
+      const nextBtn = document.getElementById(`nextQ${qnum}`);
+      nextBtn.disabled = false;
+      nextBtn.onclick = () => {
+        playClickSound();
+        showSlide(i + 1);
+      };
+    });
+  }
+}
 
     // 説明Boxに戻ったとき
     if (i === 4) {
