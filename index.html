@@ -751,75 +751,55 @@ document.addEventListener('DOMContentLoaded', () => {
     clickSound.play().catch(() => {});
   }
 
-  // ── 説明ビデオ① ─────────────────────────────
-  nextVideo1.disabled = true;
-  video1.addEventListener('ended', () => {
-    nextVideo1.disabled = false;
-  });
-  nextVideo1.addEventListener('click', () => {
-    playClickSound();
-    showSlide(1); // e.g.1 へ
-  });
+<!-- ② 例1 (E1) -->
+<div class="slide" data-audio="https://raw.githubusercontent.com/moguura/my-images/main/1-rei.wav">
+  <div class="question" id="E1">
+    <!-- ...（既存の例1内容）... -->
+    <div class="nav-next">
+      <button id="nextE1" disabled>Next</button>
+    </div>
+  </div>
+</div>
 
-  // ── 例題１への遷移は setupExample の onDone で自動化 ───
+<!-- ④ 例2 (E2) -->
+<div class="slide" data-audio="https://raw.githubusercontent.com/moguura/my-images/main/1-rei.wav">
+  <div class="question" id="E2">
+    <!-- ...（既存の例2内容）... -->
+    <div class="nav-next">
+      <button id="nextE2" disabled>Next</button>
+    </div>
+  </div>
+</div>
 
-  // ── 説明ビデオ② ─────────────────────────────
-  nextVideo2.disabled = true;
-  video2.addEventListener('ended', () => {
-    nextVideo2.disabled = false;
-  });
-  nextVideo2.addEventListener('click', () => {
-    playClickSound();
-    showSlide(3); // e.g.2 へ
-  });
+<script>
+// ...DOMContentLoaded内...
+function showSlide(i) {
+  slides.forEach((s, idx) => s.classList.toggle('active', idx === i));
+  current = i;
 
-  // ── 説明Box へつなぐ Next ボタンはまず無効化 ─────────
-  nextToQ.disabled = true;
-
-  // ── nav-next 全体にクリック音を登録 ─────────────────
-  document.querySelectorAll('.nav-next button').forEach(btn =>
-    btn.addEventListener('click', playClickSound)
-  );
-
-  // ── 最初のスライド表示 ───────────────────────────
-  showSlide(0);
-
-  // ———— スライド切り替え実装 ——————————————————
-  function showSlide(i) {
-    // クラス切り替え
-    slides.forEach((s, idx) => s.classList.toggle('active', idx === i));
-    current = i;
-
-    if (i === 1) {
-      // 例１
-      setupExample('E1', () => showSlide(2));
-    }
-    else if (i === 3) {
-      // 例２
-      setupExample('E2', () => showSlide(4));
-    }
-    else if (i === 4) {
-      // 説明Box
-      nextToQ.disabled = false;
-      nextToQ.onclick = () => {
+  if (i === 1) {
+    // 例1
+    const nextBtn = document.getElementById('nextE1');
+    nextBtn.disabled = true;
+    setupExample('E1', () => {
+      nextBtn.disabled = false;
+      nextBtn.onclick = () => {
         playClickSound();
-        showSlide(5); // Q1 へ
+        showSlide(2);
       };
-    }
-    else if (i >= 5 && i <= 14) {
-      // Q1～Q10
-      const qnum = i - 4;
-      const nextBtn = document.getElementById(`nextQ${qnum}`);
-      nextBtn.disabled = true;
-      setupQuestion(`Q${qnum}`, () => {
-        nextBtn.disabled = false;
-        nextBtn.onclick = () => {
-          playClickSound();
-          showSlide(i + 1);
-        };
-      });
-    }
-    // ※動画スライド(0,2)は video.onended ＆ nextVideo?.onclick で制御済み
+    });
+  }
+  else if (i === 3) {
+    // 例2
+    const nextBtn = document.getElementById('nextE2');
+    nextBtn.disabled = true;
+    setupExample('E2', () => {
+      nextBtn.disabled = false;
+      nextBtn.onclick = () => {
+        playClickSound();
+        showSlide(4);
+      };
+    });
   }
 
   // ———— 例題セットアップ —————————————————————
