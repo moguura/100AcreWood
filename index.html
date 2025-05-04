@@ -113,7 +113,7 @@ h1 {
 
 /* フィードバックアイコン（〇✖）の配置とサイズ */
 .feedback-icons {
-  display: flex;
+   display: none;    /* ← ここを追加 */
   align-items: center;
   margin-left: 12px;   /* ボタンとの間隔 */
 }
@@ -813,16 +813,20 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ———— setupQuestion はそのまま ————
-  function setupQuestion(id, onDone) {
+ function setupQuestion(id, onDone) {
     const slide    = document.querySelector('.slide.active');
     const btn      = slide.querySelector(`#startButton${id}`);
-    const fb       = slide.querySelector(`#feedback${id}`);
+    const fbIcons  = slide.querySelector(`#feedback${id}-icons`);
+    const fbText   = slide.querySelector(`#feedbackText${id}`);
     const audioSrc = slide.dataset.audio;
 
-    btn.style.display = 'none';
-    btn.disabled      = true;
-    fb.style.display  = 'none';
+    // ボタンとフィードバックを初期非表示
+    btn.style.display     = 'none';
+    btn.disabled          = true;
+    fbIcons.style.display = 'none';
+    fbText.style.display  = 'none';
 
+    // 問題音声の再生 → 終了後にマイクボタンを有効化
     if (audioSrc) {
       const audio = new Audio(audioSrc);
       audio.play();
@@ -835,6 +839,7 @@ document.addEventListener('DOMContentLoaded', () => {
       btn.disabled      = false;
     }
 
+    // クリックで認識開始
     btn.onclick = () =>
       startRecognition(id, transcript => {
         const correct = isCorrectAnswer(id, transcript);
@@ -843,7 +848,6 @@ document.addEventListener('DOMContentLoaded', () => {
         onDone();
       });
   }
-});
 
 // ─── 正答定義 ─────────────────────────────────
 const answers = {
@@ -914,35 +918,31 @@ function isCorrectAnswer(id, text) {
 }
 
 // --- フィードバック表示関数（改良版）---
-function showFeedback(id, correct) {
-  const slide = document.querySelector('.slide.active');
+  function showFeedback(id, correct) {
+    const slide   = document.querySelector('.slide.active');
+    const fbIcons = slide.querySelector(`#feedback${id}-icons`);
+    const okImg   = slide.querySelector(`#correctImage${id}`);
+    const ngImg   = slide.querySelector(`#wrongImage${id}`);
+    const txt     = slide.querySelector(`#feedbackText${id}`);
 
-  // フィードバック領域と構成要素
-  const fb  = slide.querySelector(`#feedback${id}`);
-  const ok  = slide.querySelector(`#correctImage${id}`);
-  const ng  = slide.querySelector(`#wrongImage${id}`);
-  const txt = slide.querySelector(`#feedbackText${id}`);
+    const CORRECT_URL = 'https://raw.githubusercontent.com/moguura/my-images/main/クイズ正解2.mp3';
+    const WRONG_URL   = 'https://raw.githubusercontent.com/moguura/my-images/main/クイズ不正解1.mp3';
 
-  const CORRECT_URL = 'https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E6%AD%A3%E8%A7%A32.mp3';
-  const WRONG_URL   = 'https://raw.githubusercontent.com/moguura/my-images/main/%E3%82%AF%E3%82%A4%E3%82%BA%E4%B8%8D%E6%AD%A3%E8%A7%A31.mp3';
+    // アイコンとテキストを表示
+    fbIcons.style.display = 'flex';
+    txt.textContent       = getFeedbackText(id);
+    txt.style.display     = 'block';
 
-  // フィードバック表示開始
-  fb.style.display = 'block';
-  txt.textContent = getFeedbackText(id);
-  txt.style.display = 'block';
-
-  if (correct) {
-    ok.style.display = 'block';
-    ng.style.display = 'none';
-    const aOk = slide.querySelector(`#correctAudio${id}`);
-    (aOk ? aOk : new Audio(CORRECT_URL)).play().catch(() => {});
-  } else {
-    ok.style.display = 'none';
-    ng.style.display = 'block';
-    const aNg = slide.querySelector(`#wrongAudio${id}`);
-    (aNg ? aNg : new Audio(WRONG_URL)).play().catch(() => {});
+    if (correct) {
+      okImg.style.display = 'block';
+      ngImg.style.display = 'none';
+      (slide.querySelector(`#correctAudio${id}`) || new Audio(CORRECT_URL)).play().catch(()=>{});
+    } else {
+      okImg.style.display = 'none';
+      ngImg.style.display = 'block';
+      (slide.querySelector(`#wrongAudio${id}`)   || new Audio(WRONG_URL)).play().catch(()=>{});
+    }
   }
-}
 
 // --- 全回答後の遷移処理（修正版） ---
 function checkAllAnswered() {
