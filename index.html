@@ -504,145 +504,109 @@ a:hover {
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-  // スライド要素を取得
-  const slides = Array.from(document.querySelectorAll('#slides .slide'));
+  const slides       = Array.from(document.querySelectorAll('#slides .slide'));
+  const video1       = document.getElementById('video1');
+  const nextVideo1   = document.getElementById('nextVideo1');
+  const video2       = document.getElementById('video2');
+  const nextVideo2   = document.getElementById('nextVideo2');
+  const nextToQ      = document.getElementById('nextToQ');
   let current = 0;
 
-  // クリック音
-  const clickSound = new Audio('https://raw.githubusercontent.com/moguura/my-images/main/click.mp3');
+  const clickSound = new Audio('https://…/click.mp3');
   function playClickSound() {
     clickSound.currentTime = 0;
     clickSound.play().catch(() => {});
   }
 
-  // 初期表示
+  // 初期登録：ビデオ１・２の ended とクリック
+  nextVideo1.disabled = true;
+  video1.onended     = () => nextVideo1.disabled = false;
+  nextVideo1.onclick = () => { playClickSound(); showSlide(1); };
+
+  nextVideo2.disabled = true;
+  video2.onended     = () => nextVideo2.disabled = false;
+  nextVideo2.onclick = () => { playClickSound(); showSlide(3); };
+
+  // 説明Box → Q群
+  nextToQ.disabled = false;
+  nextToQ.onclick = () => { playClickSound(); showSlide(5); };
+
+  // 最初のスライド表示
   showSlide(0);
 
-  // 動画１終了 → Next有効化
-  const video1 = document.getElementById('video1');
-  const nextVideo1 = document.getElementById('nextVideo1');
-  nextVideo1.disabled = true; // 初期状態は無効
-  video1.onended = () => {
-    console.log("Video 1 ended");
-    nextVideo1.disabled = false; // 動画終了後に有効化
-  };
-  nextVideo1.onclick = () => {
-    playClickSound();
-    console.log("NextVideo1 clicked");
-    showSlide(1);
-  };
+  // ———— showSlide 関数 ————
+  function showSlide(i) {
+    slides.forEach((s, idx) => s.classList.toggle('active', idx === i));
+    current = i;
 
-  // 動画２終了 → Next有効化
-  const video2 = document.getElementById('video2');
-  const nextVideo2 = document.getElementById('nextVideo2');
-  nextVideo2.disabled = true; // 初期状態は無効
-  video2.onended = () => {
-    console.log("Video 2 ended");
-    nextVideo2.disabled = false; // 動画終了後に有効化
-  };
-  nextVideo2.onclick = () => {
-    playClickSound();
-    console.log("NextVideo2 clicked");
-    showSlide(3);
-  };
-
-  // 説明Box → Q1へ
-  const nextToQ = document.getElementById('nextToQ');
-  nextToQ.disabled = false; // 初期状態で有効
-  nextToQ.onclick = () => {
-    playClickSound();
-    showSlide(5);
-  };
-
-function showSlide(i) {
-  slides.forEach((s, idx) => s.classList.toggle('active', idx === i));
-  current = i;
-
-  // ① 動画1スライド（index 0）に来たら
-  if (i === 0) {
-    nextVideo1.disabled = true;        // 毎回リセット
-    video1.currentTime = 0;             // 先頭から再生したければ
-    video1.play().catch(() => {});      // 自動再生したければ
-    video1.onended = () => {
-      nextVideo1.disabled = false;
-    };
-  }
-
-  // ② 例1 → 説明ビデオ2
-  if (i === 1) setupExample('E1', () => showSlide(2));
-
-  // ③ 動画2スライド（index 2）に来たら
-  if (i === 2) {
-    nextVideo2.disabled = true;        // 毎回リセット
-    video2.currentTime = 0;
-    video2.play().catch(() => {});
-    video2.onended = () => {
-      nextVideo2.disabled = false;
-    };
-  }
-
-  // ④ 例2
-  if (i === 3) setupExample('E2', () => showSlide(4));
-
-  // ⑤ 説明Box → Q1
-  if (i === 4) {
-    nextToQ.disabled = false;
-  }
-
-  // Q1～Q10 の処理
-  if (i >= 5 && i <= 14) {
-    const qnum = i - 4; // i=5→Q1, ..., i=14→Q10
-    setupQuestion(`Q${qnum}`, () => {
-      const nextBtn = document.getElementById(`nextQ${qnum}`);
-      nextBtn.disabled = false;
-      nextBtn.onclick = () => {
-        playClickSound();
-        showSlide(i + 1);
+    // 1. 動画スライドなら Next をリセット
+    const slide   = slides[i];
+    const video   = slide.querySelector('video');
+    const nextBtn = slide.querySelector('.nav-next button');
+    if (video && nextBtn) {
+      nextBtn.disabled = true;
+      video.onended = () => {
+        console.log(`Slide ${i} video ended`);
+        nextBtn.disabled = false;
       };
-    });
-  }
-}
+    }
 
-    // 説明Boxに戻ったとき
+    // 2. 例題スライド
+    if (i === 1) setupExample('E1', () => showSlide(2));
+    if (i === 3) setupExample('E2', () => showSlide(4));
+
+    // 3. 説明Box
     if (i === 4) {
       nextToQ.disabled = false;
     }
+
+    // 4. Q1〜Q10
+    if (i >= 5 && i <= 14) {
+      const qnum = i - 4;
+      setupQuestion(`Q${qnum}`, () => {
+        const btn = document.getElementById(`nextQ${qnum}`);
+        btn.disabled = false;
+        btn.onclick = () => {
+          playClickSound();
+          showSlide(i + 1);
+        };
+      });
+    }
   }
 
- function setupQuestion(id, onDone) {
-  const slide    = document.querySelector('.slide.active');
-  const btn      = slide.querySelector(`#startButton${id}`);
-  const fb       = slide.querySelector(`#feedback${id}`);
-  const audioSrc = slide.dataset.audio;
+  // ———— setupQuestion はそのまま ————
+  function setupQuestion(id, onDone) {
+    const slide    = document.querySelector('.slide.active');
+    const btn      = slide.querySelector(`#startButton${id}`);
+    const fb       = slide.querySelector(`#feedback${id}`);
+    const audioSrc = slide.dataset.audio;
 
-  // ① 初期状態で隠しておく
-  btn.style.display = 'none';
-  btn.disabled      = true;
-  fb.style.display  = 'none';
+    btn.style.display = 'none';
+    btn.disabled      = true;
+    fb.style.display  = 'none';
 
-  if (audioSrc) {
-    const audio = new Audio(audioSrc);
-    audio.play();
-    audio.onended = () => {
-      // ② 音声終了後に表示＆有効化
-      btn.style.display = 'inline-block'; // 好みで 'block' でもOK
+    if (audioSrc) {
+      const audio = new Audio(audioSrc);
+      audio.play();
+      audio.onended = () => {
+        btn.style.display = 'inline-block';
+        btn.disabled      = false;
+      };
+    } else {
+      btn.style.display = 'inline-block';
       btn.disabled      = false;
-    };
-  } else {
-    // 音声ソースがない場合はそのまま見せる
-    btn.style.display = 'inline-block';
-    btn.disabled      = false;
-  }
+    }
 
-  btn.onclick = () => {
-    startRecognition(id, transcript => {
-      const correct = isCorrectAnswer(id, transcript);
-      showFeedback(id, correct);
-      checkAllAnswered();
-      onDone();
-    });
-  };
-}
+    btn.onclick = () =>
+      startRecognition(id, transcript => {
+        const correct = isCorrectAnswer(id, transcript);
+        showFeedback(id, correct);
+        checkAllAnswered();
+        onDone();
+      });
+  }
+});
+</script>
 
 // ─── 正答定義 ─────────────────────────────────
 const answers = {
