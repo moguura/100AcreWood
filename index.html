@@ -583,35 +583,40 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  function setupQuestion(id, onDone) {
-    const slide = document.querySelector('.slide.active');
-    const btn   = slide.querySelector(`#startButton${id}`);
-    const fb    = slide.querySelector(`#feedback${id}`);
-    const audioSrc = slide.dataset.audio;
+ function setupQuestion(id, onDone) {
+  const slide    = document.querySelector('.slide.active');
+  const btn      = slide.querySelector(`#startButton${id}`);
+  const fb       = slide.querySelector(`#feedback${id}`);
+  const audioSrc = slide.dataset.audio;
 
-    btn.disabled = true;
-    fb.style.display = 'none';
+  // ① 初期状態で隠しておく
+  btn.style.display = 'none';
+  btn.disabled      = true;
+  fb.style.display  = 'none';
 
-    if (audioSrc) {
-      const audio = new Audio(audioSrc);
-      audio.play();
-      audio.onended = () => {
-        btn.disabled = false; // 音声終了後にボタンを有効化
-      };
-    } else {
-      btn.disabled = false; // 音声がない場合はすぐにボタンを有効化
-    }
-
-    btn.onclick = () => {
-      startRecognition(id, transcript => {
-        const correct = isCorrectAnswer(id, transcript);
-        showFeedback(id, correct);
-        checkAllAnswered();
-        onDone();
-      });
+  if (audioSrc) {
+    const audio = new Audio(audioSrc);
+    audio.play();
+    audio.onended = () => {
+      // ② 音声終了後に表示＆有効化
+      btn.style.display = 'inline-block'; // 好みで 'block' でもOK
+      btn.disabled      = false;
     };
+  } else {
+    // 音声ソースがない場合はそのまま見せる
+    btn.style.display = 'inline-block';
+    btn.disabled      = false;
   }
-});
+
+  btn.onclick = () => {
+    startRecognition(id, transcript => {
+      const correct = isCorrectAnswer(id, transcript);
+      showFeedback(id, correct);
+      checkAllAnswered();
+      onDone();
+    });
+  };
+}
 
 // ─── 正答定義 ─────────────────────────────────
 const answers = {
