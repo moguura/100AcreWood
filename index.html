@@ -737,12 +737,8 @@ h1 {
   </div>
 </div>
 
- <a href="./Activity2.html"
-     id="nextPageLink"
-     style="display: none;">
-    Go to Activity2
-  </a>
-
+ <a href="./Activity2.html" id="nextPageLink">Go to Activity2</a>
+    
 <script>
 document.addEventListener('DOMContentLoaded', () => {
   const slides       = Array.from(document.querySelectorAll('#slides .slide'));
@@ -1002,20 +998,23 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-    function checkAllAnswered() {
-      // Q1～Q10 がすべて回答済み（ボタン disabled）になっているか
-      const allDone = Object.keys(answers)
-        .filter(k => k.startsWith('Q'))
-        .every(k => document.getElementById(`startButton${k}`).disabled);
+   // 全回答後のリンク表示
+  function checkAllAnswered() {
+    const allDone = Object.keys(answers)
+      .filter(k => k.startsWith('Q'))
+      .every(k => document.getElementById(`startButton${k}`).disabled);
 
-      if (allDone) {
-        // 自動遷移をやめてリンクを表示
-        const link = document.getElementById('nextPageLink');
-        if (link) {
-          link.style.display = 'block';
-        }
+    if (allDone) {
+      const link = document.getElementById('nextPageLink');
+      if (link) {
+        // 終了音を再生
+        const endSound = new Audio('https://raw.githubusercontent.com/moguura/my-images/main/taskend2.mp3');
+        endSound.play().catch(() => {});
+        // ★ ここでリンク表示 ★ 
+        link.style.display = 'block';
       }
     }
+  }
 
   function getFeedbackText(id) {
     const msgs = {
