@@ -645,37 +645,30 @@ h1 {
  
 <script>
 document.addEventListener('DOMContentLoaded', () => {
+  // ▼ 1. ここから DOMContentLoaded のコールバック開始 （1個目の `{`）
+
   const slides = Array.from(document.querySelectorAll('#slides .slide'));
   let current = 0;
 
-  // 動画終了後に Next ボタンを有効化
   function enableOnVideoEnd(videoId, btnId) {
     const vid = document.getElementById(videoId);
     const btn = document.getElementById(btnId);
-    console.log(`enableOnVideoEnd called → vid=%o, btn=%o`, vid, btn);
     if (!vid || !btn) return;
-
     vid.addEventListener('ended', () => {
-      console.log(`▶ ${videoId} ended! before: disabled=${btn.disabled}, hasAttr=${btn.hasAttribute('disabled')}`);
       btn.disabled = false;
       btn.removeAttribute('disabled');
-      console.log(`   after: disabled=${btn.disabled}, hasAttr=${btn.hasAttribute('disabled')}`);
     });
   }
 
   enableOnVideoEnd('video1', 'nextVideo1');
   enableOnVideoEnd('video2', 'nextVideo2');
 
-  // Next ボタンにクリックでスライド切り替えだけをバインド
   function bindNext(id, idx) {
     const btn = document.getElementById(id);
     if (!btn) return;
-    btn.addEventListener('click', () => {
-      showSlide(idx);
-    });
+    btn.addEventListener('click', () => showSlide(idx));
   }
 
-  // 各ボタンをバインド
   bindNext('nextVideo1', 1);
   bindNext('nextE1',      2);
   bindNext('nextVideo2', 3);
@@ -685,14 +678,12 @@ document.addEventListener('DOMContentLoaded', () => {
     bindNext(`nextQ${i}`, 5 + i);
   }
 
-  // スライドの表示切り替え
   function showSlide(i) {
     slides[current].classList.remove('active');
     current = i;
     slides[current].classList.add('active');
   }
 
-  // 全問終了時のページ遷移ボタン制御
   function checkAllAnswered() {
     const allDone = Array.from({ length: 10 }, (_, k) => k + 1)
       .every(n => document.getElementById(`startButtonQ${n}`).disabled);
@@ -706,13 +697,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // （音声認識のコールバック内で必ず呼び出してください）
-  // startRecognition(..., transcript => { ...; checkAllAnswered(); });
+  // （音声認識部分などで checkAllAnswered() を呼ぶ）
 
-  // 最初のスライドを表示
   showSlide(0);
+
+  // ▼ 1. ここで DOMContentLoaded のコールバックを閉じる （対応する `}` と `)`）
 });
-   
+    
 const answers = {
     E1: ["よかった"],
     E2: ["よくなかった"],
