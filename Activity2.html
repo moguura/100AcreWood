@@ -665,7 +665,6 @@ h1 {
  <a href="./Activity2.html" id="nextPageLink">Go to Activity3</a>
  
 <script>
-<script>
 document.addEventListener('DOMContentLoaded', () => {
   const slides       = Array.from(document.querySelectorAll('#slides .slide'));
   const video1       = document.getElementById('video1');
@@ -713,56 +712,73 @@ document.addEventListener('DOMContentLoaded', () => {
   // 初期表示
   showSlide(0);
 
-  function showSlide(i) {
-    slides.forEach((s, idx) => s.classList.toggle('active', idx === i));
-    current = i;
+function showSlide(i) {
+  // スライド切り替え
+  slides.forEach((s, idx) => s.classList.toggle('active', idx === i));
+  current = i;
 
-    if (i === 1) {
-      // 例1
-      const nextBtn = document.getElementById('nextE1');
-      nextBtn.disabled = true;
-      setupExample('E1', () => {
-        nextBtn.disabled = false;
-        nextBtn.onclick = () => {
-          playClickSound();
-          showSlide(2);
-        };
-      });
-    }
-    else if (i === 3) {
-      // 例2
-      const nextBtn = document.getElementById('nextE2');
-      nextBtn.disabled = true;
-      setupExample('E2', () => {
-        nextBtn.disabled = false;
-        nextBtn.onclick = () => {
-          playClickSound();
-          showSlide(4);
-        };
-      });
-    }
-    else if (i === 4) {
-      // 説明Box
-      nextToQ.disabled = false;
-      nextToQ.onclick = () => {
-        playClickSound();
-        showSlide(5);
-      };
-    }
-    else if (i >= 5 && i <= 14) {
-      // Q1～Q10
-      const qnum = i - 4;
-      const nextBtn = document.getElementById(`nextQ${qnum}`);
-      nextBtn.disabled = true;
-      setupQuestion(`Q${qnum}`, () => {
-        nextBtn.disabled = false;
-        nextBtn.onclick = () => {
-          playClickSound();
-          showSlide(i + 1);
-        };
-      });
+  const slideEl = slides[i];
+
+  // もし video 要素があれば、対応する Next ボタンをバインドし直す
+  const vid = slideEl.querySelector('video');
+  if (vid) {
+    const btn = slideEl.querySelector('button[id^="nextVideo"]');
+    if (btn) {
+      btn.disabled = true;
+      // 古いリスナーを外し、新しく登録
+      vid.removeEventListener('ended', vid._onended);
+      vid._onended = () => { btn.disabled = false; };
+      vid.addEventListener('ended', vid._onended);
     }
   }
+
+  // 例題1 (E1)
+  if (i === 1) {
+    const nextBtn = document.getElementById('nextE1');
+    nextBtn.disabled = true;
+    setupExample('E1', () => {
+      nextBtn.disabled = false;
+      nextBtn.onclick = () => {
+        playClickSound();
+        showSlide(2);
+      };
+    });
+  }
+  // 例題2 (E2)
+  else if (i === 3) {
+    const nextBtn = document.getElementById('nextE2');
+    nextBtn.disabled = true;
+    setupExample('E2', () => {
+      nextBtn.disabled = false;
+      nextBtn.onclick = () => {
+        playClickSound();
+        showSlide(4);
+      };
+    });
+  }
+  // 説明Box
+  else if (i === 4) {
+    nextToQ.disabled = true;
+    nextToQ.disabled = false;
+    nextToQ.onclick = () => {
+      playClickSound();
+      showSlide(5);
+    };
+  }
+  // Q1～Q10
+  else if (i >= 5 && i <= 14) {
+    const qnum = i - 4;
+    const nextBtn = document.getElementById(`nextQ${qnum}`);
+    nextBtn.disabled = true;
+    setupQuestion(`Q${qnum}`, () => {
+      nextBtn.disabled = false;
+      nextBtn.onclick = () => {
+        playClickSound();
+        showSlide(i + 1);
+      };
+    });
+  }
+}
 
   // 例題セットアップ
   function setupExample(id, onDone) {
