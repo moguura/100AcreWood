@@ -812,17 +812,31 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
 function isCorrectAnswer(id, text) {
-  // 末尾の「。」や「.」をまず削除
-  let norm = text.replace(/[。．.]$/, '');
-  // 次に「です」も外し、空白を詰める
-  norm = norm.replace(/です$/, '').replace(/\s+/g, '');
-  const ans = answers[id][0];
+  // ① 生の認識結果を表示
+  console.log(`[isCorrectAnswer] raw transcript: "${text}"`);
 
+  // ② 末尾の日本語・英語句点や感嘆符を削除
+  let norm = text.replace(/[。．\.！!？?]$/u, '').trim();
+  console.log(`[isCorrectAnswer] after punctuation strip: "${norm}"`);
+
+  // ③ 末尾の「です」を削除
+  norm = norm.replace(/です$/, '').trim().replace(/\s+/g, '');
+  console.log(`[isCorrectAnswer] after stripping 'です': "${norm}"`);
+
+  const ans = answers[id][0];
+  console.log(`[isCorrectAnswer] expected answer: "${ans}"`);
+
+  let result;
   if (ans === 'くない') {
-    return norm.endsWith('くない');
+    result = norm.endsWith('くない');
+  } else {
+    // 「い」で終わりつつ「くない」ではない
+    result = norm.endsWith('い') && !norm.endsWith('くない');
   }
-  return norm.endsWith('い') && !norm.endsWith('くない');
+  console.log(`[isCorrectAnswer] → returning ${result}`);
+  return result;
 }
+
 
   // 統一したフィードバック表示関数
   function showFeedback(id, correct) {
