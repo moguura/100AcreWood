@@ -674,253 +674,101 @@ document.addEventListener('DOMContentLoaded', () => {
   const nextToQ      = document.getElementById('nextToQ');
   let current = 0;
 
-  // クリック音の準備
   const clickSound = new Audio('https://raw.githubusercontent.com/moguura/my-images/main/click.mp3');
   function playClickSound() {
     clickSound.currentTime = 0;
     clickSound.play().catch(() => {});
   }
 
-  // 説明ビデオ①
+  // 説明ビデオ①・②の初期バインド
   nextVideo1.disabled = true;
-  video1.addEventListener('ended', () => {
-    nextVideo1.disabled = false;
-  });
+  video1.addEventListener('ended', () => nextVideo1.disabled = false);
   nextVideo1.addEventListener('click', () => {
     playClickSound();
     showSlide(1);
   });
 
-  // 説明ビデオ②
   nextVideo2.disabled = true;
-  video2.addEventListener('ended', () => {
-    nextVideo2.disabled = false;
-  });
+  video2.addEventListener('ended', () => nextVideo2.disabled = false);
   nextVideo2.addEventListener('click', () => {
     playClickSound();
     showSlide(3);
   });
 
-  // 説明Box
   nextToQ.disabled = true;
 
-  // nav-next クリック音
   document.querySelectorAll('.nav-next button').forEach(btn =>
     btn.addEventListener('click', playClickSound)
   );
 
-  // 初期表示
   showSlide(0);
 
-function showSlide(i) {
-  // スライド切り替え
-  slides.forEach((s, idx) => s.classList.toggle('active', idx === i));
-  current = i;
+  function showSlide(i) {
+    slides.forEach((s, idx) => s.classList.toggle('active', idx === i));
+    current = i;
+    const slideEl = slides[i];
 
-  const slideEl = slides[i];
+    // 動画 Next ボタン再バインド
+    const vid = slideEl.querySelector('video');
+    if (vid) {
+      const btn = slideEl.querySelector('button[id^="nextVideo"]');
+      if (btn) {
+        btn.disabled = true;
+        vid.removeEventListener('ended', vid._onended);
+        vid._onended = () => { btn.disabled = false; };
+        vid.addEventListener('ended', vid._onended);
+      }
+    }
 
-  // もし video 要素があれば、対応する Next ボタンをバインドし直す
-  const vid = slideEl.querySelector('video');
-  if (vid) {
-    const btn = slideEl.querySelector('button[id^="nextVideo"]');
-    if (btn) {
-      btn.disabled = true;
-      // 古いリスナーを外し、新しく登録
-      vid.removeEventListener('ended', vid._onended);
-      vid._onended = () => { btn.disabled = false; };
-      vid.addEventListener('ended', vid._onended);
+    if (i === 1) {
+      const nextBtn = document.getElementById('nextE1');
+      nextBtn.disabled = true;
+      setupExample('E1', () => {
+        nextBtn.disabled = false;
+        nextBtn.onclick = () => {
+          playClickSound();
+          showSlide(2);
+        };
+      });
+    }
+    else if (i === 3) {
+      const nextBtn = document.getElementById('nextE2');
+      nextBtn.disabled = true;
+      setupExample('E2', () => {
+        nextBtn.disabled = false;
+        nextBtn.onclick = () => {
+          playClickSound();
+          showSlide(4);
+        };
+      });
+    }
+    else if (i === 4) {
+      nextToQ.disabled = false;
+      nextToQ.onclick = () => {
+        playClickSound();
+        showSlide(5);
+      };
+    }
+    else if (i >= 5 && i <= 14) {
+      const qnum = i - 4;
+      const nextBtn = document.getElementById(`nextQ${qnum}`);
+      nextBtn.disabled = true;
+      setupQuestion(`Q${qnum}`, () => {
+        nextBtn.disabled = false;
+        nextBtn.onclick = () => {
+          playClickSound();
+          showSlide(i + 1);
+        };
+      });
     }
   }
 
-  // 例題1 (E1)
-  if (i === 1) {
-    const nextBtn = document.getElementById('nextE1');
-    nextBtn.disabled = true;
-    setupExample('E1', () => {
-      nextBtn.disabled = false;
-      nextBtn.onclick = () => {
-        playClickSound();
-        showSlide(2);
-      };
-    });
-  }
-  // 例題2 (E2)
-  else if (i === 3) {
-    const nextBtn = document.getElementById('nextE2');
-    nextBtn.disabled = true;
-    setupExample('E2', () => {
-      nextBtn.disabled = false;
-      nextBtn.onclick = () => {
-        playClickSound();
-        showSlide(4);
-      };
-    });
-  }
-  // 説明Box
-  else if (i === 4) {
-    nextToQ.disabled = true;
-    nextToQ.disabled = false;
-    nextToQ.onclick = () => {
-      playClickSound();
-      showSlide(5);
-    };
-  }
-  // Q1～Q10
-  else if (i >= 5 && i <= 14) {
-    const qnum = i - 4;
-    const nextBtn = document.getElementById(`nextQ${qnum}`);
-    nextBtn.disabled = true;
-    setupQuestion(`Q${qnum}`, () => {
-      nextBtn.disabled = false;
-      nextBtn.onclick = () => {
-        playClickSound();
-        showSlide(i + 1);
-      };
-    });
-  }
-}
-
-// ———— 例題セットアップ —————————
-function setupExample(id, onDone) {
-  const slide    = document.querySelector('.slide.active');
-  const btn      = slide.querySelector(`#startButton${id}`);
-  const ins      = slide.querySelector('.instruction');
-  const fbIcons  = slide.querySelector(`#feedback${id}-icons`);
-  const okImg    = fbIcons.querySelector(`#correctImage${id}`);
-  const ngImg    = fbIcons.querySelector(`#wrongImage${id}`);
-  const fbText   = slide.querySelector(`#feedbackText${id}`);
-  const audioSrc = slide.dataset.audio;
-
-  // —— 初期化 —— 
-  btn.style.display     = 'none';
-  btn.disabled          = true;
-  ins.style.display     = 'none';
-  fbIcons.style.display = 'none';
-  okImg.style.display   = 'none';
-  ngImg.style.display   = 'none';
-  fbText.style.display  = 'none';
-  fbText.textContent    = '';
-
-  // —— 発話ガイド音声があれば再生し、終わったらマイクボタン＆指示文を表示 —— 
-  function showMicAndInstruction() {
-    ins.style.display  = 'block';
-    btn.style.display  = 'inline-block';
-    btn.disabled       = false;
-  }
-
-  if (audioSrc) {
-    const cue = new Audio(audioSrc);
-    cue.play();
-    // onplay→onended どちらで触ってもOKですが、onended が確実です
-    cue.onended = showMicAndInstruction;
-  } else {
-    showMicAndInstruction();
-  }
-
-  // —— ボタン押下で音声認識開始 —— 
-  btn.onclick = () => {
-    console.log(`[setupExample ${id}] 認識開始`);
-    btn.disabled = true;
-    startRecognition(id, transcript => {
-      console.log(`[setupExample ${id}] 認識結果:`, transcript);
-      const correct = isCorrectAnswer(id, transcript);
-      console.log(`[setupExample ${id}] 判定:`, correct);
-      showFeedback(id, correct);
-      checkAllAnswered();
-      setTimeout(onDone, 1000);
-    });
+  const answers = {
+    E1: ["い"], E2: ["くない"],
+    Q1: ["い"], Q2: ["くない"], Q3: ["い"], Q4: ["い"],
+    Q5: ["い"], Q6: ["くない"], Q7: ["くない"], Q8: ["くない"],
+    Q9: ["い"], Q10:["くない"]
   };
-}
-
-// ———— フィードバック表示 —————————
-function showFeedback(id, correct) {
-  const slide   = document.querySelector('.slide.active');
-  const fbIcons = slide.querySelector(`#feedback${id}-icons`);
-  const okImg   = fbIcons.querySelector(`#correctImage${id}`);
-  const ngImg   = fbIcons.querySelector(`#wrongImage${id}`);
-  const fbText  = slide.querySelector(`#feedbackText${id}`);
-
-  // container を出す
-  fbIcons.style.display = 'flex';
-  // 画像を切り替え
-  okImg.style.display   = correct ? 'block' : 'none';
-  ngImg.style.display   = correct ? 'none'  : 'block';
-
-  // テキスト
-  fbText.textContent    = getFeedbackText(id);
-  fbText.style.display  = 'block';
-
-  // 音声フィードバック
-  const CORRECT_URL = 'https://raw.githubusercontent.com/moguura/my-images/main/クイズ正解2.mp3';
-  const WRONG_URL   = 'https://raw.githubusercontent.com/moguura/my-images/main/クイズ不正解1.mp3';
-  const audio       = new Audio(correct ? CORRECT_URL : WRONG_URL);
-  audio.play().catch(() => {});
-
-  console.log(`[showFeedback ${id}] フィードバック済み (${correct ? '正解' : '不正解'})`);
-}
-
-// ———— 問題セットアップ —————————
-function setupQuestion(id, onDone) {
-  const slide    = document.querySelector('.slide.active');
-  const btn      = slide.querySelector(`#startButton${id}`);
-  const fbIcons  = slide.querySelector(`#feedback${id}-icons`);
-  const okImg    = fbIcons.querySelector(`#correctImage${id}`);
-  const ngImg    = fbIcons.querySelector(`#wrongImage${id}`);
-  const fbText   = slide.querySelector(`#feedbackText${id}`);
-  const audioSrc = slide.dataset.audio;
-
-  // —— 初期化 —— 
-  btn.style.display     = 'none';
-  btn.disabled          = true;
-  fbIcons.style.display = 'none';
-  okImg.style.display   = 'none';
-  ngImg.style.display   = 'none';
-  fbText.style.display  = 'none';
-  fbText.textContent    = '';
-
-  // —— 問題音声があれば再生し、終わったらマイクボタンを表示 —— 
-  function showMicButton() {
-    btn.style.display = 'inline-block';
-    btn.disabled      = false;
-  }
-
-  if (audioSrc) {
-    const audio = new Audio(audioSrc);
-    audio.play();
-    audio.onended = showMicButton;
-  } else {
-    showMicButton();
-  }
-
-  // —— ボタン押下で音声認識→フィードバック→次へ —— 
-  btn.onclick = () => {
-    console.log(`[setupQuestion ${id}] 認識開始`);
-    btn.disabled = true;
-    startRecognition(id, transcript => {
-      console.log(`[setupQuestion ${id}] 認識結果:`, transcript);
-      const correct = isCorrectAnswer(id, transcript);
-      console.log(`[setupQuestion ${id}] 判定:`, correct);
-      showFeedback(id, correct);
-      checkAllAnswered();
-      onDone();
-    });
-  };
-}
-
-const answers = {
-    E1: ["い"],
-    E2: ["くない"],
-    Q1: ["い"],
-    Q2: ["い"],
-    Q3: ["い"],
-    Q4: ["よくない"],
-    Q5: ["くない"],
-    Q6: ["い"],
-    Q7: ["くない"],
-    Q8: ["い"],
-    Q9: ["くない"],
-    Q10: ["い"]
-};
 
   function startRecognition(id, cb) {
     if (!('webkitSpeechRecognition' in window)) {
@@ -935,7 +783,6 @@ const answers = {
     recognition.lang = 'ja-JP';
     recognition.interimResults = true;
     recognition.continuous = true;
-
     let finalTranscript = '';
     let finalized = false;
     let timeoutId;
@@ -960,7 +807,7 @@ const answers = {
       }
     };
     recognition.onerror = () => { recognition.stop(); cb(finalTranscript); };
-    recognition.onend = () => { micBtn.classList.remove('recording'); };
+    recognition.onend   = () => { micBtn.classList.remove('recording'); };
     recognition.start();
   }
 
@@ -971,64 +818,137 @@ const answers = {
     return norm.endsWith('い') && !norm.endsWith('くない');
   }
 
+  // 統一したフィードバック表示関数
   function showFeedback(id, correct) {
     const slide   = document.querySelector('.slide.active');
     const fbIcons = slide.querySelector(`#feedback${id}-icons`);
-    const okImg   = slide.querySelector(`#correctImage${id}`);
-    const ngImg   = slide.querySelector(`#wrongImage${id}`);
-    const txt     = slide.querySelector(`#feedbackText${id}`);
+    const okImg   = fbIcons.querySelector(`#correctImage${id}`);
+    const ngImg   = fbIcons.querySelector(`#wrongImage${id}`);
+    const fbText  = slide.querySelector(`#feedbackText${id}`);
+
+    fbIcons.style.display = 'flex';
+    okImg.style.display   = correct ? 'block' : 'none';
+    ngImg.style.display   = correct ? 'none'  : 'block';
+    fbText.textContent    = getFeedbackText(id);
+    fbText.style.display  = 'block';
 
     const CORRECT_URL = 'https://raw.githubusercontent.com/moguura/my-images/main/クイズ正解2.mp3';
     const WRONG_URL   = 'https://raw.githubusercontent.com/moguura/my-images/main/クイズ不正解1.mp3';
-
-    fbIcons.style.display = 'flex';
-    txt.textContent       = getFeedbackText(id);
-    txt.style.display     = 'block';
-
-    if (correct) {
-      okImg.style.display = 'block';
-      ngImg.style.display = 'none';
-      (slide.querySelector(`#correctAudio${id}`) || new Audio(CORRECT_URL)).play().catch(()=>{});
-    } else {
-      okImg.style.display = 'none';
-      ngImg.style.display = 'block';
-      (slide.querySelector(`#wrongAudio${id}`)   || new Audio(WRONG_URL)).play().catch(()=>{});
-    }
+    new Audio(correct ? CORRECT_URL : WRONG_URL).play().catch(()=>{});
   }
 
-   // 全回答後のリンク表示
+  // 例題セットアップ
+  function setupExample(id, onDone) {
+    const slide    = document.querySelector('.slide.active');
+    const btn      = slide.querySelector(`#startButton${id}`);
+    const ins      = slide.querySelector('.instruction');
+    const fbIcons  = slide.querySelector(`#feedback${id}-icons`);
+    const okImg    = fbIcons.querySelector(`#correctImage${id}`);
+    const ngImg    = fbIcons.querySelector(`#wrongImage${id}`);
+    const fbText   = slide.querySelector(`#feedbackText${id}`);
+    const audioSrc = slide.dataset.audio;
+
+    btn.style.display     = 'none';
+    btn.disabled          = true;
+    ins.style.display     = 'none';
+    fbIcons.style.display = 'none';
+    okImg.style.display   = 'none';
+    ngImg.style.display   = 'none';
+    fbText.style.display  = 'none';
+    fbText.textContent    = '';
+
+    function showMic() {
+      ins.style.display  = 'block';
+      btn.style.display  = 'inline-block';
+      btn.disabled       = false;
+    }
+    if (audioSrc) {
+      const cue = new Audio(audioSrc);
+      cue.play();
+      cue.onended = showMic;
+    } else showMic();
+
+    btn.onclick = () => {
+      startRecognition(id, transcript => {
+        const correct = isCorrectAnswer(id, transcript);
+        showFeedback(id, correct);
+        checkAllAnswered();
+        setTimeout(onDone, 1000);
+      });
+    };
+  }
+
+  // 問題セットアップ
+  function setupQuestion(id, onDone) {
+    const slide    = document.querySelector('.slide.active');
+    const btn      = slide.querySelector(`#startButton${id}`);
+    const fbIcons  = slide.querySelector(`#feedback${id}-icons`);
+    const okImg    = fbIcons.querySelector(`#correctImage${id}`);
+    const ngImg    = fbIcons.querySelector(`#wrongImage${id}`);
+    const fbText   = slide.querySelector(`#feedbackText${id}`);
+    const audioSrc = slide.dataset.audio;
+
+    btn.style.display     = 'none';
+    btn.disabled          = true;
+    fbIcons.style.display = 'none';
+    okImg.style.display   = 'none';
+    ngImg.style.display   = 'none';
+    fbText.style.display  = 'none';
+    fbText.textContent    = '';
+
+    function showMicBtn() {
+      btn.style.display = 'inline-block';
+      btn.disabled      = false;
+    }
+    if (audioSrc) {
+      const audio = new Audio(audioSrc);
+      audio.play();
+      audio.onended = showMicBtn;
+    } else showMicBtn();
+
+    btn.onclick = () => {
+      startRecognition(id, transcript => {
+        const correct = isCorrectAnswer(id, transcript);
+        showFeedback(id, correct);
+        checkAllAnswered();
+        onDone();
+      });
+    };
+  }
+
   function checkAllAnswered() {
     const allDone = Object.keys(answers)
       .filter(k => k.startsWith('Q'))
-      .every(k => document.getElementById(`startButton${k}`).disabled);
-
+      .every(k =>
+        document.getElementById(`startButton${k}`)?.disabled
+      );
     if (allDone) {
       const link = document.getElementById('nextPageLink');
       if (link) {
-        // ★ ここでリンクを先に表示 ★
         link.style.display = 'block';
-        // 終了音を再生（リンク表示後）
-        const endSound = new Audio('https://raw.githubusercontent.com/moguura/my-images/main/taskend2.mp3');
-        setTimeout(() => endSound.play().catch(() => {}), 2000);
+        setTimeout(() => new Audio(
+          'https://raw.githubusercontent.com/moguura/my-images/main/taskend2.mp3'
+        ).play().catch(()=>{}), 2000);
       }
     }
   }
-function getFeedbackText(questionId) {
+
+  function getFeedbackText(id) {
     const feedbackMessages = {
-        E1:"てんきは いいです。（The weather is good.）",
-        E2:"てんきは よくないです。（The weather is not good.）",
-        Q1:"きょうは あたたかいです。(It is warm today.）",
-        Q2:"コーヒーは つめたいです。（The coffee is cold.）",
-        Q3:"テストは むずかしいです。（The test is difficult.）",
-        Q4:"テストは よくないです。（The test result is not good.）",
-        Q5:"にもつは おもくないです。（The bag/luggage is not heavy.）",
-        Q6:"へやのなかは すずしいです。（It is cool in the room.）",
-        Q7:"ゲームは おもしろくないです。（The game is not interesting.）",
-        Q8:"おきゃくさんは すくないです。（There are few customers.）",
-        Q9:"このラーメンは からくないです。（This ramen is not spicy.）",
-        Q10:"カラオケは たのしいです。(Karaoke is fun.）",
+      E1: "てんきは いいです。（The weather is good.）",
+      E2: "てんきは よくないです。（The weather is not good.）",
+      Q1: "エベレストは たかいです。（Mount Everest is high.）",
+      Q2: "ダイヤモンドは やすくないです。（Diamonds are not cheap.）",
+      Q3: "にほんの８がつは あついです。（August in Japan is hot.）",
+      Q4: "にほんの２がつは さむいです。（February in Japan is cold.）",
+      Q5: "かいしゃいんのあさは いそがしいです。（Mornings of office workers are busy.）",
+      Q6: "このくるまは あたらしくないです。（This car is not new.）",
+      Q7: "くすりは おいしくないです。（Medicines are not tasty.）",
+      Q8: "いま ひとは おおくないです。（There are not many people now.）",
+      Q9: "このかばんは おおきいです。（This bag is big.）",
+      Q10:"にほんとブラジルは ちかくないです。（Japan and Brazil are not close.）"
     };
-       return msgs[id] || '';
+    return feedbackMessages[id] || '';
   }
 });
 </script>
