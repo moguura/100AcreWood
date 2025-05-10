@@ -644,56 +644,48 @@ h1 {
  
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-  const slides  = Array.from(document.querySelectorAll('#slides .slide'));
-  let current    = 0;
+    const slides = Array.from(document.querySelectorAll('#slides .slide'));
+    let current = 0;
 
-  // 動画終了後にNextを有効化するユーティリティ
-  function enableOnVideoEnd(videoId, buttonId) {
-    const vid = document.getElementById(videoId);
-    const btn = document.getElementById(buttonId);
-    if (!vid || !btn) return;
-    btn.disabled = true;
-    vid.addEventListener('ended', () => { btn.disabled = false; });
-  }
+    // 動画終了後にNextを有効化
+    function enableOnVideoEnd(videoId, btnId) {
+      const vid = document.getElementById(videoId);
+      const btn = document.getElementById(btnId);
+      if (vid && btn) {
+        btn.disabled = true;
+        vid.addEventListener('ended', () => btn.disabled = false);
+      }
+    }
+    enableOnVideoEnd('video1', 'nextVideo1');
+    enableOnVideoEnd('video2', 'nextVideo2');
 
-  // ①・③ 動画1/2 → Next ボタンの有効化
-  enableOnVideoEnd('video1', 'nextVideo1');
-  enableOnVideoEnd('video2', 'nextVideo2');
+    // スライドとNextボタンの紐付け
+    function bindNext(id, idx) {
+      const btn = document.getElementById(id);
+      if (!btn) return;
+      btn.disabled = slides[idx].classList.contains('active') ? false : btn.disabled;
+      btn.addEventListener('click', () => showSlide(idx));
+    }
+    bindNext('nextVideo1', 1);
+    bindNext('nextE1', 2);
+    bindNext('nextVideo2', 3);
+    bindNext('nextE2', 4);
+    bindNext('nextToQ', 5);
+    for (let i=1; i<=10; i++) bindNext(`nextQ${i}`, 5+i);
+    bindNext('nextPageLink', 16);
 
-  // Next ボタンとスライド番号を紐付け
-  function bindNext(buttonId, targetIndex) {
-    const btn = document.getElementById(buttonId);
-    if (!btn) return;
-    // setupExample()/setupQuestion 側で別途 disabled 制御が入るものはここではいじらない
-    btn.addEventListener('click', () => {
-      showSlide(targetIndex);
-    });
-  }
+    function showSlide(i) {
+      slides[current].classList.remove('active');
+      current = i;
+      slides[current].classList.add('active');
+      // 表示したスライドのNext有効化
+      const btn = slides[current].querySelector('.nav-next button, #nextPageLink');
+      if (btn) btn.disabled = false;
+    }
 
-  bindNext('nextVideo1',  1);  // 動画1 → 例題1
-  bindNext('nextE1',       2);  // 例題1 → 動画2
-  bindNext('nextVideo2',   3);  // 動画2 → 例題2
-  bindNext('nextE2',       4);  // 例題2 → 説明ボックス
-  bindNext('nextToQ',      5);  // 説明ボックス → Q1
-
-  // Q1～Q10 の Next ボタン
-  for (let i = 1; i <= 10; i++) {
-    bindNext(`nextQ${i}`, 5 + i);
-  }
-  // 最終リンク（Q10 のあとの Next ページ）
-  bindNext('nextPageLink', 16);
-
-  // スライド切り替え
-  function showSlide(idx) {
-    slides[current].classList.remove('active');
-    current = idx;
-    slides[current].classList.add('active');
-  }
-
-  // 初回表示
-  showSlide(0);
-});
-
+    showSlide(0);
+  });
+    
 const answers = {
     E1: ["よかった"],
     E2: ["よくなかった"],
