@@ -775,42 +775,55 @@ function startRecognition(id, cb) {
     alert("Speech recognition is not available. Please use Chrome.");
     return;
   }
-
   const micBtn = document.getElementById(`startButton${id}`);
   micBtn.classList.add('recording');
   micBtn.disabled = true;
 
   const recognition = new webkitSpeechRecognition();
   recognition.lang = 'ja-JP';
-  recognition.interimResults = false;    // ← 単発
-  recognition.continuous = false;        // ← 単発
-  recognition.maxAlternatives = 1;       // ← 最良のみ
+  recognition.interimResults = true;
+  recognition.continuous = true;
 
-  recognition.onstart = () => {
-    console.log(`[SR ${id}] recognition started`);
+  let finalTranscript = '';
+  let finalized = false;
+  let timeoutId;
+  const maxWait = 5000; // ← 無音待ち時間を 5 秒に延長
+
+  recognition.onstart = () => console.log(`[SR ${id}] start`);
+  recognition.onresult = e => {
+    const text = e.results[e.results.length - 1][0].transcript.trim();
+    finalTranscript = text;
+    console.log(`[SR ${id}] interim: "${text}"`);
+    if (timeoutId) clearTimeout(timeoutId);
+
+    // 「です」で終わったら確定
+    if (/です。?$/.test(finalTranscript)) {
+      finalized = true;
+      recognition.stop();
+      cb(finalTranscript);
+    } else {
+      // 無音が続いたら確定
+      timeoutId = setTimeout(() => {
+        if (!finalized) {
+          finalized = true;
+          recognition.stop();
+          cb(finalTranscript);
+        }
+      }, maxWait);
+    }
   };
-
-  recognition.onresult = (e) => {
-    const transcript = e.results[0][0].transcript.trim();
-    console.log(`[SR ${id}] onresult:`, transcript);
-    micBtn.classList.remove('recording');
-    cb(transcript);
-  };
-
-  recognition.onerror = (e) => {
+  recognition.onerror = e => {
     console.error(`[SR ${id}] error:`, e.error);
-    micBtn.classList.remove('recording');
-    cb('');   // 何も取れなかった
+    // no-speech は空文字で返す
+    recognition.stop();
+    cb(finalTranscript);
   };
-
   recognition.onend = () => {
-    console.log(`[SR ${id}] recognition ended`);
-    // ※ onresult／onerror 内で cb() しているのでここでは何もしない
+    micBtn.classList.remove('recording');
+    console.log(`[SR ${id}] end, finalTranscript: "${finalTranscript}"`);
   };
-
   recognition.start();
 }
-
 
 function isCorrectAnswer(id, text) {
   // ① 生の認識結果を表示
