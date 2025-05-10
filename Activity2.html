@@ -811,12 +811,18 @@ document.addEventListener('DOMContentLoaded', () => {
     recognition.start();
   }
 
-  function isCorrectAnswer(id, text) {
-    const norm = text.replace(/です$/, '').replace(/\s+/g, '');
-    const ans  = answers[id][0];
-    if (ans === 'くない') return norm.endsWith('くない');
-    return norm.endsWith('い') && !norm.endsWith('くない');
+function isCorrectAnswer(id, text) {
+  // 末尾の「。」や「.」をまず削除
+  let norm = text.replace(/[。．.]$/, '');
+  // 次に「です」も外し、空白を詰める
+  norm = norm.replace(/です$/, '').replace(/\s+/g, '');
+  const ans = answers[id][0];
+
+  if (ans === 'くない') {
+    return norm.endsWith('くない');
   }
+  return norm.endsWith('い') && !norm.endsWith('くない');
+}
 
   // 統一したフィードバック表示関数
   function showFeedback(id, correct) {
