@@ -652,9 +652,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const vid = document.getElementById(videoId);
     const btn = document.getElementById(btnId);
     if (!vid || !btn) return;
-    btn.disabled = true;
+    // HTMLで disabled されている状態のまま
     vid.addEventListener('ended', () => {
-      btn.removeAttribute('disabled');
+      btn.disabled = false;  // ここで確実に有効化
     });
   }
 
@@ -665,28 +665,27 @@ document.addEventListener('DOMContentLoaded', () => {
   function bindNext(id, idx) {
     const btn = document.getElementById(id);
     if (!btn) return;
-    btn.disabled = true;  // 初期は常に disabled
+    // ↓ 初期無効化は HTML で行うので削除しました
+    // btn.disabled = true;
     btn.addEventListener('click', () => showSlide(idx));
   }
 
-  bindNext('nextVideo1', 1);
+  bindNext('nextVideo1',   1);
   bindNext('nextE1',       2);
-  bindNext('nextVideo2', 3);
+  bindNext('nextVideo2',   3);
   bindNext('nextE2',       4);
   bindNext('nextToQ',      5);
   for (let i = 1; i <= 10; i++) {
     bindNext(`nextQ${i}`, 5 + i);
   }
-  // ページリンクも同じくバインド
+  // ページリンクも同様にバインド（HTML側で display:none／blockを切り替えているのでdisabledは不要）
   bindNext('nextPageLink', slides.length);
 
-  // スライド表示切り替え
+  // スライド切り替え
   function showSlide(i) {
     slides[current].classList.remove('active');
     current = i;
     slides[current].classList.add('active');
-
-    // 新しいスライドの Next は enableOnVideoEnd や bindNext の役割で管理
   }
 
   // 最初に 0 番を表示
