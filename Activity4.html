@@ -651,11 +651,19 @@ document.addEventListener('DOMContentLoaded', () => {
   function enableOnVideoEnd(videoId, btnId) {
     const vid = document.getElementById(videoId);
     const btn = document.getElementById(btnId);
-    if (!vid || !btn) return;
-    vid.addEventListener('ended', () => {
-      btn.disabled = false;
-    });
-  }
+  console.log(`▷ enableOnVideoEnd called: vid=%o, btn=%o`, vid, btn);
+  if (!vid || !btn) return;
+
+  vid.addEventListener('ended', () => {
+    console.log(`▶ ${videoId} ended! before: btn.disabled=${btn.disabled}, hasAttr(disabled)=${btn.hasAttribute('disabled')}`);
+    // ① プロパティで外す
+    btn.disabled = false;
+    // ② 属性もキレイに外してみる
+    btn.removeAttribute('disabled');
+    console.log(`   after: btn.disabled=${btn.disabled}, hasAttr(disabled)=${btn.hasAttribute('disabled')}`);
+  });
+}
+
   enableOnVideoEnd('video1','nextVideo1');
   enableOnVideoEnd('video2','nextVideo2');
 
