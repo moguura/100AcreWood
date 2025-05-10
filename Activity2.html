@@ -780,80 +780,132 @@ function showSlide(i) {
   }
 }
 
-  // 例題セットアップ
-  function setupExample(id, onDone) {
-    const slide   = document.querySelector('.slide.active');
-    const btn     = slide.querySelector(`#startButton${id}`);
-    const ins     = slide.querySelector('.instruction');
-    const fbIcons = slide.querySelector(`#feedback${id}-icons`);
-    const fbText  = slide.querySelector(`#feedbackText${id}`);
-    const audioSrc= slide.dataset.audio;
+// ———— 例題セットアップ —————————
+function setupExample(id, onDone) {
+  const slide    = document.querySelector('.slide.active');
+  const btn      = slide.querySelector(`#startButton${id}`);
+  const ins      = slide.querySelector('.instruction');
+  const fbIcons  = slide.querySelector(`#feedback${id}-icons`);
+  const okImg    = fbIcons.querySelector(`#correctImage${id}`);
+  const ngImg    = fbIcons.querySelector(`#wrongImage${id}`);
+  const fbText   = slide.querySelector(`#feedbackText${id}`);
+  const audioSrc = slide.dataset.audio;
 
-    btn.style.display     = 'none';
-    btn.disabled          = true;
-    ins.style.display     = 'none';
-    fbIcons.style.display = 'none';
-    fbText.style.display  = 'none';
+  // —— 初期化 —— 
+  btn.style.display     = 'none';
+  btn.disabled          = true;
+  ins.style.display     = 'none';
+  fbIcons.style.display = 'none';
+  okImg.style.display   = 'none';
+  ngImg.style.display   = 'none';
+  fbText.style.display  = 'none';
+  fbText.textContent    = '';
 
-    if (audioSrc) {
-      const cue = new Audio(audioSrc);
-      cue.play();
-      cue.onplay = () => {
-        setTimeout(() => {
-          btn.style.display = 'inline-block';
-          btn.disabled      = false;
-          ins.style.display = 'block';
-        }, 2000);
-      };
-    } else {
-      btn.style.display = 'inline-block';
-      btn.disabled      = false;
-      ins.style.display = 'block';
-    }
-
-    btn.onclick = () => {
-      startRecognition(id, transcript => {
-        const correct = isCorrectAnswer(id, transcript);
-        showFeedback(id, correct);
-        checkAllAnswered();
-        setTimeout(onDone, 1000);
-      });
-    };
+  // —— 発話ガイド音声があれば再生し、終わったらマイクボタン＆指示文を表示 —— 
+  function showMicAndInstruction() {
+    ins.style.display  = 'block';
+    btn.style.display  = 'inline-block';
+    btn.disabled       = false;
   }
 
-  // 問題セットアップ
-  function setupQuestion(id, onDone) {
-    const slide    = document.querySelector('.slide.active');
-    const btn      = slide.querySelector(`#startButton${id}`);
-    const fbIcons  = slide.querySelector(`#feedback${id}-icons`);
-    const fbText   = slide.querySelector(`#feedbackText${id}`);
-    const audioSrc = slide.dataset.audio;
-
-    btn.style.display     = 'none';
-    btn.disabled          = true;
-    fbIcons.style.display = 'none';
-    fbText.style.display  = 'none';
-
-    if (audioSrc) {
-      const audio = new Audio(audioSrc);
-      audio.play();
-      audio.onended = () => {
-        btn.style.display = 'inline-block';
-        btn.disabled      = false;
-      };
-    } else {
-      btn.style.display = 'inline-block';
-      btn.disabled      = false;
-    }
-
-    btn.onclick = () =>
-      startRecognition(id, transcript => {
-        const correct = isCorrectAnswer(id, transcript);
-        showFeedback(id, correct);
-        checkAllAnswered();
-        onDone();
-      });
+  if (audioSrc) {
+    const cue = new Audio(audioSrc);
+    cue.play();
+    // onplay→onended どちらで触ってもOKですが、onended が確実です
+    cue.onended = showMicAndInstruction;
+  } else {
+    showMicAndInstruction();
   }
+
+  // —— ボタン押下で音声認識開始 —— 
+  btn.onclick = () => {
+    console.log(`[setupExample ${id}] 認識開始`);
+    btn.disabled = true;
+    startRecognition(id, transcript => {
+      console.log(`[setupExample ${id}] 認識結果:`, transcript);
+      const correct = isCorrectAnswer(id, transcript);
+      console.log(`[setupExample ${id}] 判定:`, correct);
+      showFeedback(id, correct);
+      checkAllAnswered();
+      setTimeout(onDone, 1000);
+    });
+  };
+}
+
+// ———— フィードバック表示 —————————
+function showFeedback(id, correct) {
+  const slide   = document.querySelector('.slide.active');
+  const fbIcons = slide.querySelector(`#feedback${id}-icons`);
+  const okImg   = fbIcons.querySelector(`#correctImage${id}`);
+  const ngImg   = fbIcons.querySelector(`#wrongImage${id}`);
+  const fbText  = slide.querySelector(`#feedbackText${id}`);
+
+  // container を出す
+  fbIcons.style.display = 'flex';
+  // 画像を切り替え
+  okImg.style.display   = correct ? 'block' : 'none';
+  ngImg.style.display   = correct ? 'none'  : 'block';
+
+  // テキスト
+  fbText.textContent    = getFeedbackText(id);
+  fbText.style.display  = 'block';
+
+  // 音声フィードバック
+  const CORRECT_URL = 'https://raw.githubusercontent.com/moguura/my-images/main/クイズ正解2.mp3';
+  const WRONG_URL   = 'https://raw.githubusercontent.com/moguura/my-images/main/クイズ不正解1.mp3';
+  const audio       = new Audio(correct ? CORRECT_URL : WRONG_URL);
+  audio.play().catch(() => {});
+
+  console.log(`[showFeedback ${id}] フィードバック済み (${correct ? '正解' : '不正解'})`);
+}
+
+// ———— 問題セットアップ —————————
+function setupQuestion(id, onDone) {
+  const slide    = document.querySelector('.slide.active');
+  const btn      = slide.querySelector(`#startButton${id}`);
+  const fbIcons  = slide.querySelector(`#feedback${id}-icons`);
+  const okImg    = fbIcons.querySelector(`#correctImage${id}`);
+  const ngImg    = fbIcons.querySelector(`#wrongImage${id}`);
+  const fbText   = slide.querySelector(`#feedbackText${id}`);
+  const audioSrc = slide.dataset.audio;
+
+  // —— 初期化 —— 
+  btn.style.display     = 'none';
+  btn.disabled          = true;
+  fbIcons.style.display = 'none';
+  okImg.style.display   = 'none';
+  ngImg.style.display   = 'none';
+  fbText.style.display  = 'none';
+  fbText.textContent    = '';
+
+  // —— 問題音声があれば再生し、終わったらマイクボタンを表示 —— 
+  function showMicButton() {
+    btn.style.display = 'inline-block';
+    btn.disabled      = false;
+  }
+
+  if (audioSrc) {
+    const audio = new Audio(audioSrc);
+    audio.play();
+    audio.onended = showMicButton;
+  } else {
+    showMicButton();
+  }
+
+  // —— ボタン押下で音声認識→フィードバック→次へ —— 
+  btn.onclick = () => {
+    console.log(`[setupQuestion ${id}] 認識開始`);
+    btn.disabled = true;
+    startRecognition(id, transcript => {
+      console.log(`[setupQuestion ${id}] 認識結果:`, transcript);
+      const correct = isCorrectAnswer(id, transcript);
+      console.log(`[setupQuestion ${id}] 判定:`, correct);
+      showFeedback(id, correct);
+      checkAllAnswered();
+      onDone();
+    });
+  };
+}
 
 const answers = {
     E1: ["い"],
