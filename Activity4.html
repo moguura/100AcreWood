@@ -305,14 +305,14 @@ h1 {
     </div>
   </div>
 </div>
-        <!-- E2の後の説明文 -->
-        <div class="instructions" style="text-align: center; margin: 20px;">
-            <p>
-                Now, please speak in the same way for the following activities as well.<br><br>
-                You can speak into the microphone <span class="red-bold">just once</span>.
-            </p>
-        </div>
-        
+    
+<div class="slide instructions" style="text-align: center; margin: 20px;">
+  <p>
+    Now, please speak in the same way for the following activities as well.<br><br>
+    You can speak into the microphone <span class="red-bold">just once</span>.
+  </p>
+</div>
+
 <!-- ⑥ 問題セクション Q1〜Q10 -->
     <!-- Q1 -->
    <div class="slide" data-audio="https://raw.githubusercontent.com/moguura/my-images/main/4-1.wav">
@@ -640,102 +640,49 @@ h1 {
  
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-  const slides       = Array.from(document.querySelectorAll('#slides .slide'));
-  const video1       = document.getElementById('video1');
-  const nextVideo1   = document.getElementById('nextVideo1');
-  const video2       = document.getElementById('video2');
-  const nextVideo2   = document.getElementById('nextVideo2');
-  const nextToQ      = document.getElementById('nextToQ');
+  const slides = Array.from(document.querySelectorAll('#slides .slide'));
   let current = 0;
 
-  const clickSound = new Audio('https://raw.githubusercontent.com/moguura/my-images/main/click.mp3');
-  function playClickSound() {
-    clickSound.currentTime = 0;
-    clickSound.play().catch(() => {});
+  // 動画のソース設定（必要に応じてパスを調整）
+  document.getElementById('video1').src = 'Activity4-1.mp4';
+  document.getElementById('video2').src = 'Activity4-2.mp4';
+
+  // Next ボタンとスライド番号を紐付け
+  function bindNext(buttonId, targetIndex) {
+    const btn = document.getElementById(buttonId);
+    if (!btn) return;
+    btn.disabled = true;
+    btn.addEventListener('click', () => showSlide(targetIndex));
   }
 
-  // 説明ビデオ①・②の初期バインド
-  nextVideo1.disabled = true;
-  video1.addEventListener('ended', () => nextVideo1.disabled = false);
-  nextVideo1.addEventListener('click', () => {
-    playClickSound();
-    showSlide(1);
-  });
+  bindNext('nextVideo1', 1);  // ①→②
+  bindNext('nextE1',       2);  // ②→③
+  bindNext('nextVideo2',  3);  // ③→④
+  bindNext('nextE2',       4);  // ④→⑤
+  bindNext('nextToQ',      5);  // ⑤→⑥
 
-  nextVideo2.disabled = true;
-  video2.addEventListener('ended', () => nextVideo2.disabled = false);
-  nextVideo2.addEventListener('click', () => {
-    playClickSound();
-    showSlide(3);
-  });
+  // Q1～Q10 の Next ボタン
+  for (let i = 1; i <= 10; i++) {
+    bindNext(`nextQ${i}`, 5 + i);
+  }
 
-  nextToQ.disabled = true;
+  // 最後のページリンク
+  bindNext('nextPageLink', 16); // ⑤のあと10問で16枚目
 
-  document.querySelectorAll('.nav-next button').forEach(btn =>
-    btn.addEventListener('click', playClickSound)
-  );
+  // スライドを切り替える関数
+  function showSlide(index) {
+    slides[current].classList.remove('active');
+    current = index;
+    slides[current].classList.add('active');
 
+    // 新しく表示されたスライドの Next ボタンを有効化
+    const nextBtn = slides[current].querySelector('.nav-next button, #nextPageLink');
+    if (nextBtn) nextBtn.disabled = false;
+  }
+
+  // 最初のスライド表示（active クラスは HTML 側で付与済み）
   showSlide(0);
-
-  function showSlide(i) {
-    slides.forEach((s, idx) => s.classList.toggle('active', idx === i));
-    current = i;
-    const slideEl = slides[i];
-
-    // 動画 Next ボタン再バインド
-    const vid = slideEl.querySelector('video');
-    if (vid) {
-      const btn = slideEl.querySelector('button[id^="nextVideo"]');
-      if (btn) {
-        btn.disabled = true;
-        vid.removeEventListener('ended', vid._onended);
-        vid._onended = () => { btn.disabled = false; };
-        vid.addEventListener('ended', vid._onended);
-      }
-    }
-
-    if (i === 1) {
-      const nextBtn = document.getElementById('nextE1');
-      nextBtn.disabled = true;
-      setupExample('E1', () => {
-        nextBtn.disabled = false;
-        nextBtn.onclick = () => {
-          playClickSound();
-          showSlide(2);
-        };
-      });
-    }
-    else if (i === 3) {
-      const nextBtn = document.getElementById('nextE2');
-      nextBtn.disabled = true;
-      setupExample('E2', () => {
-        nextBtn.disabled = false;
-        nextBtn.onclick = () => {
-          playClickSound();
-          showSlide(4);
-        };
-      });
-    }
-    else if (i === 4) {
-      nextToQ.disabled = false;
-      nextToQ.onclick = () => {
-        playClickSound();
-        showSlide(5);
-      };
-    }
-    else if (i >= 5 && i <= 14) {
-      const qnum = i - 4;
-      const nextBtn = document.getElementById(`nextQ${qnum}`);
-      nextBtn.disabled = true;
-      setupQuestion(`Q${qnum}`, () => {
-        nextBtn.disabled = false;
-        nextBtn.onclick = () => {
-          playClickSound();
-          showSlide(i + 1);
-        };
-      });
-    }
-  }
+});
 
 const answers = {
     E1: ["よかった"],
