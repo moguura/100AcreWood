@@ -1,29 +1,30 @@
 <!DOCTYPE html>
 <html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>Video Test</title>
+</head>
 <body>
-  <button id="start">▶︎ マイクテスト</button>
+  <video id="video1" controls width="480">
+    <source src="https://raw.githubusercontent.com/moguura/my-images/main/Activity4-1.mp4" type="video/mp4">
+  </video>
+  <button id="nextVideo1" disabled>Next</button>
+
   <script>
-    document.getElementById('start').onclick = () => {
-      if (!('webkitSpeechRecognition' in window)) {
-        return alert('SpeechRecognition 非対応です');
-      }
-      const rec = new webkitSpeechRecognition();
-      rec.lang            = 'ja-JP';
-      rec.interimResults  = false;  // 最終結果だけ
-      rec.continuous      = false;  // 単発
-      rec.maxAlternatives = 1;
-
-      rec.onstart = () => console.log('▶︎ recognition started');
-      rec.onresult = e => {
-        const t = e.results[0][0].transcript.trim();
-        console.log('✅ onresult:', t);
-        alert('認識結果: ' + t);
-      };
-      rec.onerror = e => console.error('⚠️ error:', e.error);
-      rec.onend   = () => console.log('◼︎ recognition ended');
-
-      rec.start();
-    };
+    function enableOnVideoEnd(videoId, btnId) {
+      const vid = document.getElementById(videoId);
+      const btn = document.getElementById(btnId);
+      console.log(`enableOnVideoEnd called → vid:`, vid, `btn:`, btn);
+      if (!vid || !btn) return;
+      vid.addEventListener('ended', () => {
+        console.log(`🎬 ${videoId} ended! enabling ${btnId}`);
+        btn.disabled = false;
+      });
+    }
+    document.addEventListener('DOMContentLoaded', () => {
+      enableOnVideoEnd('video1','nextVideo1');
+    });
   </script>
 </body>
 </html>
+
