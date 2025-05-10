@@ -762,72 +762,65 @@ function startRecognition(id, cb) {
     alert("Speech recognition is not available. Please use Chrome.");
     return;
   }
+
   const micBtn = document.getElementById(`startButton${id}`);
   micBtn.classList.add('recording');
   micBtn.disabled = true;
 
   const recognition = new webkitSpeechRecognition();
-  recognition.lang            = 'ja-JP';
-  recognition.interimResults  = true;   // 音声が来たらすぐ onresult 発火
-  recognition.continuous      = true;   // 無音では自動終了しないように
+  recognition.lang = 'ja-JP';
+  recognition.interimResults = true;
+  recognition.continuous = false; // 無音で自動終了するように
   recognition.maxAlternatives = 1;
 
   let finalTranscript = '';
-  let gotSpeech = false;
-  const maxSession = 10000; // 録音の最大長 10秒
-  const maxSilence = 5000;  // 無音タイムアウト 5秒
-  let silenceTimer, sessionTimer;
-
-  // 録音開始から最大時間で終了するタイマー
-  sessionTimer = setTimeout(() => {
+  const maxSession = 10000; // 最大録音時間 10秒（保険）
+  let sessionTimer = setTimeout(() => {
     stopAndCallback();
   }, maxSession);
 
   function stopAndCallback() {
     clearTimeout(sessionTimer);
-    clearTimeout(silenceTimer);
     recognition.stop();
     micBtn.classList.remove('recording');
     console.log(`[SR ${id}] finalTranscript: "${finalTranscript}"`);
     cb(finalTranscript.trim());
   }
 
-recognition.onresult = e => {
-  const text = Array.from(e.results)
-    .map(r => r[0].transcript)
-    .join('');
-  finalTranscript = text;
-  console.log(`[SR ${id}] interim result: "${text}"`);
+  recognition.onresult = e => {
+    const transcript = Array.from(e.results)
+      .map(r => r[0].transcript)
+      .join('');
+    finalTranscript = transcript;
+    console.log(`[SR ${id}] interim result: "${transcript}"`);
 
-  // 正解語句が含まれているか？
-  const answerKeywords = answers[id];  // 例: ["い"]
-  const containsAnswer = answerKeywords.some(keyword => text.includes(keyword));
+    const answerKeywords = answers[id];
+    const containsAnswer = answerKeywords.some(keyword => transcript.includes(keyword));
+    const containsDesu = transcript.includes("です");
+    const isFinal = e.results[e.results.length - 1].isFinal;
 
-  // 「です」も含まれていれば、すぐ終了
-  if (containsAnswer && text.includes("です")) {
-    console.log(`[SR ${id}] detected both answer & "です" → stop early`);
-    stopAndCallback(); // 即判定へ
-    return;
-  }
-
-  // 無音タイマーをリセット
-  if (silenceTimer) clearTimeout(silenceTimer);
-  silenceTimer = setTimeout(stopAndCallback, maxSilence);
-};
+    if (isFinal && containsAnswer && containsDesu) {
+      console.log(`[SR ${id}] FINAL result matched keyword & 'です' → stop early`);
+      stopAndCallback();
+    } else if (containsAnswer && containsDesu) {
+      console.log(`[SR ${id}] interim matched keyword & 'です' → stop early`);
+      stopAndCallback();
+    }
+  };
 
   recognition.onerror = e => {
     console.warn(`[SR ${id}] error:`, e.error);
-    // エラーが出ても一定時間後に確実に stop させる
     stopAndCallback();
   };
 
   recognition.onend = () => {
     console.log(`[SR ${id}] ended`);
-    // onend 後は stopAndCallback が呼ばれているはず
+    // stopAndCallback は onend 前にすでに呼ばれているはず
   };
 
   recognition.start();
 }
+
 
 function isCorrectAnswer(id, text) {
   // ① 句読点などを削除し、余分な空白を詰める
