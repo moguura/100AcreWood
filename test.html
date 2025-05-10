@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ja">
+<body>
+  <button id="start">▶︎ マイクテスト</button>
+  <script>
+    document.getElementById('start').onclick = () => {
+      if (!('webkitSpeechRecognition' in window)) {
+        return alert('SpeechRecognition 非対応です');
+      }
+      const rec = new webkitSpeechRecognition();
+      rec.lang            = 'ja-JP';
+      rec.interimResults  = false;  // 最終結果だけ
+      rec.continuous      = false;  // 単発
+      rec.maxAlternatives = 1;
+
+      rec.onstart = () => console.log('▶︎ recognition started');
+      rec.onresult = e => {
+        const t = e.results[0][0].transcript.trim();
+        console.log('✅ onresult:', t);
+        alert('認識結果: ' + t);
+      };
+      rec.onerror = e => console.error('⚠️ error:', e.error);
+      rec.onend   = () => console.log('◼︎ recognition ended');
+
+      rec.start();
+    };
+  </script>
+</body>
+</html>
