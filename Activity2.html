@@ -791,18 +791,28 @@ function startRecognition(id, cb) {
     cb(finalTranscript.trim());
   }
 
-  recognition.onstart = () => {
-    console.log(`[SR ${id}] start`);
-    // ここで「話してください」のUIを何か誘導してもOK
-  };
+recognition.onresult = e => {
+  const text = Array.from(e.results)
+    .map(r => r[0].transcript)
+    .join('');
+  finalTranscript = text;
+  console.log(`[SR ${id}] interim result: "${text}"`);
 
-  recognition.onspeechstart = () => {
-    console.log(`[SR ${id}] speech detected`);
-    gotSpeech = true;
-    // 無音タイムアウトをリセット
-    if (silenceTimer) clearTimeout(silenceTimer);
-    silenceTimer = setTimeout(stopAndCallback, maxSilence);
-  };
+  // 1. 正解語句を含むか確認（例: 「い」や「くない」）
+  const answerKeywords = answers[id];  // 例: ["い"]
+  const containsAnswer = answerKeywords.some(keyword => text.includes(keyword));
+
+  // 2. 「です」が含まれていて、かつ答えの語句も含まれていれば即終了
+  if (containsAnswer && text.includes("です")) {
+    console.log(`[SR ${id}] detected both answer & "です" → stop early`);
+    stopAndCallback(); // すぐに判定へ
+    return;
+  }
+
+  // 無音タイマーを更新（通常処理）
+  if (silenceTimer) clearTimeout(silenceTimer);
+  silenceTimer = setTimeout(stopAndCallback, maxSilence);
+};
 
   recognition.onresult = e => {
     const text = Array.from(e.results)
