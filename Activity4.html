@@ -644,66 +644,74 @@ h1 {
 <button id="nextPageLink" style="display:none" disabled>Go to Activity5</button>
  
 <script>
+<script>
 document.addEventListener('DOMContentLoaded', () => {
   const slides = Array.from(document.querySelectorAll('#slides .slide'));
   let current = 0;
 
+  // 動画終了後に Next ボタンを有効化
   function enableOnVideoEnd(videoId, btnId) {
     const vid = document.getElementById(videoId);
     const btn = document.getElementById(btnId);
-  console.log(`▷ enableOnVideoEnd called: vid=%o, btn=%o`, vid, btn);
-  if (!vid || !btn) return;
+    console.log(`enableOnVideoEnd called → vid=%o, btn=%o`, vid, btn);
+    if (!vid || !btn) return;
+    vid.addEventListener('ended', () => {
+      console.log(`▶ ${videoId} ended! before: disabled=${btn.disabled}, hasAttr='${btn.hasAttribute('disabled')}'`);
+      btn.disabled = false;
+      btn.removeAttribute('disabled');
+      console.log(`   after: disabled=${btn.disabled}, hasAttr='${btn.hasAttribute('disabled')}'`);
+    });
+  }
 
-  vid.addEventListener('ended', () => {
-    console.log(`▶ ${videoId} ended! before: btn.disabled=${btn.disabled}, hasAttr(disabled)=${btn.hasAttribute('disabled')}`);
-    // ① プロパティで外す
-    btn.disabled = false;
-    // ② 属性もキレイに外してみる
-    btn.removeAttribute('disabled');
-    console.log(`   after: btn.disabled=${btn.disabled}, hasAttr(disabled)=${btn.hasAttribute('disabled')}`);
-  });
-}
+  enableOnVideoEnd('video1', 'nextVideo1');
+  enableOnVideoEnd('video2', 'nextVideo2');
 
-  enableOnVideoEnd('video1','nextVideo1');
-  enableOnVideoEnd('video2','nextVideo2');
-
+  // Next ボタンにクリックでスライド切り替えだけをバインド
   function bindNext(id, idx) {
     const btn = document.getElementById(id);
     if (!btn) return;
     btn.addEventListener('click', () => showSlide(idx));
   }
-  bindNext('nextVideo1',  1);
-  bindNext('nextE1',      2);
-  bindNext('nextVideo2',  3);
-  bindNext('nextE2',      4);
-  bindNext('nextToQ',     5);
+
+  bindNext('nextVideo1', 1);
+  bindNext('nextE1',       2);
+  bindNext('nextVideo2', 3);
+  bindNext('nextE2',       4);
+  bindNext('nextToQ',      5);
   for (let i = 1; i <= 10; i++) {
     bindNext(`nextQ${i}`, 5 + i);
   }
-  // nextPageLink はバインドしない → checkAllAnswered側で処理
+  // ページ遷移は別で制御
 
+  // スライド切り替え
   function showSlide(i) {
     slides[current].classList.remove('active');
     current = i;
     slides[current].classList.add('active');
   }
-  showSlide(0);
 
-  // 全問終了後にボタン有効化／クリックで遷移
+  // 全問終了後にページ遷移ボタンを有効化
   function checkAllAnswered() {
-    const allQDone = [1,2,3,4,5,6,7,8,9,10]
+    const allDone = Array.from({ length: 10 }, (_, k) => k + 1)
       .every(n => document.getElementById(`startButtonQ${n}`).disabled);
-    if (allQDone) {
+    if (allDone) {
       const linkBtn = document.getElementById('nextPageLink');
-      linkBtn.style.display = 'inline-block';
-      linkBtn.disabled = false;
-      // クリックでページ遷移
-      linkBtn.onclick = () => location.href = './Activity5.html';
+      if (linkBtn) {
+        linkBtn.style.display = 'inline-block';
+        linkBtn.disabled = false;
+        linkBtn.addEventListener('click', () => {
+          location.href = './Activity5.html';
+        });
+      }
     }
   }
 
-  // 認識終了ごとに checkAllAnswered() を呼ぶようにしておいてください
+  // （音声認識の完了コールバック内などで）必ず checkAllAnswered() を呼んでください。
+
+  // 最初のスライド表示
+  showSlide(0);
 });
+</script>
 
     
 const answers = {
