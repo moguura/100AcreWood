@@ -781,49 +781,44 @@ function startRecognition(id, cb) {
 
   const recognition = new webkitSpeechRecognition();
   recognition.lang = 'ja-JP';
-  recognition.interimResults = true;
-  recognition.continuous = true;
+  recognition.interimResults = false;   // ← まず単発モードで試す
+  recognition.continuous     = false;   // ← こちらも false
 
-  let finalTranscript = '';
-  let finalized = false;
-  let timeoutId;
-  const maxWait = 5000; // ← 無音待ち時間を 5 秒に延長
-
-  recognition.onstart = () => console.log(`[SR ${id}] start`);
-  recognition.onresult = e => {
-    const text = e.results[e.results.length - 1][0].transcript.trim();
-    finalTranscript = text;
-    console.log(`[SR ${id}] interim: "${text}"`);
-    if (timeoutId) clearTimeout(timeoutId);
-
-    // 「です」で終わったら確定
-    if (/です。?$/.test(finalTranscript)) {
-      finalized = true;
+  let done = false;
+  const maxWait = 5000;  // 最大 5 秒間は待つ
+  const timeoutId = setTimeout(() => {
+    if (!done) {
+      done = true;
       recognition.stop();
-      cb(finalTranscript);
-    } else {
-      // 無音が続いたら確定
-      timeoutId = setTimeout(() => {
-        if (!finalized) {
-          finalized = true;
-          recognition.stop();
-          cb(finalTranscript);
-        }
-      }, maxWait);
+      cb('');  // 無音
     }
+  }, maxWait);
+
+  recognition.onresult = e => {
+    if (done) return;
+    done = true;
+    clearTimeout(timeoutId);
+    const transcript = e.results[0][0].transcript.trim();
+    console.log(`[SR ${id}] result: "${transcript}"`);
+    cb(transcript);
   };
+
   recognition.onerror = e => {
+    if (done) return;
+    done = true;
+    clearTimeout(timeoutId);
     console.error(`[SR ${id}] error:`, e.error);
-    // no-speech は空文字で返す
-    recognition.stop();
-    cb(finalTranscript);
+    cb('');
   };
+
   recognition.onend = () => {
     micBtn.classList.remove('recording');
-    console.log(`[SR ${id}] end, finalTranscript: "${finalTranscript}"`);
+    console.log(`[SR ${id}] end`);
   };
+
   recognition.start();
 }
+
 
 function isCorrectAnswer(id, text) {
   // ① 生の認識結果を表示
