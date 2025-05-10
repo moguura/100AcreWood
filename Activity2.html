@@ -780,45 +780,68 @@ function startRecognition(id, cb) {
   micBtn.disabled = true;
 
   const recognition = new webkitSpeechRecognition();
-  recognition.lang = 'ja-JP';
-  recognition.interimResults = false;   // ← まず単発モードで試す
-  recognition.continuous     = false;   // ← こちらも false
+  recognition.lang            = 'ja-JP';
+  recognition.interimResults  = true;   // 音声が来たらすぐ onresult 発火
+  recognition.continuous      = true;   // 無音では自動終了しないように
+  recognition.maxAlternatives = 1;
 
-  let done = false;
-  const maxWait = 5000;  // 最大 5 秒間は待つ
-  const timeoutId = setTimeout(() => {
-    if (!done) {
-      done = true;
-      recognition.stop();
-      cb('');  // 無音
-    }
-  }, maxWait);
+  let finalTranscript = '';
+  let gotSpeech = false;
+  const maxSession = 10000; // 録音の最大長 10秒
+  const maxSilence = 5000;  // 無音タイムアウト 5秒
+  let silenceTimer, sessionTimer;
+
+  // 録音開始から最大時間で終了するタイマー
+  sessionTimer = setTimeout(() => {
+    stopAndCallback();
+  }, maxSession);
+
+  function stopAndCallback() {
+    clearTimeout(sessionTimer);
+    clearTimeout(silenceTimer);
+    recognition.stop();
+    micBtn.classList.remove('recording');
+    console.log(`[SR ${id}] finalTranscript: "${finalTranscript}"`);
+    cb(finalTranscript.trim());
+  }
+
+  recognition.onstart = () => {
+    console.log(`[SR ${id}] start`);
+    // ここで「話してください」のUIを何か誘導してもOK
+  };
+
+  recognition.onspeechstart = () => {
+    console.log(`[SR ${id}] speech detected`);
+    gotSpeech = true;
+    // 無音タイムアウトをリセット
+    if (silenceTimer) clearTimeout(silenceTimer);
+    silenceTimer = setTimeout(stopAndCallback, maxSilence);
+  };
 
   recognition.onresult = e => {
-    if (done) return;
-    done = true;
-    clearTimeout(timeoutId);
-    const transcript = e.results[0][0].transcript.trim();
-    console.log(`[SR ${id}] result: "${transcript}"`);
-    cb(transcript);
+    const text = Array.from(e.results)
+      .map(r => r[0].transcript)
+      .join('');
+    finalTranscript = text;
+    console.log(`[SR ${id}] interim result: "${text}"`);
+    // onresult のたびに無音タイムアウトをリセット
+    if (silenceTimer) clearTimeout(silenceTimer);
+    silenceTimer = setTimeout(stopAndCallback, maxSilence);
   };
 
   recognition.onerror = e => {
-    if (done) return;
-    done = true;
-    clearTimeout(timeoutId);
-    console.error(`[SR ${id}] error:`, e.error);
-    cb('');
+    console.warn(`[SR ${id}] error:`, e.error);
+    // エラーが出ても一定時間後に確実に stop させる
+    stopAndCallback();
   };
 
   recognition.onend = () => {
-    micBtn.classList.remove('recording');
-    console.log(`[SR ${id}] end`);
+    console.log(`[SR ${id}] ended`);
+    // onend 後は stopAndCallback が呼ばれているはず
   };
 
   recognition.start();
 }
-
 
 function isCorrectAnswer(id, text) {
   // ① 句読点などを削除し、余分な空白を詰める
