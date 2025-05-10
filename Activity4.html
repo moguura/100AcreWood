@@ -640,57 +640,63 @@ h1 {
   </div>
 </div>
 
- <a href="./Activity5.html" id="nextPageLink">Go to Activity5</a>
+<!-- 最後のページ遷移ボタンはこう置きます -->
+<button id="nextPageLink" style="display:none" disabled>Go to Activity5</button>
  
 <script>
 document.addEventListener('DOMContentLoaded', () => {
   const slides = Array.from(document.querySelectorAll('#slides .slide'));
   let current = 0;
 
-  // 動画終了後に Next ボタンを有効化
   function enableOnVideoEnd(videoId, btnId) {
     const vid = document.getElementById(videoId);
     const btn = document.getElementById(btnId);
     if (!vid || !btn) return;
-    // HTMLで disabled されている状態のまま
     vid.addEventListener('ended', () => {
-      btn.disabled = false;  // ここで確実に有効化
+      btn.disabled = false;
     });
   }
+  enableOnVideoEnd('video1','nextVideo1');
+  enableOnVideoEnd('video2','nextVideo2');
 
-  enableOnVideoEnd('video1', 'nextVideo1');
-  enableOnVideoEnd('video2', 'nextVideo2');
-
-  // Next ボタンにクリックでスライド切り替えだけをバインド
   function bindNext(id, idx) {
     const btn = document.getElementById(id);
     if (!btn) return;
-    // ↓ 初期無効化は HTML で行うので削除しました
-    // btn.disabled = true;
     btn.addEventListener('click', () => showSlide(idx));
   }
-
-  bindNext('nextVideo1',   1);
-  bindNext('nextE1',       2);
-  bindNext('nextVideo2',   3);
-  bindNext('nextE2',       4);
-  bindNext('nextToQ',      5);
+  bindNext('nextVideo1',  1);
+  bindNext('nextE1',      2);
+  bindNext('nextVideo2',  3);
+  bindNext('nextE2',      4);
+  bindNext('nextToQ',     5);
   for (let i = 1; i <= 10; i++) {
     bindNext(`nextQ${i}`, 5 + i);
   }
-  // ページリンクも同様にバインド（HTML側で display:none／blockを切り替えているのでdisabledは不要）
-  bindNext('nextPageLink', slides.length);
+  // nextPageLink はバインドしない → checkAllAnswered側で処理
 
-  // スライド切り替え
   function showSlide(i) {
     slides[current].classList.remove('active');
     current = i;
     slides[current].classList.add('active');
   }
-
-  // 最初に 0 番を表示
   showSlide(0);
+
+  // 全問終了後にボタン有効化／クリックで遷移
+  function checkAllAnswered() {
+    const allQDone = [1,2,3,4,5,6,7,8,9,10]
+      .every(n => document.getElementById(`startButtonQ${n}`).disabled);
+    if (allQDone) {
+      const linkBtn = document.getElementById('nextPageLink');
+      linkBtn.style.display = 'inline-block';
+      linkBtn.disabled = false;
+      // クリックでページ遷移
+      linkBtn.onclick = () => location.href = './Activity5.html';
+    }
+  }
+
+  // 認識終了ごとに checkAllAnswered() を呼ぶようにしておいてください
 });
+
     
 const answers = {
     E1: ["よかった"],
