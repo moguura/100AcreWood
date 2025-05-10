@@ -821,31 +821,23 @@ function startRecognition(id, cb) {
 
 
 function isCorrectAnswer(id, text) {
-  // ① 生の認識結果を表示
-  console.log(`[isCorrectAnswer] raw transcript: "${text}"`);
+  // ① 句読点などを削除し、余分な空白を詰める
+  let norm = text
+    .replace(/[。．\.！!？?]/g, '')
+    .trim()
+    .replace(/\s+/g, '');
 
-  // ② 末尾の日本語・英語句点や感嘆符を削除
-  let norm = text.replace(/[。．\.！!？?]$/u, '').trim();
-  console.log(`[isCorrectAnswer] after punctuation strip: "${norm}"`);
+  // ② 答えの文字列を取り出し
+  const ans = answers[id][0];  // 例1 なら "い"、例2 なら "くない"
 
-  // ③ 末尾の「です」を削除
-  norm = norm.replace(/です$/, '').trim().replace(/\s+/g, '');
-  console.log(`[isCorrectAnswer] after stripping 'です': "${norm}"`);
+  console.log(`[isCorrectAnswer] normalized transcript="${norm}", looking for="${ans}"`);
 
-  const ans = answers[id][0];
-  console.log(`[isCorrectAnswer] expected answer: "${ans}"`);
-
-  let result;
-  if (ans === 'くない') {
-    result = norm.endsWith('くない');
-  } else {
-    // 「い」で終わりつつ「くない」ではない
-    result = norm.endsWith('い') && !norm.endsWith('くない');
-  }
+  // ③ 部分一致で判定（id="E2" の "くない" は末尾だけでなく含有でも OK）
+  const result = norm.includes(ans);
   console.log(`[isCorrectAnswer] → returning ${result}`);
+
   return result;
 }
-
 
   // 統一したフィードバック表示関数
   function showFeedback(id, correct) {
