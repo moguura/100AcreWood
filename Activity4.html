@@ -654,11 +654,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const btn = document.getElementById(btnId);
     console.log(`enableOnVideoEnd called → vid=%o, btn=%o`, vid, btn);
     if (!vid || !btn) return;
+
     vid.addEventListener('ended', () => {
-      console.log(`▶ ${videoId} ended! before: disabled=${btn.disabled}, hasAttr='${btn.hasAttribute('disabled')}'`);
+      console.log(`▶ ${videoId} ended! before: disabled=${btn.disabled}, hasAttr=${btn.hasAttribute('disabled')}`);
       btn.disabled = false;
       btn.removeAttribute('disabled');
-      console.log(`   after: disabled=${btn.disabled}, hasAttr='${btn.hasAttribute('disabled')}'`);
+      console.log(`   after: disabled=${btn.disabled}, hasAttr=${btn.hasAttribute('disabled')}`);
     });
   }
 
@@ -669,45 +670,46 @@ document.addEventListener('DOMContentLoaded', () => {
   function bindNext(id, idx) {
     const btn = document.getElementById(id);
     if (!btn) return;
-    btn.addEventListener('click', () => showSlide(idx));
+    btn.addEventListener('click', () => {
+      showSlide(idx);
+    });
   }
 
+  // 各ボタンをバインド
   bindNext('nextVideo1', 1);
-  bindNext('nextE1',       2);
+  bindNext('nextE1',      2);
   bindNext('nextVideo2', 3);
-  bindNext('nextE2',       4);
-  bindNext('nextToQ',      5);
+  bindNext('nextE2',      4);
+  bindNext('nextToQ',     5);
   for (let i = 1; i <= 10; i++) {
     bindNext(`nextQ${i}`, 5 + i);
   }
-  // ページ遷移は別で制御
 
-  // スライド切り替え
+  // スライドの表示切り替え
   function showSlide(i) {
     slides[current].classList.remove('active');
     current = i;
     slides[current].classList.add('active');
   }
 
-  // 全問終了後にページ遷移ボタンを有効化
+  // 全問終了時のページ遷移ボタン制御
   function checkAllAnswered() {
     const allDone = Array.from({ length: 10 }, (_, k) => k + 1)
       .every(n => document.getElementById(`startButtonQ${n}`).disabled);
     if (allDone) {
-      const linkBtn = document.getElementById('nextPageLink');
-      if (linkBtn) {
-        linkBtn.style.display = 'inline-block';
-        linkBtn.disabled = false;
-        linkBtn.addEventListener('click', () => {
-          location.href = './Activity5.html';
-        });
-      }
+      const btn = document.getElementById('nextPageLink');
+      btn.style.display = 'inline-block';
+      btn.disabled = false;
+      btn.addEventListener('click', () => {
+        location.href = './Activity5.html';
+      });
     }
   }
 
-  // （音声認識の完了コールバック内などで）必ず checkAllAnswered() を呼んでください。
+  // （音声認識のコールバック内で必ず呼び出してください）
+  // startRecognition(..., transcript => { ...; checkAllAnswered(); });
 
-  // 最初のスライド表示
+  // 最初のスライドを表示
   showSlide(0);
 });
    
