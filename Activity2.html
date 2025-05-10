@@ -770,46 +770,47 @@ document.addEventListener('DOMContentLoaded', () => {
     Q9: ["い"], Q10:["くない"]
   };
 
-  function startRecognition(id, cb) {
-    if (!('webkitSpeechRecognition' in window)) {
-      alert("Speech recognition is not available. Please use Chrome.");
-      return;
-    }
-    const micBtn = document.getElementById(`startButton${id}`);
-    micBtn.classList.add('recording');
-    micBtn.disabled = true;
-
-    const recognition = new webkitSpeechRecognition();
-    recognition.lang = 'ja-JP';
-    recognition.interimResults = true;
-    recognition.continuous = true;
-    let finalTranscript = '';
-    let finalized = false;
-    let timeoutId;
-    const maxWait = 2000;
-
-    recognition.onresult = e => {
-      const text = e.results[e.results.length - 1][0].transcript.trim();
-      finalTranscript = text;
-      if (timeoutId) clearTimeout(timeoutId);
-      if (/です。?$/.test(finalTranscript)) {
-        finalized = true;
-        recognition.stop();
-        cb(finalTranscript);
-      } else {
-        timeoutId = setTimeout(() => {
-          if (!finalized) {
-            finalized = true;
-            recognition.stop();
-            cb(finalTranscript);
-          }
-        }, maxWait);
-      }
-    };
-    recognition.onerror = () => { recognition.stop(); cb(finalTranscript); };
-    recognition.onend   = () => { micBtn.classList.remove('recording'); };
-    recognition.start();
+function startRecognition(id, cb) {
+  if (!('webkitSpeechRecognition' in window)) {
+    alert("Speech recognition is not available. Please use Chrome.");
+    return;
   }
+
+  const micBtn = document.getElementById(`startButton${id}`);
+  micBtn.classList.add('recording');
+  micBtn.disabled = true;
+
+  const recognition = new webkitSpeechRecognition();
+  recognition.lang = 'ja-JP';
+  recognition.interimResults = false;    // ← 単発
+  recognition.continuous = false;        // ← 単発
+  recognition.maxAlternatives = 1;       // ← 最良のみ
+
+  recognition.onstart = () => {
+    console.log(`[SR ${id}] recognition started`);
+  };
+
+  recognition.onresult = (e) => {
+    const transcript = e.results[0][0].transcript.trim();
+    console.log(`[SR ${id}] onresult:`, transcript);
+    micBtn.classList.remove('recording');
+    cb(transcript);
+  };
+
+  recognition.onerror = (e) => {
+    console.error(`[SR ${id}] error:`, e.error);
+    micBtn.classList.remove('recording');
+    cb('');   // 何も取れなかった
+  };
+
+  recognition.onend = () => {
+    console.log(`[SR ${id}] recognition ended`);
+    // ※ onresult／onerror 内で cb() しているのでここでは何もしない
+  };
+
+  recognition.start();
+}
+
 
 function isCorrectAnswer(id, text) {
   // ① 生の認識結果を表示
