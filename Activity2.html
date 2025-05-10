@@ -799,32 +799,21 @@ recognition.onresult = e => {
   finalTranscript = text;
   console.log(`[SR ${id}] interim result: "${text}"`);
 
-  // 1. 正解語句を含むか確認（例: 「い」や「くない」）
+  // 正解語句が含まれているか？
   const answerKeywords = answers[id];  // 例: ["い"]
   const containsAnswer = answerKeywords.some(keyword => text.includes(keyword));
 
-  // 2. 「です」が含まれていて、かつ答えの語句も含まれていれば即終了
+  // 「です」も含まれていれば、すぐ終了
   if (containsAnswer && text.includes("です")) {
     console.log(`[SR ${id}] detected both answer & "です" → stop early`);
-    stopAndCallback(); // すぐに判定へ
+    stopAndCallback(); // 即判定へ
     return;
   }
 
-  // 無音タイマーを更新（通常処理）
+  // 無音タイマーをリセット
   if (silenceTimer) clearTimeout(silenceTimer);
   silenceTimer = setTimeout(stopAndCallback, maxSilence);
 };
-
-  recognition.onresult = e => {
-    const text = Array.from(e.results)
-      .map(r => r[0].transcript)
-      .join('');
-    finalTranscript = text;
-    console.log(`[SR ${id}] interim result: "${text}"`);
-    // onresult のたびに無音タイムアウトをリセット
-    if (silenceTimer) clearTimeout(silenceTimer);
-    silenceTimer = setTimeout(stopAndCallback, maxSilence);
-  };
 
   recognition.onerror = e => {
     console.warn(`[SR ${id}] error:`, e.error);
