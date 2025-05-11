@@ -182,10 +182,16 @@ h1 {
     transition: transform 0.5s ease;
 }
 
+/* 全スライドを非表示に */
 .slide {
     flex: 0 0 100%;
     box-sizing: border-box;
     min-height: 60vh;
+    display: none;
+}
+
+/* アクティブなスライドだけ表示 */
+.slide.active {
     display: flex;
     flex-direction: column;
     justify-content: center;
