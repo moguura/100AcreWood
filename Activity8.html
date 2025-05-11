@@ -666,15 +666,49 @@ function isCorrectAnswer(questionId, userInput) {
     const normalizedInput = normalizeText(userInput);
     const correctAnswers = answers[questionId].map(normalizeText);
 
-    return correctAnswers.some(answer => normalizedInput === answer);
+    return correctAnswers.some(answer => isSimilar(answer, normalizedInput));
 }
 
 function normalizeText(text) {
     let normalized = text.toLowerCase()
-        .replace(/\s+/g, '')             // 空白を除去
-        .replace(/[。．、,\.]/g, '')     // 句読点を除去
-        .replace(/です$/, '');          // 文末の「です」を除去
+        .replace(/\s+/g, '')
+        .replace(/[。．、,\.]/g, '')
+        .replace(/です$/, '');
     return normalized;
+}
+
+// 編集距離が2以下なら正解とする
+function isSimilar(correct, input) {
+    const threshold = 2; // 緩さを調整する閾値（0=厳密一致、2=やや緩い）
+    return levenshteinDistance(correct, input) <= threshold;
+}
+
+// Levenshtein距離を計算する関数
+function levenshteinDistance(a, b) {
+    const matrix = [];
+
+    for (let i = 0; i <= b.length; i++) {
+        matrix[i] = [i];
+    }
+    for (let j = 0; j <= a.length; j++) {
+        matrix[0][j] = j;
+    }
+
+    for (let i = 1; i <= b.length; i++) {
+        for (let j = 1; j <= a.length; j++) {
+            if (b.charAt(i - 1) === a.charAt(j - 1)) {
+                matrix[i][j] = matrix[i - 1][j - 1];
+            } else {
+                matrix[i][j] = Math.min(
+                    matrix[i - 1][j - 1] + 1, // substitution
+                    matrix[i][j - 1] + 1,     // insertion
+                    matrix[i - 1][j] + 1      // deletion
+                );
+            }
+        }
+    }
+
+    return matrix[b.length][a.length];
 }
 
 function showFeedback(questionId, isCorrect, transcript) {
