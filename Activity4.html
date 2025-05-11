@@ -645,6 +645,8 @@ h1 {
  
 <script>
 document.addEventListener('DOMContentLoaded', () => {
+  console.log('【VoiceQuiz】 script loaded');
+
   // ── スライド制御 ──
   const slides = Array.from(document.querySelectorAll('#slides .slide'));
   let current = 0;
@@ -656,7 +658,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function bindNext(id, idx) {
     const btn = document.getElementById(id);
-    if (!btn) return;
+    if (!btn) { console.warn(`bindNext: button ${id} not found`); return; }
     btn.disabled = true;
     btn.addEventListener('click', () => showSlide(idx));
   }
@@ -664,7 +666,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function enableOnVideoEnd(videoId, btnId) {
     const vid = document.getElementById(videoId);
     const btn = document.getElementById(btnId);
-    if (!vid || !btn) return;
+    if (!vid || !btn) { console.warn(`enableOnVideoEnd: ${videoId} or ${btnId} not found`); return; }
     vid.addEventListener('ended', () => {
       btn.disabled = false;
       btn.removeAttribute('disabled');
@@ -712,15 +714,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function isCorrectAnswer(id, text) {
     const norm = text.replace(/[。．\.！!？?]/g,'').trim().replace(/\s+/g,'');
+    console.log(`isCorrectAnswer[${id}] raw="${text}" norm="${norm}" answer="${answers[id][0]}" includes=${norm.includes(answers[id][0])}`);
     return norm.includes(answers[id][0]);
   }
 
   function showFeedback(id, correct) {
+    console.log(`showFeedback start for ${id}, correct=${correct}`);
     const slide = document.querySelector('.slide.active');
     const icons = slide.querySelector(`#feedback${id}-icons`);
-    const ok    = icons.querySelector(`#correctImage${id}`);
-    const ng    = icons.querySelector(`#wrongImage${id}`);
+    const ok    = icons && icons.querySelector(`#correctImage${id}`);
+    const ng    = icons && icons.querySelector(`#wrongImage${id}`);
     const txt   = slide.querySelector(`#feedbackText${id}`);
+    console.log({ slide, icons, ok, ng, txt });
+
+    if (!icons || !txt) {
+      console.error(`showFeedback: フィードバック要素が見つかりません (${id})`);
+      return;
+    }
 
     icons.style.display = 'flex';
     ok.style.display    = correct ? 'block' : 'none';
@@ -728,15 +738,20 @@ document.addEventListener('DOMContentLoaded', () => {
     txt.textContent     = getFeedbackText(id);
     txt.style.display   = 'block';
 
-    const sound = correct
+    const soundUrl = correct
       ? 'https://raw.githubusercontent.com/moguura/my-images/main/クイズ正解2.mp3'
       : 'https://raw.githubusercontent.com/moguura/my-images/main/クイズ不正解1.mp3';
-    new Audio(sound).play().catch(() => {});
+    console.log(`Playing feedback sound: ${soundUrl}`);
+    new Audio(soundUrl).play().catch(e => console.warn('Audio play error:', e));
   }
 
   function startRecognition(id, onDone) {
+    console.log(`startRecognition called for ${id}`);
     const btn = document.getElementById(`startButton${id}`);
-    if (!btn || !('webkitSpeechRecognition' in window)) return;
+    if (!btn || !('webkitSpeechRecognition' in window)) {
+      console.warn(`SpeechRecognition not available or button missing for ${id}`);
+      return;
+    }
     btn.classList.add('recording');
     btn.disabled = true;
 
@@ -751,6 +766,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     rec.onresult = e => {
       finalText = Array.from(e.results).map(r => r[0].transcript).join('');
+      console.log(`onresult[${id}]:`, finalText);
       const last = e.results[e.results.length-1];
       if (last.isFinal && finalText.includes('です') && finalText.includes(answers[id][0])) {
         clearTimeout(timeout);
@@ -759,6 +775,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     rec.onend = () => {
+      console.log(`onend[${id}], finalText="${finalText}"`);
       btn.classList.remove('recording');
       const correct = isCorrectAnswer(id, finalText);
       showFeedback(id, correct);
@@ -772,7 +789,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // ── 例題セットアップ ──
   function setupExample(id, nextIdx) {
     const btn = document.getElementById(`startButton${id}`);
-    if (!btn) return;
+    if (!btn) { console.warn(`setupExample: button startButton${id} not found`); return; }
     const slide = btn.closest('.slide');
     const cue   = slide.dataset.audio && new Audio(slide.dataset.audio);
 
@@ -781,20 +798,16 @@ document.addEventListener('DOMContentLoaded', () => {
       btn.style.display = 'inline-block';
       btn.disabled = false;
     };
-    if (cue) {
-      cue.play().then(showBtn).catch(showBtn);
-    } else {
-      showBtn();
-    }
-    btn.addEventListener('click', () => {
-      startRecognition(id, () => showSlide(nextIdx));
-    });
+    if (cue) cue.play().then(showBtn).catch(showBtn);
+    else     showBtn();
+
+    btn.addEventListener('click', () => startRecognition(id, () => showSlide(nextIdx)));
   }
 
   // ── 問題セットアップ ──
   function setupQuestion(id, nextIdx) {
     const btn = document.getElementById(`startButton${id}`);
-    if (!btn) return;
+    if (!btn) { console.warn(`setupQuestion: button startButton${id} not found`); return; }
     const slide = btn.closest('.slide');
     const cue   = slide.dataset.audio && new Audio(slide.dataset.audio);
 
@@ -803,17 +816,13 @@ document.addEventListener('DOMContentLoaded', () => {
       btn.style.display = 'inline-block';
       btn.disabled = false;
     };
-    if (cue) {
-      cue.play().then(showBtn).catch(showBtn);
-    } else {
-      showBtn();
-    }
-    btn.addEventListener('click', () => {
-      startRecognition(id, () => showSlide(nextIdx));
-    });
+    if (cue) cue.play().then(showBtn).catch(showBtn);
+    else     showBtn();
+
+    btn.addEventListener('click', () => startRecognition(id, () => showSlide(nextIdx)));
   }
 
-  // 例題／問題を一括でセットアップ
+  // 一括セットアップ
   setupExample('E1', 2);
   setupExample('E2', 4);
   for (let i = 1; i <= 10; i++) {
@@ -835,6 +844,5 @@ document.addEventListener('DOMContentLoaded', () => {
   showSlide(0);
 });
 </script>
-
 </body>
 </html>
