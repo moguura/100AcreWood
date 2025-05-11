@@ -816,9 +816,17 @@ function setupExample(id, nextIdx) {
     startRecognition(id, () => {
       console.log(`【setupExample】startRecognition callbackで showSlide(${nextIdx}) 実行`);
       showSlide(nextIdx);
+
+      // 説明スライドで nextToQ ボタンを有効にする
+      const nextToQ = document.getElementById('nextToQ');
+      if (nextToQ) {
+        nextToQ.disabled = false;
+        nextToQ.removeAttribute('disabled');
+      }
     });
   });
 }
+
 
   // ── 問題セットアップ ──
   function setupQuestion(id, nextIdx) {
@@ -838,12 +846,13 @@ function setupExample(id, nextIdx) {
     btn.addEventListener('click', () => startRecognition(id, () => showSlide(nextIdx)));
   }
 
-  // 一括セットアップ
-  setupExample('E1', 2);
-  setupExample('E2', 4);
-  for (let i = 1; i <= 10; i++) {
-    setupQuestion(`Q${i}`, 6 + i);
-  }
+// 一括セットアップ
+setupExample('E1', 2);
+setupExample('E2', 5); // ← 説明ボックスに進ませる
+for (let i = 1; i <= 10; i++) {
+  setupQuestion(`Q${i}`, 6 + i);
+}
+
 
   function checkAllAnswered() {
     const done = Array.from({ length: 10 }, (_, k) => k+1)
