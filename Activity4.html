@@ -788,22 +788,37 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ── 例題セットアップ ──
-  function setupExample(id, nextIdx) {
-    const btn = document.getElementById(`startButton${id}`);
-    if (!btn) { console.warn(`setupExample: button startButton${id} not found`); return; }
-    const slide = btn.closest('.slide');
-    const cue   = slide.dataset.audio && new Audio(slide.dataset.audio);
-
-    btn.style.display = 'none';
-    const showBtn = () => {
-      btn.style.display = 'inline-block';
-      btn.disabled = false;
-    };
-    if (cue) cue.play().then(showBtn).catch(showBtn);
-    else     showBtn();
-
-    btn.addEventListener('click', () => startRecognition(id, () => showSlide(nextIdx)));
+function setupExample(id, nextIdx) {
+  const btn = document.getElementById(`startButton${id}`);
+  if (!btn) {
+    console.log(`【setupExample】startButton${id} が見つかりません`);
+    return;
   }
+
+  const slide = btn.closest('.slide');
+  const cue = slide.dataset.audio && new Audio(slide.dataset.audio);
+
+  btn.style.display = 'none';
+  const showBtn = () => {
+    console.log(`【setupExample】startButton${id} 表示`);
+    btn.style.display = 'inline-block';
+    btn.disabled = false;
+  };
+
+  if (cue) {
+    cue.play().then(showBtn).catch(showBtn);
+  } else {
+    showBtn();
+  }
+
+  btn.addEventListener('click', () => {
+    console.log(`【setupExample】startButton${id} clicked`);
+    startRecognition(id, () => {
+      console.log(`【setupExample】startRecognition callbackで showSlide(${nextIdx}) 実行`);
+      showSlide(nextIdx);
+    });
+  });
+}
 
   // ── 問題セットアップ ──
   function setupQuestion(id, nextIdx) {
