@@ -230,40 +230,19 @@
   <audio id="taskEndSound" src="https://raw.githubusercontent.com/moguura/my-images/main/taskend2.mp3"></audio>
     
 <script>
-  const slides = Array.from(document.querySelectorAll('.slide'));
-  const nextBtn = document.getElementById('nextButton');
-  const nextLink = document.getElementById('nextPageLink');
-  let currentSlide = 0;
+(function() {
+  const container = document.getElementById('slides');
+  const slides = Array.from(container.children);
+  const nextPageLink = document.getElementById('nextPageLink');
+  let currentIndex = 0;
 
-  // スライド表示制御
-  function showSlide(idx) {
-    slides[currentSlide].classList.remove('active');
-    currentSlide = idx;
-    slides[currentSlide].classList.add('active');
-    nextBtn.disabled = true;
-    if (slides[currentSlide].dataset.type === 'instruction') {
-      nextBtn.disabled = false;
-    }
-  }
+  // 各スライド内の Next ボタンを収集
+  const nextButtons = slides.map(slide =>
+    slide.querySelector('.nav-next button')
+  );
 
-  // Nextボタン押下
-  nextBtn.addEventListener('click', () => {
-    document.getElementById('clickSound').play();
-    showSlide(currentSlide + 1);
-    if (currentSlide === slides.length - 1) {
-      nextBtn.disabled = true;
-      nextLink.style.display = 'block';
-      setTimeout(() => document.getElementById('taskEndSound').play(), 2000);
-    }
-  });
-
-  // ビデオ終了でNext有効化
-  document.querySelectorAll('.slide[data-type="video"] video')
-    .forEach(video => video.addEventListener('ended', () => {
-      if (slides[currentSlide].contains(video)) {
-        nextBtn.disabled = false;
-      }
-    }));
+  // 最初はリンク非表示
+  nextPageLink.style.display = 'none';
 
   // 正答データ
   const answers = {
@@ -306,43 +285,82 @@
   }
 
   function showFeedback(id, correct) {
-    const fb = document.getElementById(`feedback${id}`);
     const imgC = document.getElementById(`correctImage${id}`);
     const imgW = document.getElementById(`wrongImage${id}`);
-    const txt = document.getElementById(`feedbackText${id}`);
+    const txt  = document.getElementById(`feedbackText${id}`);
     imgC.style.display = correct ? 'inline-block' : 'none';
     imgW.style.display = correct ? 'none' : 'inline-block';
-    txt.textContent = getFeedbackText(id);
-    fb.style.display = 'block';
+    txt.textContent  = getFeedbackText(id);
     if (correct) document.getElementById(`correctAudio${id}`).play();
-    else document.getElementById(`wrongAudio${id}`).play();
-    // フィードバック後Next有効化
-    if (slides[currentSlide].dataset.id === id) {
-      nextBtn.disabled = false;
+    else         document.getElementById(`wrongAudio${id}`).play();
+  }
+
+  // スライド移動
+  function goToSlide(idx) {
+    if (idx < 0 || idx > slides.length) return;
+    currentIndex = idx;
+    container.style.transform = `translateX(-${100 * currentIndex}%)`;
+    // 説明ボックス(slide内に .instructions)なら即 Next 有効化
+    const inst = slides[currentIndex].querySelector('.instructions');
+    if (inst && nextButtons[currentIndex]) {
+      nextButtons[currentIndex].disabled = false;
+    }
+    // 最後まで行ったらリンク表示
+    if (currentIndex === slides.length) {
+      nextPageLink.style.display = 'block';
     }
   }
 
-  // 音声認識開始
+  // Next ボタン設定
+  nextButtons.forEach((btn, idx) => {
+    if (!btn) return;
+    btn.disabled = true;
+    btn.addEventListener('click', () => {
+      btn.disabled = true;
+      goToSlide(idx + 1);
+    });
+  });
+
+  // 動画再生完了で Next 有効化
+  ['video1', 'video2'].forEach((vid, i) => {
+    const video = document.getElementById(vid);
+    const btn   = document.getElementById(i === 0 ? 'nextVideo1' : 'nextVideo2');
+    if (video && btn) {
+      video.addEventListener('ended', () => btn.disabled = false);
+    }
+  });
+
+  // 音声認識→フィードバック→Next有効化
   function startRecognition(id) {
     if (!('webkitSpeechRecognition' in window)) return;
-    const rec = new webkitSpeechRecognition();
-    rec.lang = 'ja-JP';
-    const btn = document.getElementById(`startButton${id}`);
-    btn.classList.add('recording');
+    const rec   = new webkitSpeechRecognition();
+    const btnMic = document.getElementById(`startButton${id}`);
+    rec.lang    = 'ja-JP';
+    btnMic.classList.add('recording');
     rec.onresult = e => {
       const transcript = e.results[0][0].transcript.trim();
       const ok = isCorrectAnswer(id, transcript);
       showFeedback(id, ok);
+      // フィードバックが表示されたら Next を有効化
+      const nextBtn = document.getElementById(`next${id}`);
+      if (nextBtn) nextBtn.disabled = false;
     };
-    rec.onend = () => btn.classList.remove('recording');
+    rec.onend = () => btnMic.classList.remove('recording');
     rec.start();
   }
 
-  // マイクボタン登録
+  // マイクボタンに認識開始を紐付け
   document.querySelectorAll('.mic-button').forEach(btn => {
     btn.addEventListener('click', () => {
-      document.getElementById('clickSound').play();
-      startRecognition(btn.id.replace('startButton', ''));
+      document.getElementById('clickSound')?.play();
+      const id = btn.id.replace('startButton', '');
+      startRecognition(id);
     });
   });
+
+  // 初期セットアップ
+  container.style.transition = 'transform 0.5s ease';
+  goToSlide(0);
+})();
 </script>
+
