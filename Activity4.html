@@ -593,22 +593,18 @@ h1 {
   }
 
   function showFeedback(id, correct) {
-    // 正誤アイコンの切り替え
     const imgC = document.getElementById('correctImage' + id);
     const imgW = document.getElementById('wrongImage' + id);
     imgC.style.display = correct ? 'inline-block' : 'none';
     imgW.style.display = correct ? 'none' : 'inline-block';
 
-    // アイコン全体コンテナを表示
     const icons = document.getElementById('feedbackIcons' + id);
     icons.style.display = 'flex';
 
-    // フィードバック文設定＆表示
     const txt = document.getElementById('feedbackText' + id);
     txt.textContent = getFeedbackText(id);
     txt.style.display = 'block';
 
-    // 効果音再生
     if (correct) {
       document.getElementById('correctAudio' + id)?.play();
     } else {
@@ -630,12 +626,22 @@ h1 {
     nextPageLink.style.display = currentIndex === slides.length - 1 ? 'block' : 'none';
   }
 
+  // ← ここを修正：Nextボタンのクリックでスライド切替＋音声cueを再生
   nextButtons.forEach((btn, idx) => {
     if (!btn) return;
     btn.disabled = true;
     btn.addEventListener('click', () => {
       btn.disabled = true;
-      goToSlide(idx + 1);
+      const nextIndex = idx + 1;
+      goToSlide(nextIndex);
+
+      // 次スライドの音声キューを再生
+      const nextId = slides[nextIndex].dataset.id;
+      const cue = document.getElementById('cue' + nextId);
+      if (cue) {
+        cue.currentTime = 0;
+        cue.play();
+      }
     });
   });
 
