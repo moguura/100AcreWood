@@ -171,7 +171,7 @@ h1 {
 .blue-bold { color: #007bff; font-weight: bold; }
 .blue-text { color: #007bff; font-weight: normal; font-size: 20px; }
 
-/* ===== 横スライド切り替え用 ===== */
+    /* ===== 横スライド切り替え用 ===== */
 #slides {
     display: flex;
     overflow: hidden;
@@ -182,16 +182,11 @@ h1 {
     transition: transform 0.5s ease;
 }
 
-/* 全スライドを非表示に */
+/* 横スライドを一列に並べ、常に表示 */
 .slide {
     flex: 0 0 100%;
     box-sizing: border-box;
     min-height: 60vh;
-    display: none;
-}
-
-/* アクティブなスライドだけ表示 */
-.slide.active {
     display: flex;
     flex-direction: column;
     justify-content: center;
