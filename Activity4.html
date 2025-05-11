@@ -169,26 +169,23 @@ h1 {
 .blue-bold { color: #007bff; font-weight: bold; }
 .blue-text { color: #007bff; font-weight: normal; font-size: 20px; }
 
-    /* ===== 横スライド切り替え用 ===== */
+/* 横スライド切り替え用 */
 #slides {
-    display: flex;
-    overflow: hidden;
-    width: 100%;
-    max-width: 900px;
-    margin: 0 auto;
-    box-sizing: border-box;
-    transition: transform 0.5s ease;
+  display: flex;
+  overflow: hidden;
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  box-sizing: border-box;
+  transition: transform 0.5s ease;
 }
 
-/* 横スライドを一列に並べ、常に表示 */
+/* スライドは横に並べるだけ */
 .slide {
-    flex: 0 0 100%;
-    box-sizing: border-box;
-    min-height: 60vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+  flex: 0 0 100%;
+  box-sizing: border-box;
+  /* display: flex でも block でも可 */
+  display: block;
 }
 
 /* Nextボタンエリア */
@@ -464,9 +461,9 @@ h1 {
 <!-- これだけを残す（非表示） -->
   <a id="nextPageLink" href="Activity5.html" style="display: none;"></a>
     
-  <!-- スクリプト -->
-  <script>
-(function() {
+<!-- スクリプト -->
+<script>
+(function () {
   const container = document.getElementById('slides');
   const slides = Array.from(container.querySelectorAll('.slide'));
   const nextPageLink = document.getElementById('nextPageLink');
@@ -509,23 +506,22 @@ h1 {
       Q7: 'ゆきは おおくなかったです。（There was not much snow.）',
       Q8: '８がつは あつかったです。（August was hot.）',
       Q9: 'パンは おいしくなかったです。（The bread was not good.）',
-      Q10:'チケットは やすくなかったです。（The ticket was not cheap.）'
+      Q10: 'チケットは やすくなかったです。（The ticket was not cheap.）'
     };
     return msgs[id] || '';
   }
 
   function showFeedback(id, correct) {
     const imgC = document.getElementById('correctImage' + id);
-    const imgW = document.getElementById('wrongImage'   + id);
-    const txt  = document.getElementById('feedbackText' + id);
+    const imgW = document.getElementById('wrongImage' + id);
+    const txt = document.getElementById('feedbackText' + id);
     imgC.style.display = correct ? 'inline-block' : 'none';
-    imgW.style.display = correct ? 'none'         : 'inline-block';
-    // ← ここが正しい呼び出し
+    imgW.style.display = correct ? 'none' : 'inline-block';
     txt.textContent = getFeedbackText(id);
     if (correct) {
       document.getElementById('correctAudio' + id).play();
     } else {
-      document.getElementById('wrongAudio'   + id).play();
+      document.getElementById('wrongAudio' + id).play();
     }
   }
 
@@ -534,12 +530,18 @@ h1 {
     currentIndex = idx;
     container.style.transform = 'translateX(-' + (100 * currentIndex) + '%)';
     slides.forEach((s, i) => s.classList.toggle('active', i === currentIndex));
+
+    // current スライドに instructions があるときだけ Next 有効化
     const inst = slides[currentIndex].querySelector('.instructions');
-    if (inst && nextButtons[currentIndex]) nextButtons[currentIndex].disabled = false;
-    if (currentIndex === slides.length - 1) nextPageLink.style.display = 'block';
+    if (inst && nextButtons[currentIndex]) {
+      nextButtons[currentIndex].disabled = false;
+    }
+
+    // 最後のスライドのとき nextPageLink 表示
+    nextPageLink.style.display = currentIndex === slides.length - 1 ? 'block' : 'none';
   }
 
-  // Next ボタン
+  // Next ボタン設定
   nextButtons.forEach((btn, idx) => {
     if (!btn) return;
     btn.disabled = true;
@@ -549,20 +551,25 @@ h1 {
     });
   });
 
-  // video 終了で Next 有効化
+  // 動画終了で Next ボタン有効化
   ['video1', 'video2'].forEach((vid, i) => {
     const video = document.getElementById(vid);
-    const btn   = document.getElementById(i === 0 ? 'nextVideo1' : 'nextVideo2');
-    if (video && btn) video.addEventListener('ended', () => btn.disabled = false);
+    const btn = document.getElementById(i === 0 ? 'nextVideo1' : 'nextVideo2');
+    if (video && btn) {
+      video.addEventListener('ended', () => {
+        btn.disabled = false;
+      });
+    }
   });
 
-  // 音声認識
+  // 音声認識開始処理
   function startRecognition(id) {
     if (!('webkitSpeechRecognition' in window)) return;
-    const rec    = new webkitSpeechRecognition();
+    const rec = new webkitSpeechRecognition();
     const btnMic = document.getElementById('startButton' + id);
-    rec.lang     = 'ja-JP';
+    rec.lang = 'ja-JP';
     btnMic.classList.add('recording');
+
     rec.onresult = e => {
       const transcript = e.results[0][0].transcript.trim();
       const ok = isCorrectAnswer(id, transcript);
@@ -570,11 +577,15 @@ h1 {
       const nextBtn = document.getElementById('next' + id);
       if (nextBtn) nextBtn.disabled = false;
     };
-    rec.onend = () => btnMic.classList.remove('recording');
+
+    rec.onend = () => {
+      btnMic.classList.remove('recording');
+    };
+
     rec.start();
   }
 
-  // マイクボタン
+  // マイクボタンにイベント設定
   document.querySelectorAll('.mic-button').forEach(btn => {
     btn.addEventListener('click', () => {
       document.getElementById('clickSound')?.play();
@@ -583,10 +594,8 @@ h1 {
     });
   });
 
-  // 初期表示
+  // 初期スライド表示
   goToSlide(0);
+})();
+</script>
 
-})();  
-  </script>
-</body>
-</html>
