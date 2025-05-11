@@ -298,7 +298,7 @@ h1 {
     <div id="feedbackTextE2" class="feedback-text"></div>
     <p class="instruction">
       Press the microphone button and say,<br>
-      えいがは よくなかったです（tenki wa yokunakatta desu）
+      えいがは よくなかったです（eiga wa yokunakatta desu）
     </p>
   <div class="nav-next">
       <button id="nextE2" disabled>Next</button>
@@ -657,7 +657,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function bindNext(id, idx) {
     const btn = document.getElementById(id);
     if (!btn) return;
-    btn.disabled = true;  // 初期は必ず disabled
+    btn.disabled = true;
     btn.addEventListener('click', () => showSlide(idx));
   }
 
@@ -665,18 +665,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const vid = document.getElementById(videoId);
     const btn = document.getElementById(btnId);
     if (!vid || !btn) return;
-    // 動画終了で初期 disabled を外す
     vid.addEventListener('ended', () => {
       btn.disabled = false;
       btn.removeAttribute('disabled');
     });
   }
 
-  // 動画と Next のバインド
   enableOnVideoEnd('video1', 'nextVideo1');
   enableOnVideoEnd('video2', 'nextVideo2');
 
-  // 各 Next ボタンをスライド番号にバインド
   bindNext('nextVideo1', 1);
   bindNext('nextE1',      2);
   bindNext('nextVideo2', 3);
@@ -772,31 +769,51 @@ document.addEventListener('DOMContentLoaded', () => {
     rec.start();
   }
 
+  // ── 例題セットアップ ──
   function setupExample(id, nextIdx) {
-    const slide = document.querySelector('.slide.active');
-    const btn   = slide.querySelector(`#startButton${id}`);
+    const btn = document.getElementById(`startButton${id}`);
+    if (!btn) return;
+    const slide = btn.closest('.slide');
     const cue   = slide.dataset.audio && new Audio(slide.dataset.audio);
+
     btn.style.display = 'none';
-
-    const showBtn = () => { btn.style.display='inline-block'; btn.disabled=false; };
-    if (cue) cue.play().then(showBtn); else showBtn();
-
-    btn.onclick = () => startRecognition(id, () => showSlide(nextIdx));
+    const showBtn = () => {
+      btn.style.display = 'inline-block';
+      btn.disabled = false;
+    };
+    if (cue) {
+      cue.play().then(showBtn).catch(showBtn);
+    } else {
+      showBtn();
+    }
+    btn.addEventListener('click', () => {
+      startRecognition(id, () => showSlide(nextIdx));
+    });
   }
 
+  // ── 問題セットアップ ──
   function setupQuestion(id, nextIdx) {
-    const slide = document.querySelector('.slide.active');
-    const btn   = slide.querySelector(`#startButton${id}`);
+    const btn = document.getElementById(`startButton${id}`);
+    if (!btn) return;
+    const slide = btn.closest('.slide');
     const cue   = slide.dataset.audio && new Audio(slide.dataset.audio);
+
     btn.style.display = 'none';
-
-    const showBtn = () => { btn.style.display='inline-block'; btn.disabled=false; };
-    if (cue) cue.play().then(showBtn); else showBtn();
-
-    btn.onclick = () => startRecognition(id, () => showSlide(nextIdx));
+    const showBtn = () => {
+      btn.style.display = 'inline-block';
+      btn.disabled = false;
+    };
+    if (cue) {
+      cue.play().then(showBtn).catch(showBtn);
+    } else {
+      showBtn();
+    }
+    btn.addEventListener('click', () => {
+      startRecognition(id, () => showSlide(nextIdx));
+    });
   }
 
-  // 例題・問題のセットアップ呼び出し
+  // 例題／問題を一括でセットアップ
   setupExample('E1', 2);
   setupExample('E2', 4);
   for (let i = 1; i <= 10; i++) {
@@ -814,10 +831,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // 最初のスライド表示
+  // 最初のスライドを表示
   showSlide(0);
 });
-// ── DOMContentLoaded コールバック 終了 ──
 </script>
+
 </body>
 </html>
