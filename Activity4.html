@@ -455,24 +455,23 @@ h1 {
     <button id="nextQ10" disabled>Next</button>
   </div>
 </div>
-   <div class="nav-next">
-      <button id="nextButton">Next</button>
-    </div>
+<div class="nav-next">
+  <button id="nextButton">Next</button>
+</div>
 
-    <!-- 次ページリンク -->
-    <a id="nextPageLink" href="Activity5.html">Go to Activity5</a>
-
-  </div> <!-- ↑ ここで #slides を閉じる -->
+<!-- 次ページリンク -->
+<a id="nextPageLink" href="Activity5.html">Go to Activity5</a>
++ </div> <!-- #slides をここで閉じる -->
 
   <!-- クリック音・終了音 -->
   <audio id="clickSound"   src="https://raw.githubusercontent.com/moguura/my-images/main/click.mp3"></audio>
   <audio id="taskEndSound" src="https://raw.githubusercontent.com/moguura/my-images/main/taskend2.mp3"></audio>
-
     
 <script>
 (function() {
   const container = document.getElementById('slides');
-  const slides = Array.from(container.children);
+  // .slide 要素だけを取得
+  const slides = Array.from(container.querySelectorAll('.slide'));
   const nextPageLink = document.getElementById('nextPageLink');
   let currentIndex = 0;
 
@@ -537,7 +536,8 @@ h1 {
 
   // スライド移動
   function goToSlide(idx) {
-    if (idx < 0 || idx > slides.length) return;
+    // idx は 0 〜 slides.length - 1 の範囲内
+    if (idx < 0 || idx >= slides.length) return;
     currentIndex = idx;
     container.style.transform = `translateX(-${100 * currentIndex}%)`;
     // 説明ボックス(slide内に .instructions)なら即 Next 有効化
@@ -545,8 +545,8 @@ h1 {
     if (inst && nextButtons[currentIndex]) {
       nextButtons[currentIndex].disabled = false;
     }
-    // 最後まで行ったらリンク表示
-    if (currentIndex === slides.length) {
+    // 最後のスライドに到達したらリンク表示
+    if (currentIndex === slides.length - 1) {
       nextPageLink.style.display = 'block';
     }
   }
@@ -603,4 +603,6 @@ h1 {
   goToSlide(0);
 })();
 </script>
+</body>
+</html>
 
