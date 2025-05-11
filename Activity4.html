@@ -519,26 +519,31 @@ h1 {
   }
 
   function showFeedback(id, correct) {
-    const imgC = document.getElementById(`correctImage${id}`);
-    const imgW = document.getElementById(`wrongImage${id}`);
-    const txt  = document.getElementById(`feedbackText${id}`);
+    const imgC = document.getElementById('correctImage' + id);
+    const imgW = document.getElementById('wrongImage'   + id);
+    const txt  = document.getElementById('feedbackText' + id);
     imgC.style.display = correct ? 'inline-block' : 'none';
-    imgW.style.display = correct ? 'none' : 'inline-block';
-    txt.textContent  = getFeedbackText?id);
-    if (correct) document.getElementById(`correctAudio${id}`).play();
-    else         document.getElementById(`wrongAudio${id}`).play();
+    imgW.style.display = correct ? 'none'         : 'inline-block';
+    // ← ここが正しい呼び出し
+    txt.textContent = getFeedbackText(id);
+    if (correct) {
+      document.getElementById('correctAudio' + id).play();
+    } else {
+      document.getElementById('wrongAudio'   + id).play();
+    }
   }
 
   function goToSlide(idx) {
     if (idx < 0 || idx >= slides.length) return;
     currentIndex = idx;
-    container.style.transform = `translateX(-${100 * currentIndex}%)`;
-    slides.forEach((s,i) => s.classList.toggle('active', i === currentIndex));
+    container.style.transform = 'translateX(-' + (100 * currentIndex) + '%)';
+    slides.forEach((s, i) => s.classList.toggle('active', i === currentIndex));
     const inst = slides[currentIndex].querySelector('.instructions');
     if (inst && nextButtons[currentIndex]) nextButtons[currentIndex].disabled = false;
     if (currentIndex === slides.length - 1) nextPageLink.style.display = 'block';
   }
 
+  // Next ボタン
   nextButtons.forEach((btn, idx) => {
     if (!btn) return;
     btn.disabled = true;
@@ -548,40 +553,44 @@ h1 {
     });
   });
 
-  ['video1','video2'].forEach((vid, i) => {
+  // video 終了で Next 有効化
+  ['video1', 'video2'].forEach((vid, i) => {
     const video = document.getElementById(vid);
     const btn   = document.getElementById(i === 0 ? 'nextVideo1' : 'nextVideo2');
     if (video && btn) video.addEventListener('ended', () => btn.disabled = false);
   });
 
+  // 音声認識
   function startRecognition(id) {
     if (!('webkitSpeechRecognition' in window)) return;
     const rec    = new webkitSpeechRecognition();
-    const btnMic = document.getElementById(`startButton${id}`);
+    const btnMic = document.getElementById('startButton' + id);
     rec.lang     = 'ja-JP';
     btnMic.classList.add('recording');
     rec.onresult = e => {
       const transcript = e.results[0][0].transcript.trim();
       const ok = isCorrectAnswer(id, transcript);
       showFeedback(id, ok);
-      const nextBtn = document.getElementById(`next${id}`);
+      const nextBtn = document.getElementById('next' + id);
       if (nextBtn) nextBtn.disabled = false;
     };
     rec.onend = () => btnMic.classList.remove('recording');
     rec.start();
   }
 
+  // マイクボタン
   document.querySelectorAll('.mic-button').forEach(btn => {
     btn.addEventListener('click', () => {
       document.getElementById('clickSound')?.play();
-      const id = btn.id.replace('startButton','');
+      const id = btn.id.replace('startButton', '');
       startRecognition(id);
     });
   });
 
+  // 初期表示
   goToSlide(0);
-})();
+
+})();  
   </script>
 </body>
 </html>
-
