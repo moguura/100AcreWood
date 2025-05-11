@@ -259,42 +259,39 @@ a:hover {
    color:#0056b3;  
    transform : scale(1.05);  
 }
+#intro-video {
+  text-align: center;
+  margin: 2rem auto;
+  padding: 1rem;
+  background-color: #f9f9f9;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  max-width: 700px;
+}
+
+#intro-video h2 {
+  font-size: 1.5rem;
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+#intro-video video {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
 </style>
 </head>
 <body>
-  <h1>Activity 8</h1>  
-       <div class="instructions">
-            <p>
-                Last week, you went on a three-day trip. Here are your impressions of the trip:<br><br>
-                The weather was good.<br>
-                But your suitcase was heavy.<br>
-                The hotel was nice.<br>
-                The bed in the hotel was big.<br>
-                But the hot spring was not warm.<br>
-                There were many people in the hot spring.<br>
-                You went to the mountain, but the mountain was not fun.<br>
-                The hiking was not cool.<br>
-                You went to a restaurant, but the restaurant was not close to the hiking spot.<br>
-                But the fish was cheap.<br>
-                And it was delicious. <br><br>
-                Today, you met your classmate <span class="red-bold">さくら</span>.<br>
-            </p>
-        </div>
+  <section id="intro-video">
+    <video id="instructionVideo" controls>
+    <source src="https://raw.githubusercontent.com/moguura/my-images/main/Activity8.mp4" type="video/mp4">
+    お使いのブラウザは video タグをサポートしていません。
+  </video>
+</section>
 
-  <img src="https://raw.githubusercontent.com/moguura/my-images/main/8-1.JPG" alt="説明用のイラスト" class="illustration">
-  <div class="audio-section">
-    <button class="play-audio" id="play-audio-1">▶ Play</button>
-    <audio id="audio-1" src="https://raw.githubusercontent.com/moguura/my-images/main/8-1koe.wav"></audio>
-  </div>
-
-    <div class="instructions">
-            <p>
-                <span class="red-bold">さくら</span> wants to hear about your trip.<br>
-                Let's try an <span class="blue-bold">example</span>. <span class="red-bold">さくら</span> will ask a question
-                in Japanese. After pressing the play button to listen to the audio, press the microphone button and say either <br>
-                <strong>てんきはよかったです</strong> or <strong>よかったです</strong>｡
-            </p>
-        </div>
   　       
 　　<!-- E1の例題 -->
     <div class="question-group">
@@ -572,39 +569,14 @@ const buttonsPressed = {
     Q10: false
 };
 
-document.addEventListener("DOMContentLoaded", function() {
-    // すべての音声再生ボタンを取得
-    const buttons = document.querySelectorAll(".play-audio");
-
-    buttons.forEach(button => {
-        button.addEventListener("click", function() {
-            const audioId = this.id.replace("play-audio-", "audio-");
-            const audio = document.getElementById(audioId);
-
-            // すべての音声を停止
-            document.querySelectorAll("audio").forEach(a => {
-                if (!a.paused) {
-                    a.pause();
-                    a.currentTime = 0;
-                }
-            });
-
-            // 選択された音声を再生
-            if (audio.paused) {
-                audio.play();
-            }
-        });
-    });
-});
-
 function finalizeRecognition(questionId, transcript, micButton) {
     const isCorrect = isCorrectAnswer(questionId, transcript);
     showFeedback(questionId, isCorrect);
-    buttonsPressed[questionId] = true; // ★ マイク入力を1回に制限
-    micButton.disabled = true; // ★ ボタンを無効化
+    buttonsPressed[questionId] = true;
+    micButton.disabled = true;
     checkAllAnswered();
 }
-    
+
 function checkAllAnswered() {
     const allAnswered = Object.values(buttonsPressed).every(value => value);
     const nextPageLink = document.getElementById("nextPageLink");
@@ -614,12 +586,14 @@ function checkAllAnswered() {
             nextPageLink.style.display = "block";
         }
 
-        // ★ タスク終了の音楽を流す
-        const taskEndAudio = new Audio("https://raw.githubusercontent.com/moguura/my-images/main/taskend2.mp3");
-        taskEndAudio.play().catch(e => console.error("タスク終了音の再生エラー:", e));
+        const taskEndAudio = document.getElementById("taskEndAudio");
+        if (taskEndAudio) {
+            taskEndAudio.currentTime = 0;
+            taskEndAudio.play().catch(e => console.error("タスク終了音の再生エラー:", e));
+        }
     }
 }
-    
+
 function startRecognition(questionId) {
     if (!('webkitSpeechRecognition' in window)) {
         alert("Speech recognition is not available in this browser. Please use Google Chrome.");
@@ -629,7 +603,7 @@ function startRecognition(questionId) {
     const recognition = new webkitSpeechRecognition();
     recognition.lang = 'ja-JP';
     recognition.interimResults = true;
-    recognition.continuous = true; // ★ 途中で止まらないようにする
+    recognition.continuous = true;
     recognition.maxAlternatives = 1;
 
     let finalTranscript = "";
@@ -646,25 +620,20 @@ function startRecognition(questionId) {
         let newTranscript = event.results[event.results.length - 1][0].transcript.trim();
         finalTranscript = newTranscript;
         lastResultTime = currentTime;
-        console.log(`認識結果 (${questionId}):`, finalTranscript);
 
         if (recognitionFinalized) return;
 
         if (timeoutId) clearTimeout(timeoutId);
 
-        // ★「です。」まで言ったら即時判定
         if (finalTranscript.endsWith("です") || finalTranscript.endsWith("です。")) {
-            console.log(`即時判定 (${questionId}):`, finalTranscript);
             finalizeRecognition(questionId, finalTranscript, micButton);
             recognitionFinalized = true;
             recognition.stop();
             return;
         }
 
-        // ★ 発話が途切れても、最大2秒待つ
         timeoutId = setTimeout(() => {
             if (!recognitionFinalized) {
-                console.log(`最終判定 (${questionId}):`, finalTranscript);
                 finalizeRecognition(questionId, finalTranscript, micButton);
                 recognitionFinalized = true;
                 recognition.stop();
@@ -683,7 +652,6 @@ function startRecognition(questionId) {
         if (!recognitionFinalized) {
             setTimeout(() => {
                 if (!recognitionFinalized) {
-                    console.log(`最終判定 (${questionId}):`, finalTranscript);
                     finalizeRecognition(questionId, finalTranscript, micButton);
                     recognitionFinalized = true;
                 }
@@ -694,37 +662,24 @@ function startRecognition(questionId) {
     recognition.start();
 }
 
-// 正誤判定関数
 function isCorrectAnswer(questionId, userInput) {
     const normalizedInput = normalizeText(userInput);
-    const correctAnswers = answers[questionId];
+    const correctEnding = answers[questionId][0];
 
-    for (let correct of correctAnswers) {
-        const normalizedCorrect = normalizeText(correct);
-        
-        // 部分一致を確認
-        if (normalizedInput.includes(normalizedCorrect)) {
-            return true;
-        }
+    if (correctEnding === "くない" && normalizedInput.endsWith("くない")) {
+        return true;
+    } else if (correctEnding === "い" && normalizedInput.endsWith("い") && !normalizedInput.endsWith("くない")) {
+        return true;
     }
     return false;
 }
 
-// テキストを正規化する関数
 function normalizeText(text) {
-    let normalized = text.toLowerCase().replace(/\s+/g, ''); // 小文字にして空白を除去
-    normalized = normalized.replace(/です$/, ''); // 「です」を削除
-    normalized = normalized.replace(/ー/g, ''); // 長音を削除
-
-    // カタカナをひらがなに変換
-    normalized = normalized.replace(/[\u30A1-\u30F6]/g, function(match) {
-        return String.fromCharCode(match.charCodeAt(0) - 0x60);
-    });
-
+    let normalized = text.toLowerCase().replace(/\s+/g, '');
+    normalized = normalized.replace(/です$/, '');
     return normalized;
 }
-    
-// フィードバック表示関数
+
 function showFeedback(questionId, isCorrect, transcript) {
     const correctImage = document.getElementById(`correctImage${questionId}`);
     const wrongImage = document.getElementById(`wrongImage${questionId}`);
@@ -733,7 +688,6 @@ function showFeedback(questionId, isCorrect, transcript) {
     const wrongAudio = document.getElementById(`wrongAudio${questionId}`);
     const feedbackText = document.getElementById(`feedbackText${questionId}`);
 
-    // フィードバックメッセージを取得
     const feedbackMessage = getFeedbackText(questionId);
 
     if (isCorrect) {
@@ -746,13 +700,12 @@ function showFeedback(questionId, isCorrect, transcript) {
         if (wrongAudio) wrongAudio.play();
     }
 
-    // フィードバックメッセージを表示
     if (feedbackText) {
         feedbackText.textContent = feedbackMessage;
+        feedbackText.style.display = 'block';
     }
 
     if (feedback) feedback.style.display = 'block';
-    if (feedbackText) feedbackText.style.display = 'block';
 }
 
 // 各問題のフィードバックメッセージを返す関数
@@ -769,15 +722,15 @@ function getFeedbackText(questionId) {
         Q8: "レストラン（れすとらん）は ちかくなかったです。",
         Q9: "さかなは たかくなかったです。",
         Q10: "さかなは おいしかったです。",
-    };
+};
     return feedbackMessages[questionId] || "フィードバックが設定されていません";
 }
 
-// マイクボタンにイベントリスナーを追加
 document.querySelectorAll('.mic-button').forEach(button => {
     const questionId = button.id.replace('startButton', '');
     button.addEventListener('click', () => startRecognition(questionId));
 });
+
 </script>
 </body>
 </html>
