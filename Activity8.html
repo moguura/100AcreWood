@@ -664,19 +664,16 @@ function startRecognition(questionId) {
 
 function isCorrectAnswer(questionId, userInput) {
     const normalizedInput = normalizeText(userInput);
-    const correctEnding = answers[questionId][0];
+    const correctAnswers = answers[questionId].map(normalizeText);
 
-    if (correctEnding === "くない" && normalizedInput.endsWith("くない")) {
-        return true;
-    } else if (correctEnding === "い" && normalizedInput.endsWith("い") && !normalizedInput.endsWith("くない")) {
-        return true;
-    }
-    return false;
+    return correctAnswers.some(answer => normalizedInput === answer);
 }
 
 function normalizeText(text) {
-    let normalized = text.toLowerCase().replace(/\s+/g, '');
-    normalized = normalized.replace(/です$/, '');
+    let normalized = text.toLowerCase()
+        .replace(/\s+/g, '')             // 空白を除去
+        .replace(/[。．、,\.]/g, '')     // 句読点を除去
+        .replace(/です$/, '');          // 文末の「です」を除去
     return normalized;
 }
 
