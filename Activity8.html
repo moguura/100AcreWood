@@ -547,7 +547,6 @@ a:hover {
         <a href="./Activity9.html" id="nextPageLink" style="display: none;">Go to Activity9</a>
     </div>
 </body>
-</html>
 <script>
 const answers = {
     E1: ["かった"],
@@ -578,25 +577,21 @@ function finalizeRecognition(questionId, transcript, micButton) {
 }
 
 function checkAllAnswered() {
-    const allAnswered = Object.values(buttonsPressed).every(value => value);
+    const allAnswered = Object.values(buttonsPressed).every(v => v);
     const nextPageLink = document.getElementById("nextPageLink");
-
-    if (allAnswered) {
-        if (nextPageLink) {
-            nextPageLink.style.display = "block";
-        }
-
+    if (allAnswered && nextPageLink) {
+        nextPageLink.style.display = "block";
         const taskEndAudio = document.getElementById("taskEndAudio");
         if (taskEndAudio) {
             taskEndAudio.currentTime = 0;
-            taskEndAudio.play().catch(e => console.error("タスク終了音の再生エラー:", e));
+            taskEndAudio.play().catch(e => console.error(e));
         }
     }
 }
 
 function startRecognition(questionId) {
     if (!('webkitSpeechRecognition' in window)) {
-        alert("Speech recognition is not available in this browser. Please use Google Chrome.");
+        alert("このブラウザでは音声認識が使えません。Chromeをお使いください。");
         return;
     }
 
@@ -607,24 +602,18 @@ function startRecognition(questionId) {
     recognition.maxAlternatives = 1;
 
     let finalTranscript = "";
-    let lastResultTime = Date.now();
-    const maxWaitTime = 2000;
     let recognitionFinalized = false;
+    const maxWaitTime = 2000;
     let timeoutId = null;
 
     const micButton = document.getElementById(`startButton${questionId}`);
     micButton.classList.add("recording");
 
-    recognition.onresult = function(event) {
-        let currentTime = Date.now();
-        let newTranscript = event.results[event.results.length - 1][0].transcript.trim();
-        finalTranscript = newTranscript;
-        lastResultTime = currentTime;
-
-        if (recognitionFinalized) return;
-
+    recognition.onresult = event => {
+        finalTranscript = event.results[event.results.length - 1][0].transcript.trim();
         if (timeoutId) clearTimeout(timeoutId);
 
+        // 「です」で終わったら即時判定
         if (finalTranscript.endsWith("です") || finalTranscript.endsWith("です。")) {
             finalizeRecognition(questionId, finalTranscript, micButton);
             recognitionFinalized = true;
@@ -632,6 +621,7 @@ function startRecognition(questionId) {
             return;
         }
 
+        // 途中で止まったら maxWaitTime 後に判定
         timeoutId = setTimeout(() => {
             if (!recognitionFinalized) {
                 finalizeRecognition(questionId, finalTranscript, micButton);
@@ -641,14 +631,13 @@ function startRecognition(questionId) {
         }, maxWaitTime);
     };
 
-    recognition.onerror = function(event) {
-        alert("Speech recognition failed. Please try again.");
-        console.error("Speech Recognition Error:", event.error);
+    recognition.onerror = event => {
+        alert("音声認識でエラーが発生しました。もう一度お試しください。");
+        console.error(event.error);
     };
 
-    recognition.onend = function() {
+    recognition.onend = () => {
         micButton.classList.remove("recording");
-
         if (!recognitionFinalized) {
             setTimeout(() => {
                 if (!recognitionFinalized) {
@@ -664,84 +653,44 @@ function startRecognition(questionId) {
 
 function isCorrectAnswer(questionId, userInput) {
     const normalizedInput = normalizeText(userInput);
-    const correctAnswers = answers[questionId].map(normalizeText);
-
-    return correctAnswers.some(answer => isSimilar(answer, normalizedInput));
+    // 正解パターンも正規化
+    const correctPatterns = answers[questionId].map(normalizeText);
+    // 部分一致をチェック
+    return correctPatterns.some(pattern => normalizedInput.includes(pattern));
 }
 
 function normalizeText(text) {
-    let normalized = text.toLowerCase()
+    return text
+        .toLowerCase()
         .replace(/\s+/g, '')
         .replace(/[。．、,\.]/g, '')
         .replace(/です$/, '');
-    return normalized;
 }
 
-// 編集距離が2以下なら正解とする
-function isSimilar(correct, input) {
-    const threshold = 2; // 緩さを調整する閾値（0=厳密一致、2=やや緩い）
-    return levenshteinDistance(correct, input) <= threshold;
-}
-
-// Levenshtein距離を計算する関数
-function levenshteinDistance(a, b) {
-    const matrix = [];
-
-    for (let i = 0; i <= b.length; i++) {
-        matrix[i] = [i];
-    }
-    for (let j = 0; j <= a.length; j++) {
-        matrix[0][j] = j;
-    }
-
-    for (let i = 1; i <= b.length; i++) {
-        for (let j = 1; j <= a.length; j++) {
-            if (b.charAt(i - 1) === a.charAt(j - 1)) {
-                matrix[i][j] = matrix[i - 1][j - 1];
-            } else {
-                matrix[i][j] = Math.min(
-                    matrix[i - 1][j - 1] + 1, // substitution
-                    matrix[i][j - 1] + 1,     // insertion
-                    matrix[i - 1][j] + 1      // deletion
-                );
-            }
-        }
-    }
-
-    return matrix[b.length][a.length];
-}
-
-function showFeedback(questionId, isCorrect, transcript) {
+function showFeedback(questionId, isCorrect) {
     const correctImage = document.getElementById(`correctImage${questionId}`);
-    const wrongImage = document.getElementById(`wrongImage${questionId}`);
-    const feedback = document.getElementById(`feedback${questionId}`);
+    const wrongImage   = document.getElementById(`wrongImage${questionId}`);
+    const feedback     = document.getElementById(`feedback${questionId}`);
     const correctAudio = document.getElementById(`correctAudio${questionId}`);
-    const wrongAudio = document.getElementById(`wrongAudio${questionId}`);
+    const wrongAudio   = document.getElementById(`wrongAudio${questionId}`);
     const feedbackText = document.getElementById(`feedbackText${questionId}`);
-
-    const feedbackMessage = getFeedbackText(questionId);
+    const message      = getFeedbackText(questionId);
 
     if (isCorrect) {
-        if (correctImage) correctImage.style.display = 'block';
-        if (wrongImage) wrongImage.style.display = 'none';
-        if (correctAudio) correctAudio.play();
+        correctImage && (correctImage.style.display = 'block');
+        wrongImage   && (wrongImage.style.display = 'none');
+        correctAudio && correctAudio.play();
     } else {
-        if (correctImage) correctImage.style.display = 'none';
-        if (wrongImage) wrongImage.style.display = 'block';
-        if (wrongAudio) wrongAudio.play();
+        correctImage && (correctImage.style.display = 'none');
+        wrongImage   && (wrongImage.style.display = 'block');
+        wrongAudio   && wrongAudio.play();
     }
-
-    if (feedbackText) {
-        feedbackText.textContent = feedbackMessage;
-        feedbackText.style.display = 'block';
-    }
-
-    if (feedback) feedback.style.display = 'block';
+    feedbackText && (feedbackText.textContent = message, feedbackText.style.display = 'block');
+    feedback     && (feedback.style.display = 'block');
 }
 
-// 各問題のフィードバックメッセージを返す関数
 function getFeedbackText(questionId) {
-    const feedbackMessages = {
+    const msgs = {
         E1: "てんきは よかったです。（The weather was good.）",
         Q1: "スーツケース（すーつけーす）は おもかったです。",
         Q2: "ホテル（ほてる）は よかったです。",
@@ -752,16 +701,15 @@ function getFeedbackText(questionId) {
         Q7: "とざんは すずしくなかったです。",
         Q8: "レストラン（れすとらん）は ちかくなかったです。",
         Q9: "さかなは たかくなかったです。",
-        Q10: "さかなは おいしかったです。",
-};
-    return feedbackMessages[questionId] || "フィードバックが設定されていません";
+        Q10:"さかなは おいしかったです。"
+    };
+    return msgs[questionId] || "フィードバックが設定されていません";
 }
 
 document.querySelectorAll('.mic-button').forEach(button => {
-    const questionId = button.id.replace('startButton', '');
-    button.addEventListener('click', () => startRecognition(questionId));
+    const id = button.id.replace('startButton', '');
+    button.addEventListener('click', () => startRecognition(id));
 });
-
 </script>
 </body>
 </html>
