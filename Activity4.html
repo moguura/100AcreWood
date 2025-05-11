@@ -4,53 +4,217 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Activity4</title>
-  <style>
-  /* 横スライド用レイアウト */
-  html, body { margin:0; padding:0; overflow:hidden; }
-  #slides {
-    display: flex;
-    width: 500vw;      /* スライド数×100vwに調整（5スライドなら500vw） */
-    transition: transform 0.5s ease;
-    margin: 0; padding: 0;
-  }
-  .slide {
-    flex: 0 0 100vw;   /* 各スライドは画面幅100% */
-    width: 100vw;
-    height: 100vh;
-    box-sizing: border-box;
-    padding: 20px;
+<style>
+/* 全体のスタイル */
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+    color: #333;
+    font-size: 24px;
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
-  }
-  /* ボタンとフィードバック */
-  .mic-button {
-    background: url("https://raw.githubusercontent.com/moguura/my-images/main/%E3%83%9E%E3%82%A4%E3%82%AF%E3%81%AE%E3%83%95%E3%83%AA%E3%83%BC%E3%82%A2%E3%82%A4%E3%82%B3%E3%83%B3%E3%81%9D%E3%81%AE21.png") center/cover no-repeat;
+    justify-content: center;
+}
+
+h1 {
+    text-align: center;
+    margin: 40px 0 60px;
+    font-size: 40px;
+}
+
+/* 質問エリアのスタイル */
+.question {
+    margin-bottom: 100px;
+    text-align: center;
+    font-size: 24px;
+}
+.question img {
+    width: 340px;
+    height: auto;
+    object-fit: cover;
+    display: block;
+    margin: 20px auto 10px;
+    max-width: 100%;
+}
+.question p:first-child {
+    font-weight: bold;
+    font-size: 28px;
+    color: #007bff;
+}
+
+/* キューのスタイル（緑色と太字） */
+.highlight {
+    color: green;
+    font-weight: bold;
+}
+
+/* マイクボタンのスタイル */
+.mic-button {
+    background-image: url("https://raw.githubusercontent.com/moguura/my-images/main/%E3%83%9E%E3%82%A4%E3%82%AF%E3%81%AE%E3%83%95%E3%83%AA%E3%83%BC%E3%82%A2%E3%82%A4%E3%82%B3%E3%83%B3%E3%81%9D%E3%81%AE21.png");
+    background-size: cover;
+    background-repeat: no-repeat;
     border: none;
     width: 70px;
     height: 70px;
     border-radius: 50%;
     cursor: pointer;
-    margin-top: 15px;
-  }
-  .mic-button.recording { box-shadow: 0 0 15px rgba(255,0,0,0.8); }
-  .mic-button:disabled { background: #ccc; cursor: not-allowed; }
-  .feedback-text {
-    display: none;
-    margin-top: 10px;
-    text-align: center;
-  }
-  .feedback-text img { width: 30px; margin-right: 5px; vertical-align: middle; }
-  .instructions {
-    text-align: center;
+    margin: 10px auto;
+    transition: box-shadow 0.3s ease-in-out;
+}
+.mic-button:active,
+.mic-button.recording {
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.8);
+}
+.mic-button:disabled {
+    background-color: gray;
+    cursor: not-allowed;
+}
+
+/* 説明文のスタイル */
+.instructions {
+    background-color: #ffffff;
+    border: 1px solid #d1d5db;
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 20px;
     font-size: 24px;
+    line-height: 1.6;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    max-width: 900px;
+    width: 100%;
+    text-align: center;
+    margin: 0 auto;
+}
+
+/* ビデオコンテナ */
+.video-container {
+    text-align: center;
+    margin-top: 40px;
+    margin-bottom: 20px;
+}
+.video-container video {
+    width: 80%;
+    max-width: 800px;
+    height: auto;
+    border: 1px solid #d1d5db;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+/* フィードバック全体を初期非表示 */
+.feedback,
+.feedback-text,
+.feedback-icons {
+    display: none;
+}
+.feedback-icons {
+    align-items: center;
+    margin-left: 12px;
+}
+.feedback-icons img {
+    width: 32px;
+    margin-right: 6px;
+}
+.feedback-text {
+    display: block;
+    text-align: center;
+    margin-top: 8px;
+    font-size: 1em;
+    color: #333;
+}
+
+/* マイクボタン＋アイコンを横並び */
+.interaction {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+/* 次ページリンク */
+#nextPageLink {
+    display: none;
+    text-align: center;
+    margin: 30px auto;
+    color: #007bff;
+    text-decoration: none;
+    font-size: 28px;
+    font-weight: bold;
+    padding: 10px 20px;
+    transition: all 0.3s ease;
+}
+#nextPageLink:hover {
+    text-decoration: underline;
+    color: #0056b3;
+    transform: scale(1.05);
+}
+
+/* お知らせボード */
+.notice-board {
+    background-color: #ffeeba;
+    margin: 20px auto;
+    max-width: 900px;
+    width: 100%;
+    border: 1px solid #d1d5db;
+    border-radius: 5px;
+    padding: 15px;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+/* テキスト装飾 */
+.red-bold { color: red; font-weight: bold; }
+.blue-bold { color: #007bff; font-weight: bold; }
+.blue-text { color: #007bff; font-weight: normal; font-size: 20px; }
+
+/* ===== 横スライド切り替え用 ===== */
+#slides {
+    display: flex;
+    overflow: hidden;
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    box-sizing: border-box;
+    transition: transform 0.5s ease;
+}
+
+.slide {
+    flex: 0 0 100%;
+    box-sizing: border-box;
+    min-height: 60vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Nextボタンエリア */
+.nav-next {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+    max-width: 900px;
+    margin: 20px auto;
     padding: 0 20px;
-  }
-  .instructions .red-bold { color: red; font-weight: bold; }
-  .nav-next { position: absolute; bottom: 20px; right: 20px; }
-  .nav-next button { padding: 10px 20px; font-size: 18px; }
-  #nextPageLink { display: none; position: absolute; bottom: 20px; left: 20px; font-size: 20px; }
+    box-sizing: border-box;
+}
+.nav-next button {
+    padding: 10px 20px;
+    font-size: 18px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    background: #007bff;
+    color: #fff;
+}
+.nav-next button:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+}
 </style>
 </head>
 <body>
