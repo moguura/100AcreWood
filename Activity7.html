@@ -561,24 +561,24 @@ document.querySelectorAll('.play-audio').forEach(btn => {
 
 // 音声認識と正誤判定スクリプト
 const answers = {
-    E1: ["かった"],
-    Q1: ["重かった","おもかった"],
-    Q2: ["かった"],
-    Q3: ["大きかった","おおきかった"],
-    Q4: ["くなかった"],
-    Q5: ["多かった","おおかった"],
-    Q6: ["楽しくなかった","たのしくなかった"],
-    Q7: ["涼しくなかった","すずしくなかった"],
-    Q8: ["近くなかった","ちかくなかった"],
-    Q9: ["高くなかった","たかくなかった"],
-    Q10:["かった"]
+    E1: ["い"],
+    Q1: ["い"],
+    Q2: ["くない"],
+    Q3: ["くない"],
+    Q4: ["い"],
+    Q5: ["い"],
+    Q6: ["くない"],
+    Q7: ["くない"],
+    Q8: ["い"],
+    Q9: ["い"],
+    Q10: ["くない"]
 };
 const buttonsPressed = {
     E1: false, Q1: false, Q2: false, Q3: false, Q4: false,
     Q5: false, Q6: false, Q7: false, Q8: false, Q9: false,
     Q10: false
 };
-
+    
 function finalizeRecognition(questionId, transcript, micButton) {
     const isCorrect = isCorrectAnswer(questionId, transcript);
     showFeedback(questionId, isCorrect);
@@ -703,20 +703,20 @@ function showFeedback(questionId, isCorrect) {
 }
 
 function getFeedbackText(questionId) {
-    const msgs = {
-        E1: "てんきは よかったです。（The weather was good.）",
-        Q1: "スーツケース（すーつけーす）は おもかったです。",
-        Q2: "ホテル（ほてる）は よかったです。",
-        Q3: "ベッド（べっど）は おおきかったです。",
-        Q4: "おんせんは あたたかくなかったです。",
-        Q5: "ひとは おおかったです。",
-        Q6: "やまは たのしくなかったです。",
-        Q7: "とざんは すずしくなかったです。",
-        Q8: "レストラン（れすとらん）は ちかくなかったです。",
-        Q9: "さかなは たかくなかったです。",
-        Q10: "さかなは おいしかったです。"
+    const feedbackMessages = {
+        E1: "せんせいは いいです。（The teacher is good.）",
+        Q1: "じゅぎょうは おもしろいです。（The class is interesting.）",
+        Q2: "えいごのテスト（てすと）は むずかしくないです。（The English test is not difficult.）",
+        Q3: "きょうしつは あつくないです。（The classroom is not hot.）",
+        Q4: "パソコン（ぱそこん）は あたらしいです。（The computer is new.）",
+        Q5: "としょかんは おおきいです。（The library is big.）",
+        Q6: "みせのなかは さむくないです。（It is not cold inside the store.）",
+        Q7: "パスタ（ぱすた）は すくなくないです。（There is not a small amount of pasta.）",
+        Q8: "りょうりは おいしいです。（The food is delicious.）",
+        Q9: "ねだんは やすいです。（The prices are cheap.）",
+        Q10: "てんいんさんは いそがしくないです。（The staff is not busy.）"
     };
-    return msgs[questionId] || "フィードバックが設定されていません";
+    return feedbackMessages[questionId] || "フィードバックが設定されていません";
 }
 
 // マイクボタン初期化
