@@ -656,7 +656,6 @@ h1 {
       clickSound.currentTime = 0;
       clickSound.play();
 
-      // 最後の Next はページ遷移
       if (idx === slides.length - 1) {
         nextPageLink.click();
         return;
@@ -673,7 +672,7 @@ h1 {
     });
   });
 
-  // Video 終了で Next ボタン有効化
+  // Video 終了で Next 有効化
   ['video1','video2'].forEach((vid,i) => {
     const video = document.getElementById(vid);
     const btn   = document.getElementById(i === 0 ? 'nextVideo1' : 'nextVideo2');
@@ -681,39 +680,34 @@ h1 {
   });
 
   function startRecognition(id) {
-    if (!('webkitSpeechRecognition' in window)) return;
+    if (!('webkitSpeechRecognition' in window)) {
+      console.warn('SpeechRecognition 非対応ブラウザです');
+      return;
+    }
 
     const rec = new webkitSpeechRecognition();
     rec.lang = 'ja-JP';
-    rec.interimResults = true;
-    rec.continuous = false;  // 一回限り
+    rec.interimResults = false;  // 最終結果のみ
+    rec.continuous = false;      // 一度だけ
 
     const btnMic = document.getElementById('startButton' + id);
-    btnMic.disabled = true;            // 1回だけ
+    btnMic.disabled = true;      // 1回押されたら無効化
     btnMic.classList.add('recording');
 
-    let finalTranscript = '';
-
     rec.onresult = e => {
-      // 結果オブジェクトを取りまとめ
-      for (let i = e.resultIndex; i < e.results.length; i++) {
-        if (e.results[i].isFinal) {
-          finalTranscript += e.results[i][0].transcript;
-        }
-      }
+      const transcript = e.results[0][0].transcript.trim();
+      const ok = isCorrectAnswer(id, transcript);
+      showFeedback(id, ok);
+      document.getElementById('next' + id).disabled = false;
     };
 
     rec.onend = () => {
       btnMic.classList.remove('recording');
-      finalTranscript = finalTranscript.trim();
+    };
 
-      if (finalTranscript) {
-        const ok = isCorrectAnswer(id, finalTranscript);
-        showFeedback(id, ok);
-        document.getElementById('next' + id).disabled = false;
-      } else {
-        console.warn('音声が認識されませんでした');
-      }
+    rec.onerror = err => {
+      console.error('SpeechRecognition エラー', err);
+      btnMic.classList.remove('recording');
     };
 
     rec.start();
@@ -731,5 +725,4 @@ h1 {
   goToSlide(0);
 })();
 </script>
-</body>
-</html>
+
