@@ -564,8 +564,12 @@ h1 {
   const nextPageLink = document.getElementById('nextPageLink');
   let currentIndex = 0;
 
+  // Next ボタン要素を配列で取得
   const nextButtons = slides.map(slide => slide.querySelector('.nav-next button'));
   nextPageLink.style.display = 'none';
+
+  // クリック音（Next 用）を取得
+  const clickSound = document.getElementById('clickSound');
 
   const answers = {
     E1: ['よかった'], E2: ['よくなかった'],
@@ -640,16 +644,19 @@ h1 {
     nextPageLink.style.display = currentIndex === slides.length - 1 ? 'block' : 'none';
   }
 
-  // ← ここを修正：Nextボタンのクリックでスライド切替＋音声cueを再生
+  // Next ボタン設定（クリック音＋スライド遷移＋音声キュー再生）
   nextButtons.forEach((btn, idx) => {
     if (!btn) return;
     btn.disabled = true;
     btn.addEventListener('click', () => {
-      btn.disabled = true;
+      // ← ここで Next ボタンのクリック音を再生
+      clickSound.currentTime = 0;
+      clickSound.play();
+
       const nextIndex = idx + 1;
       goToSlide(nextIndex);
 
-      // 次スライドの音声キューを再生
+      // 次のスライドの音声キューを再生
       const nextId = slides[nextIndex].dataset.id;
       const cue = document.getElementById('cue' + nextId);
       if (cue) {
@@ -659,6 +666,7 @@ h1 {
     });
   });
 
+  // Video 終了で Next 有効化
   ['video1', 'video2'].forEach((vid, i) => {
     const video = document.getElementById(vid);
     const btn = document.getElementById(i === 0 ? 'nextVideo1' : 'nextVideo2');
@@ -685,23 +693,25 @@ h1 {
     };
 
     rec.onend = () => {
-      document.getElementById('startButton' + id).classList.remove('recording');
+      btnMic.classList.remove('recording');
     };
 
     rec.start();
   }
 
+  // マイクボタンはクリック音なしで音声認識開始のみ
   document.querySelectorAll('.mic-button').forEach(btn => {
     btn.addEventListener('click', () => {
-      document.getElementById('clickSound')?.play();
       const id = btn.id.replace('startButton', '');
       startRecognition(id);
     });
   });
 
+  // 初期スライドを表示
   goToSlide(0);
 })();
 </script>
 </body>
 </html>
 
+  
