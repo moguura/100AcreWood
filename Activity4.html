@@ -571,21 +571,30 @@ h1 {
 
   const clickSound = document.getElementById('clickSound');
 
-  const answers = {
-    E1: ['良かった'], E2: ['良くなかった'],
-    Q1: ['忙しかった'], Q2: ['高くなかった'], Q3: ['寒くなかった'], Q4: ['大きくなかった'],
-    Q5: ['近かった'], Q6: ['新しくなかった'], Q7: ['多くなかった'], Q8: ['暑かった'],
-    Q9: ['おいしくなかった'], Q10: ['安くなかった']
+  // 各スライドで期待するフレーズは「かった」または「くなかった」
+  const expectations = {
+    E1: 'かった',    E2: 'くなかった',
+    Q1: 'かった',    Q2: 'くなかった', Q3: 'くなかった', Q4: 'くなかった',
+    Q5: 'かった',    Q6: 'くなかった', Q7: 'くなかった', Q8: 'かった',
+    Q9: 'くなかった',Q10: 'くなかった'
   };
 
   function normalizeText(text) {
     return text.replace(/\s+/g, '').replace(/です$/, '').toLowerCase();
   }
 
+  // 発話内に「かった」または「くなかった」が含まれていれば正解
   function isCorrectAnswer(id, input) {
     const norm = normalizeText(input);
-    const correct = normalizeText(answers[id][0]);
-    return norm.includes(correct);
+    // まず「くなかった」を先に判定
+    if (norm.includes('くなかった')) {
+      return expectations[id] === 'くなかった';
+    }
+    // 次に「かった」を判定（「くなかった」を含まないうえで）
+    if (norm.includes('かった')) {
+      return expectations[id] === 'かった';
+    }
+    return false;
   }
 
   function getFeedbackText(id) {
@@ -617,23 +626,20 @@ h1 {
     txt.textContent = getFeedbackText(id);
     txt.style.display = 'block';
 
-    if (correct) {
-      document.getElementById('correctAudio' + id)?.play();
-    } else {
-      document.getElementById('wrongAudio' + id)?.play();
-    }
+    const audioId = correct ? 'correctAudio' : 'wrongAudio';
+    document.getElementById(audioId + id)?.play();
   }
 
   function goToSlide(idx) {
     if (idx < 0 || idx >= slides.length) return;
     slides.forEach((slide, i) => slide.style.display = i === idx ? 'block' : 'none');
     currentIndex = idx;
-
     const inst = slides[currentIndex].querySelector('.instructions');
     if (inst && nextButtons[currentIndex]) nextButtons[currentIndex].disabled = false;
     nextPageLink.style.display = currentIndex === slides.length - 1 ? 'block' : 'none';
   }
 
+  // Next ボタン設定（クリック音＋遷移＋キュー再生）
   nextButtons.forEach((btn, idx) => {
     if (!btn) return;
     btn.disabled = true;
@@ -648,6 +654,7 @@ h1 {
     });
   });
 
+  // Video 終了で Next 有効化
   ['video1', 'video2'].forEach((vid, i) => {
     const video = document.getElementById(vid);
     const btn = document.getElementById(i === 0 ? 'nextVideo1' : 'nextVideo2');
@@ -670,10 +677,11 @@ h1 {
         transcript += e.results[i][0].transcript;
       }
       transcript = transcript.trim();
-      // 「です」を聞いたら即判定＆停止
-      if (transcript.endsWith('です') || transcript.includes('です')) {
+      // 「です」で即停止
+      if (transcript.includes('です')) {
         rec.stop();
       }
+      // 最終結果で判定
       if (e.results[e.results.length - 1].isFinal) {
         const ok = isCorrectAnswer(id, transcript);
         showFeedback(id, ok);
