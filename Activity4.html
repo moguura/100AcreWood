@@ -566,23 +566,26 @@ h1 {
     
 <script>
 (function () {
+  // Web Speech API の取得
   const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
   if (!SpeechRecognition) {
     alert('このブラウザは Web Speech API 非対応です。Chrome 等でお試しください。');
     return;
   }
 
-  const container    = document.getElementById('slides');
-  const slides       = Array.from(container.querySelectorAll('.slide'));
-  const nextPageLink = document.getElementById('nextPageLink');
-  let currentIndex   = 0;
+  // DOM 要素の取得
+  const container     = document.getElementById('slides');
+  const slides        = Array.from(container.querySelectorAll('.slide'));
+  const nextPageLink  = document.getElementById('nextPageLink');
+  const clickSound    = document.getElementById('clickSound');
+  const instAudio     = document.getElementById('instructionAudio');
+  let currentIndex    = 0;
 
+  // 各スライドの Next ボタン要素
   const nextButtons = slides.map(s => s.querySelector('.nav-next button'));
   nextPageLink.style.display = 'none';
 
-  const clickSound = document.getElementById('clickSound');
-  const instAudio  = document.getElementById('instructionAudio');
-
+  // 期待フレーズ
   const expectations = {
     E1: 'かった',    E2: 'くなかった',
     Q1: 'かった',    Q2: 'くなかった', Q3: 'くなかった', Q4: 'くなかった',
@@ -590,18 +593,17 @@ h1 {
     Q9: 'くなかった',Q10:'くなかった'
   };
 
+  // 前処理
   function normalizeText(t) {
     return t.replace(/\s+/g, '').replace(/です$/, '').toLowerCase();
   }
-
   function isCorrectAnswer(id, input) {
     const norm = normalizeText(input);
     if (norm.includes('くなかった')) return expectations[id] === 'くなかった';
     if (norm.includes('かった'))     return expectations[id] === 'かった';
     return false;
   }
-
-   function getFeedbackText(id) {
+  function getFeedbackText(id) {
     const msgs = {
       E1: 'えいがは よかったです。（The movie was good.）',
       E2: 'えいがは よくなかったです。（The movie was not good.）',
@@ -619,46 +621,57 @@ h1 {
     return msgs[id] || '';
   }
 
+  // フィードバック表示
   function showFeedback(id, correct) {
     const imgC = document.getElementById('correctImage' + id);
     const imgW = document.getElementById('wrongImage'   + id);
     imgC.style.display = correct ? 'inline-block' : 'none';
     imgW.style.display = correct ? 'none'           : 'inline-block';
-
     document.getElementById('feedbackIcons' + id).style.display = 'flex';
     const txt = document.getElementById('feedbackText' + id);
     txt.textContent = getFeedbackText(id);
     txt.style.display = 'block';
-
     document.getElementById((correct ? 'correctAudio' : 'wrongAudio') + id)?.play();
   }
 
+  // スライド切り替え
   function goToSlide(idx) {
     slides.forEach((s, i) => s.style.display = i === idx ? 'block' : 'none');
     currentIndex = idx;
-    // Instruction スライドの音声再生
-    if (slides[idx].dataset.id === 'I1' && instAudio) {
+
+    // 説明ボックス (I1) の場合は音声再生 → 再生終了で Next 有効化
+    if (slides[idx].dataset.id === 'I1') {
+      const btn = nextButtons[idx];
+      btn.disabled = true;
       instAudio.currentTime = 0;
       instAudio.play();
+      instAudio.onended = () => { btn.disabled = false; };
+    } else {
+      // それ以外は instructions 要素の有無で Next を有効化
+      const inst = slides[idx].querySelector('.instructions');
+      if (inst && nextButtons[idx]) {
+        nextButtons[idx].disabled = false;
+      }
     }
-    const inst = slides[idx].querySelector('.instructions');
-    if (inst && nextButtons[idx]) nextButtons[idx].disabled = false;
+
     nextPageLink.style.display = idx === slides.length - 1 ? 'block' : 'none';
   }
 
-  // Next ボタン設定
+  // Next ボタンの挙動
   nextButtons.forEach((btn, idx) => {
     if (!btn) return;
     btn.disabled = true;
     btn.addEventListener('click', () => {
       clickSound.currentTime = 0;
       clickSound.play();
+      // 最後のスライドならページ遷移
       if (idx === slides.length - 1) {
         nextPageLink.click();
         return;
       }
       const ni = idx + 1;
       goToSlide(ni);
+      // 次スライドの cue 音再生
       const cue = document.getElementById('cue' + slides[ni].dataset.id);
       if (cue) {
         cue.currentTime = 0;
@@ -674,12 +687,13 @@ h1 {
     if (v && b) v.addEventListener('ended', () => b.disabled = false);
   });
 
+  // 音声認識開始
   function startRecognition(id) {
     console.info(`[INFO] startRecognition: ${id}`);
     const rec = new SpeechRecognition();
-    rec.lang = 'ja-JP';
-    rec.interimResults = true;  // 中間結果取得
-    rec.continuous     = true;  // 継続認識
+    rec.lang            = 'ja-JP';
+    rec.interimResults  = true;
+    rec.continuous      = true;
 
     const btn = document.getElementById('startButton' + id);
     btn.disabled = true;
@@ -691,18 +705,12 @@ h1 {
       let interim = '';
       for (let i = e.resultIndex; i < e.results.length; i++) {
         const t = e.results[i][0].transcript;
-        if (e.results[i].isFinal) {
-          finalTranscript += t;
-        } else {
-          interim += t;
-        }
+        if (e.results[i].isFinal) finalTranscript += t;
+        else interim += t;
       }
       if (interim) console.log(`[INTERIM][${id}]`, interim);
       if (finalTranscript) console.log(`[FINAL][${id}]`, finalTranscript);
-
-      // 中間で「です」を検出したら即停止
       if (interim.includes('です')) {
-        console.info(`[INFO] Detected "です", stopping recognition early.`);
         rec.stop();
       }
     };
@@ -728,7 +736,7 @@ h1 {
     rec.start();
   }
 
-  // マイクボタンは一度だけ
+  // マイクボタンは一度だけ有効化
   document.querySelectorAll('.mic-button').forEach(btn => {
     btn.addEventListener('click', () => {
       const id = btn.id.replace('startButton', '');
@@ -736,7 +744,7 @@ h1 {
     }, { once: true });
   });
 
-  // 初期スライド
+  // 初期スライド表示
   goToSlide(0);
 })();
 </script>
