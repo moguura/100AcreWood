@@ -679,39 +679,36 @@ h1 {
     if (video && btn) video.addEventListener('ended', () => btn.disabled = false);
   });
 
-  function startRecognition(id) {
-    if (!('webkitSpeechRecognition' in window)) {
-      console.warn('SpeechRecognition 非対応ブラウザです');
-      return;
-    }
+function startRecognition(id) {
+  const rec = new webkitSpeechRecognition();
+  rec.lang = 'ja-JP';
+  rec.interimResults = false;
+  rec.continuous = false;
 
-    const rec = new webkitSpeechRecognition();
-    rec.lang = 'ja-JP';
-    rec.interimResults = false;  // 最終結果のみ
-    rec.continuous = false;      // 一度だけ
+  const btnMic = document.getElementById('startButton' + id);
+  btnMic.disabled = true;
+  btnMic.classList.add('recording');
 
-    const btnMic = document.getElementById('startButton' + id);
-    btnMic.disabled = true;      // 1回押されたら無効化
-    btnMic.classList.add('recording');
+  rec.onresult = e => {
+    const transcript = e.results[0][0].transcript.trim();
+    console.log(`[DEBUG] slide=${id}, transcript='${transcript}'`);
+    console.log(`[DEBUG] normalized='${normalizeText(transcript)}', expectation='${expectations[id]}'`);
 
-    rec.onresult = e => {
-      const transcript = e.results[0][0].transcript.trim();
-      const ok = isCorrectAnswer(id, transcript);
-      showFeedback(id, ok);
-      document.getElementById('next' + id).disabled = false;
-    };
+    const ok = isCorrectAnswer(id, transcript);
+    console.log(`[DEBUG] isCorrectAnswer → ${ok}`);
+    showFeedback(id, ok);
+    document.getElementById('next' + id).disabled = false;
+  };
 
-    rec.onend = () => {
-      btnMic.classList.remove('recording');
-    };
-
-    rec.onerror = err => {
-      console.error('SpeechRecognition エラー', err);
-      btnMic.classList.remove('recording');
-    };
-
-    rec.start();
-  }
+  rec.onend = () => {
+    btnMic.classList.remove('recording');
+  };
+  rec.onerror = err => {
+    console.error('SpeechRecognition エラー', err);
+    btnMic.classList.remove('recording');
+  };
+  rec.start();
+}
 
   // マイクボタンは一度だけイベント登録
   document.querySelectorAll('.mic-button').forEach(btn => {
