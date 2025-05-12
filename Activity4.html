@@ -100,12 +100,13 @@ h1 {
     margin: 20px auto;   /* 中央寄せ用 */
 }
 
-.interaction {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    margin-top: 10px;
+.instruction {
+    max-width: 480px;     /* お好みの幅に */
+    margin: 16px auto;    /* 上下マージン＆左右中央寄せ */
+    text-align: left;     /* 文中は左揃え */
+    font-size: 20px;      /* 必要に応じて */
+    line-height: 1.5;
+    color: #333;
 }
 
 .feedback-icons {
@@ -216,6 +217,7 @@ h1 {
 </style>
 </head>
 <body>
+<audio id="clickSound" src="https://raw.githubusercontent.com/moguura/my-images/main/click.mp3"></audio>
   <div id="slides">
     <!-- Slide 1: Video 1 -->
     <div class="slide" data-id="V1" data-type="video">
