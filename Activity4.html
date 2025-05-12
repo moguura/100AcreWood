@@ -591,7 +591,7 @@ h1 {
   };
 
   function normalizeText(t) {
-    return t.replace(/\s+/g, '').replace(/です$/,'').toLowerCase();
+    return t.replace(/\s+/g, '').replace(/です$/, '').toLowerCase();
   }
 
   function isCorrectAnswer(id, input) {
@@ -601,79 +601,87 @@ h1 {
     return false;
   }
 
-  function getFeedbackText(id) {
+   function getFeedbackText(id) {
     const msgs = {
       E1: 'えいがは よかったです。（The movie was good.）',
       E2: 'えいがは よくなかったです。（The movie was not good.）',
-      Q1: 'せんしゅうは いそがしかったです。',
-      Q2: 'りょうりは たかくなかったです。',
-      Q3: '２がつは さむくなかったです。',
-      Q4: 'ケーキは おおきくなかったです。',
-      Q5: 'ホテルは ちかかったです。',
-      Q6: 'レストランは あたらしくなかったです。',
-      Q7: 'ゆきは おおくなかったです。',
-      Q8: '８がつは あつかったです。',
-      Q9: 'パンは おいしくなかったです。',
-      Q10:'チケットは やすくなかったです。'
+      Q1: 'せんしゅうは いそがしかったです。（Last week was busy.）',
+      Q2: 'りょうりは たかくなかったです。（The dish was not expensive.）',
+      Q3: '２がつは さむくなかったです。（February was not cold.）',
+      Q4: 'ケーキは おおきくなかったです。（The cake was not big.）',
+      Q5: 'ホテルは ちかかったです。（The hotel was close.）',
+      Q6: 'レストランは あたらしくなかったです。（The restaurant was not new.）',
+      Q7: 'ゆきは おおくなかったです。（There was not much snow.）',
+      Q8: '８がつは あつかったです。（August was hot.）',
+      Q9: 'パンは おいしくなかったです。（The bread was not delicious.）',
+      Q10:'チケットは やすくなかったです。（The tickets was not cheap.）'
     };
     return msgs[id] || '';
   }
 
   function showFeedback(id, correct) {
-    const imgC = document.getElementById('correctImage'+id);
-    const imgW = document.getElementById('wrongImage'+id);
+    const imgC = document.getElementById('correctImage' + id);
+    const imgW = document.getElementById('wrongImage'   + id);
     imgC.style.display = correct ? 'inline-block' : 'none';
-    imgW.style.display = correct ? 'none' : 'inline-block';
-    document.getElementById('feedbackIcons'+id).style.display = 'flex';
-    const txt = document.getElementById('feedbackText'+id);
+    imgW.style.display = correct ? 'none'           : 'inline-block';
+
+    document.getElementById('feedbackIcons' + id).style.display = 'flex';
+    const txt = document.getElementById('feedbackText' + id);
     txt.textContent = getFeedbackText(id);
     txt.style.display = 'block';
-    document.getElementById((correct?'correctAudio':'wrongAudio')+id)?.play();
+
+    document.getElementById((correct ? 'correctAudio' : 'wrongAudio') + id)?.play();
   }
 
   function goToSlide(idx) {
-    slides.forEach((s,i)=> s.style.display = i===idx?'block':'none');
+    slides.forEach((s, i) => s.style.display = i === idx ? 'block' : 'none');
     currentIndex = idx;
-    if (slides[idx].dataset.id==='I1' && instAudio) {
+    // Instruction スライドの音声再生
+    if (slides[idx].dataset.id === 'I1' && instAudio) {
       instAudio.currentTime = 0;
       instAudio.play();
     }
     const inst = slides[idx].querySelector('.instructions');
     if (inst && nextButtons[idx]) nextButtons[idx].disabled = false;
-    nextPageLink.style.display = idx===slides.length-1 ? 'block' : 'none';
+    nextPageLink.style.display = idx === slides.length - 1 ? 'block' : 'none';
   }
 
+  // Next ボタン設定
   nextButtons.forEach((btn, idx) => {
     if (!btn) return;
     btn.disabled = true;
     btn.addEventListener('click', () => {
       clickSound.currentTime = 0;
       clickSound.play();
-      if (idx===slides.length-1) {
+      if (idx === slides.length - 1) {
         nextPageLink.click();
         return;
       }
-      const ni = idx+1;
+      const ni = idx + 1;
       goToSlide(ni);
-      const cue = document.getElementById('cue'+slides[ni].dataset.id);
-      if (cue) { cue.currentTime=0; cue.play(); }
+      const cue = document.getElementById('cue' + slides[ni].dataset.id);
+      if (cue) {
+        cue.currentTime = 0;
+        cue.play();
+      }
     });
   });
 
-  ['video1','video2'].forEach((vid,i)=> {
+  // 動画終了で Next 有効化
+  ['video1', 'video2'].forEach((vid, i) => {
     const v = document.getElementById(vid);
-    const b = document.getElementById(i===0?'nextVideo1':'nextVideo2');
-    if (v && b) v.addEventListener('ended', ()=> b.disabled = false);
+    const b = document.getElementById(i === 0 ? 'nextVideo1' : 'nextVideo2');
+    if (v && b) v.addEventListener('ended', () => b.disabled = false);
   });
 
   function startRecognition(id) {
     console.info(`[INFO] startRecognition: ${id}`);
     const rec = new SpeechRecognition();
     rec.lang = 'ja-JP';
-    rec.interimResults = true;  // 中間も取得
+    rec.interimResults = true;  // 中間結果取得
     rec.continuous     = true;  // 継続認識
 
-    const btn = document.getElementById('startButton'+id);
+    const btn = document.getElementById('startButton' + id);
     btn.disabled = true;
     btn.classList.add('recording');
 
@@ -681,13 +689,22 @@ h1 {
 
     rec.onresult = e => {
       let interim = '';
-      for (let i=e.resultIndex; i<e.results.length; i++) {
+      for (let i = e.resultIndex; i < e.results.length; i++) {
         const t = e.results[i][0].transcript;
-        if (e.results[i].isFinal) finalTranscript += t;
-        else interim += t;
+        if (e.results[i].isFinal) {
+          finalTranscript += t;
+        } else {
+          interim += t;
+        }
       }
       if (interim) console.log(`[INTERIM][${id}]`, interim);
       if (finalTranscript) console.log(`[FINAL][${id}]`, finalTranscript);
+
+      // 中間で「です」を検出したら即停止
+      if (interim.includes('です')) {
+        console.info(`[INFO] Detected "です", stopping recognition early.`);
+        rec.stop();
+      }
     };
 
     rec.onerror = evt => {
@@ -705,19 +722,21 @@ h1 {
         console.warn(`[WARN][${id}] no speech captured`);
         showFeedback(id, false);
       }
-      document.getElementById('next'+id).disabled = false;
+      document.getElementById('next' + id).disabled = false;
     };
 
     rec.start();
   }
 
+  // マイクボタンは一度だけ
   document.querySelectorAll('.mic-button').forEach(btn => {
-    btn.addEventListener('click', ()=> {
-      const id = btn.id.replace('startButton','');
+    btn.addEventListener('click', () => {
+      const id = btn.id.replace('startButton', '');
       startRecognition(id);
     }, { once: true });
   });
 
+  // 初期スライド
   goToSlide(0);
 })();
 </script>
