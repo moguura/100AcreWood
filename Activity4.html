@@ -638,8 +638,11 @@ h1 {
   function goToSlide(idx) {
     slides.forEach((s, i) => s.style.display = i === idx ? 'block' : 'none');
     currentIndex = idx;
-    const id = slides[idx].dataset.id;
-    const btn = nextButtons[idx];
+
+    const slide = slides[idx];
+    const id    = slide.dataset.id;    // 'V1','E1','V2' など
+    const type  = slide.dataset.type;  // 'video' または undefined
+    const btn   = nextButtons[idx];
 
     // 1) 説明スライド I1
     if (id === 'I1') {
@@ -651,14 +654,20 @@ h1 {
       }
     }
     // 2) ビデオスライド
-    else if (id.startsWith('video')) {
-      if (btn) btn.disabled = true;
-      // 有効化はビデオ ended イベントで
+    else if (type === 'video') {
+      if (btn) {
+        btn.disabled = true;  // スライド切替直後に無効化
+        // data-id 'V1' → video 要素の id 'video1'
+        const videoId = id.toLowerCase().replace(/^v/, 'video');
+        const video   = document.getElementById(videoId);
+        video.addEventListener('ended', () => {
+          btn.disabled = false;  // 再生終了で有効化
+        }, { once: true });
+      }
     }
     // 3) 例題スライド E1/E2 と 音声認識スライド Q*
     else if (id.startsWith('E') || id.startsWith('Q')) {
-      if (btn) btn.disabled = true;
-      // 有効化は recognition.onend で
+      if (btn) btn.disabled = true;  // 認識終了で有効化
     }
     // 4) その他（例：cueだけのスライドなど）
     else {
@@ -674,12 +683,13 @@ h1 {
     // END スライドはリンクなので処理不要
     if (slideId === 'END') return;
 
+    // 最初から全ボタンを無効化
     ctrl.disabled = true;
     ctrl.addEventListener('click', () => {
       clickSound.currentTime = 0;
       clickSound.play();
 
-      // Q10 の次はタスク終了音再生→2秒後に END へ
+      // Q10 の次はタスク終了音→2秒後に END へ
       if (slideId === 'Q10') {
         taskEndSound.currentTime = 0;
         taskEndSound.play();
@@ -698,18 +708,6 @@ h1 {
     });
   });
 
-  // ビデオ終了で Next 有効化
-['video1','video2'].forEach((vid, i) => {
-  const v = document.getElementById(vid);
-  const btn = document.getElementById( vid === 'video1' ? 'nextVideo1' : 'nextVideo2' );
-  if (v && btn) {
-    btn.disabled = true; // 初期状態で無効化
-    v.addEventListener('ended', () => {
-      btn.disabled = false;
-    });
-  }
-});
-
   // 音声認識開始＆終了で Next 有効化
   function startRecognition(id) {
     console.info(`[INFO] startRecognition: ${id}`);
@@ -723,7 +721,6 @@ h1 {
     micBtn.classList.add('recording');
 
     let finalTranscript = '';
-
     rec.onresult = e => {
       for (let i = e.resultIndex; i < e.results.length; i++) {
         const t = e.results[i][0].transcript;
