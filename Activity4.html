@@ -109,6 +109,15 @@ h1 {
     color: #333;
 }
 
+.interaction {
+    display: flex;
+    align-items: center;
+    justify-content: center;  /* 中央寄せ */
+    gap: 10px;
+    margin-top: 10px;
+    width: 100%;              /* 幅いっぱいを取る */
+}
+
 .feedback-icons {
     display: none;
     align-items: center;
@@ -217,7 +226,10 @@ h1 {
 </style>
 </head>
 <body>
-<audio id="clickSound" src="https://raw.githubusercontent.com/moguura/my-images/main/click.mp3"></audio>
+   <!-- 効果音 -->
+  <audio id="clickSound" src="https://raw.githubusercontent.com/moguura/my-images/main/click.mp3"></audio>
+  <audio id="taskEndSound" src="https://raw.githubusercontent.com/moguura/my-images/main/taskend2.mp3"></audio>
+
   <div id="slides">
     <!-- Slide 1: Video 1 -->
     <div class="slide" data-id="V1" data-type="video">
@@ -541,10 +553,6 @@ h1 {
     <button id="nextQ10" disabled>Next</button>
   </div>
 </div>
-
-   <!-- 効果音 -->
-  <audio id="clickSound" src="https://raw.githubusercontent.com/moguura/my-images/main/click.mp3"></audio>
-  <audio id="taskEndSound" src="https://raw.githubusercontent.com/moguura/my-images/main/taskend2.mp3"></audio>
 
 <!-- これだけを残す（非表示） -->
   <a id="nextPageLink" href="Activity5.html" style="display: none;"></a>
