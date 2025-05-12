@@ -577,9 +577,8 @@ h1 {
 
   // クリック音（Next 用）
   const clickSound = document.getElementById('clickSound');
-
   // Instruction ボイス
-  const instAudio = document.getElementById('instructionAudio');
+  const instAudio   = document.getElementById('instructionAudio');
 
   // 各スライドで期待するフレーズは「かった」または「くなかった」
   const expectations = {
@@ -596,12 +595,8 @@ h1 {
   // 「くなかった」優先判定、次に「かった」
   function isCorrectAnswer(id, input) {
     const norm = normalizeText(input);
-    if (norm.includes('くなかった')) {
-      return expectations[id] === 'くなかった';
-    }
-    if (norm.includes('かった')) {
-      return expectations[id] === 'かった';
-    }
+    if (norm.includes('くなかった')) return expectations[id] === 'くなかった';
+    if (norm.includes('かった'))     return expectations[id] === 'かった';
     return false;
   }
 
@@ -625,17 +620,16 @@ h1 {
 
   function showFeedback(id, correct) {
     const imgC = document.getElementById('correctImage' + id);
-    const imgW = document.getElementById('wrongImage' + id);
+    const imgW = document.getElementById('wrongImage'   + id);
     imgC.style.display = correct ? 'inline-block' : 'none';
-    imgW.style.display = correct ? 'none' : 'inline-block';
+    imgW.style.display = correct ? 'none'           : 'inline-block';
 
     document.getElementById('feedbackIcons' + id).style.display = 'flex';
     const txt = document.getElementById('feedbackText' + id);
     txt.textContent = getFeedbackText(id);
     txt.style.display = 'block';
 
-    const audioEl = document.getElementById((correct ? 'correctAudio' : 'wrongAudio') + id);
-    audioEl?.play();
+    document.getElementById((correct ? 'correctAudio' : 'wrongAudio') + id)?.play();
   }
 
   function goToSlide(idx) {
@@ -644,18 +638,17 @@ h1 {
     currentIndex = idx;
 
     // Instruction スライドなら音声再生
-    const currentId = slides[idx].dataset.id;
-    if (currentId === 'I1' && instAudio) {
+    if (slides[idx].dataset.id === 'I1' && instAudio) {
       instAudio.currentTime = 0;
       instAudio.play();
     }
 
-    const inst = slides[currentIndex].querySelector('.instructions');
-    if (inst && nextButtons[currentIndex]) nextButtons[currentIndex].disabled = false;
-    nextPageLink.style.display = currentIndex === slides.length - 1 ? 'block' : 'none';
+    const inst = slides[idx].querySelector('.instructions');
+    if (inst && nextButtons[idx]) nextButtons[idx].disabled = false;
+    nextPageLink.style.display = idx === slides.length - 1 ? 'block' : 'none';
   }
 
-  // Next ボタン設定（クリック音＋遷移＋キュー再生）
+  // Next ボタン設定（クリック音＋遷移＋キュー再生 or ページ遷移）
   nextButtons.forEach((btn, idx) => {
     if (!btn) return;
     btn.disabled = true;
@@ -663,59 +656,78 @@ h1 {
       clickSound.currentTime = 0;
       clickSound.play();
 
+      // 最後の Next はページ遷移
+      if (idx === slides.length - 1) {
+        nextPageLink.click();
+        return;
+      }
+
       const nextIndex = idx + 1;
       goToSlide(nextIndex);
 
-      const nextId = slides[nextIndex].dataset.id;
-      const cue = document.getElementById('cue' + nextId);
-      if (cue) { cue.currentTime = 0; cue.play(); }
+      const cue = document.getElementById('cue' + slides[nextIndex].dataset.id);
+      if (cue) {
+        cue.currentTime = 0;
+        cue.play();
+      }
     });
   });
 
   // Video 終了で Next ボタン有効化
   ['video1','video2'].forEach((vid,i) => {
     const video = document.getElementById(vid);
-    const btn = document.getElementById(i===0?'nextVideo1':'nextVideo2');
-    if (video && btn) video.addEventListener('ended',()=>btn.disabled=false);
+    const btn   = document.getElementById(i === 0 ? 'nextVideo1' : 'nextVideo2');
+    if (video && btn) video.addEventListener('ended', () => btn.disabled = false);
   });
 
   function startRecognition(id) {
     if (!('webkitSpeechRecognition' in window)) return;
+
     const rec = new webkitSpeechRecognition();
     rec.lang = 'ja-JP';
     rec.interimResults = true;
-    rec.continuous = true;
+    rec.continuous = false;  // 一回限り
 
     const btnMic = document.getElementById('startButton' + id);
+    btnMic.disabled = true;            // 1回だけ
     btnMic.classList.add('recording');
 
-    rec.onresult = e => {
-      let transcript = '';
-      for (let i=e.resultIndex; i<e.results.length; i++){
-        transcript += e.results[i][0].transcript;
-      }
-      transcript = transcript.trim();
-      if (transcript.includes('です')) rec.stop();
+    let finalTranscript = '';
 
-      if (e.results[e.results.length-1].isFinal) {
-        const ok = isCorrectAnswer(id, transcript);
-        showFeedback(id, ok);
-        document.getElementById('next'+id).disabled = false;
+    rec.onresult = e => {
+      // 結果オブジェクトを取りまとめ
+      for (let i = e.resultIndex; i < e.results.length; i++) {
+        if (e.results[i].isFinal) {
+          finalTranscript += e.results[i][0].transcript;
+        }
       }
     };
 
-    rec.onend = ()=> btnMic.classList.remove('recording');
+    rec.onend = () => {
+      btnMic.classList.remove('recording');
+      finalTranscript = finalTranscript.trim();
+
+      if (finalTranscript) {
+        const ok = isCorrectAnswer(id, finalTranscript);
+        showFeedback(id, ok);
+        document.getElementById('next' + id).disabled = false;
+      } else {
+        console.warn('音声が認識されませんでした');
+      }
+    };
+
     rec.start();
   }
 
-  document.querySelectorAll('.mic-button').forEach(btn=>{
-    btn.addEventListener('click',()=>{
+  // マイクボタンは一度だけイベント登録
+  document.querySelectorAll('.mic-button').forEach(btn => {
+    btn.addEventListener('click', () => {
       const id = btn.id.replace('startButton','');
       startRecognition(id);
-    });
+    }, { once: true });
   });
 
-  // 初期スライド
+  // 初期スライド表示
   goToSlide(0);
 })();
 </script>
