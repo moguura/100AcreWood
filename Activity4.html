@@ -88,21 +88,17 @@ h1 {
     margin: 0 auto;
 }
 
-/* ビデオコンテナ */
-.video-container {
-    text-align: center;
-    margin-top: 40px;
-    margin-bottom: 20px;
-}
-.video-container video {
+/* スライド内の video 全般 */
+.slide video {
     width: 100%;
-    max-width: 480px;  /* ← コンパクトな幅に調整 */
+    max-width: 800px;   /* コンパクトな幅に調整 */
     height: auto;
     border: 1px solid #d1d5db;
     border-radius: 5px;
     box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    display: block;      /* 中央寄せ用 */
+    margin: 20px auto;   /* 中央寄せ用 */
 }
-
 
 .interaction {
     display: flex;
