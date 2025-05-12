@@ -566,7 +566,6 @@ h1 {
     
 <script>
 (function () {
-  // Web Speech API の取得
   const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
   if (!SpeechRecognition) {
     alert('このブラウザは Web Speech API 非対応です。Chrome 等でお試しください。');
@@ -621,7 +620,6 @@ h1 {
   }
 
   function showFeedback(id, correct) {
-    console.log(`[INFO] ${id} → ${correct}`);
     const imgC = document.getElementById('correctImage'+id);
     const imgW = document.getElementById('wrongImage'+id);
     imgC.style.display = correct ? 'inline-block' : 'none';
@@ -636,49 +634,45 @@ h1 {
   }
 
   function goToSlide(idx) {
-    if (idx < 0 || idx >= slides.length) return;
     slides.forEach((s,i)=> s.style.display = i===idx?'block':'none');
     currentIndex = idx;
     if (slides[idx].dataset.id==='I1' && instAudio) {
       instAudio.currentTime = 0;
       instAudio.play();
     }
-    // instruction スライドなら Next ボタン有効化
+    // instruction スライドなら Next を有効化
     const inst = slides[idx].querySelector('.instructions');
     if (inst && nextButtons[idx]) nextButtons[idx].disabled = false;
-    nextPageLink.style.display = idx===slides.length-1?'block':'none';
+    nextPageLink.style.display = idx===slides.length-1 ? 'block' : 'none';
   }
 
-  // Next ボタン設定
+  // Next 設定
   nextButtons.forEach((btn, idx) => {
     if (!btn) return;
     btn.disabled = true;
     btn.addEventListener('click', () => {
       clickSound.currentTime = 0;
       clickSound.play();
-
-      // 最後のスライドならページ遷移
-      if (idx === slides.length-1) {
+      if (idx===slides.length-1) {
         nextPageLink.click();
         return;
       }
       const nextIndex = idx+1;
       goToSlide(nextIndex);
       const cue = document.getElementById('cue'+slides[nextIndex].dataset.id);
-      if (cue) { cue.currentTime = 0; cue.play(); }
+      if (cue) { cue.currentTime=0; cue.play(); }
     });
   });
 
-  // video で Next 有効化
+  // video 終了で Next 有効化
   ['video1','video2'].forEach((vid,i)=>{
-    const video = document.getElementById(vid);
-    const btn   = document.getElementById(i===0?'nextVideo1':'nextVideo2');
-    if (video && btn) video.addEventListener('ended', ()=> btn.disabled = false);
+    const v = document.getElementById(vid);
+    const b = document.getElementById(i===0?'nextVideo1':'nextVideo2');
+    if (v && b) v.addEventListener('ended', ()=> b.disabled=false);
   });
 
-  // 音声認識
+  // 音声認識スタート
   function startRecognition(id) {
-    console.log(`[INFO] startRecognition: ${id}`);
     const rec = new SpeechRecognition();
     rec.lang = 'ja-JP';
     rec.interimResults = false;
@@ -689,48 +683,42 @@ h1 {
     btnMic.disabled = true;
     btnMic.classList.add('recording');
 
-    // speechend で自動停止
-    rec.onspeechend = () => {
-      console.log('[INFO] speechend');
-      rec.stop();
-    };
-    // 認識結果
+    // 1) 発話終了で自動 stop
+    rec.onspeechend = () => rec.stop();
+    // 2) 結果
     rec.onresult = e => {
       const transcript = e.results[0][0].transcript.trim();
-      console.log(`[DEBUG] transcript: "${transcript}"`);
       const ok = isCorrectAnswer(id, transcript);
       showFeedback(id, ok);
       document.getElementById('next'+id).disabled = false;
     };
-    // マッチしなかった
+    // 3) 候補なしでもフィードバック
     rec.onnomatch = () => {
-      console.warn('[WARN] no-match');
       showFeedback(id, false);
       document.getElementById('next'+id).disabled = false;
     };
-    // エラー時にも停止し判定
+    // 4) エラー（no-speech 等）でもフィードバック
     rec.onerror = evt => {
-      console.error('[ERROR] recognition:', evt.error);
+      console.warn('[recognition error]', evt.error);
+      showFeedback(id, false);
+      document.getElementById('next'+id).disabled = false;
       rec.stop();
     };
-    // 終了時に UI 復帰
-    rec.onend = () => {
-      console.log(`[INFO] recognition ended for ${id}`);
-      btnMic.classList.remove('recording');
-    };
+    // 5) 終了時 UI 復帰
+    rec.onend = () => btnMic.classList.remove('recording');
 
     rec.start();
   }
 
-  // マイクボタンは一度だけ有効
+  // マイクボタンを一度だけ有効化
   document.querySelectorAll('.mic-button').forEach(btn=>{
-    btn.addEventListener('click',()=>{
+    btn.addEventListener('click', ()=>{
       const id = btn.id.replace('startButton','');
       startRecognition(id);
     }, { once: true });
   });
 
-  // 初期スライド
+  // 初期
   goToSlide(0);
 })();
 </script>
