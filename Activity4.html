@@ -188,7 +188,7 @@ h1 {
 /* Nextボタンエリア */
 .nav-next {
     display: flex;
-    justify-content: center; /* 中央寄せ */
+    justify-content: flex-end;
     width: 100%;
     max-width: 900px;
     margin: 10px auto 0;
@@ -222,7 +222,7 @@ h1 {
   <div id="slides">
     <!-- Slide 1: Video 1 -->
     <div class="slide" data-id="V1" data-type="video">
-      <video id="video1" controls width="480">
+      <video id="video1" controls>
         <source src="https://raw.githubusercontent.com/moguura/my-images/main/Activity4-1.mp4" type="video/mp4" />
       </video>
       <div class="nav-next">
@@ -251,7 +251,7 @@ h1 {
 
     <!-- Slide 3: Video 2 -->
     <div class="slide" data-id="V2" data-type="video">
-        <video id="video2" controls width="480">
+        <video id="video2" controls>
         <source src="https://raw.githubusercontent.com/moguura/my-images/main/Activity4-2.mp4" type="video/mp4" />
       </video>
       <div class="nav-next">
