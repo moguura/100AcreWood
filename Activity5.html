@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Activity5</title>
 <style>
+/* 全体のスタイル */
 body {
     font-family: Arial, sans-serif;
     line-height: 1.6;
@@ -16,64 +17,147 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-start;
-    min-height: 100vh;
+    justify-content: center;
 }
 
+/* 見出し */
 h1 {
     text-align: center;
-    margin-top: 40px;
-    margin-bottom: 60px;
+    margin: 40px 0 60px;
     font-size: 40px;
 }
 
+/* コンテンツ全体のスタイル */
+#content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    box-sizing: border-box;
+}
+
+/* 質問ブロック（Q1, Q2, ...） */
 .question {
-    margin-bottom: 100px;
-    position: relative;  /* これを追加！ */
+    margin-bottom: 80px;
     text-align: center;
     font-size: 24px;
-    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
 }
 
-.question img {
-    width: 100%; /* レスポンシブ対応 */
-    max-width: 600px; /* 最大幅を設定 */
-    height: auto;
-    object-fit: cover;
-    display: block;
-    margin: 0 auto 10px;
-}
-
-.question p:first-child {
+.question-number {
+    margin-bottom: 5px;
     font-weight: bold;
     font-size: 28px;
     color: #007bff;
 }
 
-.feedback img {
-    width: 100%;
-    max-width: 600px;
+.question img {
+    width: 300px;
     height: auto;
-    display: none;
-    margin-top: -50px;  /* 画像を10px上に移動 */
+    object-fit: cover;
+    display: block;
+    margin: 0 auto 10px;
+    max-width: 100%;
 }
 
-.feedback {
-    position: absolute;  
-    top: 47%;   /* 上から50%の位置 */
-    left: 50%;
-    transform: translate(-50%, -50%);  /* 画像の中心を揃える */
-    width: 100%;  /* 親要素いっぱいに広げる */
-    max-width: 600px;  /* 問題画像と同じ幅 */
-    z-index: 20;  /* 他の要素より前面に */
-    display: none;
+/* 質問ブロック内の問題画像だけに適用 */
+.question img.illustration {
+    width: 100%; /* 親要素に合わせる */
+    max-width: 900px; /* 最大幅 */
+    height: auto;
+    object-fit: contain;
+    display: block;
+    margin: 0 auto 10px;
 }
 
+/* 英文 & 日本語テキスト */
+.english-text, 
+.japanese-text {
+    margin-bottom: 5px;
+}
+
+.japanese-text {
+    margin-top: 25px;
+    margin-bottom: 10px;
+}
+
+/* 最後の質問の余白 */
+.question:last-of-type {
+    margin-bottom: 80px;
+}
+
+/* 強調テキスト */
 .highlight {
     color: green;
     font-weight: bold;
 }
 
+.instructions,
+#finalInstructions {
+    background-color: #ffffff;
+    border: 1px solid #d1d5db;
+    text-align: center;
+    line-height: 1.6;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px auto; /* 余白を増やす */
+    padding: 20px; /* 余白を追加 */
+    width: 80%; /* 横幅を広げる */
+    max-width: 800px; /* 最大幅を広げる */
+}
+
+.instructions p {
+    text-align: left;
+    width: 100%;
+    max-width: 700px; /* 幅を増やす */
+}
+    
+
+/* 共通のスタイル */
+.box {
+    max-width: 1400px; /* 幅を統一 */
+    padding: 20px 80px; /* 横のパディングも少し増やす */
+    margin: 20px auto; /* 中央揃え */
+    border-radius: 5px; /* 角丸 */
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* 軽いシャドウ */
+    box-sizing: border-box; /* パディングを含めた幅計算 */
+}
+
+/* イラストのスタイル */
+.illustration1 {
+    width: 150%; /* 画像の幅を拡大（必要に応じて100%も試す） */
+    max-width: 500px; /* 最大幅を200px → 300pxに増やす */
+    height: auto; /* 縦横比を維持 */
+    display: block;
+    margin: 10px auto; /* 余白を調整 */
+}
+
+.illustration-container {
+    text-align: center; /* 親要素で中央配置 */
+}
+
+.illustration2 {
+    display: block;
+    margin: 0 auto;
+    width: 80%;
+    max-width: 400px;
+    height: auto;
+    margin-bottom: 50px; 
+}
+
+/* 親要素の中央配置を確実にする */
+.illustration-container {
+    text-align: center;
+}
+
+/* マイクボタンのスタイル */
 .mic-button {
     background-image: url("https://raw.githubusercontent.com/moguura/my-images/main/%E3%83%9E%E3%82%A4%E3%82%AF%E3%81%AE%E3%83%95%E3%83%AA%E3%83%BC%E3%82%A2%E3%82%A4%E3%82%B3%E3%83%B3%E3%81%9D%E3%81%AE21.png");
     background-size: cover;
@@ -83,7 +167,8 @@ h1 {
     height: 70px; 
     border-radius: 50%;
     cursor: pointer; 
-    margin: 10px auto; 
+    margin: 10px auto;
+    margin-top: 15px;
     transition: box-shadow 0.3s ease-in-out; /* 光るエフェクトのアニメーション */
 }
 
@@ -94,40 +179,81 @@ h1 {
 
 /* 録音中に光る */
 .mic-button.recording {
-    box-shadow: 0 0 15px rgba(255, 0, 0, 0.8); /* 赤く光る */
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.8)!important;/* 赤く光る */
 }
 .mic-button:disabled {
     background-color: gray;
     cursor: not-allowed;
 }
 
-.instructions,
-#finalInstructions {
-    background-color: #ffffff;
+.play-audio {
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    padding: 12px 24px; /* 内側の余白を大きく */
+    font-size: 18px; /* フォントサイズを大きく */
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+    display: block;
+    margin: -10px auto 0; /* 余白を調整 */
+}
+
+
+.audio-section {
+    margin-top: -10px; /* 画像とボタンの間を狭める */
+    text-align: center;
+}
+
+.play-audio:hover {
+    background-color: #0056b3;
+}
+
+/* 通知ボード */
+.notice-board {
+    background-color: #ffeeba;
     border: 1px solid #d1d5db;
     text-align: center;
-    line-height: 1.8; /* 行間を少し広げる */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: 40px auto; /* 上下の余白を少し増やす */
-    padding: 40px; /* 余白を増やす */
-    width: 90%; /* 幅を広げる */
-    max-width: 1000px; /* 最大幅を広げる */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* ほんのり影を追加 */
-    border-radius: 10px; /* 角を少し丸く */
+    margin-bottom: 50px; 
+    padding: 30px; /* 全体に余白を追加 */
 }
 
-.instructions p {
-    text-align: left;
-    width: 100%;
-    max-width: 800px; /* 説明テキストの幅を広げる */
+/* フィードバック */
+.feedback {
+    display: none;
 }
 
+.feedback-icon {
+    width: 100px !important; 
+    height: auto;
+    display: block;
+    margin: 20px auto;
+}
+
+.feedback-text {
+    font-size: 24px;
+    color: #333;
+    text-align: center;
+    font-weight: normal;
+    margin-top: 10px;
+    display: none;
+}
+
+/* 色付き強調 */
+.red-bold {
+    color: red;
+    font-weight: bold;
+}
+
+.blue-bold {
+    color: #007bff;
+    font-weight: bold;
+}
+    
 a {
    display:block; 
    text-align:center; 
-   margin:auto; 
+   margin-top: 100px; 
    color:#007bff; 
    text-decoration:none; 
    font-size :28px; 
@@ -141,40 +267,44 @@ a:hover {
    color:#0056b3;  
    transform : scale(1.05);  
 }
-
-.notice-board {
-   background-color:#ffeeba;  
-   margin:auto;  
-   max-width :900px;  
-   border :1px solid #d1d5db;  
-   border-radius :5px;  
-   padding :15px;  
-   text-align:center;  
+/* 赤い説明テキスト */
+.instruction-red {
+    color: red;
+    font-weight: normal;
+    font-size: 20px;
+    margin-top: 10px;
+}
+#intro-video {
+  text-align: center;
+  margin: 2rem auto;
+  padding: 1rem;
+  background-color: #f9f9f9;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  max-width: 700px;
 }
 
-.red-bold {
-   color:red;  
-   font-weight:bold;  
+#intro-video h2 {
+  font-size: 1.5rem;
+  color: #333;
+  margin-bottom: 1rem;
 }
 
-.blue-bold {
-   color:#007bff;  
-   font-weight:bold;  
+#intro-video video {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  border: 1px solid #ccc;
 }
 </style>
 </head>
 <body>
-    <h1>Activity 5</h1>
-    <div id="content">
-        <!-- 初めの説明文 -->
-        <div class="instructions">
-            <p>
-                Do you remember <span class="red-bold">さくら</span>? It's the next day now, and <span class="red-bold">さくら</span> is 
-                telling her friends about yesterday. You're going to be <span class="red-bold">さくら</span> and talk about what happened yesterday.<br> 
-                Let's try an example. Press the microphone button and say,<br> 
-                 <strong>てんきは よかったです</strong>。 or just, <strong>よかったです</strong>。<br> 
-            </p>
-        </div>
+  <section id="intro-video">
+    <video id="instructionVideo" controls>
+    <source src="https://raw.githubusercontent.com/moguura/my-images/main/Activity5.mp4" type="video/mp4">
+    お使いのブラウザは video タグをサポートしていません。
+  </video>
+</section>
 
 <!-- E1の例題 -->
 <div class="question" id="E1">
