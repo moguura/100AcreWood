@@ -568,6 +568,7 @@ h1 {
 </div>
     
 <script>
+<script>
 (function () {
   const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
   if (!SpeechRecognition) {
@@ -581,9 +582,8 @@ h1 {
   const instAudio    = document.getElementById('instructionAudio');
   let currentIndex   = 0;
 
-  // 各スライドの Next ボタン（もしくはリンク）
+  // 各スライドの Next ボタン（a要素または button）
   const nextButtons = slides.map(slide => {
-    // 最後の“END”スライドは a 要素
     if (slide.dataset.id === 'END') {
       return slide.querySelector('a');
     }
@@ -610,16 +610,16 @@ h1 {
     const msgs = {
       E1: 'えいがは よかったです。（The movie was good.）',
       E2: 'えいがは よくなかったです。（The movie was not good.）',
-      Q1: 'せんしゅうは いそがしかったです。',
-      Q2: 'りょうりは たかくなかったです。',
-      Q3: '２がつは さむくなかったです。',
-      Q4: 'ケーキは おおきくなかったです。',
-      Q5: 'ホテルは ちかかったです。',
-      Q6: 'レストランは あたらしくなかったです。',
-      Q7: 'ゆきは おおくなかったです。',
-      Q8: '８がつは あつかったです。',
-      Q9: 'パンは おいしくなかったです。',
-      Q10:'チケットは やすくなかったです。'
+      Q1: 'せんしゅうは いそがしかったです。（Last week was busy.）',
+      Q2: 'りょうりは たかくなかったです。（The dish was not expensive.）',
+      Q3: '２がつは さむくなかったです。（February was not cold.）',
+      Q4: 'ケーキは おおきくなかったです。（The cake was not big.）',
+      Q5: 'ホテルは ちかかったです。（The hotel was close.）',
+      Q6: 'レストランは あたらしくなかったです。（The restaurant was not new.）',
+      Q7: 'ゆきは おおくなかったです。（There was not much snow.）',
+      Q8: '８がつは あつかったです。（August was hot.）',
+      Q9: 'パンは おいしくなかったです。（The bread was not delicious.）',
+      Q10:'チケットは やすくなかったです。（The tickets was not cheap.）'
     };
     return msgs[id] || '';
   }
@@ -639,59 +639,78 @@ h1 {
   function goToSlide(idx) {
     slides.forEach((s, i) => s.style.display = i === idx ? 'block' : 'none');
     currentIndex = idx;
+    const id = slides[idx].dataset.id;
+    const btn = nextButtons[idx];
 
-    // 説明ボックススライド(I1)の音声再生
-    if (slides[idx].dataset.id === 'I1') {
-      const btn = nextButtons[idx];
-      btn.disabled = true;
-      instAudio.currentTime = 0;
-      instAudio.play();
-      instAudio.onended = () => { btn.disabled = false; };
+    // 1) 説明スライド I1
+    if (id === 'I1') {
+      if (btn) {
+        btn.disabled = true;
+        instAudio.currentTime = 0;
+        instAudio.play();
+        instAudio.onended = () => { btn.disabled = false; };
+      }
     }
-    // それ以外：Next ボタンを有効化
-    else if (nextButtons[idx]) {
-      nextButtons[idx].disabled = false;
+    // 2) ビデオスライド
+    else if (id.startsWith('video')) {
+      if (btn) btn.disabled = true;
+      // 有効化はビデオ ended イベントで
+    }
+    // 3) 例題スライド E1/E2 と 音声認識スライド Q*
+    else if (id.startsWith('E') || id.startsWith('Q')) {
+      if (btn) btn.disabled = true;
+      // 有効化は recognition.onend で
+    }
+    // 4) その他（例：cueだけのスライドなど）
+    else {
+      if (btn) btn.disabled = false;
     }
   }
 
   // 各 Next ボタンにイベントをバインド
   nextButtons.forEach((ctrl, idx) => {
     if (!ctrl) return;
+    const slideId = slides[idx].dataset.id;
 
-    // 最後のスライド「END」はリンクなのでクリック待ちだけ
-    if (slides[idx].dataset.id === 'END') return;
+    // END スライドはリンクなので処理不要
+    if (slideId === 'END') return;
 
     ctrl.disabled = true;
     ctrl.addEventListener('click', () => {
       clickSound.currentTime = 0;
       clickSound.play();
 
-      // Q10 の次（END スライド）だけはタスクエンド音を鳴らして 2 秒後に表示
-      if (slides[idx].dataset.id === 'Q10') {
+      // Q10 の次はタスク終了音再生→2秒後に END へ
+      if (slideId === 'Q10') {
         taskEndSound.currentTime = 0;
         taskEndSound.play();
-        setTimeout(() => {
-          goToSlide(idx + 1); // END スライドへ
-        }, 2000);
+        setTimeout(() => goToSlide(idx + 1), 2000);
         return;
       }
 
-      // それ以外は即次スライドへ
+      // 通常の次スライドへ
       const nextIdx = idx + 1;
       goToSlide(nextIdx);
       const cue = document.getElementById('cue' + slides[nextIdx].dataset.id);
-      if (cue) { cue.currentTime = 0; cue.play(); }
+      if (cue) {
+        cue.currentTime = 0;
+        cue.play();
+      }
     });
   });
 
-  // 動画終了で Next 有効化
-  ['video1','video2'].forEach((vid,i) => {
+  // ビデオ終了で Next 有効化
+  ['video1','video2'].forEach((vid, i) => {
     const v = document.getElementById(vid);
-    const b = document.getElementById(i===0?'nextVideo1':'nextVideo2');
-    if (v && b) v.addEventListener('ended', () => b.disabled = false);
+    const btn = document.getElementById( vid === 'video1' ? 'nextVideo1' : 'nextVideo2' );
+    if (v && btn) {
+      v.addEventListener('ended', () => {
+        btn.disabled = false;
+      });
+    }
   });
 
-  // 音声認識開始
+  // 音声認識開始＆終了で Next 有効化
   function startRecognition(id) {
     console.info(`[INFO] startRecognition: ${id}`);
     const rec = new SpeechRecognition();
@@ -699,47 +718,39 @@ h1 {
     rec.interimResults = true;
     rec.continuous     = true;
 
-    const btn = document.getElementById('startButton' + id);
-    btn.disabled = true;
-    btn.classList.add('recording');
+    const micBtn = document.getElementById('startButton' + id);
+    micBtn.disabled = true;
+    micBtn.classList.add('recording');
 
     let finalTranscript = '';
 
     rec.onresult = e => {
-      let interim = '';
       for (let i = e.resultIndex; i < e.results.length; i++) {
         const t = e.results[i][0].transcript;
         if (e.results[i].isFinal) finalTranscript += t;
-        else interim += t;
       }
-      if (interim) console.log(`[INTERIM][${id}]`, interim);
-      if (finalTranscript) console.log(`[FINAL][${id}]`, finalTranscript);
-      if (interim.includes('です')) rec.stop();
+      if (finalTranscript.includes('です')) rec.stop();
     };
     rec.onerror = evt => console.warn(`[ERROR][${id}]`, evt.error);
     rec.onend   = () => {
-      console.info(`[INFO] recognition ended for ${id}`);
-      btn.classList.remove('recording');
+      micBtn.classList.remove('recording');
       const txt = finalTranscript.trim();
-      if (txt) showFeedback(id, isCorrectAnswer(id, txt));
-      else {
-        console.warn(`[WARN][${id}] no speech captured`);
-        showFeedback(id, false);
-      }
+      showFeedback(id, txt ? isCorrectAnswer(id, txt) : false);
       document.getElementById('next' + id).disabled = false;
     };
 
     rec.start();
   }
 
-  // マイクボタンを一度だけイベント登録
+  // マイクボタンは一度だけイベント登録
   document.querySelectorAll('.mic-button').forEach(btn => {
     btn.addEventListener('click', () => {
-      startRecognition(btn.id.replace('startButton',''));
+      const id = btn.id.replace('startButton','');
+      startRecognition(id);
     }, { once: true });
   });
 
-  // 初期スライドを表示
+  // 初期スライド表示
   goToSlide(0);
 })();
 </script>
