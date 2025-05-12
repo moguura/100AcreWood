@@ -699,15 +699,16 @@ h1 {
   });
 
   // ビデオ終了で Next 有効化
-  ['video1','video2'].forEach((vid, i) => {
-    const v = document.getElementById(vid);
-    const btn = document.getElementById( vid === 'video1' ? 'nextVideo1' : 'nextVideo2' );
-    if (v && btn) {
-      v.addEventListener('ended', () => {
-        btn.disabled = false;
-      });
-    }
-  });
+['video1','video2'].forEach((vid, i) => {
+  const v = document.getElementById(vid);
+  const btn = document.getElementById( vid === 'video1' ? 'nextVideo1' : 'nextVideo2' );
+  if (v && btn) {
+    btn.disabled = true; // 初期状態で無効化
+    v.addEventListener('ended', () => {
+      btn.disabled = false;
+    });
+  }
+});
 
   // 音声認識開始＆終了で Next 有効化
   function startRecognition(id) {
