@@ -14,40 +14,147 @@ body {
     background-color: #f9f9f9;
     color: #333;
     font-size: 24px;
+    display: flex;
     flex-direction: column;
-    display: block;
+    align-items: center;
+    justify-content: center;
 }
 
+/* 見出し */
 h1 {
     text-align: center;
     margin: 40px 0 60px;
     font-size: 40px;
 }
 
-/* 質問エリアのスタイル */
+/* コンテンツ全体のスタイル */
+#content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    box-sizing: border-box;
+}
+
+/* 質問ブロック（Q1, Q2, ...） */
 .question {
-    margin-bottom: 100px;
+    margin-bottom: 80px;
     text-align: center;
     font-size: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
 }
-.question img {
-    width: 340px;
-    height: auto;
-    object-fit: cover;
-    display: block;
-    margin: 20px auto 10px;
-    max-width: 100%;
-}
-.question p:first-child {
+
+.question-number {
+    margin-bottom: 5px;
     font-weight: bold;
     font-size: 28px;
     color: #007bff;
 }
 
-/* キューのスタイル（緑色と太字） */
+.question img {
+    width: 300px;
+    height: auto;
+    object-fit: cover;
+    display: block;
+    margin: 0 auto 10px;
+    max-width: 100%;
+}
+
+/* 質問ブロック内の問題画像だけに適用 */
+.question img.illustration {
+    width: 100%; /* 親要素に合わせる */
+    max-width: 900px; /* 最大幅 */
+    height: auto;
+    object-fit: contain;
+    display: block;
+    margin: 0 auto 10px;
+}
+
+/* 英文 & 日本語テキスト */
+.english-text, 
+.japanese-text {
+    margin-bottom: 5px;
+}
+
+.japanese-text {
+    margin-top: 25px;
+    margin-bottom: 10px;
+}
+
+/* 最後の質問の余白 */
+.question:last-of-type {
+    margin-bottom: 80px;
+}
+
+/* 強調テキスト */
 .highlight {
     color: green;
     font-weight: bold;
+}
+
+.instructions,
+#finalInstructions {
+    background-color: #ffffff;
+    border: 1px solid #d1d5db;
+    text-align: center;
+    line-height: 1.6;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px auto; /* 余白を増やす */
+    padding: 20px; /* 余白を追加 */
+    width: 80%; /* 横幅を広げる */
+    max-width: 800px; /* 最大幅を広げる */
+}
+
+.instructions p {
+    text-align: left;
+    width: 100%;
+    max-width: 700px; /* 幅を増やす */
+}
+    
+
+/* 共通のスタイル */
+.box {
+    max-width: 1400px; /* 幅を統一 */
+    padding: 20px 80px; /* 横のパディングも少し増やす */
+    margin: 20px auto; /* 中央揃え */
+    border-radius: 5px; /* 角丸 */
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* 軽いシャドウ */
+    box-sizing: border-box; /* パディングを含めた幅計算 */
+}
+
+/* イラストのスタイル */
+.illustration1 {
+    width: 150%; /* 画像の幅を拡大（必要に応じて100%も試す） */
+    max-width: 500px; /* 最大幅を200px → 300pxに増やす */
+    height: auto; /* 縦横比を維持 */
+    display: block;
+    margin: 10px auto; /* 余白を調整 */
+}
+
+.illustration-container {
+    text-align: center; /* 親要素で中央配置 */
+}
+
+.illustration2 {
+    display: block;
+    margin: 0 auto;
+    width: 80%;
+    max-width: 400px;
+    height: auto;
+    margin-bottom: 50px; 
+}
+
+/* 親要素の中央配置を確実にする */
+.illustration-container {
+    text-align: center;
 }
 
 /* マイクボタンのスタイル */
@@ -56,142 +163,139 @@ h1 {
     background-size: cover;
     background-repeat: no-repeat;
     border: none;
-    width: 70px;
-    height: 70px;
+    width: 70px; 
+    height: 70px; 
     border-radius: 50%;
-    cursor: pointer;
+    cursor: pointer; 
     margin: 10px auto;
-    transition: box-shadow 0.3s ease-in-out;
+    margin-top: 15px;
+    transition: box-shadow 0.3s ease-in-out; /* 光るエフェクトのアニメーション */
 }
-.mic-button:active,
+
+/* 押している間に光る */
+.mic-button:active {
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.8); /* 赤く光る */
+}
+
+/* 録音中に光る */
 .mic-button.recording {
-    box-shadow: 0 0 15px rgba(255, 0, 0, 0.8);
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.8)!important;/* 赤く光る */
 }
 .mic-button:disabled {
     background-color: gray;
     cursor: not-allowed;
 }
 
-/* 説明文のスタイル */
-.instructions {
-    background-color: #ffffff;
-    border: 1px solid #d1d5db;
+.play-audio {
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    padding: 12px 24px; /* 内側の余白を大きく */
+    font-size: 18px; /* フォントサイズを大きく */
+    cursor: pointer;
     border-radius: 5px;
-    padding: 30px;            /* ← 内側の余白を広く */
-    margin: 40px auto 40px;   /* ← 上下 40px、左右中央寄せ */
-    font-size: 24px;
-    line-height: 1.6;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    max-width: 900px;
-    width: 100%;
-    text-align: left;
+    transition: background-color 0.3s;
+    display: block;
+    margin: -10px auto 0; /* 余白を調整 */
 }
 
 
-/* スライド内の video 全般 */
-.slide video {
-    width: 100%;
-    max-width: 650px;   /* コンパクトな幅に調整 */
-    height: auto;
+.audio-section {
+    margin-top: -10px; /* 画像とボタンの間を狭める */
+    text-align: center;
+}
+
+.play-audio:hover {
+    background-color: #0056b3;
+}
+
+/* 通知ボード */
+.notice-board {
+    background-color: #ffeeba;
     border: 1px solid #d1d5db;
-    border-radius: 5px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-    display: block;      /* 中央寄せ用 */
-    margin: 20px auto;   /* 中央寄せ用 */
+    text-align: center;
+    margin-bottom: 50px; 
+    padding: 30px; /* 全体に余白を追加 */
 }
 
-.instruction {
-    max-width: 480px;     /* お好みの幅に */
-    margin: 16px auto;    /* 上下マージン＆左右中央寄せ */
-    text-align: center;    
-    font-size: 20px;      /* 必要に応じて */
-    line-height: 1.5;
-    color: #333;
-}
-
-.interaction {
-    display: flex;
-    align-items: center;
-    justify-content: center;  /* 中央寄せ */
-    gap: 10px;
-    margin-top: 10px;
-    width: 100%;              /* 幅いっぱいを取る */
-}
-
-.feedback-icons {
+/* フィードバック */
+.feedback {
     display: none;
-    align-items: center;
 }
-.feedback-icons img {
-    width: 32px;
-    height: 32px;
+
+.feedback-icon {
+    width: 100px !important; 
+    height: auto;
+    display: block;
+    margin: 20px auto;
 }
 
 .feedback-text {
-    display: none;
-    text-align: center;
-    margin-top: 8px;
-    font-size: 1em;
+    font-size: 24px;
     color: #333;
-}
-
-/* 次ページリンク */
-#nextPageLink {
+    text-align: center;
+    font-weight: normal;
+    margin-top: 10px;
     display: none;
-    text-align: center;
-    margin: 30px auto;
-    color: #007bff;
-    text-decoration: none;
-    font-size: 28px;
+}
+
+/* 色付き強調 */
+.red-bold {
+    color: red;
     font-weight: bold;
-    padding: 10px 20px;
-    transition: all 0.3s ease;
-}
-#nextPageLink:hover {
-    text-decoration: underline;
-    color: #0056b3;
-    transform: scale(1.05);
 }
 
-/* お知らせボード */
-.notice-board {
-    background-color: #ffeeba;
-    margin: 20px auto;
-    max-width: 900px;
-    width: 100%;
-    border: 1px solid #d1d5db;
-    border-radius: 5px;
-    padding: 15px;
-    box-sizing: border-box;
-    text-align: center;
+.blue-bold {
+    color: #007bff;
+    font-weight: bold;
+}
+    
+a {
+   display:block; 
+   text-align:center; 
+   margin-top: 100px; 
+   color:#007bff; 
+   text-decoration:none; 
+   font-size :28px; 
+   font-weight:bold; 
+   padding :10px 20px; 
+   transition : all .3s ease;  
 }
 
-/* テキスト装飾 */
-.red-bold { color: red; font-weight: bold; }
-.blue-bold { color: #007bff; font-weight: bold; }
-.blue-text { color: #007bff; font-weight: normal; font-size: 20px; }
+a:hover {
+   text-decoration : underline;  
+   color:#0056b3;  
+   transform : scale(1.05);  
+}
+/* 赤い説明テキスト */
+.instruction-red {
+    color: red;
+    font-weight: normal;
+    font-size: 20px;
+    margin-top: 10px;
+}
+#intro-video {
+  text-align: center;
+  margin: 2rem auto;
+  padding: 1rem;
+  background-color: #f9f9f9;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  max-width: 700px;
+}
 
-/* スライド全体の枠 */
-#slides {
+#intro-video h2 {
+  font-size: 1.5rem;
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+#intro-video video {
   width: 100%;
-  max-width: 900px;
-  margin: 0 auto;
-  box-sizing: border-box;
-  position: relative;
+  height: auto;
+  border-radius: 8px;
+  border: 1px solid #ccc;
 }
-
-/* 各スライドは通常非表示 */
-.slide {
-  display: none;
-  width: 100%;
-  box-sizing: border-box;
-}
-
-/* 現在表示しているスライド */
-.slide.active {
-  display: block;
-}
-
 /* Nextボタンエリア */
 .nav-next {
     display: flex;
@@ -214,14 +318,6 @@ h1 {
 .nav-next button:disabled {
     background: #ccc;
     cursor: not-allowed;
-}
-
-/* ──────────────────────────────────── */
-/* 追加：スライド内の画像・動画を中央寄せ */
-.slide img,
-.slide video {
-  display: block;
-  margin: 20px auto;
 }
 </style>
 </head>
