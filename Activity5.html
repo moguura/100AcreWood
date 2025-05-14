@@ -89,37 +89,38 @@ a:hover {
 
 /* ========== 質問ブロック ========== */
 .question {
+  position: relative;      /* 親を基準に絶対配置 */
+  display: inline-block;   /* イラストサイズにフィット */
   margin-bottom: 80px;
   text-align: center;
-  font-size: 24px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 5px;
-}
-
-.question-number {
-  font-weight: bold;
-  font-size: 28px;
-  color: #007bff;
-  margin-bottom: 5px;
 }
 
 .question img {
   display: block;
-  margin: 0 auto 10px;
+  margin: 0 auto;
   max-width: 100%;
   height: auto;
   object-fit: cover;
 }
 
-.question img.illustration {
-  max-width: 900px;
-  object-fit: contain;
+/* フィードバック要素 */
+.feedback {
+  display: none;           /* 初期は非表示 */
+  position: absolute;      /* 絶対配置で重ねる */
+  top: 50%;                /* 親(.question)の真ん中 */
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
-.question:last-of-type {
-  margin-bottom: 80px;
+/* 正解／不正解アイコン */
+.feedback .correctImage,
+.feedback .wrongImage {
+  position: absolute;      /* 親(.feedback)内で */
+  width: 120px;            /* サイズ調整 */
+  height: 120px;
+  top: 0;
+  left: 0;
+  pointer-events: none;    /* クリックを透過 */
 }
 
 /* ========== テキスト装飾 ========== */
@@ -136,11 +137,6 @@ a:hover {
 .red-bold { color: red; font-weight: bold; }
 .blue-bold { color: #007bff; font-weight: bold; }
 .instruction-red { color: red; font-size: 20px; margin-top: 10px; }
-
-/* ========== イラスト ========== */
-.illustration-container { text-align: center; }
-.illustration1 { max-width: 500px; width: 100%; margin: 10px auto; height: auto; }
-.illustration2 { max-width: 400px; width: 80%; margin: 0 auto 50px; height: auto; }
 
 /* ========== オーディオ / ボタン ========== */
 .mic-button {
