@@ -93,12 +93,10 @@ a:hover {
   text-align: center;
 }
 
-/* デバッグ用：まずは必ず出ているか確認 */
 .image-wrapper {
   position: relative;
   display: inline-block;
   margin: 0 auto 10px;
-  /* overflow: visible; */ /* 念のため */
 }
 
 /* 問題イラスト */
@@ -107,18 +105,19 @@ a:hover {
   max-width: 300px;
   width: 100%;
   height: auto;
-  object-fit: cover;
 }
 
-/* フィードバックアイコンコンテナを強制表示＋枠線 */
+/* — デバッグ用CSS: コンテナを子要素込みで展開 — */
 .image-wrapper .feedback {
   display: block !important;
   position: absolute;
   top: 0;
   left: 0;
+  width: 100%;          /* ← 追加 */
+  height: 100%;         /* ← 追加 */
   pointer-events: none;
-  z-index: 9999;                /* 最前面に */
-  border: 2px dashed red !important;  /* 枠線で位置を確認 */
+  z-index: 9999;
+  border: 2px dashed red !important;
 }
 
 /* アイコン画像も強制表示 */
@@ -130,7 +129,7 @@ a:hover {
   left: 0;
   width: 100% !important;
   height: auto;
-  opacity: 0.7; /* 半透明にして背景も見えるように */
+  opacity: 0.7;
 }
     
 .japanese-text {
