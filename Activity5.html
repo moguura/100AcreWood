@@ -93,11 +93,12 @@ a:hover {
   text-align: center;
 }
 
-/* ===== 画像ラッパー ===== */
+/* デバッグ用：まずは必ず出ているか確認 */
 .image-wrapper {
   position: relative;
   display: inline-block;
   margin: 0 auto 10px;
+  /* overflow: visible; */ /* 念のため */
 }
 
 /* 問題イラスト */
@@ -109,27 +110,27 @@ a:hover {
   object-fit: cover;
 }
 
-/* フィードバックアイコンコンテナ（常に表示） */
+/* フィードバックアイコンコンテナを強制表示＋枠線 */
 .image-wrapper .feedback {
-  position: absolute;
-  top: 0;         /* 左上を合わせる */
-  left: 0;
-  transform: none;
-  pointer-events: none;
-  z-index: 10;
-  /* デバッグ時は枠を見えるようにする */
-  /* border: 1px dashed red; */
-}
-
-/* アイコン画像は最初非表示、幅は親に合わせる */
-.image-wrapper .feedback .correctImage,
-.image-wrapper .feedback .wrongImage {
-  display: none;    /* JSで必要時に display = 'block' */
+  display: block !important;
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;      /* 親と同じ幅 */
+  pointer-events: none;
+  z-index: 9999;                /* 最前面に */
+  border: 2px dashed red !important;  /* 枠線で位置を確認 */
+}
+
+/* アイコン画像も強制表示 */
+.image-wrapper .feedback .correctImage,
+.image-wrapper .feedback .wrongImage {
+  display: block !important;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100% !important;
   height: auto;
+  opacity: 0.7; /* 半透明にして背景も見えるように */
 }
     
 .japanese-text {
