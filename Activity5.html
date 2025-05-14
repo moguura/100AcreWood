@@ -109,27 +109,28 @@ a:hover {
   object-fit: cover;
 }
 
-/* フィードバックアイコンを中央に重ねる */
+/* フィードバックアイコンをぴったり重ねる */
 .image-wrapper .feedback {
-  display: none;
+  display: none;         /* 最初は非表示 */
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  top: 0;                /* ← ここを中央合わせから左上合わせに */
+  left: 0;
+  transform: none;       /* 不要な translate は削除 */
   pointer-events: none;
   z-index: 10;
 }
 
-/* アイコンサイズはイラストと同じ */
+/* アイコン画像を隠しつつ、幅は親と同じ100%に */
 .image-wrapper .feedback .correctImage,
 .image-wrapper .feedback .wrongImage {
+  display: none;   /* JSで必要なものだけ show */
   position: absolute;
   top: 0;
   left: 0;
-  width: 300px;
+  width: 100%;     /* ← 300px → 100% に */
   height: auto;
 }
-
+    
 .japanese-text {
   margin: 25px 0 10px;
 }
