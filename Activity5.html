@@ -87,49 +87,49 @@ a:hover {
   box-sizing: border-box;
 }
 
-/* ========== 質問ブロック ========== */
+/* ===== 質問ブロック周りをリセット ===== */
 .question {
   margin-bottom: 80px;
   text-align: center;
 }
 
-/* 画像ラッパー */
+/* ===== 画像ラッパー（新ルール） ===== */
 .image-wrapper {
-  position: relative;      /* ラッパーを基準に絶対配置 */
-  display: inline-block;   /* 画像サイズにフィット */
+  position: relative;
+  display: inline-block;
   margin: 0 auto 10px;
 }
 
 /* 問題イラスト */
 .image-wrapper img {
   display: block;
-  max-width: 300px;        /* イラストのサイズ */
+  max-width: 300px;
   width: 100%;
   height: auto;
   object-fit: cover;
 }
 
-/* フィードバック要素 */
+/* フィードバックアイコンを中央に重ねる */
 .image-wrapper .feedback {
-  display: none;           /* 初期非表示 */
-  position: absolute;      /* ラッパー内で絶対配置 */
-  top: 50%;                
+  display: none;
+  position: absolute;
+  top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  pointer-events: none;    /* 下の要素をクリック可能に */
-  z-index: 10;             /* 前面に */
+  pointer-events: none;
+  z-index: 10;
 }
 
-/* 正解／不正解アイコン */
+/* アイコンサイズはイラストと同じ */
 .image-wrapper .feedback .correctImage,
 .image-wrapper .feedback .wrongImage {
-  width: 300px;            /* イラストと同じ幅 */
-  height: auto;
   position: absolute;
   top: 0;
   left: 0;
+  width: 300px;
+  height: auto;
 }
-    
+
 .japanese-text {
   margin: 25px 0 10px;
 }
