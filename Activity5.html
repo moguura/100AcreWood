@@ -96,13 +96,14 @@
   .image-wrapper {
     position: relative;
     display: inline-block;
-    margin: 0 auto 10px;
+    /* — ④ イラストを少しだけ下げる — */
+    margin: 5px auto 10px;
   }
 
   /* — ❷ イラストを大きく — */
   .image-wrapper img {
     display: block;
-    max-width: 400px;  /* ← ここをお好みで変更 */
+    max-width: 400px;  /* お好みで調整 */
     width: 100%;
     height: auto;
     object-fit: cover;
@@ -123,7 +124,7 @@
   /* — ❸ アイコンも同じ大きさに — */
   .image-wrapper .feedback .correctImage,
   .image-wrapper .feedback .wrongImage {
-    display: none;        /* JSで必要時に切り替え */
+    display: none;        /* JSで切り替え */
     position: absolute;
     top: 0;
     left: 0;
@@ -178,6 +179,10 @@
     margin: 10px auto 0;
     padding: 0 20px;
     box-sizing: border-box;
+  }
+  /* — ① Nextボタンをマイクボタンに近づける — */
+  .question .nav-next {
+    margin-top: 5px !important;
   }
   .nav-next button {
     padding: 10px 20px;
