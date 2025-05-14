@@ -5,217 +5,214 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Activity5</title>
 <style>
-body {
-  font-family: Arial, sans-serif;
-  line-height: 1.6;
-  margin: 0;
-  padding: 0;
-  background-color: #f9f9f9;
-  color: #333;
-  font-size: 24px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
+  /* ベース設定 */
+  body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+    color: #333;
+    font-size: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  h1 {
+    text-align: center;
+    margin: 40px 0 60px;
+    font-size: 40px;
+  }
+  a {
+    display: block;
+    text-align: center;
+    margin: 100px auto 0;
+    color: #007bff;
+    text-decoration: none;
+    font-size: 28px;
+    font-weight: bold;
+    padding: 10px 20px;
+    transition: all .3s ease;
+  }
+  a:hover {
+    text-decoration: underline;
+    color: #0056b3;
+    transform: scale(1.05);
+  }
 
-h1 {
-  text-align: center;
-  margin: 40px 0 60px;
-  font-size: 40px;
-}
+  /* ========== コンテナ設定 ========== */
+  #content,
+  .instructions,
+  #finalInstructions {
+    width: 100%;
+    max-width: 1200px;
+    margin: 20px auto;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .instructions,
+  #finalInstructions {
+    background-color: #fff;
+    border: 1px solid #d1d5db;
+    padding: 20px;
+  }
+  .instructions p {
+    text-align: left;
+    width: 100%;
+    max-width: 700px;
+  }
+  .notice-board {
+    background-color: #ffeeba;
+    border: 1px solid #d1d5db;
+    text-align: center;
+    padding: 30px;
+    margin-bottom: 50px;
+  }
+  .box {
+    max-width: 1400px;
+    padding: 20px 80px;
+    margin: 20px auto;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+  }
 
-a {
-  display: block;
-  text-align: center;
-  margin: 100px auto 0;
-  color: #007bff;
-  text-decoration: none;
-  font-size: 28px;
-  font-weight: bold;
-  padding: 10px 20px;
-  transition: all .3s ease;
-}
+  /* ===== 質問ブロック周りをリセット ===== */
+  .question {
+    margin-bottom: 80px;
+    text-align: center;
+  }
 
-a:hover {
-  text-decoration: underline;
-  color: #0056b3;
-  transform: scale(1.05);
-}
+  /* — ❶ 問題番号を非表示 — */
+  .question > p:first-of-type {
+    display: none !important;
+  }
 
-/* ========== コンテナ設定 ========== */
-#content,
-.instructions,
-#finalInstructions {
-  width: 100%;
-  max-width: 1200px;
-  margin: 20px auto;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
+  /* ===== 画像ラッパー ===== */
+  .image-wrapper {
+    position: relative;
+    display: inline-block;
+    margin: 0 auto 10px;
+  }
 
-.instructions,
-#finalInstructions {
-  background-color: #fff;
-  border: 1px solid #d1d5db;
-  padding: 20px;
-}
+  /* — ❷ イラストを大きく — */
+  .image-wrapper img {
+    display: block;
+    max-width: 400px;  /* ← ここをお好みで変更 */
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+  }
 
-.instructions p {
-  text-align: left;
-  width: 100%;
-  max-width: 700px;
-}
+  /* フィードバックアイコンコンテナ */
+  .image-wrapper .feedback {
+    display: none;        /* 初期は隠す */
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;          /* ラッパー全体を覆う */
+    height: 100%;
+    pointer-events: none;
+    z-index: 10;
+  }
 
-.notice-board {
-  background-color: #ffeeba;
-  border: 1px solid #d1d5db;
-  text-align: center;
-  padding: 30px;
-  margin-bottom: 50px;
-}
+  /* — ❸ アイコンも同じ大きさに — */
+  .image-wrapper .feedback .correctImage,
+  .image-wrapper .feedback .wrongImage {
+    display: none;        /* JSで必要時に切り替え */
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;          /* 親と同じ幅 */
+    height: auto;
+  }
 
-.box {
-  max-width: 1400px;
-  padding: 20px 80px;
-  margin: 20px auto;
-  border-radius: 5px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  box-sizing: border-box;
-}
+  .japanese-text {
+    margin: 25px 0 10px;
+  }
+  .highlight { color: green; font-weight: bold; }
+  .red-bold { color: red; font-weight: bold; }
+  .blue-bold { color: #007bff; font-weight: bold; }
+  .instruction-red { color: red; font-size: 20px; margin-top: 10px; }
 
-/* ===== 質問ブロック周りをリセット ===== */
-.question {
-  margin-bottom: 80px;
-  text-align: center;
-}
+  /* ========== オーディオ / ボタン ========== */
+  .mic-button {
+    width: 70px;
+    height: 70px;
+    border: none;
+    border-radius: 50%;
+    background: url("https://raw.githubusercontent.com/moguura/my-images/main/%E3%83%9E%E3%82%A4%E3%82%AF%E3%81%AE%E3%83%95%E3%83%AA%E3%83%BC%E3%82%A2%E3%82%A4%E3%82%B3%E3%83%B3%E3%81%9D%E3%81%AE21.png") no-repeat center/cover;
+    cursor: pointer;
+    margin: 15px auto 10px;
+    transition: box-shadow .3s;
+  }
+  .mic-button:active,
+  .mic-button.recording { box-shadow: 0 0 15px rgba(255,0,0,0.8)!important; }
+  .mic-button:disabled { background-color: gray; cursor: not-allowed; }
 
-/* ===== 画像ラッパー ===== */
-.image-wrapper {
-  position: relative;
-  display: inline-block;
-  margin: 0 auto 10px;
-}
+  .play-audio {
+    display: block;
+    margin: -10px auto 0;
+    padding: 12px 24px;
+    font-size: 18px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007BFF;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color .3s;
+  }
+  .play-audio:hover { background-color: #0056b3; }
+  .audio-section { text-align: center; margin-top: -10px; }
 
-/* 問題イラスト */
-.image-wrapper img {
-  display: block;
-  max-width: 300px;
-  width: 100%;
-  height: auto;
-  object-fit: cover;
-}
+  /* ========== ナビゲーション ========== */
+  .nav-next {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+    max-width: 900px;
+    margin: 10px auto 0;
+    padding: 0 20px;
+    box-sizing: border-box;
+  }
+  .nav-next button {
+    padding: 10px 20px;
+    font-size: 18px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    background: #007bff;
+    color: #fff;
+  }
+  .nav-next button:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+  }
 
-/* フィードバックアイコンコンテナ */
-.image-wrapper .feedback {
-  display: none;        /* 初期は隠す */
-  position: absolute;
-  top: 0;               /* 左上を合わせる */
-  left: 0;
-  width: 100%;          /* ラッパー全体を覆う */
-  height: 100%;
-  pointer-events: none;
-  z-index: 10;
-}
-
-/* アイコン画像 */
-.image-wrapper .feedback .correctImage,
-.image-wrapper .feedback .wrongImage {
-  display: none;        /* JSで必要時に切り替え */
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;          /* 親と同じ幅 */
-  height: auto;
-}
-    
-.japanese-text {
-  margin: 25px 0 10px;
-}
-
-.highlight { color: green; font-weight: bold; }
-.red-bold { color: red; font-weight: bold; }
-.blue-bold { color: #007bff; font-weight: bold; }
-.instruction-red { color: red; font-size: 20px; margin-top: 10px; }
-
-/* ========== オーディオ / ボタン ========== */
-.mic-button {
-  width: 70px;
-  height: 70px;
-  border: none;
-  border-radius: 50%;
-  background: url("https://raw.githubusercontent.com/moguura/my-images/main/%E3%83%9E%E3%82%A4%E3%82%AF%E3%81%AE%E3%83%95%E3%83%AA%E3%83%BC%E3%82%A2%E3%82%A4%E3%82%B3%E3%83%B3%E3%81%9D%E3%81%AE21.png") no-repeat center/cover;
-  cursor: pointer;
-  margin: 15px auto 10px;
-  transition: box-shadow .3s;
-}
-.mic-button:active,
-.mic-button.recording { box-shadow: 0 0 15px rgba(255,0,0,0.8)!important; }
-.mic-button:disabled { background-color: gray; cursor: not-allowed; }
-
-.play-audio {
-  display: block;
-  margin: -10px auto 0;
-  padding: 12px 24px;
-  font-size: 18px;
-  border: none;
-  border-radius: 5px;
-  background-color: #007BFF;
-  color: #fff;
-  cursor: pointer;
-  transition: background-color .3s;
-}
-.play-audio:hover { background-color: #0056b3; }
-.audio-section { text-align: center; margin-top: -10px; }
-
-/* ========== ナビゲーション ========== */
-.nav-next {
-  display: flex;
-  justify-content: flex-end;
-  width: 100%;
-  max-width: 900px;
-  margin: 10px auto 0;
-  padding: 0 20px;
-  box-sizing: border-box;
-}
-.nav-next button {
-  padding: 10px 20px;
-  font-size: 18px;
-  cursor: pointer;
-  border: none;
-  border-radius: 5px;
-  background: #007bff;
-  color: #fff;
-}
-.nav-next button:disabled {
-  background: #ccc;
-  cursor: not-allowed;
-}
-
-/* ========== イントロビデオ ========== */
-#intro-video {
-  text-align: center;
-  margin: 2rem auto;
-  max-width: 650px;
-}
-#intro-video h2 {
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
-}
-#intro-video video {
-  width: 100%;
-  max-width: 650px;
-  height: auto;
-  border: 1px solid #d1d5db;
-  border-radius: 5px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-  display: block;
-  margin: 20px auto;
-}
-
+  /* ========== イントロビデオ ========== */
+  #intro-video {
+    text-align: center;
+    margin: 2rem auto;
+    max-width: 650px;
+  }
+  #intro-video h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+  #intro-video video {
+    width: 100%;
+    max-width: 650px;
+    height: auto;
+    border: 1px solid #d1d5db;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    display: block;
+    margin: 20px auto;
+  }
 </style>
 </head>
 <body>
