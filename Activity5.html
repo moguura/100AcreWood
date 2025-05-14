@@ -93,7 +93,7 @@ a:hover {
   text-align: center;
 }
 
-/* ===== 画像ラッパー（新ルール） ===== */
+/* ===== 画像ラッパー ===== */
 .image-wrapper {
   position: relative;
   display: inline-block;
@@ -109,25 +109,26 @@ a:hover {
   object-fit: cover;
 }
 
-/* フィードバックアイコンをぴったり重ねる */
+/* フィードバックアイコンコンテナ（常に表示） */
 .image-wrapper .feedback {
-  display: none;         /* 最初は非表示 */
   position: absolute;
-  top: 0;                /* ← ここを中央合わせから左上合わせに */
+  top: 0;         /* 左上を合わせる */
   left: 0;
-  transform: none;       /* 不要な translate は削除 */
+  transform: none;
   pointer-events: none;
   z-index: 10;
+  /* デバッグ時は枠を見えるようにする */
+  /* border: 1px dashed red; */
 }
 
-/* アイコン画像を隠しつつ、幅は親と同じ100%に */
+/* アイコン画像は最初非表示、幅は親に合わせる */
 .image-wrapper .feedback .correctImage,
 .image-wrapper .feedback .wrongImage {
-  display: none;   /* JSで必要なものだけ show */
+  display: none;    /* JSで必要時に display = 'block' */
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;     /* ← 300px → 100% に */
+  width: 100%;      /* 親と同じ幅 */
   height: auto;
 }
     
