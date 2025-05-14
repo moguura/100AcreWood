@@ -95,10 +95,12 @@ a:hover {
   text-align: center;
 }
 
+/* 問題イラスト */
 .question img {
   display: block;
   margin: 0 auto;
-  max-width: 100%;
+  max-width: 300px;        /* ← 小さく調整 */
+  width: 100%;
   height: auto;
   object-fit: cover;
 }
@@ -106,8 +108,8 @@ a:hover {
 /* フィードバック要素 */
 .feedback {
   display: none;           /* 初期は非表示 */
-  position: absolute;      /* 絶対配置で重ねる */
-  top: 50%;                /* 親(.question)の真ん中 */
+  position: absolute;      /* .question内で絶対配置 */
+  top: 50%;                /* 親(.question)の中央 */
   left: 50%;
   transform: translate(-50%, -50%);
 }
@@ -115,14 +117,15 @@ a:hover {
 /* 正解／不正解アイコン */
 .feedback .correctImage,
 .feedback .wrongImage {
-  position: absolute;      /* 親(.feedback)内で */
-  width: 120px;            /* サイズ調整 */
-  height: 120px;
+  position: absolute;      /* .feedback内で */
+  width: 300px;            /* ← 問題イラストと同じ幅 */
+  height: auto;            /* アスペクト比を保持 */
   top: 0;
   left: 0;
-  pointer-events: none;    /* クリックを透過 */
+  pointer-events: none;    /* 下のボタンを透過 */
+  z-index: 10;             /* 念のため前面に */
 }
-
+    
 /* ========== テキスト装飾 ========== */
 .english-text,
 .japanese-text {
