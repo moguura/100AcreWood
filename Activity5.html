@@ -44,26 +44,27 @@
     transform: scale(1.05);
   }
 
-  /* ========== コンテナ設定 ========== */
-  #content,
-  .instructions,
-  #finalInstructions {
-    width: 100%;
-    max-width: 1200px;
-    margin: 20px auto;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }
+/* ========== コンテナ設定 ========== */
+#content {
+  width: 100%;
+  max-width: 1200px;
+  margin: 20px auto;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
 
-  .instructions,
-  #finalInstructions {
-    background-color: #fff;
-    border: 1px solid #d1d5db;
-    padding: 20px;
-  }
+/* ===== 説明ボックスの余白拡大 ===== */
+.instructions,
+#finalInstructions {
+  background-color: #fff;
+  border: 1px solid #d1d5db;
+  padding: 40px 60px;    /* 上下40px・左右60px */
+  margin: 20px auto 40px;/* 上下20px、下40pxの余白 */
+  box-sizing: border-box;
+}
 
   .instructions p {
     text-align: left;
@@ -79,14 +80,14 @@
     margin-bottom: 50px;
   }
 
-  .box {
-    max-width: 1400px;
-    padding: 20px 80px;
-    margin: 20px auto;
-    border-radius: 5px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    box-sizing: border-box;
-  }
+.box {
+  max-width: 1400px;
+  padding: 40px 80px;
+  margin: 20px auto;
+  border-radius: 5px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+}
 
   /* ========== 問題ブロック ========== */
   .question {
