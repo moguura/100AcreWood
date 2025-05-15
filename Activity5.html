@@ -612,7 +612,7 @@
     Q1: ["かった"], Q2: ["かった"], Q3: ["かった"],
     Q4: ["くなかった"], Q5: ["くなかった"], Q6: ["かった"],
     Q7: ["くなかった"], Q8: ["かった"], Q9: ["くなかった"],
-    Q10:["かった"]
+    Q10: ["かった"]
   };
   Object.keys(answers).forEach(key => {
     answers[key] = answers[key].flatMap(w => [w, w + 'です']);
@@ -637,7 +637,7 @@
     const btn = nextButtons[idx];
     if (!btn) return;
 
-    btn.style.display = '';   // 例題で隠していた場合も必ず表示
+    btn.style.display = '';
 
     if (id === 'intro') {
       // 説明ビデオスライド: 動画終了までボタン無効
@@ -646,12 +646,23 @@
       vid.currentTime = 0;
       vid.onended = () => btn.disabled = false;
 
+    } else if (id === 'I1') {
+      // Q1前の指示スライド: 音声終了までボタン無効
+      btn.disabled = true;
+      const audio = document.getElementById('instructionAudio');
+      if (audio) {
+        audio.currentTime = 0;
+        audio.onended = () => btn.disabled = false;
+        audio.play().catch(() => {});
+      }
+
     } else if (id === 'explanationBox') {
       // 説明ボックススライド: 音声終了までボタン無効
       btn.disabled = true;
       const audio = document.getElementById('explanationAudio');
       audio.currentTime = 0;
       audio.onended = () => btn.disabled = false;
+      audio.play().catch(() => {});
 
     } else if (!/^Q[0-9]+$/.test(id) && id !== 'E1') {
       // それ以外の説明用スライド（E1/Q1〜Q10を除く）は常に有効
