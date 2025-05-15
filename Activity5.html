@@ -615,20 +615,33 @@
 
     playCueSound(id);
 
+    const btn = nextButtons[idx];
+    if (!btn) return;
+
+    // intro スライド
     if (id === 'intro') {
-      nextButtons[idx].disabled = true;
+      btn.disabled = true;
       const vid = document.getElementById('instructionVideo');
       vid.currentTime = 0;
       vid.play();
-      vid.onended = () => nextButtons[idx].disabled = false;
-    } else {
-      nextButtons[idx] && (nextButtons[idx].disabled = true); // ← ここも無効にする
+      vid.onended = () => btn.disabled = false;
+    }
+
+    // 説明用スライド (例: E1_EXなど) → ボタン有効
+    else if (!/^Q[0-9]+$/.test(id)) {
+      btn.disabled = false;
+    }
+
+    // 問題スライド（Q1〜Q10）→ ボタンは無効。フィードバック後に有効化
+    else {
+      btn.disabled = true;
     }
   }
 
   nextButtons.forEach((btn, idx) => {
     if (!btn) return;
     if (slides[idx].dataset.id === 'END') return;
+
     btn.disabled = true;
     btn.addEventListener('click', () => {
       clickSound.currentTime = 0;
