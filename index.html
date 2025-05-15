@@ -335,6 +335,7 @@ h1 {
     <div class="instructions">
       <p>Now, please speak in the same way for the following questions as well.<br>You can speak into the microphone <span class="red-bold">just once</span>.</p>
     </div>
+    <audio id="instructionAudio" src="https://raw.githubusercontent.com/moguura/my-images/main/1-setsumei.mp3"></audio>
     <div class="nav-next"><button id="nextToQ" disabled>Next</button></div>
   </div>
     
@@ -841,13 +842,22 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
     else if (i === 4) {
-      // 説明Box
-      nextToQ.disabled = false;
-      nextToQ.onclick = () => {
-        playClickSound();
-        showSlide(5);
-      };
-    }
+  // 説明Box：音声が終わったらNext有効
+  const instructionAudio = document.getElementById('instructionAudio');
+  nextToQ.disabled = true;
+
+  // 再生して終了時にボタンを有効化
+  instructionAudio.currentTime = 0;
+  instructionAudio.play().catch(() => {});
+
+  instructionAudio.onended = () => {
+    nextToQ.disabled = false;
+    nextToQ.onclick = () => {
+      playClickSound();
+      showSlide(5);
+    };
+  };
+}
     else if (i >= 5 && i <= 14) {
       // Q1～Q10
       const qnum = i - 4;
