@@ -584,18 +584,19 @@
   const buttonsPressed = {};
 
   const answers = {
-    E1: ["よかった", "良かった"],
-    Q1: ["あたたかかった", "暖かかった"],
-    Q2: ["つめたかった", "冷たかった"],
-    Q3: ["むずかしかった", "難しかった"],
-    Q4: ["よくなかった", "良くなかった"],
-    Q5: ["おもくなかった", "重くなかった"],
-    Q6: ["すずしかった", "涼しかった"],
-    Q7: ["おもしろくなかった", "面白くなかった"],
-    Q8: ["すくなかった", "少なかった"],
-    Q9: ["からくなかった", "辛くなかった"],
-    Q10: ["たのしかった", "楽しかった"]
+    E1: ["かった"],
+    Q1: ["かった"],
+    Q2: ["かった"],
+    Q3: ["かった"],
+    Q4: ["くなかった"],
+    Q5: ["くなかった"],
+    Q6: ["かった"],
+    Q7: ["くなかった"],
+    Q8: ["くなかった"],
+    Q9: ["くなかった"],
+    Q10: ["かった"]
   };
+
   Object.keys(answers).forEach(key => {
     answers[key] = answers[key].flatMap(w => [w, w + 'です']);
   });
@@ -618,35 +619,25 @@
     const btn = nextButtons[idx];
     if (!btn) return;
 
-    // intro スライド
     if (id === 'intro') {
       btn.disabled = true;
       const vid = document.getElementById('instructionVideo');
       vid.currentTime = 0;
       vid.play();
       vid.onended = () => btn.disabled = false;
-    }
-
-    // 説明用スライド (例: E1_EXなど) → ボタン有効
-    else if (!/^Q[0-9]+$/.test(id)) {
+    } else if (!/^Q[0-9]+$/.test(id)) {
       btn.disabled = false;
-    }
-
-    // 問題スライド（Q1〜Q10）→ ボタンは無効。フィードバック後に有効化
-    else {
+    } else {
       btn.disabled = true;
     }
   }
 
   nextButtons.forEach((btn, idx) => {
-    if (!btn) return;
-    if (slides[idx].dataset.id === 'END') return;
-
+    if (!btn || slides[idx].dataset.id === 'END') return;
     btn.disabled = true;
     btn.addEventListener('click', () => {
       clickSound.currentTime = 0;
       clickSound.play();
-
       if (slides[idx].dataset.id === 'Q10') {
         taskEndSound.currentTime = 0;
         taskEndSound.play();
@@ -681,25 +672,50 @@
     rec.continuous = false;
 
     let transcript = '';
+    let hasResult = false;
     const micBtn = document.getElementById('startButton' + questionId);
     micBtn.disabled = true;
     micBtn.classList.add('recording');
 
+    const timeout = setTimeout(() => {
+      if (!hasResult) rec.stop(); // 無音5秒で終了
+    }, 5000);
+
     rec.onresult = e => {
+      hasResult = true;
       transcript = e.results[0][0].transcript.trim();
+
+      if (transcript.includes("です")) {
+        rec.stop(); // です を聞いたら即終了
+      }
     };
 
     rec.onerror = () => {
+      clearTimeout(timeout);
       micBtn.classList.remove('recording');
       showFeedback(questionId, false);
     };
 
     rec.onend = () => {
+      clearTimeout(timeout);
       micBtn.classList.remove('recording');
-      const correct = answers[questionId].some(w => transcript.includes(w));
+
+      const expected = answers[questionId];
+      let correct = false;
+
+      if (expected.includes("くなかった")) {
+        correct = transcript.includes("くなかった");
+      } else if (expected.includes("かった")) {
+        correct = transcript.includes("かった") && !transcript.includes("くなかった");
+      }
+
       showFeedback(questionId, correct);
       buttonsPressed[questionId] = true;
       checkAllAnswered();
+
+      const slide = document.querySelector(`.slide[data-id="${questionId}"]`);
+      const nextBtn = slide.querySelector('.nav-next button');
+      if (nextBtn) nextBtn.disabled = false;
     };
 
     rec.start();
@@ -713,6 +729,7 @@
     const imgNg = fb.querySelector('.wrongImage');
     imgOk.style.display = isCorrect ? 'block' : 'none';
     imgNg.style.display = isCorrect ? 'none' : 'block';
+
     const audio = document.getElementById((isCorrect ? 'correctAudio' : 'wrongAudio') + id);
     const nextBtn = slide.querySelector('.nav-next button');
 
