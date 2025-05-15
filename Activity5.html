@@ -209,8 +209,8 @@
   /* ========== Nextボタンエリア (絶対配置) ========== */
   .nav-next {
     position: absolute;
-    top: 20px;    /* 上から20px */
-    right: 20px;  /* 右から20px */
+    bottom: 20px;    
+    right: 40px;  
     display: flex;
     justify-content: flex-end;
     padding: 0;
@@ -609,18 +609,11 @@
   // 答えのキーワード
   const answers = {
     E1: ["かった"],
-    Q1: ["かった"],
-    Q2: ["かった"],
-    Q3: ["かった"],
-    Q4: ["くなかった"],
-    Q5: ["くなかった"],
-    Q6: ["かった"],
-    Q7: ["くなかった"],
-    Q8: ["くなかった"],
-    Q9: ["くなかった"],
+    Q1: ["かった"], Q2: ["かった"], Q3: ["かった"],
+    Q4: ["くなかった"], Q5: ["くなかった"], Q6: ["かった"],
+    Q7: ["くなかった"], Q8: ["くなかった"], Q9: ["くなかった"],
     Q10: ["かった"]
   };
-  // 「です」バリエーションも用意
   Object.keys(answers).forEach(key => {
     answers[key] = answers[key].flatMap(w => [w, w + 'です']);
   });
@@ -633,7 +626,6 @@
     }
   }
 
-  // スライド切り替え
   function goToSlide(idx) {
     slides.forEach((s, i) => {
       s.style.display = i === idx ? 'block' : 'none';
@@ -645,29 +637,24 @@
     const btn = nextButtons[idx];
     if (!btn) return;
 
+    btn.style.display = '';   // 例題で隠していた場合も必ず表示
     if (id === 'intro') {
-      // イントロビデオ再生後に有効化
       btn.disabled = true;
       const vid = document.getElementById('instructionVideo');
       vid.currentTime = 0;
       vid.play();
       vid.onended = () => btn.disabled = false;
     }
-    else if (id === 'E1') {
-      // 例題 E1 の Next は最初は隠す
-      btn.style.display = 'none';
-    }
-    else if (!/^Q[0-9]+$/.test(id)) {
-      // 説明用スライドは常に有効
+    else if (!/^Q[0-9]+$/.test(id) && id !== 'E1') {
+      // 説明用スライド（intro/E1以外）は常に有効
       btn.disabled = false;
     }
     else {
-      // Q1〜Q10 はフィードバック後に有効化
+      // E1も含め、Q1〜Q10 はフィードバック後に有効化
       btn.disabled = true;
     }
   }
 
-  // Next ボタンの click ハンドラ
   nextButtons.forEach((btn, idx) => {
     if (!btn || slides[idx].dataset.id === 'END') return;
     btn.disabled = true;
@@ -684,7 +671,6 @@
     });
   });
 
-  // 全問回答チェック（最後のリンク表示など）
   let finalMusicPlayed = false;
   function checkAllAnswered() {
     const all = Object.keys(answers).every(id => buttonsPressed[id]);
@@ -697,7 +683,6 @@
     }
   }
 
-  // 音声認識開始
   function startRecognition(questionId) {
     if (!('webkitSpeechRecognition' in window)) {
       alert('このブラウザは対応していません。Chrome等でお試しください。');
@@ -752,7 +737,6 @@
     rec.start();
   }
 
-  // フィードバック表示＆Next有効化
   function showFeedback(id, isCorrect) {
     const slide = document.querySelector(`.slide[data-id="${id}"]`);
     const fb = slide.querySelector('.feedback');
@@ -763,23 +747,23 @@
     imgOk.style.display = isCorrect ? 'block' : 'none';
     imgNg.style.display = isCorrect ? 'none' : 'block';
 
-    const audio = document.getElementById((isCorrect ? 'correctAudio' : 'wrongAudio') + id);
+    // Nextボタンをフィードバック同時にすぐ有効化
     const nextBtn = slide.querySelector('.nav-next button');
+    if (nextBtn) nextBtn.disabled = false;
 
+    // 例題だけ最初 hidden にしていた場合に備え、念のため表示
+    if (id === 'E1') {
+      nextBtn.style.display = '';
+    }
+
+    // 元々の正誤音は再生しつつも、ボタン有効化は音終了待ちしない
+    const audio = document.getElementById((isCorrect ? 'correctAudio' : 'wrongAudio') + id);
     if (audio) {
       audio.currentTime = 0;
       audio.play().catch(() => {});
-      audio.onended = () => {
-        if (id === 'E1') nextBtn.style.display = '';   // E1 の Next を表示
-        nextBtn.disabled = false;
-      };
-    } else {
-      if (id === 'E1') nextBtn.style.display = '';
-      nextBtn.disabled = false;
     }
   }
 
-  // マイクボタンに1回だけ認識を紐付け
   document.querySelectorAll('.mic-button').forEach(btn => {
     const id = btn.id.replace('startButton', '');
     btn.addEventListener('click', () => startRecognition(id), { once: true });
