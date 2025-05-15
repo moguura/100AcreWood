@@ -335,12 +335,12 @@ h1 {
 
 <script>
 const answers = {
-    E1: ["いい"],
-    Q1: ["おもしろい"],
-    Q2: ["おいしい"],
-    Q3: ["たのしい"],
-    Q4: ["さむい"],
-    Q5: ["からい"]
+    E1: ["い"],
+    Q1: ["い"],
+    Q2: ["い"],
+    Q3: ["い"],
+    Q4: ["い"],
+    Q5: ["い"]
 };
 
 const buttonsPressed = {
@@ -387,30 +387,43 @@ function startRecognition(questionId) {
 
         let finalTranscript = "";
         let recognitionFinalized = false;
+        let timeoutId = null;
 
         const micButton = document.getElementById(`startButton${questionId}`);
         micButton.classList.add("recording");
 
         recognition.onresult = function(event) {
-            let newTranscript = event.results[event.results.length - 1][0].transcript.trim();
+            const newTranscript = event.results[event.results.length - 1][0].transcript.trim();
             finalTranscript = newTranscript;
 
             if (recognitionFinalized) return;
+
+            const normalized = normalizeText(finalTranscript);
+
+            if (normalized.includes("くない")) {
+                finalizeRecognition(questionId, finalTranscript, micButton);
+                recognitionFinalized = true;
+                recognition.stop();
+                if (timeoutId) clearTimeout(timeoutId);
+                return;
+            }
 
             if (finalTranscript.endsWith("です") || finalTranscript.endsWith("です。")) {
                 finalizeRecognition(questionId, finalTranscript, micButton);
                 recognitionFinalized = true;
                 recognition.stop();
+                if (timeoutId) clearTimeout(timeoutId);
                 return;
             }
 
-            setTimeout(() => {
+            if (timeoutId) clearTimeout(timeoutId);
+            timeoutId = setTimeout(() => {
                 if (!recognitionFinalized) {
                     finalizeRecognition(questionId, finalTranscript, micButton);
                     recognitionFinalized = true;
                     recognition.stop();
                 }
-            }, 2000);
+            }, 5000); // 5秒待ってから判定
         };
 
         recognition.onerror = function() {
@@ -450,22 +463,19 @@ function showFinalInstructions() {
 function isCorrectAnswer(questionId, userInput) {
     const normalizedInput = normalizeText(userInput);
 
-    if (questionId === "Q4") {
-        return normalizedInput.endsWith("い");  // 「寒いです」を正解とする
+    if (normalizedInput.includes("くない")) {
+        return false; // 誤答
     }
 
-    const correctEnding = "い"; // 形容詞の基本形の判定
-    if (normalizedInput.endsWith("くない")) {
-        return false; // 誤答
-    } else if (normalizedInput.endsWith(correctEnding)) {
-        return true; // 正解
+    if (questionId === "Q4") {
+        return normalizedInput.endsWith("い");  // 特別処理：Q4は「さむい」などOK
     }
-    return false;
+
+    return normalizedInput.endsWith("い");
 }
 
-
 function normalizeText(text) {
-    return text.toLowerCase().replace(/\s+/g, '').replace(/です$/, '');
+    return text.toLowerCase().replace(/\s+/g, '').replace(/です。?$/, '');
 }
 
 function showFeedback(questionId, isCorrect) {
@@ -501,9 +511,9 @@ function showFeedback(questionId, isCorrect) {
     try {
         targetAudio.pause();
         targetAudio.currentTime = 0;
-        
+
         const playPromise = targetAudio.play();
-        
+
         if (playPromise !== undefined) {
             playPromise
                 .then(() => {
