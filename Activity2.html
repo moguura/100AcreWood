@@ -821,17 +821,23 @@ function startRecognition(id, cb) {
   const recognition = new webkitSpeechRecognition();
   recognition.lang = 'ja-JP';
   recognition.interimResults = true;
-  recognition.continuous = false; // 無音で自動終了するように
+  recognition.continuous = false; // 無音で自動終了
   recognition.maxAlternatives = 1;
 
   let finalTranscript = '';
-  const maxSession = 10000; // 最大録音時間 10秒（保険）
+  const maxSession = 10000; // 最大録音時間 10秒
   let sessionTimer = setTimeout(() => {
     stopAndCallback();
   }, maxSession);
 
+  let hasStopped = false;
+  let silenceTimeout;
+
   function stopAndCallback() {
+    if (hasStopped) return;
+    hasStopped = true;
     clearTimeout(sessionTimer);
+    clearTimeout(silenceTimeout);
     recognition.stop();
     micBtn.classList.remove('recording');
     console.log(`[SR ${id}] finalTranscript: "${finalTranscript}"`);
@@ -864,9 +870,17 @@ function startRecognition(id, cb) {
     stopAndCallback();
   };
 
+  recognition.onspeechend = () => {
+    // 5秒間完全な無音だったら終了（例）
+    silenceTimeout = setTimeout(() => {
+      console.log(`[SR ${id}] silence timeout reached → stop`);
+      stopAndCallback();
+    }, 5000);
+  };
+
   recognition.onend = () => {
     console.log(`[SR ${id}] ended`);
-    // stopAndCallback は onend 前にすでに呼ばれているはず
+    // すでに stopAndCallback 済なら何もしない
   };
 
   recognition.start();
