@@ -669,24 +669,25 @@
     const rec = new webkitSpeechRecognition();
     rec.lang = 'ja-JP';
     rec.interimResults = false;
-    rec.continuous = false;
+    rec.continuous = true; // ★ 発話の間を許容
 
     let transcript = '';
-    let hasResult = false;
     const micBtn = document.getElementById('startButton' + questionId);
     micBtn.disabled = true;
     micBtn.classList.add('recording');
 
     const timeout = setTimeout(() => {
-      if (!hasResult) rec.stop(); // 無音5秒で終了
+      rec.stop(); // ★ 一定時間経過後に停止
     }, 8000);
 
     rec.onresult = e => {
-      hasResult = true;
-      transcript = e.results[0][0].transcript.trim();
-
+      for (let i = e.resultIndex; i < e.results.length; ++i) {
+        if (e.results[i].isFinal) {
+          transcript += e.results[i][0].transcript.trim();
+        }
+      }
       if (transcript.includes("です")) {
-        rec.stop(); // です を聞いたら即終了
+        rec.stop(); // ★ 「です」が入ったら即終了
       }
     };
 
@@ -694,6 +695,8 @@
       clearTimeout(timeout);
       micBtn.classList.remove('recording');
       showFeedback(questionId, false);
+      buttonsPressed[questionId] = true;
+      checkAllAnswered();
     };
 
     rec.onend = () => {
@@ -703,7 +706,10 @@
       const expected = answers[questionId];
       let correct = false;
 
-      if (expected.includes("くなかった")) {
+      if (transcript === '') {
+        // ★ 無音（何も発話がなかった）
+        correct = false;
+      } else if (expected.includes("くなかった")) {
         correct = transcript.includes("くなかった");
       } else if (expected.includes("かった")) {
         correct = transcript.includes("かった") && !transcript.includes("くなかった");
@@ -712,10 +718,6 @@
       showFeedback(questionId, correct);
       buttonsPressed[questionId] = true;
       checkAllAnswered();
-
-      const slide = document.querySelector(`.slide[data-id="${questionId}"]`);
-      const nextBtn = slide.querySelector('.nav-next button');
-      if (nextBtn) nextBtn.disabled = false;
     };
 
     rec.start();
