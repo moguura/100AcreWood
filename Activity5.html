@@ -569,149 +569,158 @@
     </div>
   </div>
 
- <script>
-  (function() {
-    const slides = Array.from(document.querySelectorAll('#slides .slide'));
-    const clickSound = document.getElementById('clickSound');
-    const taskEndSound = document.getElementById('taskEndSound');
-    let currentIndex = 0;
+<script>
+(function () {
+  const slides = Array.from(document.querySelectorAll('#slides .slide'));
+  const clickSound = document.getElementById('clickSound');
+  const taskEndSound = document.getElementById('taskEndSound');
+  let currentIndex = 0;
 
-    const nextButtons = slides.map(slide => {
-      if (slide.dataset.id === 'END') return slide.querySelector('a#nextLink');
-      return slide.querySelector('.nav-next button');
-    });
+  const nextButtons = slides.map(slide => {
+    if (slide.dataset.id === 'END') return slide.querySelector('a#nextLink');
+    return slide.querySelector('.nav-next button');
+  });
 
-    const buttonsPressed = {};
+  const buttonsPressed = {};
 
-    const answers = {
-      E1: ["よかった", "良かった"],
-      Q1: ["あたたかかった", "暖かかった"],
-      Q2: ["つめたかった", "冷たかった"],
-      Q3: ["むずかしかった", "難しかった"],
-      Q4: ["よくなかった", "良くなかった"],
-      Q5: ["おもくなかった", "重くなかった"],
-      Q6: ["すずしかった", "涼しかった"],
-      Q7: ["おもしろくなかった", "面白くなかった"],
-      Q8: ["すくなかった", "少なかった"],
-      Q9: ["からくなかった", "辛くなかった"],
-      Q10: ["たのしかった", "楽しかった"]
-    };
-    Object.keys(answers).forEach(key => {
-      answers[key] = answers[key].flatMap(w => [w, w + 'です']);
-    });
+  const answers = {
+    E1: ["よかった", "良かった"],
+    Q1: ["あたたかかった", "暖かかった"],
+    Q2: ["つめたかった", "冷たかった"],
+    Q3: ["むずかしかった", "難しかった"],
+    Q4: ["よくなかった", "良くなかった"],
+    Q5: ["おもくなかった", "重くなかった"],
+    Q6: ["すずしかった", "涼しかった"],
+    Q7: ["おもしろくなかった", "面白くなかった"],
+    Q8: ["すくなかった", "少なかった"],
+    Q9: ["からくなかった", "辛くなかった"],
+    Q10: ["たのしかった", "楽しかった"]
+  };
+  Object.keys(answers).forEach(key => {
+    answers[key] = answers[key].flatMap(w => [w, w + 'です']);
+  });
 
-    function playCueSound(id) {
-      const cue = document.getElementById('cue' + id);
-      if (cue) {
-        cue.currentTime = 0;
-        cue.play().catch(e => {});
-      }
+  function playCueSound(id) {
+    const cue = document.getElementById('cue' + id);
+    if (cue) {
+      cue.currentTime = 0;
+      cue.play().catch(e => {});
     }
+  }
 
-    function goToSlide(idx) {
-      slides.forEach((s, i) => s.style.display = (i === idx ? 'block' : 'none'));
-      currentIndex = idx;
-      const id = slides[idx].dataset.id;
+  function goToSlide(idx) {
+    slides.forEach((s, i) => s.style.display = (i === idx ? 'block' : 'none'));
+    currentIndex = idx;
+    const id = slides[idx].dataset.id;
 
-      // キュー音声を再生
-      playCueSound(id);
+    playCueSound(id);
 
-      if (id === 'intro') {
-        nextButtons[idx].disabled = true;
-        const vid = document.getElementById('instructionVideo');
-        vid.currentTime = 0;
-        vid.play();
-        vid.onended = () => nextButtons[idx].disabled = false;
+    if (id === 'intro') {
+      nextButtons[idx].disabled = true;
+      const vid = document.getElementById('instructionVideo');
+      vid.currentTime = 0;
+      vid.play();
+      vid.onended = () => nextButtons[idx].disabled = false;
+    } else {
+      nextButtons[idx] && (nextButtons[idx].disabled = true); // ← ここも無効にする
+    }
+  }
+
+  nextButtons.forEach((btn, idx) => {
+    if (!btn) return;
+    if (slides[idx].dataset.id === 'END') return;
+    btn.disabled = true;
+    btn.addEventListener('click', () => {
+      clickSound.currentTime = 0;
+      clickSound.play();
+
+      if (slides[idx].dataset.id === 'Q10') {
+        taskEndSound.currentTime = 0;
+        taskEndSound.play();
+        setTimeout(() => goToSlide(idx + 1), 2000);
       } else {
-        nextButtons[idx] && (nextButtons[idx].disabled = false);
+        goToSlide(idx + 1);
       }
-    }
-
-    nextButtons.forEach((btn, idx) => {
-      if (!btn) return;
-      if (slides[idx].dataset.id === 'END') return;
-      btn.disabled = true;
-      btn.addEventListener('click', () => {
-        clickSound.currentTime = 0;
-        clickSound.play();
-
-        if (slides[idx].dataset.id === 'Q10') {
-          taskEndSound.currentTime = 0;
-          taskEndSound.play();
-          setTimeout(() => goToSlide(idx + 1), 2000);
-        } else {
-          goToSlide(idx + 1);
-        }
-      });
     });
+  });
 
-    let finalMusicPlayed = false;
-    function checkAllAnswered() {
-      const all = Object.keys(answers).every(id => buttonsPressed[id]);
-      const link = document.getElementById('nextLink');
-      const music = document.getElementById('finalMusic');
-      if (all && link) link.style.display = 'block';
-      if (all && music && !finalMusicPlayed) {
-        finalMusicPlayed = true;
-        setTimeout(() => music.play().catch(e => {}), 1000);
-      }
+  let finalMusicPlayed = false;
+  function checkAllAnswered() {
+    const all = Object.keys(answers).every(id => buttonsPressed[id]);
+    const link = document.getElementById('nextLink');
+    const music = document.getElementById('finalMusic');
+    if (all && link) link.style.display = 'block';
+    if (all && music && !finalMusicPlayed) {
+      finalMusicPlayed = true;
+      setTimeout(() => music.play().catch(e => {}), 1000);
+    }
+  }
+
+  function startRecognition(questionId) {
+    if (!('webkitSpeechRecognition' in window)) {
+      alert('このブラウザは対応していません。Chrome等でお試しください。');
+      return;
     }
 
-    function startRecognition(questionId) {
-      if (!('webkitSpeechRecognition' in window)) {
-        alert('このブラウザは対応していません。Chrome等でお試しください。');
-        return;
-      }
+    const rec = new webkitSpeechRecognition();
+    rec.lang = 'ja-JP';
+    rec.interimResults = false;
+    rec.continuous = false;
 
-      const rec = new webkitSpeechRecognition();
-      rec.lang = 'ja-JP';
-      rec.interimResults = false;
-      rec.continuous = false;
+    let transcript = '';
+    const micBtn = document.getElementById('startButton' + questionId);
+    micBtn.disabled = true;
+    micBtn.classList.add('recording');
 
-      let transcript = '';
-      const micBtn = document.getElementById('startButton' + questionId);
-      micBtn.disabled = true;
-      micBtn.classList.add('recording');
+    rec.onresult = e => {
+      transcript = e.results[0][0].transcript.trim();
+    };
 
-      rec.onresult = e => {
-        transcript = e.results[0][0].transcript.trim();
+    rec.onerror = () => {
+      micBtn.classList.remove('recording');
+      showFeedback(questionId, false);
+    };
+
+    rec.onend = () => {
+      micBtn.classList.remove('recording');
+      const correct = answers[questionId].some(w => transcript.includes(w));
+      showFeedback(questionId, correct);
+      buttonsPressed[questionId] = true;
+      checkAllAnswered();
+    };
+
+    rec.start();
+  }
+
+  function showFeedback(id, isCorrect) {
+    const slide = document.querySelector(`.slide[data-id="${id}"]`);
+    const fb = slide.querySelector('.feedback');
+    fb.style.display = 'block';
+    const imgOk = fb.querySelector('.correctImage');
+    const imgNg = fb.querySelector('.wrongImage');
+    imgOk.style.display = isCorrect ? 'block' : 'none';
+    imgNg.style.display = isCorrect ? 'none' : 'block';
+    const audio = document.getElementById((isCorrect ? 'correctAudio' : 'wrongAudio') + id);
+    const nextBtn = slide.querySelector('.nav-next button');
+
+    if (audio) {
+      audio.currentTime = 0;
+      audio.play().catch(e => {});
+      audio.onended = () => {
+        if (nextBtn) nextBtn.disabled = false;
       };
-
-      rec.onerror = () => {
-        micBtn.classList.remove('recording');
-        showFeedback(questionId, false);
-      };
-
-      rec.onend = () => {
-        micBtn.classList.remove('recording');
-        const correct = answers[questionId].some(w => transcript.includes(w));
-        showFeedback(questionId, correct);
-        buttonsPressed[questionId] = true;
-        checkAllAnswered();
-      };
-
-      rec.start();
+    } else {
+      if (nextBtn) nextBtn.disabled = false;
     }
+  }
 
-    function showFeedback(id, isCorrect) {
-      const slide = document.querySelector(`.slide[data-id="${id}"]`);
-      const fb = slide.querySelector('.feedback');
-      fb.style.display = 'block';
-      const imgOk = fb.querySelector('.correctImage');
-      const imgNg = fb.querySelector('.wrongImage');
-      imgOk.style.display = isCorrect ? 'block' : 'none';
-      imgNg.style.display = isCorrect ? 'none' : 'block';
-      const audio = document.getElementById((isCorrect ? 'correctAudio' : 'wrongAudio') + id);
-      audio && audio.play();
-    }
+  document.querySelectorAll('.mic-button').forEach(btn => {
+    const id = btn.id.replace('startButton', '');
+    btn.addEventListener('click', () => startRecognition(id), { once: true });
+  });
 
-    document.querySelectorAll('.mic-button').forEach(btn => {
-      const id = btn.id.replace('startButton', '');
-      btn.addEventListener('click', () => startRecognition(id), { once: true });
-    });
-
-    goToSlide(0);
-  })();
+  goToSlide(0);
+})();
 </script>
 </body>
 </html>
