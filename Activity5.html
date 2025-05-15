@@ -330,11 +330,11 @@
     <!-- Slide 3: Instruction before Q1 -->
     <div class="slide" data-id="I1">
       <div class="instructions">
-        <p>Since yesterday's weather was nice, the answer is,<br>
-        <strong>てんきは</strong> <span class="red-bold">よかったです</span>。(The weather was good.)<br>
-        Now, be <span class="red-bold">さくら</span> and tell your friends about yesterday like in the example.<br><br>
-        You can speak into the microphone <span class="red-bold">just once</span>.</p>
+        <p>Now, you are <span class="red-bold">さくら</span>. <br>
+            Please talk to your friend about what you did yesterday, just like in the example.<br><br>
+            You can speak into the microphone <span class="red-bold">just once</span>.</p>
       </div>
+      <audio id="instructionAudio" src="https://raw.githubusercontent.com/moguura/my-images/main/5-instruction.mp3"></audio>
       <div class="nav-next">
         <button id="nextI1" disabled>Next</button>
       </div>
@@ -612,7 +612,7 @@
     Q1: ["かった"], Q2: ["かった"], Q3: ["かった"],
     Q4: ["くなかった"], Q5: ["くなかった"], Q6: ["かった"],
     Q7: ["くなかった"], Q8: ["かった"], Q9: ["くなかった"],
-    Q10: ["かった"]
+    Q10:["かった"]
   };
   Object.keys(answers).forEach(key => {
     answers[key] = answers[key].flatMap(w => [w, w + 'です']);
@@ -638,18 +638,27 @@
     if (!btn) return;
 
     btn.style.display = '';   // 例題で隠していた場合も必ず表示
+
     if (id === 'intro') {
+      // 説明ビデオスライド: 動画終了までボタン無効
       btn.disabled = true;
       const vid = document.getElementById('instructionVideo');
       vid.currentTime = 0;
       vid.onended = () => btn.disabled = false;
-    }
-    else if (!/^Q[0-9]+$/.test(id) && id !== 'E1') {
-      // 説明用スライド（intro/E1以外）は常に有効
+
+    } else if (id === 'explanationBox') {
+      // 説明ボックススライド: 音声終了までボタン無効
+      btn.disabled = true;
+      const audio = document.getElementById('explanationAudio');
+      audio.currentTime = 0;
+      audio.onended = () => btn.disabled = false;
+
+    } else if (!/^Q[0-9]+$/.test(id) && id !== 'E1') {
+      // それ以外の説明用スライド（E1/Q1〜Q10を除く）は常に有効
       btn.disabled = false;
-    }
-    else {
-      // E1も含め、Q1〜Q10 はフィードバック後に有効化
+
+    } else {
+      // E1/Q1〜Q10 はフィードバック後に有効化
       btn.disabled = true;
     }
   }
@@ -746,16 +755,10 @@
     imgOk.style.display = isCorrect ? 'block' : 'none';
     imgNg.style.display = isCorrect ? 'none' : 'block';
 
-    // Nextボタンをフィードバック同時にすぐ有効化
     const nextBtn = slide.querySelector('.nav-next button');
     if (nextBtn) nextBtn.disabled = false;
+    if (id === 'E1') nextBtn.style.display = '';
 
-    // 例題だけ最初 hidden にしていた場合に備え、念のため表示
-    if (id === 'E1') {
-      nextBtn.style.display = '';
-    }
-
-    // 元々の正誤音は再生しつつも、ボタン有効化は音終了待ちしない
     const audio = document.getElementById((isCorrect ? 'correctAudio' : 'wrongAudio') + id);
     if (audio) {
       audio.currentTime = 0;
