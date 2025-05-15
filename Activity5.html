@@ -572,6 +572,7 @@
   </div>
 
 <script>
+<script>
 (function () {
   const slides = Array.from(document.querySelectorAll('#slides .slide'));
   const clickSound = document.getElementById('clickSound');
@@ -627,6 +628,8 @@
       vid.currentTime = 0;
       vid.play();
       vid.onended = () => btn.disabled = false;
+    } else if (id === 'E1') {
+      btn.style.display = 'none'; // ★ E1 のボタンを最初は非表示
     } else if (!/^Q[0-9]+$/.test(id)) {
       btn.disabled = false;
     } else {
@@ -709,7 +712,6 @@
       let correct = false;
 
       if (transcript === '') {
-        // ★ 無音（何も発話がなかった）
         correct = false;
       } else if (expected.includes("くなかった")) {
         correct = transcript.includes("くなかった");
@@ -741,10 +743,16 @@
       audio.currentTime = 0;
       audio.play().catch(e => {});
       audio.onended = () => {
-        if (nextBtn) nextBtn.disabled = false;
+        if (nextBtn) {
+          if (id === 'E1') nextBtn.style.display = 'inline-block'; // ★ E1はここで表示
+          nextBtn.disabled = false;
+        }
       };
     } else {
-      if (nextBtn) nextBtn.disabled = false;
+      if (nextBtn) {
+        if (id === 'E1') nextBtn.style.display = 'inline-block'; // ★ E1はここで表示
+        nextBtn.disabled = false;
+      }
     }
   }
 
