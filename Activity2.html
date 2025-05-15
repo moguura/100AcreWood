@@ -773,9 +773,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const answers = {
     E1: ["い"], E2: ["くない"],
-    Q1: ["暖かい"], Q2: ["冷たい"], Q3: ["難しい"], Q4: ["くない"],
-    Q5: ["くない"], Q6: ["涼しい"], Q7: ["くない"], Q8: ["少ない"],
-    Q9: ["くない"], Q10:["楽しい"]
+    Q1: ["い"], Q2: ["い"], Q3: ["い"], Q4: ["くない"],
+    Q5: ["くない"], Q6: ["い"], Q7: ["くない"], Q8: ["い"],
+    Q9: ["くない"], Q10:["い"]
   };
 
 function startRecognition(id, cb) {
@@ -842,7 +842,6 @@ function startRecognition(id, cb) {
   recognition.start();
 }
 
-
 function isCorrectAnswer(id, text) {
   // ① 句読点などを削除し、余分な空白を詰める
   let norm = text
@@ -850,16 +849,32 @@ function isCorrectAnswer(id, text) {
     .trim()
     .replace(/\s+/g, '');
 
-  // ② 答えの文字列を取り出し
-  const ans = answers[id][0];  // 例1 なら "い"、例2 なら "くない"
+  // ② 正解キーワード配列（通常1要素だが一般化）
+  const answerKeywords = answers[id];
 
-  console.log(`[isCorrectAnswer] normalized transcript="${norm}", looking for="${ans}"`);
+  console.log(`[isCorrectAnswer] normalized transcript="${norm}", keywords=${JSON.stringify(answerKeywords)}`);
 
-  // ③ 部分一致で判定（id="E2" の "くない" は末尾だけでなく含有でも OK）
-  const result = norm.includes(ans);
-  console.log(`[isCorrectAnswer] → returning ${result}`);
+  // ③ 優先度：くない → い の順に確認
+  // くないが含まれているか？
+  if (answerKeywords.includes("くない") && norm.includes("くない")) {
+    console.log(`[isCorrectAnswer] matched "くない"`);
+    return true;
+  }
 
-  return result;
+  // いが含まれていて、くないが答えでないとき
+  if (answerKeywords.includes("い") && norm.includes("い")) {
+    // ただし「くない」が transcript に含まれているときは誤判定防止のため除外
+    if (!norm.includes("くない")) {
+      console.log(`[isCorrectAnswer] matched "い"`);
+      return true;
+    } else {
+      console.log(`[isCorrectAnswer] "い" matched but also contains "くない" → false`);
+      return false;
+    }
+  }
+
+  console.log(`[isCorrectAnswer] → returning false`);
+  return false;
 }
 
   // 統一したフィードバック表示関数
