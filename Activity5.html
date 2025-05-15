@@ -44,27 +44,28 @@
     transform: scale(1.05);
   }
 
-/* ========== コンテナ設定 ========== */
-#content {
-  width: 100%;
-  max-width: 1200px;
-  margin: 20px auto;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
+  /* ========== コンテナ設定 ========== */
+  #content {
+    width: 100%;
+    max-width: 1200px;
+    margin: 20px auto;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative; /* 追加: 絶対配置子要素の基準 */
+  }
 
-/* ===== 説明ボックスの余白拡大 ===== */
-.instructions,
-#finalInstructions {
-  background-color: #fff;
-  border: 1px solid #d1d5db;
-  padding: 40px 60px;    /* 上下40px・左右60px */
-  margin: 20px auto 40px;/* 上下20px、下40pxの余白 */
-  box-sizing: border-box;
-}
+  /* ===== 説明ボックスの余白拡大 ===== */
+  .instructions,
+  #finalInstructions {
+    background-color: #fff;
+    border: 1px solid #d1d5db;
+    padding: 40px 60px;
+    margin: 20px auto 40px;
+    box-sizing: border-box;
+  }
 
   .instructions p {
     text-align: left;
@@ -80,14 +81,14 @@
     margin-bottom: 50px;
   }
 
-.box {
-  max-width: 1400px;
-  padding: 40px 80px;
-  margin: 20px auto;
-  border-radius: 5px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  box-sizing: border-box;
-}
+  .box {
+    max-width: 1400px;
+    padding: 40px 80px;
+    margin: 20px auto;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+  }
 
   /* ========== 問題ブロック ========== */
   .question {
@@ -102,13 +103,13 @@
   .question .image-wrapper {
     position: relative;
     display: inline-block;
-    margin-top: 20px; /* イラストを少し下に下げる */
+    margin-top: 20px;
     margin-bottom: 10px;
   }
 
   .question .image-wrapper img {
     display: block;
-    max-width: 400px; /* イラストを少し大きくする */
+    max-width: 400px;
     width: 100%;
     height: auto;
     object-fit: cover;
@@ -168,7 +169,7 @@
     border-radius: 50%;
     background: url("https://raw.githubusercontent.com/moguura/my-images/main/%E3%83%9E%E3%82%A4%E3%82%AF%E3%81%AE%E3%83%95%E3%83%AA%E3%83%BC%E3%82%A2%E3%82%A4%E3%82%B3%E3%83%B3%E3%81%9D%E3%81%AE21.png") no-repeat center/cover;
     cursor: pointer;
-    margin: 15px auto 0px;
+    margin: 15px auto 0;
     transition: box-shadow .3s;
   }
 
@@ -205,17 +206,19 @@
     margin-top: -10px;
   }
 
-/* Nextボタンエリア */
-.nav-next {
+  /* ========== Nextボタンエリア (絶対配置) ========== */
+  .nav-next {
+    position: absolute;
+    top: 20px;    /* 上から20px */
+    right: 20px;  /* 右から20px */
     display: flex;
     justify-content: flex-end;
-    width: 100%;
-    max-width: 900px;
-    margin: 10px auto 0;
-    padding: 0 20px;
+    padding: 0;
+    margin: 0;
     box-sizing: border-box;
-}
-.nav-next button {
+  }
+
+  .nav-next button {
     padding: 10px 20px;
     font-size: 18px;
     cursor: pointer;
@@ -223,11 +226,12 @@
     border-radius: 5px;
     background: #007bff;
     color: #fff;
-}
-.nav-next button:disabled {
+  }
+
+  .nav-next button:disabled {
     background: #ccc;
     cursor: not-allowed;
-}
+  }
 
   /* ========== イントロビデオ ========== */
   #intro-video {
@@ -251,26 +255,29 @@
     display: block;
     margin: 20px auto;
   }
-.slide[data-id="END"] .nav-next {
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  display: flex;
-}
-.slide[data-id="END"] .nav-next a {
-  font-size: 36px;
-  padding: 20px 40px;
-  background-color: #007BFF;
-  color: white;
-  text-decoration: none;
-  border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-  transition: background-color 0.3s ease, transform 0.2s ease;
-}
-.slide[data-id="END"] .nav-next a:hover {
-  background-color: #0056b3;
-  transform: scale(1.05);
-}
+
+  /* ENDスライド */
+  .slide[data-id="END"] .nav-next {
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    display: flex;
+    position: static; /* 終了スライドでは元の配置に戻す */
+  }
+  .slide[data-id="END"] .nav-next a {
+    font-size: 36px;
+    padding: 20px 40px;
+    background-color: #007BFF;
+    color: white;
+    text-decoration: none;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+  .slide[data-id="END"] .nav-next a:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+  }
 </style>
 </head>
 <body>
