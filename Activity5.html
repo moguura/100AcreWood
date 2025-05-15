@@ -642,7 +642,6 @@
       btn.disabled = true;
       const vid = document.getElementById('instructionVideo');
       vid.currentTime = 0;
-      vid.play();
       vid.onended = () => btn.disabled = false;
     }
     else if (!/^Q[0-9]+$/.test(id) && id !== 'E1') {
