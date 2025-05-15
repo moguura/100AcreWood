@@ -134,25 +134,6 @@ h1 {
     font-size: 1em;
     color: #333;
 }
-
-/* 次ページリンク */
-#nextPageLink {
-    display: none;
-    text-align: center;
-    margin: 30px auto;
-    color: #007bff;
-    text-decoration: none;
-    font-size: 28px;
-    font-weight: bold;
-    padding: 10px 20px;
-    transition: all 0.3s ease;
-}
-#nextPageLink:hover {
-    text-decoration: underline;
-    color: #0056b3;
-    transform: scale(1.05);
-}
-
 /* お知らせボード */
 .notice-board {
     background-color: #ffeeba;
@@ -223,29 +204,26 @@ h1 {
   display: block;
   margin: 20px auto;
 }
-  /* ENDスライドの中央寄せ用スタイル */
-  .slide[data-id="END"] .nav-next {
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    display: flex;
-  }
-
-  .slide[data-id="END"] .nav-next a {
-    font-size: 36px;
-    padding: 20px 40px;
-    background-color: #007BFF;
-    color: white;
-    text-decoration: none;
-    border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    transition: background-color 0.3s ease, transform 0.2s ease;
-  }
-
-  .slide[data-id="END"] .nav-next a:hover {
-    background-color: #0056b3;
-    transform: scale(1.05);
-  }
+.slide[data-id="END"] .nav-next {
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  display: flex;
+}
+.slide[data-id="END"] .nav-next a {
+  font-size: 36px;
+  padding: 20px 40px;
+  background-color: #007BFF;
+  color: white;
+  text-decoration: none;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+.slide[data-id="END"] .nav-next a:hover {
+  background-color: #0056b3;
+  transform: scale(1.05);
+}
 </style>
 </head>
 <body>
@@ -584,12 +562,14 @@ h1 {
   </div>
 </div>
       
+<!-- Activity1.html の END スライド -->
 <div class="slide" data-id="END">
   <div class="nav-next">
-    <a id="nextPageLinkVisible" href="Activity5.html">Go to Activity 5</a>
+    <!-- ここを「Activity2 へのリンク」に -->
+    <a id="nextPageLink" href="./Activity2.html">▶ Go to Activity 2</a>
   </div>
 </div>
-    
+   
 <script>
 (function () {
   const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
