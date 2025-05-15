@@ -237,7 +237,28 @@ h1 {
     background: #007bff;
     color: #fff;
   }
-  .nav-next button:disabled { background: #ccc; cursor: not-allowed; }
+.nav-next button:disabled { background: #ccc; cursor: not-allowed; }
+    
+.slide[data-id="END"] .nav-next {
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  display: flex;
+}
+.slide[data-id="END"] .nav-next a {
+  font-size: 36px;
+  padding: 20px 40px;
+  background-color: #007BFF;
+  color: white;
+  text-decoration: none;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+.slide[data-id="END"] .nav-next a:hover {
+  background-color: #0056b3;
+  transform: scale(1.05);
+}
 </style> 
 </head>
 <body>
@@ -650,7 +671,13 @@ h1 {
   </div>
 </div>
 
- <a href="./Activity3.html" id="nextPageLink">Go to Activity3</a>
+<!-- Activity1.html の END スライド -->
+<div class="slide" data-id="END">
+  <div class="nav-next">
+    <!-- ここを「Activity2 へのリンク」に -->
+    <a id="nextPageLink" href="./Activity2.html">▶ Go to Activity 2</a>
+  </div>
+</div>
  
 <script>
 document.addEventListener('DOMContentLoaded', () => {
