@@ -572,13 +572,13 @@
   </div>
 
 <script>
-<script>
 (function () {
   const slides = Array.from(document.querySelectorAll('#slides .slide'));
   const clickSound = document.getElementById('clickSound');
   const taskEndSound = document.getElementById('taskEndSound');
   let currentIndex = 0;
 
+  // 各スライドの Next ボタン（END スライドはリンク）
   const nextButtons = slides.map(slide => {
     if (slide.dataset.id === 'END') return slide.querySelector('a#nextLink');
     return slide.querySelector('.nav-next button');
@@ -586,6 +586,7 @@
 
   const buttonsPressed = {};
 
+  // 答えのキーワード
   const answers = {
     E1: ["かった"],
     Q1: ["かった"],
@@ -599,7 +600,7 @@
     Q9: ["くなかった"],
     Q10: ["かった"]
   };
-
+  // 「です」バリエーションも用意
   Object.keys(answers).forEach(key => {
     answers[key] = answers[key].flatMap(w => [w, w + 'です']);
   });
@@ -608,35 +609,45 @@
     const cue = document.getElementById('cue' + id);
     if (cue) {
       cue.currentTime = 0;
-      cue.play().catch(e => {});
+      cue.play().catch(() => {});
     }
   }
 
+  // スライド切り替え
   function goToSlide(idx) {
-    slides.forEach((s, i) => s.style.display = (i === idx ? 'block' : 'none'));
+    slides.forEach((s, i) => {
+      s.style.display = i === idx ? 'block' : 'none';
+    });
     currentIndex = idx;
     const id = slides[idx].dataset.id;
-
     playCueSound(id);
 
     const btn = nextButtons[idx];
     if (!btn) return;
 
     if (id === 'intro') {
+      // イントロビデオ再生後に有効化
       btn.disabled = true;
       const vid = document.getElementById('instructionVideo');
       vid.currentTime = 0;
       vid.play();
       vid.onended = () => btn.disabled = false;
-    } else if (id === 'E1') {
-      btn.style.display = 'none'; // ★ E1 のボタンを最初は非表示
-    } else if (!/^Q[0-9]+$/.test(id)) {
+    }
+    else if (id === 'E1') {
+      // 例題 E1 の Next は最初は隠す
+      btn.style.display = 'none';
+    }
+    else if (!/^Q[0-9]+$/.test(id)) {
+      // 説明用スライドは常に有効
       btn.disabled = false;
-    } else {
+    }
+    else {
+      // Q1〜Q10 はフィードバック後に有効化
       btn.disabled = true;
     }
   }
 
+  // Next ボタンの click ハンドラ
   nextButtons.forEach((btn, idx) => {
     if (!btn || slides[idx].dataset.id === 'END') return;
     btn.disabled = true;
@@ -653,6 +664,7 @@
     });
   });
 
+  // 全問回答チェック（最後のリンク表示など）
   let finalMusicPlayed = false;
   function checkAllAnswered() {
     const all = Object.keys(answers).every(id => buttonsPressed[id]);
@@ -661,29 +673,27 @@
     if (all && link) link.style.display = 'block';
     if (all && music && !finalMusicPlayed) {
       finalMusicPlayed = true;
-      setTimeout(() => music.play().catch(e => {}), 1000);
+      setTimeout(() => music.play().catch(() => {}), 1000);
     }
   }
 
+  // 音声認識開始
   function startRecognition(questionId) {
     if (!('webkitSpeechRecognition' in window)) {
       alert('このブラウザは対応していません。Chrome等でお試しください。');
       return;
     }
-
     const rec = new webkitSpeechRecognition();
     rec.lang = 'ja-JP';
     rec.interimResults = false;
-    rec.continuous = true; // ★ 発話の間を許容
+    rec.continuous = true;
 
     let transcript = '';
     const micBtn = document.getElementById('startButton' + questionId);
     micBtn.disabled = true;
     micBtn.classList.add('recording');
 
-    const timeout = setTimeout(() => {
-      rec.stop(); // ★ 一定時間経過後に停止
-    }, 8000);
+    const timeout = setTimeout(() => rec.stop(), 8000);
 
     rec.onresult = e => {
       for (let i = e.resultIndex; i < e.results.length; ++i) {
@@ -691,9 +701,7 @@
           transcript += e.results[i][0].transcript.trim();
         }
       }
-      if (transcript.includes("です")) {
-        rec.stop(); // ★ 「です」が入ったら即終了
-      }
+      if (transcript.includes("です")) rec.stop();
     };
 
     rec.onerror = () => {
@@ -707,18 +715,15 @@
     rec.onend = () => {
       clearTimeout(timeout);
       micBtn.classList.remove('recording');
-
       const expected = answers[questionId];
       let correct = false;
-
       if (transcript === '') {
         correct = false;
       } else if (expected.includes("くなかった")) {
         correct = transcript.includes("くなかった");
-      } else if (expected.includes("かった")) {
+      } else {
         correct = transcript.includes("かった") && !transcript.includes("くなかった");
       }
-
       showFeedback(questionId, correct);
       buttonsPressed[questionId] = true;
       checkAllAnswered();
@@ -727,10 +732,12 @@
     rec.start();
   }
 
+  // フィードバック表示＆Next有効化
   function showFeedback(id, isCorrect) {
     const slide = document.querySelector(`.slide[data-id="${id}"]`);
     const fb = slide.querySelector('.feedback');
     fb.style.display = 'block';
+
     const imgOk = fb.querySelector('.correctImage');
     const imgNg = fb.querySelector('.wrongImage');
     imgOk.style.display = isCorrect ? 'block' : 'none';
@@ -741,26 +748,24 @@
 
     if (audio) {
       audio.currentTime = 0;
-      audio.play().catch(e => {});
+      audio.play().catch(() => {});
       audio.onended = () => {
-        if (nextBtn) {
-          if (id === 'E1') nextBtn.style.display = 'inline-block'; // ★ E1はここで表示
-          nextBtn.disabled = false;
-        }
+        if (id === 'E1') nextBtn.style.display = '';   // E1 の Next を表示
+        nextBtn.disabled = false;
       };
     } else {
-      if (nextBtn) {
-        if (id === 'E1') nextBtn.style.display = 'inline-block'; // ★ E1はここで表示
-        nextBtn.disabled = false;
-      }
+      if (id === 'E1') nextBtn.style.display = '';
+      nextBtn.disabled = false;
     }
   }
 
+  // マイクボタンに1回だけ認識を紐付け
   document.querySelectorAll('.mic-button').forEach(btn => {
     const id = btn.id.replace('startButton', '');
     btn.addEventListener('click', () => startRecognition(id), { once: true });
   });
 
+  // 初期表示
   goToSlide(0);
 })();
 </script>
