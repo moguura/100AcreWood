@@ -449,7 +449,7 @@ a:hover {
             </p>
         </div>
       　 <!-- リンク -->
-      　<a href="./Activity7.html" id="nextLink">Go to Activity7</a>
+      　<a href="./Activity7.html" id="nextLink" style="display: none;">Go to Activity7</a>
     </div>
 　　<audio id="finalMusic" 
        src="https://raw.githubusercontent.com/moguura/my-images/main/taskend1.mp3"
@@ -617,11 +617,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function checkCompletion() {
         if (completedQuestions.size === totalQuestions && completedAudioCount === totalQuestions) {
-            const ins = document.getElementById("finalInstructions");
-            const link = document.getElementById("nextLink");
+            const ins   = document.getElementById("finalInstructions");
+            const link  = document.getElementById("nextLink");
             const music = document.getElementById("finalMusic");
-            ins && (ins.style.display = "block");
-            link && (link.style.display = "block");
+            // 説明文を表示
+            ins  && (ins.style.display = "block");
+            // .show クラスを使って表示・フェードイン
+            link && link.classList.add("show");
+            // BGM再生
             if (music) music.play().catch(e => console.error(e));
         }
     }
