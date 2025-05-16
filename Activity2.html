@@ -801,14 +801,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-// ─────────── １．カスタム平仮名語辞書 ───────────
+// ─────────── １．正答キーワード辞書 ───────────
 const answers = {
-  E1: ['い'], E2: ['くない'],
-  Q1: ['い'], Q2: ['い'], Q3: ['い'], Q4: ['くない'],
-  Q5: ['くない'], Q6: ['い'], Q7: ['くない'], Q8: ['い'],
-  Q9: ['くない'], Q10: ['い']
+  E1: ['い'],   E2: ['くない'],
+  Q1: ['い'],   Q2: ['い'],    Q3: ['い'],    Q4: ['くない'],
+  Q5: ['くない'], Q6: ['い'],  Q7: ['くない'], Q8: ['い'],
+  Q9: ['くない'], Q10:['い']
 };
-// ひらがな化した上で部分一致させたい設問
+// 平仮名語で部分一致判定したい設問
 const customAnswers = {
   E1: ['いい'],
   Q3: ['むずかしい'],
@@ -822,7 +822,7 @@ const customAnswers = {
 // ─────────── ２．音声認識開始＋タイムアウト制御 ───────────
 function startRecognition(id, callback) {
   if (!('webkitSpeechRecognition' in window)) {
-    alert('このブラウザでは音声認識が使えません。Chromeをお試しください。');
+    alert('このブラウザでは音声認識が使えません。Chromeをご利用ください。');
     return;
   }
   const btn = document.getElementById(`startButton${id}`);
@@ -832,19 +832,19 @@ function startRecognition(id, callback) {
   const recognition = new webkitSpeechRecognition();
   recognition.lang = 'ja-JP';
   recognition.interimResults = true;
-  recognition.continuous = false;      // 無音で自動終了させる
+  recognition.continuous = false;
   recognition.maxAlternatives = 1;
 
   let finalTranscript = '';
   let stopped = false;
 
-  // タイムアウト：無音5秒／録音上限10秒
-  const silenceLimit = 5000;
-  const sessionLimit = 10000;
-  let silenceTimer = setTimeout(stopAndRun, silenceLimit);
-  const sessionTimer = setTimeout(stopAndRun, sessionLimit);
+  // タイムアウト設定：無音5秒、最大10秒
+  const SILENCE_LIMIT = 5000;
+  const SESSION_LIMIT = 10000;
+  let silenceTimer = setTimeout(finish, SILENCE_LIMIT);
+  const sessionTimer = setTimeout(finish, SESSION_LIMIT);
 
-  function stopAndRun() {
+  function finish() {
     if (stopped) return;
     stopped = true;
     clearTimeout(silenceTimer);
@@ -856,41 +856,42 @@ function startRecognition(id, callback) {
 
   recognition.onresult = e => {
     clearTimeout(silenceTimer);
+    // interim＋final 全部まとめる
     finalTranscript = Array.from(e.results)
       .map(r => r[0].transcript)
       .join('');
     const norm = finalTranscript.replace(/[。．、,\.]/g, '').trim();
     const hasDesu = norm.includes('です');
 
-    // ── カスタム設問なら customAnswers 優先
+    // ── カスタム設問
     if (customAnswers[id]) {
       if (customAnswers[id].some(w => norm.includes(w))) {
-        return stopAndRun();
+        return finish();
       }
     } else {
-      // ── 通常設問は「くない」「い」＋「です」で判定
+      // ── 通常設問：「くない」「い」＋「です」で早期終了
       if (answers[id].includes('くない') && norm.includes('くない') && hasDesu) {
-        return stopAndRun();
+        return finish();
       }
       if (answers[id].includes('い') && norm.includes('い') && !norm.includes('くない') && hasDesu) {
-        return stopAndRun();
+        return finish();
       }
     }
 
-    // 無音タイマー再設定
-    silenceTimer = setTimeout(stopAndRun, silenceLimit);
+    // 無音タイマーを再セット
+    silenceTimer = setTimeout(finish, SILENCE_LIMIT);
   };
 
-  recognition.onerror = () => stopAndRun();
+  recognition.onerror = () => finish();
 
   recognition.onspeechend = () => {
+    // 発話終了後に無音を待って終了
     clearTimeout(silenceTimer);
-    silenceTimer = setTimeout(stopAndRun, silenceLimit);
+    silenceTimer = setTimeout(finish, SILENCE_LIMIT);
   };
 
-  recognition.onend = () => {
-    /* end時は stopAndRun が呼ばれるので何もしない */
-  };
+  // 最後の保険：onendでも必ず finish
+  recognition.onend = () => finish();
 
   recognition.start();
 }
@@ -906,7 +907,7 @@ function isCorrectAnswer(id, transcript) {
   if (customAnswers[id]) {
     return customAnswers[id].some(w => norm.includes(w));
   }
-  // 通常設問：「くない」「い」を優先して判定
+  // 通常設問：「くない」「い」を優先判定
   if (answers[id].includes('くない') && norm.includes('くない')) return true;
   if (answers[id].includes('い')    && norm.includes('い')    && !norm.includes('くない')) return true;
 
