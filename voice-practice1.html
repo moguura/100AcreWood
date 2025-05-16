@@ -453,8 +453,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     let completedQuestions = new Set();
     let buttonsPressed = {};
-    let completedAudioCount = 0;  // フィードバック音の完了数をカウント
-    const totalQuestions = Object.keys(answers).length;  // 全問題数
+    let completedAudioCount = 0;
+    const totalQuestions = Object.keys(answers).length;
 
     function startRecognition(questionId) {
         if (!('webkitSpeechRecognition' in window)) {
@@ -470,7 +470,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
         let finalTranscript = "";
         let lastResultTime = Date.now();
-        const maxWaitTime = 2000;
+        // 無音タイムアウトを5秒に設定
+        const maxWaitTime = 5000;
         let recognitionFinalized = false;
         let timeoutId = null;
 
@@ -480,6 +481,7 @@ document.addEventListener("DOMContentLoaded", function () {
         recognition.onresult = function(event) {
             let currentTime = Date.now();
             let newTranscript = event.results[event.results.length - 1][0].transcript.trim();
+            // 最新の中間仮結果を保持
             finalTranscript = newTranscript;
             lastResultTime = currentTime;
             console.log(`認識結果 (${questionId}):`, finalTranscript);
@@ -487,6 +489,7 @@ document.addEventListener("DOMContentLoaded", function () {
             if (recognitionFinalized) return;
             if (timeoutId) clearTimeout(timeoutId);
 
+            // 「です」で即時判定
             if (finalTranscript.endsWith("です") || finalTranscript.endsWith("です。")) {
                 console.log(`即時判定 (${questionId}):`, finalTranscript);
                 finalizeRecognition(questionId, finalTranscript, micButton);
@@ -495,6 +498,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 return;
             }
 
+            // 5秒無音後に最終判定
             timeoutId = setTimeout(() => {
                 if (!recognitionFinalized) {
                     console.log(`最終判定 (${questionId}):`, finalTranscript);
@@ -518,7 +522,15 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function finalizeRecognition(questionId, transcript, micButton) {
-        const isCorrect = transcript.includes(answers[questionId]);
+        // 「くない」を優先判定するロジック
+        const correctAnswer = answers[questionId];
+        let isCorrect = false;
+        if (transcript.includes("くない")) {
+            isCorrect = (correctAnswer === "くない");
+        } else {
+            isCorrect = transcript.includes(correctAnswer);
+        }
+
         showFeedback(questionId, isCorrect, () => {
             completedQuestions.add(questionId);
             checkCompletion();
@@ -556,19 +568,19 @@ document.addEventListener("DOMContentLoaded", function () {
             feedbackAudio.play()
                 .then(() => {
                     feedbackAudio.onended = () => {
-                        completedAudioCount++;  // 音声が終了したらカウント
-                        checkCompletion();  // 音声がすべて終わったか確認
+                        completedAudioCount++;
+                        checkCompletion();
                         if (callback) callback();
                     };
                 })
                 .catch(e => {
                     console.error("フィードバック音の再生エラー:", e);
-                    completedAudioCount++;  // 再生失敗時もカウント
+                    completedAudioCount++;
                     checkCompletion();
                     if (callback) callback();
                 });
         } else {
-            completedAudioCount++;  // 音声がない場合もカウント
+            completedAudioCount++;
             checkCompletion();
             if (callback) callback();
         }
@@ -576,7 +588,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function checkCompletion() {
         if (completedQuestions.size === totalQuestions && completedAudioCount === totalQuestions) {
-            // すべての音声が再生され、全問題が完了したら表示
             const finalInstructions = document.getElementById("finalInstructions");
             const nextLink = document.getElementById("nextLink");
             const finalMusic = document.getElementById("finalMusic");
