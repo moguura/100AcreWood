@@ -724,7 +724,6 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   nextToQ.disabled = true;
-
   document.querySelectorAll('.nav-next button').forEach(btn =>
     btn.addEventListener('click', playClickSound)
   );
@@ -770,23 +769,20 @@ document.addEventListener('DOMContentLoaded', () => {
         };
       });
     }
-     else if (i === 4) {
-  // 説明Box：音声が終わったらNext有効
-  const instructionAudio = document.getElementById('instructionAudio');
-  nextToQ.disabled = true;
-
-  // 再生して終了時にボタンを有効化
-  instructionAudio.currentTime = 0;
-  instructionAudio.play().catch(() => {});
-
-  instructionAudio.onended = () => {
-    nextToQ.disabled = false;
-    nextToQ.onclick = () => {
-      playClickSound();
-      showSlide(5);
-    };
-  };
-}
+    else if (i === 4) {
+      // 説明Box：音声が終わったらNext有効
+      const instructionAudio = document.getElementById('instructionAudio');
+      nextToQ.disabled = true;
+      instructionAudio.currentTime = 0;
+      instructionAudio.play().catch(() => {});
+      instructionAudio.onended = () => {
+        nextToQ.disabled = false;
+        nextToQ.onclick = () => {
+          playClickSound();
+          showSlide(5);
+        };
+      };
+    }
     else if (i >= 5 && i <= 14) {
       const qnum = i - 4;
       const nextBtn = document.getElementById(`nextQ${qnum}`);
@@ -804,124 +800,130 @@ document.addEventListener('DOMContentLoaded', () => {
   const answers = {
     E1: ["い"], E2: ["くない"],
     Q1: ["い"], Q2: ["い"], Q3: ["い"], Q4: ["くない","良くない"],
-    Q5: ["くない"], Q6: ["い","涼しい"], Q7: ["くない"], Q8: ["い"],
+    Q5: ["くない"], Q6: ["い","涼しい"], Q7: ["くない","面白くない","おもしろくない"], Q8: ["くない","少ない","すくない"],
     Q9: ["くない"], Q10:["い"]
   };
 
-function startRecognition(id, cb) {
-  if (!('webkitSpeechRecognition' in window)) {
-    alert("Speech recognition is not available. Please use Chrome.");
-    return;
+  function startRecognition(id, cb) {
+    if (!('webkitSpeechRecognition' in window)) {
+      alert("Speech recognition is not available. Please use Chrome.");
+      return;
+    }
+
+    const micBtn = document.getElementById(`startButton${id}`);
+    micBtn.classList.add('recording');
+    micBtn.disabled = true;
+
+    const recognition = new webkitSpeechRecognition();
+    recognition.lang = 'ja-JP';
+    recognition.interimResults = true;
+    recognition.continuous = false;
+    recognition.maxAlternatives = 1;
+
+    let finalTranscript = '';
+    const maxSession = 10000; // 最大録音時間 10秒
+    let sessionTimer = setTimeout(stopAndCallback, maxSession);
+    let hasStopped = false;
+    let silenceTimeout;
+
+    function stopAndCallback() {
+      if (hasStopped) return;
+      hasStopped = true;
+      clearTimeout(sessionTimer);
+      clearTimeout(silenceTimeout);
+      recognition.stop();
+      micBtn.classList.remove('recording');
+      console.log(`[SR ${id}] finalTranscript: "${finalTranscript}"`);
+      cb(finalTranscript.trim());
+    }
+
+    recognition.onresult = e => {
+      const transcript = Array.from(e.results)
+        .map(r => r[0].transcript)
+        .join('');
+      finalTranscript = transcript;
+      console.log(`[SR ${id}] interim result: "${transcript}"`);
+
+      // 動的に「"…」で囲まれた語を抽出
+      const slideEl = document.querySelector('.slide.active');
+      const quoted = Array.from(
+        slideEl.textContent.matchAll(/"([^"]+)"/g),
+        m => m[1].replace(/\s+/g, '')
+      );
+      const containsDynamic = quoted.some(k => transcript.includes(k));
+
+      // 静的キーワードもチェック
+      const answerKeywords = answers[id];
+      const containsAnswer   = answerKeywords.some(k => transcript.includes(k));
+      const containsDesu     = transcript.includes("です");
+
+      // 「です」＋（動的 or 静的）で即時停止
+      if (containsDesu && (containsDynamic || containsAnswer)) {
+        console.log(`[SR ${id}] matched desu + (dynamic|static) → stop`);
+        stopAndCallback();
+      }
+    };
+
+    recognition.onerror = e => {
+      console.warn(`[SR ${id}] error:`, e.error);
+      stopAndCallback();
+    };
+
+    recognition.onspeechend = () => {
+      // 5秒間無音で停止
+      silenceTimeout = setTimeout(() => {
+        console.log(`[SR ${id}] silence timeout reached → stop`);
+        stopAndCallback();
+      }, 5000);
+    };
+
+    recognition.onend = () => {
+      console.log(`[SR ${id}] ended`);
+    };
+
+    recognition.start();
   }
 
-  const micBtn = document.getElementById(`startButton${id}`);
-  micBtn.classList.add('recording');
-  micBtn.disabled = true;
+  function isCorrectAnswer(id, text) {
+    // ノーマライズ：句読点削除＋空白詰め
+    const norm = text
+      .replace(/[。．\.！!？?]/g, '')
+      .trim()
+      .replace(/\s+/g, '');
 
-  const recognition = new webkitSpeechRecognition();
-  recognition.lang = 'ja-JP';
-  recognition.interimResults = true;
-  recognition.continuous = false; // 無音で自動終了
-  recognition.maxAlternatives = 1;
-
-  let finalTranscript = '';
-  const maxSession = 10000; // 最大録音時間 10秒
-  let sessionTimer = setTimeout(() => {
-    stopAndCallback();
-  }, maxSession);
-
-  let hasStopped = false;
-  let silenceTimeout;
-
-  function stopAndCallback() {
-    if (hasStopped) return;
-    hasStopped = true;
-    clearTimeout(sessionTimer);
-    clearTimeout(silenceTimeout);
-    recognition.stop();
-    micBtn.classList.remove('recording');
-    console.log(`[SR ${id}] finalTranscript: "${finalTranscript}"`);
-    cb(finalTranscript.trim());
-  }
-
-  recognition.onresult = e => {
-    const transcript = Array.from(e.results)
-      .map(r => r[0].transcript)
-      .join('');
-    finalTranscript = transcript;
-    console.log(`[SR ${id}] interim result: "${transcript}"`);
+    // 動的キーワード取得
+    const slideEl = document.querySelector('.slide.active');
+    const quoted = Array.from(
+      slideEl.textContent.matchAll(/"([^"]+)"/g),
+      m => m[1].replace(/\s+/g, '')
+    );
+    if (quoted.some(k => norm.includes(k))) {
+      console.log('[isCorrectAnswer] matched dynamic quoted:', quoted);
+      return true;
+    }
 
     const answerKeywords = answers[id];
-    const containsAnswer = answerKeywords.some(keyword => transcript.includes(keyword));
-    const containsDesu = transcript.includes("です");
-    const isFinal = e.results[e.results.length - 1].isFinal;
 
-    if (isFinal && containsAnswer && containsDesu) {
-      console.log(`[SR ${id}] FINAL result matched keyword & 'です' → stop early`);
-      stopAndCallback();
-    } else if (containsAnswer && containsDesu) {
-      console.log(`[SR ${id}] interim matched keyword & 'です' → stop early`);
-      stopAndCallback();
-    }
-  };
-
-  recognition.onerror = e => {
-    console.warn(`[SR ${id}] error:`, e.error);
-    stopAndCallback();
-  };
-
-  recognition.onspeechend = () => {
-    // 5秒間完全な無音だったら終了（例）
-    silenceTimeout = setTimeout(() => {
-      console.log(`[SR ${id}] silence timeout reached → stop`);
-      stopAndCallback();
-    }, 5000);
-  };
-
-  recognition.onend = () => {
-    console.log(`[SR ${id}] ended`);
-    // すでに stopAndCallback 済なら何もしない
-  };
-
-  recognition.start();
-}
-
-function isCorrectAnswer(id, text) {
-  // ① 句読点などを削除し、余分な空白を詰める
-  let norm = text
-    .replace(/[。．\.！!？?]/g, '')
-    .trim()
-    .replace(/\s+/g, '');
-
-  // ② 正解キーワード配列（通常1要素だが一般化）
-  const answerKeywords = answers[id];
-
-  console.log(`[isCorrectAnswer] normalized transcript="${norm}", keywords=${JSON.stringify(answerKeywords)}`);
-
-  // ③ 優先度：くない → い の順に確認
-  // くないが含まれているか？
-  if (answerKeywords.includes("くない") && norm.includes("くない")) {
-    console.log(`[isCorrectAnswer] matched "くない"`);
-    return true;
-  }
-
-  // いが含まれていて、くないが答えでないとき
-  if (answerKeywords.includes("い") && norm.includes("い")) {
-    // ただし「くない」が transcript に含まれているときは誤判定防止のため除外
-    if (!norm.includes("くない")) {
-      console.log(`[isCorrectAnswer] matched "い"`);
+    // 優先判定：くない → なかった → その他
+    if (answerKeywords.includes("くない") && norm.includes("くない")) {
+      console.log('[isCorrectAnswer] matched "くない"');
       return true;
-    } else {
-      console.log(`[isCorrectAnswer] "い" matched but also contains "くない" → false`);
-      return false;
     }
+    if (answerKeywords.includes("なかった") && norm.includes("なかった")) {
+      console.log('[isCorrectAnswer] matched "なかった"');
+      return true;
+    }
+    for (const k of answerKeywords) {
+      if (norm.includes(k)) {
+        console.log(`[isCorrectAnswer] matched "${k}"`);
+        return true;
+      }
+    }
+
+    console.log('[isCorrectAnswer] no match → false');
+    return false;
   }
 
-  console.log(`[isCorrectAnswer] → returning false`);
-  return false;
-}
-
-  // 統一したフィードバック表示関数
   function showFeedback(id, correct) {
     const slide   = document.querySelector('.slide.active');
     const fbIcons = slide.querySelector(`#feedback${id}-icons`);
@@ -940,7 +942,6 @@ function isCorrectAnswer(id, text) {
     new Audio(correct ? CORRECT_URL : WRONG_URL).play().catch(()=>{});
   }
 
-  // 例題セットアップ
   function setupExample(id, onDone) {
     const slide    = document.querySelector('.slide.active');
     const btn      = slide.querySelector(`#startButton${id}`);
@@ -981,7 +982,6 @@ function isCorrectAnswer(id, text) {
     };
   }
 
-  // 問題セットアップ
   function setupQuestion(id, onDone) {
     const slide    = document.querySelector('.slide.active');
     const btn      = slide.querySelector(`#startButton${id}`);
@@ -1038,18 +1038,18 @@ function isCorrectAnswer(id, text) {
 
   function getFeedbackText(id) {
     const feedbackMessages = {
-        E1:"てんきは いいです。（The weather is good.）",
-        E2:"てんきは よくないです。（The weather is not good.）",
-        Q1:"きょうは あたたかいです。(It is warm today.）",
-        Q2:"コーヒーは つめたいです。（The coffee is cold.）",
-        Q3:"テストは むずかしいです。（The test is difficult.）",
-        Q4:"テストは よくないです。（The test result is not good.）",
-        Q5:"にもつは おもくないです。（The bag/luggage is not heavy.）",
-        Q6:"へやのなかは すずしいです。（It is cool in the room.）",
-        Q7:"ゲームは おもしろくないです。（The game is not interesting.）",
-        Q8:"おきゃくさんは すくないです。（There are few customers.）",
-        Q9:"このラーメンは からくないです。（This ramen is not spicy.）",
-        Q10:"カラオケは たのしいです。(Karaoke is fun.）",
+      E1:"てんきは いいです。（The weather is good.）",
+      E2:"てんきは よくないです。（The weather is not good.）",
+      Q1:"きょうは あたたかいです。(It is warm today.)",
+      Q2:"コーヒーは つめたいです。（The coffee is cold.）",
+      Q3:"テストは むずかしいです。（The test is difficult.）",
+      Q4:"テストは よくないです。（The test result is not good.）",
+      Q5:"にもつは おもくないです。（The bag/luggage is not heavy.）",
+      Q6:"へやのなかは すずしいです。（It is cool in the room.）",
+      Q7:"ゲームは おもしろくないです。（The game is not interesting.）",
+      Q8:"おきゃくさんは すくないです。（There are few customers.）",
+      Q9:"このラーメンは からくないです。（This ramen is not spicy.）",
+      Q10:"カラオケは たのしいです。(Karaoke is fun.)",
     };
     return feedbackMessages[id] || '';
   }
