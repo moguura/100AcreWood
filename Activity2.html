@@ -804,85 +804,81 @@ document.addEventListener('DOMContentLoaded', () => {
     Q9: ["くない"], Q10:["い"]
   };
 
-  function startRecognition(id, cb) {
-    if (!('webkitSpeechRecognition' in window)) {
-      alert("Speech recognition is not available. Please use Chrome.");
-      return;
-    }
-
-    const micBtn = document.getElementById(`startButton${id}`);
-    micBtn.classList.add('recording');
-    micBtn.disabled = true;
-
-    const recognition = new webkitSpeechRecognition();
-    recognition.lang = 'ja-JP';
-    recognition.interimResults = true;
-    recognition.continuous = false;
-    recognition.maxAlternatives = 1;
-
-    let finalTranscript = '';
-    const maxSession = 10000; // 最大録音時間 10秒
-    let sessionTimer = setTimeout(stopAndCallback, maxSession);
-    let hasStopped = false;
-    let silenceTimeout;
-
-    function stopAndCallback() {
-      if (hasStopped) return;
-      hasStopped = true;
-      clearTimeout(sessionTimer);
-      clearTimeout(silenceTimeout);
-      recognition.stop();
-      micBtn.classList.remove('recording');
-      console.log(`[SR ${id}] finalTranscript: "${finalTranscript}"`);
-      cb(finalTranscript.trim());
-    }
-
-    recognition.onresult = e => {
-      const transcript = Array.from(e.results)
-        .map(r => r[0].transcript)
-        .join('');
-      finalTranscript = transcript;
-      console.log(`[SR ${id}] interim result: "${transcript}"`);
-
-      // 動的に「"…」で囲まれた語を抽出
-      const slideEl = document.querySelector('.slide.active');
-      const quoted = Array.from(
-        slideEl.textContent.matchAll(/"([^"]+)"/g),
-        m => m[1].replace(/\s+/g, '')
-      );
-      const containsDynamic = quoted.some(k => transcript.includes(k));
-
-      // 静的キーワードもチェック
-      const answerKeywords = answers[id];
-      const containsAnswer   = answerKeywords.some(k => transcript.includes(k));
-      const containsDesu     = transcript.includes("です");
-
-      // 「です」＋（動的 or 静的）で即時停止
-      if (containsDesu && (containsDynamic || containsAnswer)) {
-        console.log(`[SR ${id}] matched desu + (dynamic|static) → stop`);
-        stopAndCallback();
-      }
-    };
-
-    recognition.onerror = e => {
-      console.warn(`[SR ${id}] error:`, e.error);
-      stopAndCallback();
-    };
-
-    recognition.onspeechend = () => {
-      // 5秒間無音で停止
-      silenceTimeout = setTimeout(() => {
-        console.log(`[SR ${id}] silence timeout reached → stop`);
-        stopAndCallback();
-      }, 5000);
-    };
-
-    recognition.onend = () => {
-      console.log(`[SR ${id}] ended`);
-    };
-
-    recognition.start();
+function startRecognition(id, cb) {
+  if (!('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)) {
+    alert("Speech recognition is not available. Please use Chrome.");
+    return;
   }
+
+  const micBtn = document.getElementById(`startButton${id}`);
+  micBtn.classList.add('recording');
+  micBtn.disabled = true;
+
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  const recognition = new SR();
+  recognition.lang = 'ja-JP';
+  recognition.interimResults = true;
+  recognition.continuous = true;    // 継続モード
+  recognition.maxAlternatives = 1;
+
+  let finalTranscript = '';
+  let hasStopped = false;
+  let silenceTimeout;
+
+  function stopAndCallback() {
+    if (hasStopped) return;
+    hasStopped = true;
+    clearTimeout(silenceTimeout);
+    recognition.stop();
+    micBtn.classList.remove('recording');
+    console.log(`[SR ${id}] finalTranscript: "${finalTranscript}"`);
+    cb(finalTranscript.trim());
+  }
+
+  recognition.onresult = e => {
+    const transcript = Array.from(e.results)
+      .map(r => r[0].transcript)
+      .join('');
+    finalTranscript = transcript;
+    console.log(`[SR ${id}] interim result: "${transcript}"`);
+
+    // 動的キーワード抽出
+    const slideEl = document.querySelector('.slide.active');
+    const quoted = Array.from(
+      slideEl.textContent.matchAll(/"([^"]+)"/g),
+      m => m[1].replace(/\s+/g, '')
+    );
+    const containsDynamic = quoted.some(k => transcript.includes(k));
+    // 静的キーワード
+    const containsStatic = answers[id].some(k => transcript.includes(k));
+    const containsDesu   = transcript.includes("です");
+
+    // 「です＋(動的 or 静的)」で即時停止
+    if (containsDesu && (containsDynamic || containsStatic)) {
+      console.log(`[SR ${id}] matched desu + (dynamic|static) → stop`);
+      stopAndCallback();
+    }
+  };
+
+  recognition.onerror = e => {
+    console.warn(`[SR ${id}] error:`, e.error);
+    stopAndCallback();
+  };
+
+  recognition.onspeechend = () => {
+    // 無音5秒後に停止
+    silenceTimeout = setTimeout(() => {
+      console.log(`[SR ${id}] silence timeout reached → stop`);
+      stopAndCallback();
+    }, 5000);
+  };
+
+  recognition.onend = () => {
+    console.log(`[SR ${id}] ended`);
+  };
+
+  recognition.start();
+}
 
   function isCorrectAnswer(id, text) {
     // ノーマライズ：句読点削除＋空白詰め
