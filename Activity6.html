@@ -400,205 +400,233 @@ h1 {
 
 <script>
 const answers = {
-  E1: ["かった"],
-  Q1: ["かった"],
-  Q2: ["かった"],
-  Q3: ["かった"],
-  Q4: ["かった"],
-  Q5: ["かった"],
+    E1: ["寒かった"],
+    Q1: ["忙しかった"],
+    Q2: ["近かった"],
+    Q3: ["重かった"],
+    Q4: ["安かった"],
+    Q5: ["難しかった"],
 };
 
 // ★ 各問題のボタン押下状況を管理
 const buttonsPressed = {};
 Object.keys(answers).forEach(key => {
-  buttonsPressed[key] = false;
-  // 「です」を付けた候補も追加
-  answers[key] = [
-    ...answers[key],
-    ...answers[key].map(ans => ans + "です")
-  ];
+    buttonsPressed[key] = false;
+    // 「です」を付けた候補も追加
+    answers[key] = [...answers[key], ...answers[key].map(ans => ans + "です")];
 });
 
-document.addEventListener("DOMContentLoaded", () => {
-  // マイクボタンのイベントリスナー登録
-  document.querySelectorAll(".mic-button").forEach(button => {
-    button.addEventListener("click", () => {
-      const questionId = button.id.replace("startButton", "");
-      startRecognition(questionId);
+document.addEventListener("DOMContentLoaded", function () {
+    // マイクボタンのイベントリスナー登録
+    document.querySelectorAll(".mic-button").forEach((button) => {
+        button.addEventListener('click', () => {
+            const questionId = button.id.replace('startButton', '');
+            console.log("マイクボタンが押された:", questionId);
+            startRecognition(questionId);
+        });
     });
-  });
 
-  // Playボタン
-  document.querySelectorAll(".play-audio").forEach(button => {
-    button.addEventListener("click", () => {
-      const q = button.id.replace("play-audio-", "");
-      const audio = document.getElementById(`audio-${q}`);
-      audio?.play().catch(e => console.error(e));
+    // 再生ボタンのイベントリスナー登録（▶ Play ボタン）
+    document.querySelectorAll(".play-audio").forEach((button) => {
+        button.addEventListener('click', () => {
+            // ボタンのID例："play-audio-E1" → 対応する audio 要素は "audio-E1"
+            const parts = button.id.split('-');
+            const questionId = parts[parts.length - 1];
+            const audioId = "audio-" + questionId;
+            const audioElem = document.getElementById(audioId);
+            if (audioElem) {
+                audioElem.play().catch(e => console.error("オーディオ再生エラー:", e));
+            }
+        });
     });
-  });
 });
 
 function finalizeRecognition(questionId, transcript, micButton) {
-  const isCorrect = isCorrectAnswer(questionId, transcript);
-  showFeedback(questionId, isCorrect);
-  buttonsPressed[questionId] = true;
-  micButton.disabled = true;
-  checkAllAnswered();
+    const isCorrect = isCorrectAnswer(questionId, transcript);
+    showFeedback(questionId, isCorrect);
+    buttonsPressed[questionId] = true;
+    micButton.disabled = true;
+    checkAllAnswered();
 }
 
+let finalMusicPlayed = false;
 function checkAllAnswered() {
-  const all = Array.from(document.querySelectorAll(".mic-button"))
-    .map(b => b.id.replace("startButton", ""))
-    .every(id => buttonsPressed[id]);
-  if (all) {
-    document.getElementById("nextLink")?.style.display = "block";
-    document.getElementById("finalInstructions")?.style.display = "block";
-    document.querySelector(".notice-board")?.style.display = "block";
-    const music = document.getElementById("finalMusic");
-    if (music && !music._played) {
-      music._played = true;
-      setTimeout(() => music.play().catch(e=>{}), 1000);
+    // ページ上にあるマイクボタンから、実際の問題IDを取得してチェック
+    const micButtons = document.querySelectorAll(".mic-button");
+    const questionIds = Array.from(micButtons).map(button => button.id.replace('startButton', ''));
+    const allAnswered = questionIds.every(id => buttonsPressed[id] === true);
+    
+    if (allAnswered) {
+        const nextPageLink = document.getElementById("nextLink");
+        if (nextPageLink) {
+            nextPageLink.style.display = "block";
+        }
+        // 最後の説明ボックスの表示
+        const finalInstructions = document.getElementById("finalInstructions");
+        if (finalInstructions) {
+            finalInstructions.style.display = "block";
+        }
+        // Notice ボードの表示（クラス名 "notice-board" の要素）
+        const noticeBoard = document.querySelector(".notice-board");
+        if (noticeBoard) {
+            noticeBoard.style.display = "block";
+        }
+        const finalMusic = document.getElementById("finalMusic");
+        if (finalMusic && !finalMusicPlayed) {
+            finalMusicPlayed = true;
+            setTimeout(() => {
+                finalMusic.play().catch(e => console.error("タスク終了音再生エラー:", e));
+            }, 1000);
+        }
     }
-  }
 }
 
 function startRecognition(questionId) {
-  if (!("webkitSpeechRecognition" in window || "SpeechRecognition" in window)) {
-    alert("Chromeで開いてください。音声認識が必要です。");
-    return;
-  }
-
-  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-  const recog = new SR();
-  recog.lang = "ja-JP";
-  recog.interimResults = true;
-  recog.continuous = true;
-  recog.maxAlternatives = 1;
-
-  let finalTranscript = "";
-  let stopped = false;
-  let silenceTimer = null;
-
-  const micBtn = document.getElementById(`startButton${questionId}`);
-  micBtn.classList.add("recording");
-  micBtn.disabled = true;
-
-  function stopAndFinalize() {
-    if (stopped) return;
-    stopped = true;
-    clearTimeout(silenceTimer);
-    recog.stop();
-    micBtn.classList.remove("recording");
-    finalizeRecognition(questionId, finalTranscript.trim(), micBtn);
-  }
-
-  recog.onresult = e => {
-    const t = Array.from(e.results)
-      .map(r => r[0].transcript)
-      .join("")
-      .trim();
-    finalTranscript = t;
-
-    if (stopped) return;
-    if (silenceTimer) clearTimeout(silenceTimer);
-
-    // 「です」で終わったら即時判定
-    if (t.endsWith("です") || t.endsWith("です。")) {
-      stopAndFinalize();
-      return;
+    if (!('webkitSpeechRecognition' in window)) {
+        alert("このブラウザでは音声認識は利用できません。Google Chrome をご利用ください。");
+        return;
     }
 
-    // 無音5秒後に最終判定
-    silenceTimer = setTimeout(() => {
-      stopAndFinalize();
-    }, 5000);
-  };
+    const recognition = new webkitSpeechRecognition();
+    recognition.lang = 'ja-JP';
+    recognition.interimResults = true;
+    recognition.continuous = true;
+    recognition.maxAlternatives = 1;
 
-  recog.onerror = e => {
-    console.error("認識エラー:", e.error);
-    stopAndFinalize();
-  };
+    let finalTranscript = "";
+    const maxWaitTime = 2000;
+    let recognitionFinalized = false;
+    let timeoutId = null;
 
-  recog.onspeechend = () => {
-    // ユーザーが黙ったら5秒待って判定
-    if (silenceTimer) clearTimeout(silenceTimer);
-    silenceTimer = setTimeout(() => {
-      stopAndFinalize();
-    }, 5000);
-  };
+    const micButton = document.getElementById(`startButton${questionId}`);
+    micButton.classList.add("recording");
 
-  recog.onend = () => {
-    // Chrome無音自動停止を回避して再スタート
-    if (!stopped) {
-      recog.start();
+    function finalize() {
+        if (!recognitionFinalized) {
+            recognitionFinalized = true;
+            finalizeRecognition(questionId, finalTranscript, micButton);
+            recognition.stop();
+        }
     }
-  };
 
-  recog.start();
+    recognition.onresult = function(event) {
+        let newTranscript = event.results[event.results.length - 1][0].transcript.trim();
+        finalTranscript = newTranscript;
+        console.log(`認識結果 (${questionId}):`, finalTranscript);
+
+        if (recognitionFinalized) return;
+        if (timeoutId) clearTimeout(timeoutId);
+
+        // 「です」または「です。」で終わっていれば即時判定
+        if (finalTranscript.endsWith("です") || finalTranscript.endsWith("です。")) {
+            console.log(`即時判定 (${questionId}):`, finalTranscript);
+            finalize();
+            return;
+        }
+
+        // 発話途切れの場合は 2 秒後に判定
+        timeoutId = setTimeout(() => {
+            console.log(`最終判定 (${questionId}):`, finalTranscript);
+            finalize();
+        }, maxWaitTime);
+    };
+
+    recognition.onerror = function(event) {
+        alert("音声認識に失敗しました。もう一度お試しください。");
+        console.error("音声認識エラー:", event.error);
+    };
+
+    recognition.onend = function() {
+        micButton.classList.remove("recording");
+        if (!recognitionFinalized) {
+            clearTimeout(timeoutId);
+            console.log(`onend 最終判定 (${questionId}):`, finalTranscript);
+            finalize();
+        }
+    };
+
+    recognition.start();
 }
 
-function isCorrectAnswer(questionId, text) {
-  const norm = text.replace(/[。．\.！!？?]/g, "").trim();
-  // 「かったです」優先
-  if (answers[questionId].includes("かったです") && norm.includes("かったです")) {
-    return true;
-  }
-  // 次に「かった」
-  if (answers[questionId].includes("かった") && norm.includes("かった")) {
-    return true;
-  }
-  return false;
+function isCorrectAnswer(questionId, userInput) {
+    return answers[questionId]?.some(answer => userInput.includes(answer)) || false;
 }
 
-function showFeedback(questionId, correct) {
-  const fb = document.getElementById(`feedback${questionId}`);
-  const ok = document.getElementById(`correctImage${questionId}`);
-  const ng = document.getElementById(`wrongImage${questionId}`);
-  const txt = document.getElementById(`feedbackText${questionId}`);
+function showFeedback(questionId, isCorrect) {
+    // feedback 領域は id="feedback{questionId}" としている
+    const feedbackDiv = document.getElementById(`feedback${questionId}`);
+    if (!feedbackDiv) return;
 
-  fb.style.display = "block";
-  ok && (ok.style.display = correct ? "block" : "none");
-  ng && (ng.style.display = correct ? "none" : "block");
+    // 正解・不正解の画像はそれぞれ id="correctImage{questionId}" と "wrongImage{questionId}"
+    const correctImage = document.getElementById(`correctImage${questionId}`);
+    const wrongImage = document.getElementById(`wrongImage${questionId}`);
 
-  const msgs = getFeedbackText(questionId);
-  if (txt && msgs) {
-    txt.innerHTML = correct ? msgs.correct : msgs.incorrect;
-    txt.style.display = "block";
-  }
+    // 両方の画像を一旦非表示にする
+    if (correctImage) correctImage.style.display = 'none';
+    if (wrongImage) wrongImage.style.display = 'none';
 
-  const audio = correct
-    ? document.getElementById(`correctAudio${questionId}`)
-    : document.getElementById(`wrongAudio${questionId}`);
-  audio?.play().catch(e => console.error(e));
-}
-
-function getFeedbackText(id) {
-  return {
-    E1: {
-      correct:   "Your answer： きのうは さむかったです。（Yesterday was cold.）",
-      incorrect: "Your answer： きのうは さむくなかったです。（Yesterday was not cold.）"
-    },
-    Q1: {
-      correct:   "Your answer： せんしゅうは いそがしかったです。（Last week was busy.）",
-      incorrect: "Your answer： せんしゅうは いそがしくなかったです。（Last week was not busy.）"
-    },
-    Q2: {
-      correct:   "Your answer： にほんは ちかかったです。（Japan was close.）",
-      incorrect: "Your answer： にほんは ちかくなかったです。（Japan was not close.）"
-    },
-    Q3: {
-      correct:   "Your answer： かばんは おもかったです。（The bag was heavy.）",
-      incorrect: "Your answer： かばんは おもくなかったです。（The bag was not heavy.）"
-    },
-    Q4: {
-      correct:   "Your answer： ふくは やすかったです。（The clothes were cheap.）",
-      incorrect: "Your answer： ふくは やすくなかったです。（The clothes were not cheap.）"
-    },
-    Q5: {
-      correct:   "Your answer： テストは むずかしかったです。（The test was difficult.）",
-      incorrect: "Your answer： テストは むずかしくなかったです。（The test was not difficult.）"
+    // フィードバックテキストの要素を取得して更新
+    const feedbackTextElem = document.getElementById(`feedbackText${questionId}`);
+    const messages = getFeedbackText(questionId);
+    console.log("Feedback messages for " + questionId, messages);
+    if (feedbackTextElem) {
+        // メッセージが取得できなかった場合のフォールバックを設定
+        const text = messages ? (isCorrect ? messages.correct : messages.incorrect) : "No feedback text found";
+        // innerHTML に変更することで、もしHTMLタグが含まれても問題なく表示されます
+        feedbackTextElem.innerHTML = text;
+        // 念のため、スタイルを明示的に表示に設定
+        feedbackTextElem.style.display = "block";
     }
-  }[id] || null;
+
+    // feedback 領域自体を表示
+    feedbackDiv.style.display = 'block';
+
+    // 判定に応じた画像のみ表示する
+    if (isCorrect && correctImage) {
+        correctImage.style.display = 'block';
+    } else if (!isCorrect && wrongImage) {
+        wrongImage.style.display = 'block';
+    }
+
+    // フィードバック音も再生
+    const feedbackAudio = isCorrect 
+        ? document.getElementById(`correctAudio${questionId}`) 
+        : document.getElementById(`wrongAudio${questionId}`);
+    
+    if (feedbackAudio) {
+        feedbackAudio.play().catch(e => console.error("フィードバック音再生エラー:", e));
+    }
+}
+
+function getFeedbackText(questionId) {
+    // ※ HTML上に存在する問題（E1～Q5）のみテキストを返す
+    const feedbackMessages = {
+        E1: {
+            correct: "Your answer： きのうは さむかったです。（Yesterday was cold.）",
+            incorrect: "Your answer： きのうは さむくなかったです。（Yesterday was not cold.）"
+        },
+        Q1: {
+            correct: "Your answer： せんしゅうは いそがしかったです。（Last week was busy.）",
+            incorrect: "Your answer： せんしゅうは いそがしくなかったです。（Last week was not busy.）"
+        },
+        Q2: {
+            correct: "Your answer： にほんは ちかかったです。（Japan was close.）",
+            incorrect: "Your answer： にほんは ちかくなかったです。（Japan was not close.）"
+        },
+        Q3: {
+            correct: "Your answer： かばんは おもかったです。（The bag was heavy.）",
+            incorrect: "Your answer： かばんは おもくなかったです。（The bag was not heavy.）"
+        },
+        Q4: {
+            correct: "Your answer： ふくは やすかったです。（The clothes were cheap.）",
+            incorrect: "Your answer： ふくは やすくなかったです。（The clothes were not cheap.）"
+        },
+        Q5: {
+            correct: "Your answer： テストは むずかしかったです。（The test was difficult.）",
+            incorrect: "Your answer： テストは むずかしくなかったです。（The test was not difficult.）"
+        }
+    };
+    return feedbackMessages[questionId];
 }
 </script>
 </body>
