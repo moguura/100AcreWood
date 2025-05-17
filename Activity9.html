@@ -445,80 +445,73 @@ function finalizeRecognition(questionId, transcript, micButton) {
     checkAllButtonsPressed(); // ✅ 修正: `checkAllAnswered();` → `checkAllButtonsPressed();`
 }
 
-
-
 function startRecognition(questionId) {
-    if (!('webkitSpeechRecognition' in window)) {
-        alert("Speech recognition is not available in this browser. Please use Google Chrome.");
-        return;
+  if (!('webkitSpeechRecognition' in window)) {
+    alert("Speech recognition is not available in this browser. Please use Google Chrome.");
+    return;
+  }
+
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  const recognition = new SR();
+  recognition.lang = 'ja-JP';
+  recognition.interimResults = true;
+  recognition.continuous = true;    // 自動停止させない
+  recognition.maxAlternatives = 1;
+
+  let finalTranscript = "";
+  let recognitionFinalized = false;
+  let silenceTimer = null;
+  const SILENCE_WAIT = 5000;        // 無音5秒
+
+  const micButton = document.getElementById(`startButton${questionId}`);
+  micButton.classList.add("recording");
+
+  function restartRecognition() {
+    if (recognitionFinalized) return;
+    console.log(`[SR ${questionId}] silence detected → restart`);
+    recognition.stop();
+    // onend で再開される
+  }
+
+  recognition.onresult = e => {
+    const t = Array.from(e.results).map(r=>r[0].transcript).join('').trim();
+    finalTranscript = t;
+    console.log(`[SR ${questionId}] interim:`, t);
+
+    if (recognitionFinalized) return;
+
+    // タイマーをクリアして再セット
+    clearTimeout(silenceTimer);
+    silenceTimer = setTimeout(restartRecognition, SILENCE_WAIT);
+
+    // 動的キーワード抽出
+    const slideText = document.querySelector('.slide.active').textContent;
+    const quoted = Array.from(slideText.matchAll(/"([^"]+)"/g), m=>m[1]);
+    const hasDynamic = quoted.some(k => t.includes(k));
+
+    // 「です」で終わったら即時判定
+    if ((t.endsWith('です') || t.endsWith('です。')) && hasDynamic) {
+      console.log(`[SR ${questionId}] matched desu + quoted → finalize`);
+      recognitionFinalized = true;
+      clearTimeout(silenceTimer);
+      recognition.stop();
+      finalizeRecognition(questionId, finalTranscript, micButton);
     }
+  };
 
-    const recognition = new webkitSpeechRecognition();
-    recognition.lang = 'ja-JP';
-    recognition.interimResults = true;
-    recognition.continuous = true; // ★ 途中で止まらないようにする
-    recognition.maxAlternatives = 1;
+  recognition.onerror = e => {
+    console.error(`[SR ${questionId}] error`, e.error);
+  };
 
-    let finalTranscript = "";
-    let lastResultTime = Date.now();
-    const maxWaitTime = 2000;
-    let recognitionFinalized = false;
-    let timeoutId = null;
+  recognition.onend = () => {
+    micButton.classList.remove("recording");
+    if (!recognitionFinalized) {
+      // 再起動ループ
+      recognition.start();
+    }
+  };
 
-    const micButton = document.getElementById(`startButton${questionId}`);
-    micButton.classList.add("recording");
-
-    recognition.onresult = function(event) {
-        let currentTime = Date.now();
-        let newTranscript = event.results[event.results.length - 1][0].transcript.trim();
-        finalTranscript = newTranscript;
-        lastResultTime = currentTime;
-        console.log(`認識結果 (${questionId}):`, finalTranscript);
-
-        if (recognitionFinalized) return;
-
-        if (timeoutId) clearTimeout(timeoutId);
-
-        // ★「です。」まで言ったら即時判定
-        if (finalTranscript.endsWith("です") || finalTranscript.endsWith("です。")) {
-            console.log(`即時判定 (${questionId}):`, finalTranscript);
-            finalizeRecognition(questionId, finalTranscript, micButton);
-            recognitionFinalized = true;
-            recognition.stop();
-            return;
-        }
-
-        // ★ 発話が途切れても、最大2秒待つ
-        timeoutId = setTimeout(() => {
-            if (!recognitionFinalized) {
-                console.log(`最終判定 (${questionId}):`, finalTranscript);
-                finalizeRecognition(questionId, finalTranscript, micButton);
-                recognitionFinalized = true;
-                recognition.stop();
-            }
-        }, maxWaitTime);
-    };
-
-    recognition.onerror = function(event) {
-        alert("Speech recognition failed. Please try again.");
-        console.error("Speech Recognition Error:", event.error);
-    };
-
-    recognition.onend = function() {
-        micButton.classList.remove("recording");
-
-        if (!recognitionFinalized) {
-            setTimeout(() => {
-                if (!recognitionFinalized) {
-                    console.log(`最終判定 (${questionId}):`, finalTranscript);
-                    finalizeRecognition(questionId, finalTranscript, micButton);
-                    recognitionFinalized = true;
-                }
-            }, maxWaitTime);
-        }
-    };
-
-    recognition.start();
+  recognition.start();
 }
 
 function checkAllButtonsPressed() {
